@@ -18,6 +18,7 @@ import me.tecnio.antihaxerman.checks.impl.movement.invalid.InvalidA;
 import me.tecnio.antihaxerman.checks.impl.movement.motion.MotionA;
 import me.tecnio.antihaxerman.checks.impl.movement.motion.MotionB;
 import me.tecnio.antihaxerman.checks.impl.movement.motion.MotionC;
+import me.tecnio.antihaxerman.checks.impl.movement.motion.MotionD;
 import me.tecnio.antihaxerman.checks.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.checks.impl.movement.scaffold.ScaffoldA;
 import me.tecnio.antihaxerman.checks.impl.movement.scaffold.ScaffoldB;
@@ -63,6 +64,7 @@ public class CheckManager {
             MotionA.class,
             MotionB.class,
             MotionC.class,
+            MotionD.class,
             InvMoveA.class,
             ScaffoldA.class,
             ScaffoldB.class,

@@ -20,11 +20,9 @@ public class FlightA extends Check {
                     && !data.getPlayer().isInsideVehicle()
                     && data.teleportTicks() > 10){
                 double diff = Math.abs(data.getDeltaY() - predicted);
-                if (diff >= 0.001 && Math.abs(predicted) >= 0.005){
-                    if (++preVL > 5){
-                        flag(data, "invalid vertical movement. diff: " + diff, SetBackType.PULLDOWN);
-                    }
-                }else preVL = 0;
+                if (diff > 0.001 && Math.abs(predicted) >= 0.005){
+                    flag(data, "invalid vertical movement. diff: " + diff, SetBackType.PULLDOWN);
+                }
             }
         }
     }
