@@ -18,10 +18,8 @@ public class SpeedA extends Check {
             double diff = data.getDeltaXZ() - predicted;
 
             if (diff > 0.026) {
-                if (++preVL > 1) {
-                    flag(data, "ignored friction at air! diff: " + diff, SetBackType.BACK);
-                }
-            } else preVL = 0;
+                flag(data, "ignored friction at air! diff: " + diff, SetBackType.BACK);
+            }
         }
         lastLastOnGround = lastOnGround;
         lastOnGround = data.isOnGround();
