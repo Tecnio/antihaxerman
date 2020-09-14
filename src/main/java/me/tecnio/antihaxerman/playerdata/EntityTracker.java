@@ -5,10 +5,7 @@ import me.tecnio.antihaxerman.utils.EvictingList;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class EntityTracker {
     public EvictingList<CustomLocation> tracker = new EvictingList<>(20);
