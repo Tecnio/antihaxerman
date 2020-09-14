@@ -6,7 +6,6 @@ import me.tecnio.antihaxerman.checks.impl.combat.aura.*;
 import me.tecnio.antihaxerman.checks.impl.combat.autoblock.AutoBlockA;
 import me.tecnio.antihaxerman.checks.impl.combat.autoclicker.AutoClickerA;
 import me.tecnio.antihaxerman.checks.impl.combat.autoclicker.AutoClickerB;
-import me.tecnio.antihaxerman.checks.impl.combat.criticals.CriticalsA;
 import me.tecnio.antihaxerman.checks.impl.combat.fastbow.FastBowA;
 import me.tecnio.antihaxerman.checks.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.checks.impl.combat.velocity.VelocityA;
@@ -49,7 +48,6 @@ public class CheckManager {
             AutoBlockA.class,
             AngleA.class,
             ReachA.class,
-            CriticalsA.class,
             VelocityA.class,
             FastBowA.class,
             SpeedA.class,

@@ -7,7 +7,7 @@ import me.tecnio.antihaxerman.utils.PlayerUtils;
 import org.bukkit.block.BlockFace;
 
 @CheckInfo(name = "Motion", type = "C")
-public class MotionC extends Check {
+public final class MotionC extends Check {
 
     private double startMotion;
 

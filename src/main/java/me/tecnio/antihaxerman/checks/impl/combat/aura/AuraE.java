@@ -12,7 +12,7 @@ import java.util.Deque;
 import java.util.List;
 
 @CheckInfo(name = "Aura", type = "E")
-public class AuraE extends Check {
+public final class AuraE extends Check {
 
     private int hitTicks;
     private Deque<Float> pitchSamples = Lists.newLinkedList();
@@ -57,15 +57,17 @@ public class AuraE extends Check {
                     samples.add(floorModuloX);
                     pitchSamples.add(deltaPitch);
                     if(samples.size() > 20 && pitchSamples.size() > 20) {
-                        double deviation = MathUtils.getStandardDeviation((List<Double>) samples);
-                        int duplicates = (int) (samples.size() - samples.parallelStream().distinct().count());
-                        int pitchDuplicates = (int) (pitchSamples.size() - pitchSamples.parallelStream().distinct().count());
-                        int combinedDuplicates = duplicates + pitchDuplicates;
+                        final double deviation = MathUtils.getStandardDeviation((List<Double>) samples);
+                        final int duplicates = (int) (samples.size() - samples.parallelStream().distinct().count());
+                        final int pitchDuplicates = (int) (pitchSamples.size() - pitchSamples.parallelStream().distinct().count());
+                        final int combinedDuplicates = duplicates + pitchDuplicates;
+
                         if(Double.isNaN(deviation) && combinedDuplicates <= 7) {
                             if (++preVL > 2) {
                                 flag(data, "LiquidBounce Killaura (or similar)");
                             }
                         }else preVL = 0;
+
                         samples.clear();
                         pitchSamples.clear();
                     }

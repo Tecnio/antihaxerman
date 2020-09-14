@@ -11,13 +11,16 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Scaffold", type = "B")
-public class ScaffoldB extends Check {
+public final class ScaffoldB extends Check {
     @EventHandler
     public void onPlace(BlockPlaceEvent event){
-        PlayerData data = DataManager.INSTANCE.getUser(event.getPlayer().getUniqueId());
-        Vector blockVec = event.getBlockPlaced().getLocation().toVector();
-        double dist = data.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation().toVector().distance(blockVec);
-        double diff = data.getDeltaYaw();
+        final PlayerData data = DataManager.INSTANCE.getUser(event.getPlayer().getUniqueId());
+
+        final Vector blockVec = event.getBlockPlaced().getLocation().toVector();
+
+        final double dist = data.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation().toVector().distance(blockVec);
+        final double diff = data.getDeltaYaw();
+
         if(diff > 100 && dist <= 2.0 && event.getBlockPlaced().getType().isSolid()) {
             if(++preVL > 4) {
                 flag(data, "suspicious rotations, r: " + diff + ", d: " + dist, SetBackType.BACK);

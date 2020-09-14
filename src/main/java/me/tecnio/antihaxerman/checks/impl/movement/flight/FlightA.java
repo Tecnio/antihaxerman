@@ -7,10 +7,10 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.PlayerUtils;
 
 @CheckInfo(name = "Flight", type = "A")
-public class FlightA extends Check {
+public final class FlightA extends Check {
     @Override
     public void onMove(PlayerData data) {
-        double predicted = (data.getLastDeltaY() - 0.08) * 0.9800000190734863;
+        final double predicted = (data.getLastDeltaY() - 0.08) * 0.9800000190734863;
 
         if (!data.isOnGround() && data.getAirTicks() > 6 && !data.isTakingVelocity()){
             if (!PlayerUtils.inLiquid(data)

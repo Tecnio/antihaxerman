@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Speed", type = "B")
-public class SpeedB extends Check {
+public final class SpeedB extends Check {
     @Override
     public void onMove(PlayerData data) {
         double limit = getBaseSpeed(data.getPlayer());

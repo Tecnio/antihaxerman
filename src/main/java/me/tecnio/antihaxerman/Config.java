@@ -1,6 +1,6 @@
 package me.tecnio.antihaxerman;
 
-public class Config {
+public final class Config {
 
     public static int MAX_CPS;
 

@@ -9,7 +9,7 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AntiHaxerman extends JavaPlugin {
+public final class AntiHaxerman extends JavaPlugin {
 
     private static AntiHaxerman instance;
 

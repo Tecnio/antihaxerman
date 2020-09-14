@@ -7,7 +7,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "AutoBlock", type = "A")
-public class AutoBlockA extends Check {
+public final class AutoBlockA extends Check {
 
     private boolean attacked;
     private int ticks;

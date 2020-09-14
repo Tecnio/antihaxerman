@@ -10,7 +10,7 @@ import io.github.retrooper.packetevents.packet.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.flying.WrappedPacketInFlying;
 
 @CheckInfo(name = "NoFall", type = "A")
-public class NoFallA extends Check {
+public final class NoFallA extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){

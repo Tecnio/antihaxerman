@@ -11,10 +11,11 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 @CheckInfo(name = "InvMove", type = "A")
-public class InvMoveA extends Check {
+public final class InvMoveA extends Check {
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        PlayerData data = DataManager.INSTANCE.getUser(event.getWhoClicked().getUniqueId());
+        final PlayerData data = DataManager.INSTANCE.getUser(event.getWhoClicked().getUniqueId());
+
         if (data.isInWeb() || data.isInLiquid() || data.isOnClimbableBlock() || data.isTakingVelocity() || event.getClick() == ClickType.CREATIVE || event.getAction() == InventoryAction.PLACE_ALL) return;
 
         if (data.isOnGround() && data.getDeltaXZ() > 0.15) {

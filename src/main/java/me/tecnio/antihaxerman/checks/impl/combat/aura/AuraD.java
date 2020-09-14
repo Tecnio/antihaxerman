@@ -9,7 +9,7 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import org.bukkit.entity.Entity;
 
 @CheckInfo(name = "Aura", type = "D")
-public class AuraD extends Check {
+public final class AuraD extends Check {
 
     private int ticks;
     private Entity lastTarget;
@@ -17,10 +17,10 @@ public class AuraD extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
         if(e.getPacketId() == PacketType.Client.USE_ENTITY) {
-            WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
+            final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
 
             if(wrappedPacketInUseEntity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
-                Entity target = wrappedPacketInUseEntity.getEntity();
+                final Entity target = wrappedPacketInUseEntity.getEntity();
 
                 if(target != lastTarget) {
                     if((data.getDeltaYaw() == 0.0 && ticks <= 5) || (data.getDeltaYaw() > 5 && ticks < 2)) {

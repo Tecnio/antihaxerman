@@ -8,7 +8,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Aura", type = "B")
-public class AuraB extends Check {
+public final class AuraB extends Check {
 
     private int ticks, lastAttackedEntityID;
 
@@ -17,10 +17,12 @@ public class AuraB extends Check {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             ticks = 0;
         }else if (e.getPacketId() == PacketType.Client.USE_ENTITY){
-            WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
+            final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
+
             if (wrappedPacketInUseEntity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK){
-                if (++ticks > 1 && wrappedPacketInUseEntity.getEntityId() != lastAttackedEntityID)flag(data, "attacked " + ticks + " entities in a single tick.");
+                if (++ticks > 1 && wrappedPacketInUseEntity.getEntityId() != lastAttackedEntityID) flag(data, "attacked " + ticks + " entities in a single tick.");
             }
+
             lastAttackedEntityID = wrappedPacketInUseEntity.getEntityId();
         }
     }

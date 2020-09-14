@@ -6,14 +6,14 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Velocity", type = "A")
-public class VelocityA extends Check {
+public final class VelocityA extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
         if (isFlyingPacket(e)) {
             if (data.getVelocityTicks() == 1) {
-                double velTaken = data.getDeltaY();
-                double velExpected = data.getLastVel().getY() * 0.99F;
-                double percentage = (velTaken * 100) / velExpected;
+                final double velTaken = data.getDeltaY();
+                final double velExpected = data.getLastVel().getY() * 0.99F;
+                final double percentage = (velTaken * 100) / velExpected;
 
                 if (velTaken <= velExpected
                         && data.liquidTicks() > 20

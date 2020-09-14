@@ -7,7 +7,7 @@ import me.tecnio.antihaxerman.utils.PlayerUtils;
 import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "FastClimb", type = "B")
-public class FastClimbB extends Check {
+public final class FastClimbB extends Check {
     @Override
     public void onMove(PlayerData data) {
         if (data.isOnClimbableBlock() && !data.isTakingVelocity() && !data.isOnGround() && !data.isInWeb() && !data.getPlayer().isInsideVehicle() && !data.getPlayer().isFlying()){

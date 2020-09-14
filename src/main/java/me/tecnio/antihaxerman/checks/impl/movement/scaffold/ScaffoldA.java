@@ -10,10 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 @CheckInfo(name = "Scaffold", type = "A")
-public class ScaffoldA extends Check {
+public final class ScaffoldA extends Check {
     @EventHandler
     public void onInteract(PlayerInteractEvent event){
-        PlayerData data = DataManager.INSTANCE.getUser(event.getPlayer().getUniqueId());
+        final PlayerData data = DataManager.INSTANCE.getUser(event.getPlayer().getUniqueId());
+
         if (event.getClickedBlock() != null && data != null && !data.getPlayer().isInsideVehicle()){
             if (data.isOnGround()
                     && data.getLocation().getBlock().getLocation().clone().subtract(0,1,0).getBlock().equals(event.getClickedBlock())

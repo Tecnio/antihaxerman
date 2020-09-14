@@ -5,7 +5,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Motion", type = "D")
-public class MotionD extends Check {
+public final class MotionD extends Check {
     @Override
     public void onMove(PlayerData data) {
         if (data.getDeltaY() != 0.0D && Math.abs(data.getDeltaY()) <= 0.005D) {

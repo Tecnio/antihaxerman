@@ -8,7 +8,7 @@ import me.tecnio.antihaxerman.utils.PlayerUtils;
 import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Flight", type = "B")
-public class FlightB extends Check {
+public final class FlightB extends Check {
     @Override
     public void onMove(PlayerData data) {
         double limit = 6;
@@ -22,9 +22,7 @@ public class FlightB extends Check {
                 && !data.isTakingVelocity()
                 && data.getPlayer().getVehicle() == null
                 && data.teleportTicks() > 20) {
-            if (++preVL > 1) {
-                flag(data, "y motion higher than 0, m: " + data.getDeltaY() + ", " + data.getPlayer().getLocation().getBlock().getType().toString(), SetBackType.PULLDOWN);
-            }
-        }else preVL = 0;
+            flag(data, "y motion higher than 0, m: " + data.getDeltaY() + ", " + data.getPlayer().getLocation().getBlock().getType().toString(), SetBackType.PULLDOWN);
+        }
     }
 }

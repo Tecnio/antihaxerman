@@ -6,7 +6,7 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.PlayerUtils;
 
 @CheckInfo(name = "FastClimb", type = "A")
-public class FastClimbA extends Check {
+public final class FastClimbA extends Check {
     @Override
     public void onMove(PlayerData data) {
         if (data.getLocation().getY() == data.getLastLocation().getY()

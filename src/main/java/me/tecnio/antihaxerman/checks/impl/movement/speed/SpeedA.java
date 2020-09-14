@@ -7,23 +7,16 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.PlayerUtils;
 
 @CheckInfo(name = "Speed", type = "A")
-public class SpeedA extends Check {
-
-    private boolean lastOnGround, lastLastOnGround;
-
+public final class SpeedA extends Check {
     @Override
     public void onMove(PlayerData data) {
-        if (!data.isOnGround() && !lastOnGround && !lastLastOnGround && !data.getPlayer().isFlying() && !PlayerUtils.inLiquid(data) && !data.isTakingVelocity() && !PlayerUtils.isOnWeirdBlock(data) && !data.isUnderBlock() && data.teleportTicks() > 5){
-            double predicted = data.getLastDeltaXZ() * 0.91F;
-            double diff = data.getDeltaXZ() - predicted;
+        if (data.getAirTicks() > 2 && !data.getPlayer().isFlying() && !PlayerUtils.inLiquid(data) && !data.isTakingVelocity() && !PlayerUtils.isOnWeirdBlock(data) && !data.isUnderBlock() && data.teleportTicks() > 5){
+            final double prediction = data.getLastDeltaXZ() * 0.91F + (data.isSprinting() ? 0.0263 : 0.02);
+            final double diff = data.getDeltaXZ() - prediction;
 
-            if (diff > 0.026) {
-                if (++preVL > 1) {
-                    flag(data, "ignored friction at air! diff: " + diff, SetBackType.BACK);
-                }
-            } else preVL = 0;
+            if (diff > 1E-12) {
+                flag(data, "ignored friction at air! diff: " + diff, SetBackType.BACK);
+            }
         }
-        lastLastOnGround = lastOnGround;
-        lastOnGround = data.isOnGround();
     }
 }

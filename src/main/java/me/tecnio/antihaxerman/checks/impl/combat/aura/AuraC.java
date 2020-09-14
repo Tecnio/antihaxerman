@@ -9,24 +9,26 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import org.bukkit.entity.Player;
 
 @CheckInfo(name = "Aura", type = "C")
-public class AuraC extends Check {
+public final class AuraC extends Check {
 
     private int hitTicks;
 
     @Override
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
-        if (e.getPacketId() == PacketType.Client.USE_ENTITY){
-            WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
-            if (wrappedPacketInUseEntity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK && wrappedPacketInUseEntity.getEntity() instanceof Player)hitTicks = 0;
-        }else if (isFlyingPacket(e)){
-            if (++hitTicks < 2 && data.isSprinting() && data.getDeltaXZ() > 0.1){
-                double accel = Math.abs(data.getDeltaXZ() - data.getLastDeltaXZ());
+        if (e.getPacketId() == PacketType.Client.USE_ENTITY) {
+            final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
 
-                if (accel < 0.027){
-                    if (++preVL > 5){
+            if (wrappedPacketInUseEntity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK && wrappedPacketInUseEntity.getEntity() instanceof Player) hitTicks = 0;
+
+        } else if (isFlyingPacket(e)) {
+            if (++hitTicks < 2 && data.isSprinting() && data.getDeltaXZ() > 0.1) {
+                final double accel = Math.abs(data.getDeltaXZ() - data.getLastDeltaXZ());
+
+                if (accel < 0.027) {
+                    if (++preVL > 5) {
                         flag(data, "keepsprint. accel: " + accel);
                     }
-                }else preVL = 0;
+                } else preVL = 0;
             }
         }
     }

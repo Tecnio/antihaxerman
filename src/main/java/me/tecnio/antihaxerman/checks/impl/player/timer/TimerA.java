@@ -12,7 +12,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 @CheckInfo(name = "Timer", type = "A")
-public class TimerA extends Check {
+public final class TimerA extends Check {
 
     private Deque<Long> flyingDeque = new LinkedList<>();
     private double lastDeviation;
@@ -23,10 +23,10 @@ public class TimerA extends Check {
             flyingDeque.add(System.currentTimeMillis());
 
             if (flyingDeque.size() == 50) {
-                double deviation = MathUtils.getStandardDeviation(flyingDeque.stream().mapToLong(l -> l).toArray());
+                final double deviation = MathUtils.getStandardDeviation(flyingDeque.stream().mapToLong(l -> l).toArray());
 
                 if (deviation <= 710 && (Math.abs(deviation - lastDeviation) < 20)) {
-                    if (preVL++ > 1)
+                    if (++preVL > 1)
                         flag(data, "deviation = " + deviation, SetBackType.BACK);
                 } else preVL = 0;
                 this.lastDeviation = deviation;

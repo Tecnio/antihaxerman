@@ -9,14 +9,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityShootBowEvent;
 
 @CheckInfo(name = "FastBow", type = "A")
-public class FastBowA extends Check {
+public final class FastBowA extends Check {
     @EventHandler
     public void onBowShoot(EntityShootBowEvent event){
         if (event.getEntity() instanceof Player){
             PlayerData data = DataManager.INSTANCE.getUser(event.getEntity().getUniqueId());
 
-            long shootTime = time();
-            long diff = elapsed(time(), data.getLastShoot());
+            final long shootTime = time();
+            final long diff = elapsed(time(), data.getLastShoot());
 
             if (event.getProjectile().getVelocity().length() > .14 && diff < 190) {
                 flag(data, "throwing arrows faster than normal.");

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Speed", type = "C")
-public class SpeedC extends Check {
+public final class SpeedC extends Check {
     @Override
     public void onMove(PlayerData data) {
         double diff = data.getDeltaXZ() - data.getLastDeltaXZ();

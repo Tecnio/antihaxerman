@@ -7,7 +7,7 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.MathUtils;
 
 @CheckInfo(name = "Aim", type = "A")
-public class AimA extends Check {
+public final class AimA extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
         if (isRotationPacket(e)) {

@@ -6,7 +6,7 @@ import me.tecnio.antihaxerman.checks.SetBackType;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Invalid", type = "A")
-public class InvalidA extends Check {
+public final class InvalidA extends Check {
     @Override
     public void onMove(PlayerData data) {
         if (data.isOnClimbableBlock() && !data.isTakingVelocity() && !data.isOnGround() && !data.isInWeb() && !data.getPlayer().isInsideVehicle() && !data.getPlayer().isFlying()){

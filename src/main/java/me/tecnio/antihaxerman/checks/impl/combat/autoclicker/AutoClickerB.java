@@ -11,7 +11,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 @CheckInfo(name = "AutoClicker", type = "B")
-public class AutoClickerB extends Check {
+public final class AutoClickerB extends Check {
 
     private final Deque<Long> ticks = new LinkedList<>();
     private double lastDeviation;

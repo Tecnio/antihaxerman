@@ -8,7 +8,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "BadPackets", type = "D")
-public class BadPacketsD extends Check {
+public final class BadPacketsD extends Check {
 
     private long armSwingTime;
 
@@ -17,7 +17,8 @@ public class BadPacketsD extends Check {
         if(e.getPacketId() == PacketType.Client.ARM_ANIMATION) {
             armSwingTime = time();
         } else if(e.getPacketId() == PacketType.Client.USE_ENTITY) {
-            WrappedPacketInUseEntity packet = new WrappedPacketInUseEntity(e.getNMSPacket());
+            final WrappedPacketInUseEntity packet = new WrappedPacketInUseEntity(e.getNMSPacket());
+
             if(packet.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
                 long attackTime = time();
                 long diff = armSwingTime - attackTime;

@@ -7,7 +7,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Aura", type = "A")
-public class AuraA extends Check {
+public final class AuraA extends Check {
 
     private int hitTicks;
 

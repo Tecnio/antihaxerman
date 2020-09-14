@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Angle", type = "A")
-public class AngleA extends Check {
+public final class AngleA extends Check {
 
     private Entity entity;
 
@@ -18,8 +18,8 @@ public class AngleA extends Check {
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             if (entity != null){
-                Vector vec = entity.getLocation().clone().toVector().setY(0.0).subtract(data.getPlayer().getEyeLocation().clone().toVector().setY(0.0));
-                float angle = data.getPlayer().getEyeLocation().getDirection().angle(vec);
+                final Vector vec = entity.getLocation().clone().toVector().setY(0.0).subtract(data.getPlayer().getEyeLocation().clone().toVector().setY(0.0));
+                final float angle = data.getPlayer().getEyeLocation().getDirection().angle(vec);
 
                 if(angle > 1.3 && data.getPlayer().getLocation().toVector().setY(0.0).distance(entity.getLocation().toVector().setY(0.0)) > 1.0) {
                     if(++preVL > 2) {

@@ -7,7 +7,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "BadPackets", type = "C")
-public class BadPacketsC extends Check {
+public final class BadPacketsC extends Check {
 
     private long lastFlying;
 
@@ -16,7 +16,7 @@ public class BadPacketsC extends Check {
         if(PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             lastFlying = time();
         }else if (e.getPacketId() == PacketType.Client.USE_ENTITY){
-            long timeDiff = elapsed(time(), lastFlying);
+            final long timeDiff = elapsed(time(), lastFlying);
 
             if (timeDiff < 5) {
                 if (++preVL > 10) {

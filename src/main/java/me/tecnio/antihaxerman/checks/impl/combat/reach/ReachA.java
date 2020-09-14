@@ -12,11 +12,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CheckInfo(name = "Reach", type = "A")
-public class ReachA extends Check {
+public final class ReachA extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
         if (e.getPacketId() == PacketType.Client.USE_ENTITY){
-            WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
+            final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
 
             if (wrappedPacketInUseEntity.getEntity() instanceof Player)data.setLastAttackedPlayer((Player) wrappedPacketInUseEntity.getEntity());
 
@@ -26,12 +26,12 @@ public class ReachA extends Check {
                     && data.getEntityTracker().tracker != null
                     && data.getEntityTracker().tracker.size() > 0){
 
-                PlayerData attackedData = DataManager.INSTANCE.getUser(wrappedPacketInUseEntity.getEntity().getUniqueId());
+                final PlayerData attackedData = DataManager.INSTANCE.getUser(wrappedPacketInUseEntity.getEntity().getUniqueId());
 
-                Location eyeLoc = data.getPlayer().getEyeLocation();
+                final Location eyeLoc = data.getPlayer().getEyeLocation();
 
-                double dist = data.getEntityTracker().getPredictedLocation(attackedData.getPing()).stream().mapToDouble(vector -> vector.clone().setY(0).distance(eyeLoc.toVector().clone().setY(0)) - 0.4).min().orElse(3);
-                double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.18 : 3.18;
+                final double dist = data.getEntityTracker().getPredictedLocation(attackedData.getPing()).stream().mapToDouble(vector -> vector.clone().setY(0).distance(eyeLoc.toVector().clone().setY(0)) - 0.4).min().orElse(3);
+                final double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.18 : 3.18;
 
                 if (dist > maxDist){
                     if (++preVL > 2)flag(data, "hit farther than possible! dist: " + dist);
