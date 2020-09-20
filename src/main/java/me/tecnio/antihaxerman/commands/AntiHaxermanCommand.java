@@ -3,6 +3,7 @@ package me.tecnio.antihaxerman.commands;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.playerdata.DataManager;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
+import me.tecnio.antihaxerman.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,7 +11,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AntiHaxermanCommand implements CommandExecutor {
+public final class AntiHaxermanCommand implements CommandExecutor {
 
     private static final String seperator = "----------------------";
 
@@ -30,7 +31,7 @@ public class AntiHaxermanCommand implements CommandExecutor {
                     }else{
                         if (strings[0] != null && strings[0].equalsIgnoreCase("alerts")){
                             if(commandSender.hasPermission("antihaxerman.alerts") || commandSender.isOp()){
-                                sendMessage(commandSender, data.isAlerts() ? ChatColor.RED + "Disabled alerts." : ChatColor.GREEN + "Enabled alerts.");
+                                sendMessage(commandSender, data.isAlerts() ? ChatColor.RED + "Disabled alerts." : ChatColor.DARK_GREEN + "Enabled alerts.");
                                 data.setAlerts(!data.isAlerts());
                                 return true;
                             }
@@ -58,6 +59,6 @@ public class AntiHaxermanCommand implements CommandExecutor {
     }
 
     private void sendMessage(CommandSender commandSender, String msg){
-        commandSender.sendMessage(ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "AntiHaxerman" + ChatColor.GRAY + "]" + ChatColor.RESET + " " + msg);
+        commandSender.sendMessage(ChatUtils.color( "&aAntiHaxerman &8» " + ChatColor.RESET + msg));
     }
 }

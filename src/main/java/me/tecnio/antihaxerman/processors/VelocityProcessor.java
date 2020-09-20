@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class VelocityProcessor {
+public final class VelocityProcessor {
     public static void processSend(PacketSendEvent e){
         if (e.getPacketId() == PacketType.Server.ENTITY_VELOCITY) {
             WrappedPacketOutEntityVelocity event = new WrappedPacketOutEntityVelocity(e.getNMSPacket());
@@ -24,7 +24,7 @@ public class VelocityProcessor {
 
                 data.setVerifyingVelocity(true);
 
-                data.setVelocityID((short) new Random().nextInt(32000));
+                data.setVelocityID((short) new Random().nextInt(32767));
                 PacketEvents.getAPI().getPlayerUtils().sendPacket(e.getPlayer(), new WrappedPacketOutTransaction(0, data.getVelocityID(), false));
             }
         }

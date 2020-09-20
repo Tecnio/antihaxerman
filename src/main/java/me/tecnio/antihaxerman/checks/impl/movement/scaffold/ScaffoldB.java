@@ -2,7 +2,6 @@ package me.tecnio.antihaxerman.checks.impl.movement.scaffold;
 
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
-import me.tecnio.antihaxerman.checks.SetBackType;
 import me.tecnio.antihaxerman.playerdata.DataManager;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 import org.bukkit.block.BlockFace;
@@ -12,6 +11,10 @@ import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Scaffold", type = "B")
 public final class ScaffoldB extends Check {
+    public ScaffoldB(PlayerData data) {
+        super(data);
+    }
+
     @EventHandler
     public void onPlace(BlockPlaceEvent event){
         final PlayerData data = DataManager.INSTANCE.getUser(event.getPlayer().getUniqueId());
@@ -23,7 +26,7 @@ public final class ScaffoldB extends Check {
 
         if(diff > 100 && dist <= 2.0 && event.getBlockPlaced().getType().isSolid()) {
             if(++preVL > 4) {
-                flag(data, "suspicious rotations, r: " + diff + ", d: " + dist, SetBackType.BACK);
+                flag(data, "suspicious rotations, r: " + diff + ", d: " + dist);
             }
         }else preVL = 0;
     }

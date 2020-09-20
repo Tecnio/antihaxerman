@@ -10,9 +10,9 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.processors.PacketProcessor;
 import me.tecnio.antihaxerman.processors.VelocityProcessor;
 
-public class NetworkListener implements PacketListener {
+public final class NetworkListener implements PacketListener {
 
-    @PacketHandler
+    @PacketHandler()
     public void onReceive(PacketReceiveEvent e) {
         PlayerData data = DataManager.INSTANCE.getUser(e.getPlayer().getUniqueId());
         if (data != null) {

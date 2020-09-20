@@ -6,8 +6,12 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Motion", type = "D")
 public final class MotionD extends Check {
+    public MotionD(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         if (data.getDeltaY() != 0.0D && Math.abs(data.getDeltaY()) <= 0.005D) {
             flag(data, "invalid motion. d: " + data.getDeltaY());
         }

@@ -7,8 +7,12 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "BadPackets", type = "E")
 public final class BadPacketsE extends Check {
+    public BadPacketsE(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onAttack(WrappedPacketInUseEntity packet, PlayerData data) {
+    public void onAttack(WrappedPacketInUseEntity packet) {
         if (packet.getEntity() == data.getPlayer())flag(data, "player hit themselves.");
     }
 }

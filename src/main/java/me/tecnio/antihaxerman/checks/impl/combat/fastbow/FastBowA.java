@@ -10,6 +10,10 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 
 @CheckInfo(name = "FastBow", type = "A")
 public final class FastBowA extends Check {
+    public FastBowA(PlayerData data) {
+        super(data);
+    }
+
     @EventHandler
     public void onBowShoot(EntityShootBowEvent event){
         if (event.getEntity() instanceof Player){

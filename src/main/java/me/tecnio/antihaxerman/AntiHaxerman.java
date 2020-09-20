@@ -1,5 +1,6 @@
 package me.tecnio.antihaxerman;
 
+import me.tecnio.antihaxerman.checks.CheckManager;
 import me.tecnio.antihaxerman.commands.AntiHaxermanCommand;
 import me.tecnio.antihaxerman.listeners.BukkitListener;
 import io.github.retrooper.packetevents.PacketEvents;
@@ -19,6 +20,8 @@ public final class AntiHaxerman extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        CheckManager.registerChecks();
 
         saveDefaultConfig();
         Config.updateConfig();

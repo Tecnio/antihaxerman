@@ -9,12 +9,15 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "AutoClicker", type = "A")
 public final class AutoClickerA extends Check {
+    public AutoClickerA(PlayerData data) {
+        super(data);
+    }
 
     private int flyingTicks;
     private double clicksPerSecond;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (e.getPacketId() == PacketType.Client.ARM_ANIMATION){
             if (!data.isDigging() && flyingTicks <= 10) {
                 final double speed = 1000 / ((flyingTicks * 50.0) > 0 ? (flyingTicks * 50.0) : 50);

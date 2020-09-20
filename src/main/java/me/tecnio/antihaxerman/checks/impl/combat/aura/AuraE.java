@@ -13,13 +13,16 @@ import java.util.List;
 
 @CheckInfo(name = "Aura", type = "E")
 public final class AuraE extends Check {
+    public AuraE(PlayerData data) {
+        super(data);
+    }
 
     private int hitTicks;
     private Deque<Float> pitchSamples = Lists.newLinkedList();
     private Deque<Double> samples = Lists.newLinkedList();
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if(e.getPacketId() == PacketType.Client.LOOK || e.getPacketId() == PacketType.Client.POSITION_LOOK) {
             if (++hitTicks < 2) {
                 // Get the deltas from the rotation update

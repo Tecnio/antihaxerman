@@ -29,12 +29,13 @@ import me.tecnio.antihaxerman.checks.impl.player.badpackets.*;
 import me.tecnio.antihaxerman.checks.impl.player.invmove.InvMoveA;
 import me.tecnio.antihaxerman.checks.impl.player.nofall.NoFallA;
 import me.tecnio.antihaxerman.checks.impl.player.timer.TimerA;
+import me.tecnio.antihaxerman.playerdata.PlayerData;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class CheckManager {
+public final class CheckManager {
 
     public static final Class[] checks = new Class[]{
             AimA.class,
@@ -76,15 +77,27 @@ public class CheckManager {
             BadPacketsE.class,
     };
 
-    public static List<Check> loadChecks() {
-        List<Check> checklist = new ArrayList<>();
-        Arrays.asList(checks).forEach(check -> {
+    private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
+
+    public static void registerChecks() {
+        for (Class clazz : checks) {
             try {
-                checklist.add((Check) check.newInstance());
+                CONSTRUCTORS.add(clazz.getConstructor(PlayerData.class));
+            } catch (NoSuchMethodException exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    public static List<Check> loadChecks(PlayerData data) {
+        final List<Check> checkList = new ArrayList<>();
+        for (Constructor<?> constructor : CONSTRUCTORS) {
+            try {
+                checkList.add((Check) constructor.newInstance(data));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
-        return checklist;
+        }
+        return checkList;
     }
 }

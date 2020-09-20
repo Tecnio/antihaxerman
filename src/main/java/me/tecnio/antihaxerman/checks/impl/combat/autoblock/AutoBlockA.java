@@ -8,12 +8,15 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "AutoBlock", type = "A")
 public final class AutoBlockA extends Check {
+    public AutoBlockA(PlayerData data) {
+        super(data);
+    }
 
     private boolean attacked;
     private int ticks;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (e.getPacketId() == PacketType.Client.USE_ENTITY){
             attacked = true;
         }else if (e.getPacketId() == PacketType.Client.BLOCK_PLACE){

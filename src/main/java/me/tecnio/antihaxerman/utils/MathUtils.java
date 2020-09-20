@@ -2,7 +2,7 @@ package me.tecnio.antihaxerman.utils;
 
 import java.util.List;
 
-public class MathUtils {
+public final class MathUtils {
 
     public long GCD_OFFSET;
     public static final double EXPANDER = Math.pow(2, 24);

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class PlayerUtils {
+public final class PlayerUtils {
 
     //Credits to Jonhan
     public static boolean onGround(PlayerData player) {

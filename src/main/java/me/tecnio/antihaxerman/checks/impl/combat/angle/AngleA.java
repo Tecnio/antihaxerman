@@ -11,11 +11,14 @@ import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Angle", type = "A")
 public final class AngleA extends Check {
+    public AngleA(PlayerData data) {
+        super(data);
+    }
 
     private Entity entity;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             if (entity != null){
                 final Vector vec = entity.getLocation().clone().toVector().setY(0.0).subtract(data.getPlayer().getEyeLocation().clone().toVector().setY(0.0));

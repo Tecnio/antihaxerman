@@ -10,12 +10,15 @@ import org.bukkit.entity.Entity;
 
 @CheckInfo(name = "Aura", type = "D")
 public final class AuraD extends Check {
+    public AuraD(PlayerData data) {
+        super(data);
+    }
 
     private int ticks;
     private Entity lastTarget;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if(e.getPacketId() == PacketType.Client.USE_ENTITY) {
             final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
 

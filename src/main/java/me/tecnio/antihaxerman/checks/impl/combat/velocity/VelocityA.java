@@ -7,8 +7,12 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Velocity", type = "A")
 public final class VelocityA extends Check {
+    public VelocityA(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (isFlyingPacket(e)) {
             if (data.getVelocityTicks() == 1) {
                 final double velTaken = data.getDeltaY();

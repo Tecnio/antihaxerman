@@ -8,16 +8,17 @@ import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.Config;
 import me.tecnio.antihaxerman.playerdata.DataManager;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
+import me.tecnio.antihaxerman.utils.ChatUtils;
 import me.tecnio.antihaxerman.utils.LogUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 public abstract class Check implements Listener {
+    protected final PlayerData data;
 
     public double vl, maxVL;
     public boolean enabled, punishable;
@@ -25,7 +26,8 @@ public abstract class Check implements Listener {
 
     protected int preVL;
 
-    public Check(){
+    public Check(PlayerData data) {
+        this.data = data;
         checkName = getCheckName();
         checkType = getCheckType();
         enabled = AntiHaxerman.getInstance().getConfig().getBoolean(checkName.toLowerCase() + ".enabled");
@@ -39,10 +41,10 @@ public abstract class Check implements Listener {
 
     private String getCheckType() { return this.getClass().getAnnotation(CheckInfo.class).type(); }
 
-    public void onPacketReceive(final PacketReceiveEvent e, final PlayerData data){}
-    public void onPacketSend(final PacketSendEvent e, final PlayerData data){}
-    public void onMove(final PlayerData data){}
-    public void onAttack(final WrappedPacketInUseEntity packet, final PlayerData data){}
+    public void onPacketReceive(final PacketReceiveEvent e){}
+    public void onPacketSend(final PacketSendEvent e){}
+    public void onMove(){}
+    public void onAttack(final WrappedPacketInUseEntity packet){}
 
     protected void flag(final PlayerData data, final String information){
         assert data != null;
@@ -52,12 +54,16 @@ public abstract class Check implements Listener {
 
             data.setLegitTick(data.getTicks());
 
-            TextComponent alertMessage = new TextComponent(ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "AntiHaxerman" + ChatColor.GRAY + "] " + ChatColor.DARK_GREEN + data.getPlayer().getName() + ChatColor.WHITE + " failed " + getCheckName() + " (" + getCheckType() + ") VL: " + vl);
+            String alertText = ChatUtils.color("&aAntiHaxerman&8 » &2%player% &8failed &2%check% &8(&2%type%&8) VL: &2%vl%".replace("%player%", data.getPlayer().getName()).replace("%check%", getCheckName()).replace("%type%", getCheckType()).replace("%vl%", String.valueOf(vl)));
+
+            TextComponent alertMessage = new TextComponent(alertText);
             alertMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + data.getPlayer().getName()));
             alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7(Click to teleport)\n Info: " + information).create()));
 
-            if (Config.ENABLE_LOGGING)LogUtils.logToFile(data.getLogFile(), "[AntiHaxerman] " + data.getPlayer().getName() + " failed " + getCheckName() + " (" + getCheckType() + ") [Info: " + information + "]");
-            if (Config.LOG_TO_CONSOLE)Bukkit.getLogger().info("[AntiHaxerman] " + data.getPlayer().getName() + " failed " + getCheckName() + " (" + getCheckType() + ") [Info: " + information + "]");
+            String log = "[AntiHaxerman] " + data.getPlayer().getName() + " failed " + getCheckName() + " (" + getCheckType() + ") [Info: " + information + "]";
+
+            if (Config.ENABLE_LOGGING) LogUtils.logToFile(data.getLogFile(), log);
+            if (Config.LOG_TO_CONSOLE) Bukkit.getLogger().info(log);
 
             for (PlayerData staff : DataManager.INSTANCE.getUsers()) {
                 if (staff.isAlerts()){
@@ -71,20 +77,6 @@ public abstract class Check implements Listener {
                 Bukkit.getServer().getScheduler().runTask(AntiHaxerman.getInstance(), () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), punishCommand.replace("%player%", data.getPlayer().getName()).replace("%check%", checkName)));
             }
         }
-    }
-
-    protected void flag(PlayerData data, String information, SetBackType setBackType){
-        if (elapsed(time(), data.getLastSetBack()) > 200){
-            data.setLastSetBack(time());
-            /*
-            switch (setBackType){
-                case BACK: data.getPlayer().teleport(data.getLastLocation());break;
-                case PULLDOWN: data.getPlayer().teleport(data.getLastOnGroundLocation());break;
-                case LASTLEGIT: data.getPlayer().teleport(data.getLastLegitLocation());break;
-            }
-             */
-        }
-        flag(data, information);
     }
 
     protected long time(){ return System.nanoTime() / 1000000; }

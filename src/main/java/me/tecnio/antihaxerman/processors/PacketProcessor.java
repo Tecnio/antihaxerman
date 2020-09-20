@@ -12,7 +12,7 @@ import me.tecnio.antihaxerman.utils.PlayerUtils;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-public class PacketProcessor {
+public final class PacketProcessor {
 
     @SuppressWarnings("Deprecated")
     public static void process(PacketReceiveEvent event) {

@@ -13,8 +13,12 @@ import org.bukkit.entity.Player;
 
 @CheckInfo(name = "Reach", type = "A")
 public final class ReachA extends Check {
+    public ReachA(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (e.getPacketId() == PacketType.Client.USE_ENTITY){
             final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
 
@@ -31,7 +35,7 @@ public final class ReachA extends Check {
                 final Location eyeLoc = data.getPlayer().getEyeLocation();
 
                 final double dist = data.getEntityTracker().getPredictedLocation(attackedData.getPing()).stream().mapToDouble(vector -> vector.clone().setY(0).distance(eyeLoc.toVector().clone().setY(0)) - 0.4).min().orElse(3);
-                final double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.18 : 3.18;
+                final double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.2 : 3.2;
 
                 if (dist > maxDist){
                     if (++preVL > 2)flag(data, "hit farther than possible! dist: " + dist);

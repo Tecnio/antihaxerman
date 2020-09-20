@@ -8,8 +8,12 @@ import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Motion", type = "B")
 public final class MotionB extends Check {
+    public MotionB(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         if (!data.isInLiquid() && !data.getPlayer().isFlying() && !data.isInWeb() && data.teleportTicks() > 10) {
             final double max = 0.7 + PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
 

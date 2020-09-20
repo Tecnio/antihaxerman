@@ -8,8 +8,12 @@ import me.tecnio.antihaxerman.utils.MathUtils;
 
 @CheckInfo(name = "Aim", type = "A")
 public final class AimA extends Check {
+    public AimA(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (isRotationPacket(e)) {
             // Get the deltas from the rotation update
             final float deltaYaw = data.getDeltaYaw();

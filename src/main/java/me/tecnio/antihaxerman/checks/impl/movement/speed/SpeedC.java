@@ -9,8 +9,12 @@ import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Speed", type = "C")
 public final class SpeedC extends Check {
+    public SpeedC(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         double diff = data.getDeltaXZ() - data.getLastDeltaXZ();
         
         if (diff > getBaseSpeed(data.getPlayer())

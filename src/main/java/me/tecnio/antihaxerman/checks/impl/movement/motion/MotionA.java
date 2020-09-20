@@ -7,9 +7,13 @@ import me.tecnio.antihaxerman.utils.PlayerUtils;
 
 @CheckInfo(name = "Motion", type = "A")
 public final class MotionA extends Check {
+    public MotionA(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
-        if (!PlayerUtils.blockNearHead(data) && !data.getLocation().clone().subtract(0,0.2,0).getBlock().getType().toString().toUpperCase().contains("SLIME") && data.teleportTicks() > 10) {
+    public void onMove() {
+        if (!PlayerUtils.blockNearHead(data) && !PlayerUtils.isOnSlime(data) && data.teleportTicks() > 10) {
             if (data.getDeltaY() == -data.getLastDeltaY() && data.getDeltaY() != 0) {
                 if (++preVL > 3) {
                     flag(data, "repetitive vertical motions, m: " + data.getDeltaY());

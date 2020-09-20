@@ -8,8 +8,12 @@ import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "FastClimb", type = "B")
 public final class FastClimbB extends Check {
+    public FastClimbB(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         if (data.isOnClimbableBlock() && !data.isTakingVelocity() && !data.isOnGround() && !data.isInWeb() && !data.getPlayer().isInsideVehicle() && !data.getPlayer().isFlying()){
             double hLimit = 0.24;
             if(PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.SPEED) > 0) { hLimit *= 1 + (PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.42); }

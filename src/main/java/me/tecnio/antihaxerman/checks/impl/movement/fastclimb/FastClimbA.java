@@ -7,8 +7,12 @@ import me.tecnio.antihaxerman.utils.PlayerUtils;
 
 @CheckInfo(name = "FastClimb", type = "A")
 public final class FastClimbA extends Check {
+    public FastClimbA(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         if (data.getLocation().getY() == data.getLastLocation().getY()
                 || data.getPlayer().isFlying()
                 && data.isTakingVelocity()

@@ -24,9 +24,10 @@ import java.util.concurrent.Executors;
 
 @Getter
 @Setter
-public class PlayerData {
+public final class PlayerData {
 
-    private Player player;
+    private final Player player;
+
     private Location location, lastLocation, lastOnGroundLocation, lastLegitLocation;
     private Vector lastVel, direction;
     private double deltaXZ, deltaY, lastDeltaXZ, lastDeltaY;
@@ -44,7 +45,7 @@ public class PlayerData {
 
     public PlayerData(UUID uuid){
         this.player = Bukkit.getPlayer(uuid);
-        this.checks = CheckManager.loadChecks();
+        this.checks = CheckManager.loadChecks(this);
         executorService = Executors.newSingleThreadExecutor();
         logFile = new LogUtils.TextFile("" + uuid, "\\\\logs");
         Bukkit.getScheduler().runTaskTimerAsynchronously(AntiHaxerman.getInstance(), () -> {
@@ -86,20 +87,20 @@ public class PlayerData {
      */
 
     public void inbound(PacketReceiveEvent event){
-        executorService.execute(() -> checks.forEach(check -> check.onPacketReceive(event, this)));
+        executorService.execute(() -> checks.forEach(check -> check.onPacketReceive(event)));
         if (event.getPacketId() == PacketType.Client.USE_ENTITY)onAttack(new WrappedPacketInUseEntity(event.getNMSPacket()));
         if (event.getPacketId() == PacketType.Client.POSITION || event.getPacketId() == PacketType.Client.POSITION_LOOK || event.getPacketId() == PacketType.Client.LOOK)onMove();
     }
 
     public void outgoing(PacketSendEvent event){
-        executorService.execute(() -> checks.forEach(check -> check.onPacketSend(event, this)));
+        executorService.execute(() -> checks.forEach(check -> check.onPacketSend(event)));
     }
 
     public void onAttack(WrappedPacketInUseEntity packet){
-        executorService.execute(() -> checks.forEach(check -> check.onAttack(packet, this)));
+        executorService.execute(() -> checks.forEach(check -> check.onAttack(packet)));
     }
 
     public void onMove(){
-        executorService.execute(() -> checks.forEach(check -> check.onMove(this)));
+        executorService.execute(() -> checks.forEach(Check::onMove));
     }
 }

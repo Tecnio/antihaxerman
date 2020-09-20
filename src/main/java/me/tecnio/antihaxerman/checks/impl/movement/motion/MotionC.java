@@ -8,11 +8,14 @@ import org.bukkit.block.BlockFace;
 
 @CheckInfo(name = "Motion", type = "C")
 public final class MotionC extends Check {
+    public MotionC(PlayerData data) {
+        super(data);
+    }
 
     private double startMotion;
 
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         if (data.getAirTicks() == 1) startMotion = data.getDeltaY();
         if (!data.isUnderBlock()
                 && !PlayerUtils.isOnWeirdBlock(data)

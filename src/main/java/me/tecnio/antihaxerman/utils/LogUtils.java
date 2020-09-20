@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class LogUtils {
+public final class LogUtils {
 
     public static boolean logToFile(TextFile file, String text) {
         try {

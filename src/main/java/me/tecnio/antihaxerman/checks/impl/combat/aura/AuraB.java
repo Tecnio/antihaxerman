@@ -9,11 +9,14 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "Aura", type = "B")
 public final class AuraB extends Check {
+    public AuraB(PlayerData data) {
+        super(data);
+    }
 
     private int ticks, lastAttackedEntityID;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             ticks = 0;
         }else if (e.getPacketId() == PacketType.Client.USE_ENTITY){

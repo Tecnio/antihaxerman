@@ -9,11 +9,14 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "BadPackets", type = "D")
 public final class BadPacketsD extends Check {
+    public BadPacketsD(PlayerData data) {
+        super(data);
+    }
 
     private long armSwingTime;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if(e.getPacketId() == PacketType.Client.ARM_ANIMATION) {
             armSwingTime = time();
         } else if(e.getPacketId() == PacketType.Client.USE_ENTITY) {

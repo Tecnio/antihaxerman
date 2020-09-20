@@ -2,14 +2,17 @@ package me.tecnio.antihaxerman.checks.impl.movement.flight;
 
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
-import me.tecnio.antihaxerman.checks.SetBackType;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.PlayerUtils;
 
 @CheckInfo(name = "Flight", type = "A")
 public final class FlightA extends Check {
+    public FlightA(PlayerData data) {
+        super(data);
+    }
+
     @Override
-    public void onMove(PlayerData data) {
+    public void onMove() {
         final double predicted = (data.getLastDeltaY() - 0.08) * 0.9800000190734863;
 
         if (!data.isOnGround() && data.getAirTicks() > 6 && !data.isTakingVelocity()){
@@ -21,7 +24,7 @@ public final class FlightA extends Check {
                     && data.teleportTicks() > 10){
                 double diff = Math.abs(data.getDeltaY() - predicted);
                 if (diff > 0.001 && Math.abs(predicted) >= 0.005){
-                    flag(data, "invalid vertical movement. diff: " + diff, SetBackType.PULLDOWN);
+                    flag(data, "invalid vertical movement. diff: " + diff);
                 }
             }
         }

@@ -10,11 +10,14 @@ import org.bukkit.entity.Player;
 
 @CheckInfo(name = "Aura", type = "C")
 public final class AuraC extends Check {
+    public AuraC(PlayerData data) {
+        super(data);
+    }
 
     private int hitTicks;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (e.getPacketId() == PacketType.Client.USE_ENTITY) {
             final WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
 

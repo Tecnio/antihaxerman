@@ -8,11 +8,14 @@ import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 @CheckInfo(name = "BadPackets", type = "B")
 public final class BadPacketsB extends Check {
+    public BadPacketsB(PlayerData data) {
+        super(data);
+    }
 
     private long lastFlying;
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent e, PlayerData data) {
+    public void onPacketReceive(PacketReceiveEvent e) {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             lastFlying = time();
         }else if (e.getPacketId() == PacketType.Client.BLOCK_PLACE){
