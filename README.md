@@ -1,6 +1,6 @@
 # AntiHaxerman
 
-AntiHaxerman started out as a meme anticheat, and when it got real good I was like damn I should release this, SO I DID and now its real good and can smash thru haxers. Wreach cheatrs with AntiHaxerman :D.
+AntiHaxerman started out as a meme anticheat, and when it got real good I was like damn I should release this, SO I DID and now its real good and can smash thru haxers. Wreck cheaters with AntiHaxerman :D.
 
 Spigot: https://www.spigotmc.org/resources/83198/
 
