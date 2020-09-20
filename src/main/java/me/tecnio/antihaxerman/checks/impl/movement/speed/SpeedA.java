@@ -23,7 +23,7 @@ public final class SpeedA extends Check {
             final double prediction = data.getLastDeltaXZ() * 0.91F + (data.isSprinting() ? 0.0263 : 0.02);
             final double diff = data.getDeltaXZ() - prediction;
 
-            if (diff > 1E-12) {
+            if (diff > 1E-12 && data.getDeltaXZ() > 0.1) {
                 if (++preVL > 1) {
                     flag(data, "ignored friction at air! diff: " + diff);
                 }
