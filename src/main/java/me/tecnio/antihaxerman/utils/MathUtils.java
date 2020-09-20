@@ -56,4 +56,8 @@ public final class MathUtils {
         if (altAltDiff < diff) diff = altAltDiff;
         return diff;
     }
+
+    public static boolean isScientificNotation(double val) {
+        return Double.toString(val).contains("E");
+    }
 }

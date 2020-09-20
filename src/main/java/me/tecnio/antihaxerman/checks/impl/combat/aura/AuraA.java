@@ -1,7 +1,7 @@
 package me.tecnio.antihaxerman.checks.impl.combat.aura;
 
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import io.github.retrooper.packetevents.packet.PacketType;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;

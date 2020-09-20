@@ -12,6 +12,10 @@ public final class AimA extends Check {
         super(data);
     }
 
+    /*
+     * Skidded from https://github.com/ElevatedDev/Frequency/
+     */
+
     @Override
     public void onPacketReceive(PacketReceiveEvent e) {
         if (isRotationPacket(e)) {
@@ -54,7 +58,7 @@ public final class AimA extends Check {
                     if (++preVL > 6) {
                         flag(data, "invalid rotations.");
                     }
-                } else preVL = 0;
+                } preVL = Math.max(preVL - 2, 0);
             }
         }
     }

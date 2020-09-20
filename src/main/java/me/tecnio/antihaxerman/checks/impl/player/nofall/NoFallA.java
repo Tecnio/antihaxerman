@@ -5,7 +5,7 @@ import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.PlayerUtils;
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import io.github.retrooper.packetevents.packet.PacketType;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.flying.WrappedPacketInFlying;
 
 @CheckInfo(name = "NoFall", type = "A")

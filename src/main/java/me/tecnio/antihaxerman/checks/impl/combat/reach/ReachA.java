@@ -1,8 +1,9 @@
 package me.tecnio.antihaxerman.checks.impl.combat.reach;
 
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import io.github.retrooper.packetevents.packet.PacketType;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.useentity.WrappedPacketInUseEntity;
+import me.tecnio.antihaxerman.Config;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.DataManager;
@@ -35,7 +36,7 @@ public final class ReachA extends Check {
                 final Location eyeLoc = data.getPlayer().getEyeLocation();
 
                 final double dist = data.getEntityTracker().getPredictedLocation(attackedData.getPing()).stream().mapToDouble(vector -> vector.clone().setY(0).distance(eyeLoc.toVector().clone().setY(0)) - 0.4).min().orElse(3);
-                final double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.2 : 3.2;
+                final double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? (Config.MAX_REACH + 3.0) : Config.MAX_REACH;
 
                 if (dist > maxDist){
                     if (++preVL > 2)flag(data, "hit farther than possible! dist: " + dist);

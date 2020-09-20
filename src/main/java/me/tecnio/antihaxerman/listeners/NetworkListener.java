@@ -4,7 +4,7 @@ import io.github.retrooper.packetevents.annotations.PacketHandler;
 import io.github.retrooper.packetevents.event.PacketListener;
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
-import io.github.retrooper.packetevents.packet.PacketType;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import me.tecnio.antihaxerman.playerdata.DataManager;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.processors.PacketProcessor;

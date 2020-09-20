@@ -24,7 +24,7 @@ public final class VelocityA extends Check {
                         && !data.isOnClimbableBlock()
                         && data.underBlockTicks() > 20
                         && !data.isNearWall()) {
-                    if (++preVL > 2) {
+                    if (++preVL > 1) {
                         flag(data, "took less velocity than expected. p: " + percentage);
                     }
                 }else preVL = 0;

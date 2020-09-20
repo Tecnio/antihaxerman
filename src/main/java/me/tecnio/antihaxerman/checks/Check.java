@@ -2,7 +2,7 @@ package me.tecnio.antihaxerman.checks;
 
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
-import io.github.retrooper.packetevents.packet.PacketType;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.Config;
@@ -74,7 +74,7 @@ public abstract class Check implements Listener {
             }
 
             if (punishable && vl >= maxVL){
-                Bukkit.getServer().getScheduler().runTask(AntiHaxerman.getInstance(), () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), punishCommand.replace("%player%", data.getPlayer().getName()).replace("%check%", checkName)));
+                Bukkit.getServer().getScheduler().runTask(AntiHaxerman.getInstance(), () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), punishCommand.replace("%player%", data.getPlayer().getName()).replace("%check%", checkName).replace("%type%", checkType).replace("%vl%", String.valueOf(vl))));
             }
         }
     }

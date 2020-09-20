@@ -19,11 +19,13 @@ public final class FlightB extends Check {
                 && data.getAirTicks() > limit
                 && !data.getPlayer().isFlying()
                 && data.liquidTicks() > 10
+                && !PlayerUtils.onGround(data)
                 && !data.isOnClimbableBlock()
                 && data.getPlayer().getVelocity().getY() < -0.075
                 && !data.isTakingVelocity()
                 && data.getPlayer().getVehicle() == null
-                && data.teleportTicks() > 20) {
+                && data.teleportTicks() > 20
+                && data.getPlayer().getLocation().getBlock().getType().toString().equalsIgnoreCase("AIR")) {
             flag(data, "y motion higher than 0, m: " + data.getDeltaY() + ", " + data.getPlayer().getLocation().getBlock().getType().toString());
         }
     }

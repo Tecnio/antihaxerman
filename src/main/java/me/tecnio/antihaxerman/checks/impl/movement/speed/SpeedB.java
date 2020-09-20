@@ -25,7 +25,7 @@ public final class SpeedB extends Check {
                 && !data.getPlayer().isInsideVehicle()
                 && !data.getPlayer().isFlying()
                 && data.teleportTicks() > 10) {
-            if (++preVL > 3) {
+            if (++preVL > 5) {
                 flag(data, "breached limit, s: " + data.getDeltaXZ());
             }
         } else preVL *= 0.75;

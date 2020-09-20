@@ -1,5 +1,6 @@
 package me.tecnio.antihaxerman.checks.impl.movement.fastclimb;
 
+import me.tecnio.antihaxerman.Config;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
@@ -22,7 +23,8 @@ public final class FastClimbA extends Check {
                 || data.getPlayer().isInsideVehicle()) {
             return;
         }
-        if (Math.abs(data.getLocation().getY() - data.getLastLocation().getY()) >= 0.12) {
+
+        if (((float)data.getDeltaY()) > Config.CLIMB_SPEED) {
             if (++preVL > 3) {
                 flag(data, "going up a ladder faster than possible. s: " + data.getDeltaY());
             }

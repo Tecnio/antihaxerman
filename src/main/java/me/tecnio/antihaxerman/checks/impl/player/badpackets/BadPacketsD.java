@@ -1,7 +1,7 @@
 package me.tecnio.antihaxerman.checks.impl.player.badpackets;
 
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import io.github.retrooper.packetevents.packet.PacketType;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;

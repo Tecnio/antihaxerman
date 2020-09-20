@@ -1,6 +1,9 @@
 package me.tecnio.antihaxerman.checks;
 
 import me.tecnio.antihaxerman.checks.impl.combat.aim.AimA;
+import me.tecnio.antihaxerman.checks.impl.combat.aim.AimB;
+import me.tecnio.antihaxerman.checks.impl.combat.aim.AimC;
+import me.tecnio.antihaxerman.checks.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.checks.impl.combat.angle.AngleA;
 import me.tecnio.antihaxerman.checks.impl.combat.aura.*;
 import me.tecnio.antihaxerman.checks.impl.combat.autoblock.AutoBlockA;
@@ -29,6 +32,7 @@ import me.tecnio.antihaxerman.checks.impl.player.badpackets.*;
 import me.tecnio.antihaxerman.checks.impl.player.invmove.InvMoveA;
 import me.tecnio.antihaxerman.checks.impl.player.nofall.NoFallA;
 import me.tecnio.antihaxerman.checks.impl.player.timer.TimerA;
+import me.tecnio.antihaxerman.checks.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 
 import java.lang.reflect.Constructor;
@@ -39,6 +43,9 @@ public final class CheckManager {
 
     public static final Class[] checks = new Class[]{
             AimA.class,
+            AimB.class,
+            AimC.class,
+            AimD.class,
             AuraA.class,
             AuraB.class,
             AuraC.class,
@@ -69,6 +76,7 @@ public final class CheckManager {
             ScaffoldB.class,
             InvalidA.class,
             TimerA.class,
+            TimerB.class,
             NoFallA.class,
             BadPacketsA.class,
             BadPacketsB.class,
