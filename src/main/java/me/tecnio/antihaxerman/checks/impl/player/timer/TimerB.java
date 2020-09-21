@@ -1,6 +1,7 @@
 package me.tecnio.antihaxerman.checks.impl.player.timer;
 
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
+import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import io.github.retrooper.packetevents.packettype.PacketType;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
@@ -27,8 +28,6 @@ public final class TimerB extends Check {
             final long time = time();
             final long delay = time - lastTime;
 
-            if (data.teleportTicks() == 1) samples.clear();
-
             samples.add(delay);
             if (samples.size() >= 20) {
                 double timerAverage = samples.parallelStream().mapToDouble(value -> value).average().orElse(0.0D);
@@ -42,6 +41,13 @@ public final class TimerB extends Check {
             }
             lastTime = time;
         } else if (e.getPacketId() == PacketType.Client.STEER_VEHICLE) {
+            samples.clear();
+        }
+    }
+
+    @Override
+    public void onPacketSend(PacketSendEvent e) {
+        if (e.getPacketId() == PacketType.Server.POSITION) {
             samples.clear();
         }
     }

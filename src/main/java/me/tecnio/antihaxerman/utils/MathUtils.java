@@ -11,7 +11,6 @@ public final class MathUtils {
         return (previous <= 16384L) ? current : getGcd(previous, current % previous);
     }
 
-
     public static double getStandardDeviation(long[] numberArray) {
         double sum = 0.0, deviation = 0.0;
         int length = numberArray.length;

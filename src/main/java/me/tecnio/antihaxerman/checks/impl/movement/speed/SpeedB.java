@@ -19,7 +19,7 @@ public final class SpeedB extends Check {
 
         if (elapsed(data.getTicks(), data.getIceTicks()) < 40 || elapsed(data.getTicks(), data.getSlimeTicks()) < 40) limit += 0.34;
         if (elapsed(data.getTicks(), data.getUnderBlockTicks()) < 40) limit += 0.91;
-        if (data.isTakingVelocity()) limit += Math.hypot(Math.abs(data.getLastVel().getX()), Math.abs(data.getLastVel().getZ()));;
+        if (data.isTakingVelocity()) limit += Math.hypot(Math.abs(data.getLastVelocity().getX()), Math.abs(data.getLastVelocity().getZ()));;
 
         if (data.getDeltaXZ() > limit
                 && !data.getPlayer().isInsideVehicle()

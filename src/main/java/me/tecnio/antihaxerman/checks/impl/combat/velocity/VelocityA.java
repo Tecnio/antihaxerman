@@ -16,7 +16,7 @@ public final class VelocityA extends Check {
         if (isFlyingPacket(e)) {
             if (data.getVelocityTicks() == 1) {
                 final double velTaken = data.getDeltaY();
-                final double velExpected = data.getLastVel().getY() * 0.99F;
+                final double velExpected = data.getLastVelocity().getY() * 0.998F;
                 final double percentage = (velTaken * 100) / velExpected;
 
                 if (velTaken <= velExpected

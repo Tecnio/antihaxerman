@@ -20,7 +20,7 @@ public final class VelocityProcessor {
 
             PlayerData data = DataManager.INSTANCE.getUser(e.getPlayer().getUniqueId());
             if (event.getEntity().equals(data.getPlayer())) {
-                data.setLastVel(new Vector(event.getVelocityX(), event.getVelocityY(), event.getVelocityZ()));
+                data.setLastVelocity(new Vector(event.getVelocityX(), event.getVelocityY(), event.getVelocityZ()));
 
                 data.setVerifyingVelocity(true);
 
@@ -38,7 +38,7 @@ public final class VelocityProcessor {
             if (data.isVerifyingVelocity() && wrappedPacketInTransaction.getActionNumber() == data.getVelocityID()){
                 data.setVelTick(data.getTicks());
                 data.setVerifyingVelocity(false);
-                data.setMaxVelTicks((int) (((data.getLastVel().getX() + data.getLastVel().getZ()) / 2D + 2D) * 15D));
+                data.setMaxVelTicks((int) (((data.getLastVelocity().getX() + data.getLastVelocity().getZ()) / 2D + 2D) * 15D));
             }
         }else if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())) {
             PlayerData data = DataManager.INSTANCE.getUser(e.getPlayer().getUniqueId());

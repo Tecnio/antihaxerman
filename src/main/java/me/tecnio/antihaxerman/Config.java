@@ -19,7 +19,6 @@ public final class Config {
         MIN_TIMER = AntiHaxerman.getInstance().getConfig().getDouble("check-settings.min-timer");
         CLIMB_SPEED = (float) AntiHaxerman.getInstance().getConfig().getDouble("check-settings.climb-speed");
 
-
         ENABLE_ALERTS_ON_JOIN = AntiHaxerman.getInstance().getConfig().getBoolean("enable-alerts-on-join");
 
         LOG_TO_CONSOLE = AntiHaxerman.getInstance().getConfig().getBoolean("logging.log-to-console");

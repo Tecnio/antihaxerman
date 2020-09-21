@@ -19,7 +19,7 @@ public final class SpeedA extends Check {
                 && !data.isTakingVelocity()
                 && !PlayerUtils.isOnWeirdBlock(data)
                 && !data.isUnderBlock()
-                && data.teleportTicks() > 5) {
+                && data.teleportTicks() > 20) {
             final double prediction = data.getLastDeltaXZ() * 0.91F + (data.isSprinting() ? 0.0263 : 0.02);
             final double diff = data.getDeltaXZ() - prediction;
 

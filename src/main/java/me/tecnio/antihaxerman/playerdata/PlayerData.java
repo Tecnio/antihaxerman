@@ -29,13 +29,13 @@ public final class PlayerData {
     private final Player player;
 
     private Location location, lastLocation, lastOnGroundLocation, lastLegitLocation;
-    private Vector lastVel, direction;
+    private Vector lastVelocity, direction;
     private double deltaXZ, deltaY, lastDeltaXZ, lastDeltaY;
     private float deltaYaw, deltaPitch, lastDeltaPitch, lastDeltaYaw, yaw, pitch;
     private short velocityID;
     private int ticks, airTicks, velTick, maxVelTicks, velocityTicks, iceTicks, legitTick, slimeTicks, liquidTicks, underBlockTicks, sprintingTicks, teleportTicks, groundTicks, totalFlags, cps;
     private long lastSetBack = System.nanoTime() / 1000000, lastShoot;
-    private boolean isSprinting, isSneaking, onGround, serverOnGround, alerts, verifyingVelocity, digging;
+    private boolean isSprinting, isSneaking, blocking, onGround, serverOnGround, alerts, verifyingVelocity, digging;
     private List<Check> checks;
 
     private Player lastAttackedPlayer;

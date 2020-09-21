@@ -24,6 +24,8 @@ public final class PacketProcessor {
                 data.setTicks(data.getTicks() + 1);
 
                 data.setServerOnGround(PlayerUtils.onGround(data));
+                if (!data.getPlayer().getItemInHand().toString().toLowerCase().contains("sword")) data.setBlocking(false);
+
                 data.setOnGround(wrappedPacketInFlying.isOnGround());
                 if (!data.getPlayer().isOnGround()) {
                     data.setAirTicks(data.getAirTicks() + 1);
@@ -51,14 +53,13 @@ public final class PacketProcessor {
                     data.setYaw(wrappedPacketInFlying.getYaw());
                     data.setPitch(wrappedPacketInFlying.getPitch());
 
-                    data.setDirection(new Vector(-Math.sin(data.getPlayer().getEyeLocation().getYaw() * 3.1415927F / 180.0F) * (float) 1 * 0.5F, 0, Math.cos(data.getPlayer().getEyeLocation().getYaw() * 3.1415927F / 180.0F) * (float) 1 * 0.5F));
+                    data.setDirection(new Vector(-Math.sin(data.getPlayer().getEyeLocation().getYaw() * Math.PI / 180.0F) * (float) 1 * 0.5F, 0, Math.cos(data.getPlayer().getEyeLocation().getYaw() * Math.PI / 180.0F) * (float) 1 * 0.5F));
                 }
 
                 if (PlayerUtils.isOnIce(data)) data.setIceTicks(data.getTicks());
                 if (PlayerUtils.isOnSlime(data)) data.setSlimeTicks(data.getTicks());
                 if (PlayerUtils.blockNearHead(data)) data.setUnderBlockTicks(data.getTicks());
                 if (PlayerUtils.inLiquid(data)) data.setLiquidTicks(data.getTicks());
-                if (data.isSprinting()) data.setSprintingTicks(data.getTicks());
 
                 if (data.getTicks() - data.getLegitTick() == 0)data.setLastLegitLocation(data.getLocation());
             } else if (event.getPacketId() == PacketType.Client.ENTITY_ACTION) {
@@ -75,6 +76,16 @@ public final class PacketProcessor {
                 else if (wrappedPacketInBlockDig.getDigType() == WrappedPacketInBlockDig.PlayerDigType.ABORT_DESTROY_BLOCK
                         || wrappedPacketInBlockDig.getDigType() == WrappedPacketInBlockDig.PlayerDigType.STOP_DESTROY_BLOCK){
                     data.setDigging(false);
+                }
+
+                if (wrappedPacketInBlockDig.getDigType() == WrappedPacketInBlockDig.PlayerDigType.RELEASE_USE_ITEM) {
+                    if (data.getPlayer().getItemInHand().toString().toLowerCase().contains("sword")) {
+                        data.setBlocking(false);
+                    }
+                }
+            }else if (event.getPacketId() == PacketType.Client.BLOCK_PLACE) {
+                if (data.getPlayer().getItemInHand().toString().toLowerCase().contains("sword")) {
+                    data.setBlocking(true);
                 }
             }
         }
