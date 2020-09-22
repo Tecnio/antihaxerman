@@ -3,6 +3,7 @@ package me.tecnio.antihaxerman.checks.impl.player.timer;
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import io.github.retrooper.packetevents.packettype.PacketType;
+import me.tecnio.antihaxerman.Config;
 import me.tecnio.antihaxerman.checks.Check;
 import me.tecnio.antihaxerman.checks.CheckInfo;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
@@ -33,7 +34,7 @@ public final class TimerB extends Check {
                 double timerAverage = samples.parallelStream().mapToDouble(value -> value).average().orElse(0.0D);
                 double timerSpeed = 50 / timerAverage;
 
-                if (timerSpeed > 1.075 || timerSpeed < 0.925) {
+                if (timerSpeed > Config.MAX_TIMER || timerSpeed < Config.MIN_TIMER) {
                     flag(data, "gamespeed changed. gs: " + timerSpeed);
                 } else preVL = 0;
 

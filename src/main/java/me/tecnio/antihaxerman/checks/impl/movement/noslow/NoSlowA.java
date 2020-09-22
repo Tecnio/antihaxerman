@@ -18,7 +18,7 @@ public final class NoSlowA extends Check {
     public void onBowShoot(EntityShootBowEvent event){
         if (event.getEntity() instanceof Player){
             final PlayerData data = DataManager.INSTANCE.getUser(event.getEntity().getUniqueId());
-            if (!data.getPlayer().isInsideVehicle() && data.getSprintingTicks() > 5 && !data.getPlayer().isFlying() && data.isOnGround()){
+            if (!data.getPlayer().isInsideVehicle() && data.getSprintingTicks() > 4 && !data.getPlayer().isFlying() && data.isOnGround()){
                 flag(data, "sprinting while shooting a bow!");
             }
         }

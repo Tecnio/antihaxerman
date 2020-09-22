@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class EntityTracker {
-    public EvictingList<CustomLocation> tracker = new EvictingList<>(20);
+    public EvictingList<CustomLocation> tracker = new EvictingList<>(40);
 
     public List<Vector> getPredictedLocation(long time) {
         List<CustomLocation> locs = new ArrayList<>();
