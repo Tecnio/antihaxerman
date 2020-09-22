@@ -22,7 +22,7 @@ public final class FlightA extends Check {
                     && data.getPlayer().getVelocity().getY() < -0.075D
                     && !data.getPlayer().isInsideVehicle()
                     && data.teleportTicks() > 10){
-                double diff = Math.abs(data.getDeltaY() - predicted);
+                final double diff = Math.abs(data.getDeltaY() - predicted);
                 if (diff > 0.001 && Math.abs(predicted) >= 0.005){
                     flag(data, "invalid vertical movement. diff: " + diff);
                 }
