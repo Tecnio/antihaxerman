@@ -27,7 +27,7 @@ public final class AuraE extends Check {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent e) {
-        if(e.getPacketId() == PacketType.Client.LOOK || e.getPacketId() == PacketType.Client.POSITION_LOOK) {
+        if(isRotationPacket(e)) {
             if (++hitTicks < 2) {
                 // Get the deltas from the rotation update
                 final float deltaYaw = data.getDeltaYaw();
@@ -70,7 +70,7 @@ public final class AuraE extends Check {
                         final int combinedDuplicates = duplicates + pitchDuplicates;
 
                         if(Double.isNaN(deviation) && combinedDuplicates <= 7) {
-                            if (++preVL > 2) {
+                            if (++preVL > 1) {
                                 flag(data, "LiquidBounce Killaura (or similar)");
                             }
                         }else preVL = 0;

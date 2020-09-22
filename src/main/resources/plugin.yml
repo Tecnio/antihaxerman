@@ -1,5 +1,5 @@
 name: AntiHaxerman
-version: ${project.version}
+version: 1.0-PRE
 author: Tecnio
 main: me.tecnio.antihaxerman.AntiHaxerman
 load: STARTUP
@@ -9,4 +9,4 @@ commands:
     description: Base command for AntiHaxerman.
     usage: /<command>
     permission: antihaxerman.command
-    permission-message: "No perms."
+    permission-message: "No permission."

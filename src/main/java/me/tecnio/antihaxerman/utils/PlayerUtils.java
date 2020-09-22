@@ -144,4 +144,12 @@ public final class PlayerUtils {
         }
         return 0;
     }
+
+    public static float getBaseSpeed(Player player) {
+        return 0.34f + (PlayerUtils.getPotionEffectLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
+    }
+
+    public static float getBaseSpeed(Player player, float base) {
+        return base + (PlayerUtils.getPotionEffectLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
+    }
 }

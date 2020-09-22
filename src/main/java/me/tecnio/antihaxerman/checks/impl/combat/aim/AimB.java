@@ -25,13 +25,13 @@ public final class AimB extends Check {
                 if (++yawBuffer > 4) {
                     flag(data, "invalid yaw rotations. sn: true, dYaw: " + data.getDeltaYaw());
                 }
-            }else yawBuffer = Math.max(preVL - 2, 0);
+            }else yawBuffer = Math.max(yawBuffer - 2, 0);
 
             if (MathUtils.isScientificNotation(data.getDeltaPitch()) && data.getDeltaPitch() > 0.5) {
                 if (++pitchBuffer > 4) {
                     flag(data, "invalid yaw rotations. sn: true, dYaw: " + data.getDeltaYaw());
                 }
-            }else pitchBuffer = Math.max(preVL - 2, 0);
+            }else pitchBuffer = Math.max(pitchBuffer - 2, 0);
         }
     }
 }

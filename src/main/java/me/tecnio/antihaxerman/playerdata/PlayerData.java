@@ -81,6 +81,8 @@ public final class PlayerData {
 
     public int liquidTicks() { return Math.abs(ticks - liquidTicks); }
 
+    public int sprintingTicks() { return Math.abs(ticks - sprintingTicks); }
+
 
     /*
     PacketShit

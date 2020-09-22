@@ -22,6 +22,7 @@ public final class PacketProcessor {
                 WrappedPacketInFlying wrappedPacketInFlying = new WrappedPacketInFlying(event.getNMSPacket());
 
                 data.setTicks(data.getTicks() + 1);
+                data.setSprintingTicks(data.getTicks());
 
                 data.setServerOnGround(PlayerUtils.onGround(data));
                 if (!data.getPlayer().getItemInHand().toString().toLowerCase().contains("sword")) data.setBlocking(false);

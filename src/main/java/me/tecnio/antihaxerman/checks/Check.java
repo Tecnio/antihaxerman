@@ -15,6 +15,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 public abstract class Check implements Listener {
@@ -24,7 +25,7 @@ public abstract class Check implements Listener {
     public boolean enabled, punishable;
     public String checkName, checkType, punishCommand;
 
-    protected int preVL;
+    protected double preVL;
 
     public Check(PlayerData data) {
         this.data = data;
@@ -82,8 +83,8 @@ public abstract class Check implements Listener {
     protected long time(){ return System.nanoTime() / 1000000; }
     protected long elapsed(long num1, long num2){ return num1 - num2; }
     protected double elapsed(double num1, double num2){ return num1 - num2; }
-    protected void Debug(Object object) { Bukkit.broadcastMessage(String.valueOf(object)); }
-    protected void debug(Object object) { Bukkit.broadcastMessage(String.valueOf(object)); }
+    protected void Debug(Object object) { Bukkit.broadcastMessage(ChatUtils.color("&aAH Debug&8 » " + ChatColor.RESET + object)); }
+    protected void debug(Object object) { Bukkit.broadcastMessage(ChatUtils.color("&aAH Debug&8 » " + ChatColor.RESET + object)); }
     protected boolean isFlyingPacket(PacketReceiveEvent event) { return PacketType.Client.Util.isInstanceOfFlying(event.getPacketId()); }
     protected boolean isPositionPacket(PacketReceiveEvent event) { return event.getPacketId() == PacketType.Client.POSITION || event.getPacketId() == PacketType.Client.POSITION_LOOK; }
     protected boolean isRotationPacket(PacketReceiveEvent event) { return event.getPacketId() == PacketType.Client.LOOK || event.getPacketId() == PacketType.Client.POSITION_LOOK; }

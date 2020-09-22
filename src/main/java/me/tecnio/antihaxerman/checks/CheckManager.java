@@ -28,6 +28,7 @@ import me.tecnio.antihaxerman.checks.impl.movement.scaffold.ScaffoldB;
 import me.tecnio.antihaxerman.checks.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.checks.impl.movement.speed.SpeedB;
 import me.tecnio.antihaxerman.checks.impl.movement.speed.SpeedC;
+import me.tecnio.antihaxerman.checks.impl.movement.speed.SpeedD;
 import me.tecnio.antihaxerman.checks.impl.movement.sprint.SprintA;
 import me.tecnio.antihaxerman.checks.impl.player.badpackets.*;
 import me.tecnio.antihaxerman.checks.impl.player.invmove.InvMoveA;
@@ -62,6 +63,7 @@ public final class CheckManager {
             SpeedA.class,
             SpeedB.class,
             SpeedC.class,
+            SpeedD.class,
             FlightA.class,
             FlightB.class,
             FastClimbA.class,
@@ -85,6 +87,7 @@ public final class CheckManager {
             BadPacketsC.class,
             BadPacketsD.class,
             BadPacketsE.class,
+            BadPacketsF.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
