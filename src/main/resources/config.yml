@@ -19,13 +19,13 @@ logging:
 
 # Configure check values and limits here.
 check-settings:
-  #AutoClicker
+  # AutoClicker
   max-cps: 20
-  #Reach
+  # Reach
   max-reach: 3.2
-  #FastClimb
+  # FastClimb
   climb-speed: 0.1176
-  #Timer
+  # Timer
   lowest-deviation: 710
   deviation-diff-limit: 20
   max-timer: 1.075
