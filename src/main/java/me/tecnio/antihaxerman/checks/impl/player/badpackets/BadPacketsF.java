@@ -16,9 +16,9 @@ public class BadPacketsF extends Check {
         if (PlayerUtils.isOnSlime(data))return;
 
         if (data.getAirTicks() == 1 && data.getGroundTicks() > 0 && data.getDeltaY() == 0) {
-            if (++preVL > 3) {
+            if (++buffer > 3) {
                 flag(data, "");
             }
-        }else preVL = Math.max(0, preVL - 0.25);
+        }else buffer = Math.max(0, buffer - 0.25);
     }
 }

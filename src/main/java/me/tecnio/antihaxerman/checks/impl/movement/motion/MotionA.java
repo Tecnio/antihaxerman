@@ -15,10 +15,10 @@ public final class MotionA extends Check {
     public void onMove() {
         if (!PlayerUtils.blockNearHead(data) && !PlayerUtils.isOnSlime(data) && data.teleportTicks() > 10) {
             if (data.getDeltaY() == -data.getLastDeltaY() && data.getDeltaY() != 0) {
-                if (++preVL > 3) {
+                if (++buffer > 3) {
                     flag(data, "repetitive vertical motions, m: " + data.getDeltaY());
                 }
-            } else preVL = 0;
+            } else buffer = 0;
         }
     }
 }

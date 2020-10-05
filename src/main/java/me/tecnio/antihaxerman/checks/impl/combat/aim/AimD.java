@@ -22,10 +22,10 @@ public final class AimD extends Check {
 
             if (data.getDeltaYaw() != 0.0 && data.getLastDeltaYaw() != 0.0 && data.teleportTicks() > 10) {
                 if (yawAccel == 0.0) {
-                    if (++preVL > 8) {
+                    if (++buffer > 8) {
                         flag(data, "improbable yaw acceleration for long time. yawAccel: " + yawAccel);
                     }
-                }else preVL = Math.max(preVL - 1, 0);
+                }else buffer = Math.max(buffer - 1, 0);
             }
         }
     }

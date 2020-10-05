@@ -28,10 +28,10 @@ public final class AuraC extends Check {
                 final double accel = Math.abs(data.getDeltaXZ() - data.getLastDeltaXZ());
 
                 if (accel < 0.027) {
-                    if (++preVL > 5) {
+                    if (++buffer > 5) {
                         flag(data, "keepsprint. accel: " + accel);
                     }
-                } else preVL = 0;
+                } else buffer = 0;
             }
         }
     }

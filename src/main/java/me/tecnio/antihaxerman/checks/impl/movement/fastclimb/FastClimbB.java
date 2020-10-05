@@ -19,11 +19,11 @@ public final class FastClimbB extends Check {
             if(PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.SPEED) > 0) { hLimit *= 1 + (PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.42); }
             if(data.getPlayer().getWalkSpeed() > 0.2f) { hLimit *= 1 + ((data.getPlayer().getWalkSpeed() / 0.2f) * 0.39); }
             if(data.getDeltaXZ() > hLimit) {
-                if(preVL++ >= 2) {
+                if(buffer++ >= 2) {
                     flag(data, "moving faster than possible horizontally on a climbable");
-                    preVL = 0;
+                    buffer = 0;
                 }
-            } else preVL = Math.max(0, preVL--);
+            } else buffer = Math.max(0, buffer--);
         }
     }
 }

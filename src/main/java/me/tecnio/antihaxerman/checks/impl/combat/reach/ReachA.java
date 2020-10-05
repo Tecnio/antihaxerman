@@ -18,24 +18,21 @@ public final class ReachA extends Check {
 
     @Override
     public void onAttack(WrappedPacketInUseEntity packet) {
-        if (packet.getEntity() instanceof Player)data.setLastAttackedPlayer((Player) packet.getEntity());
-
         if (packet.getEntity() instanceof Player
                 && packet.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK
                 && !packet.getEntity().hasMetadata("NPC")
                 && data.getEntityTracker().tracker != null
                 && data.getEntityTracker().tracker.size() > 0){
-
             final PlayerData attackedData = DataManager.INSTANCE.getUser(packet.getEntity().getUniqueId());
 
             final Location eyeLoc = data.getPlayer().getEyeLocation();
 
-            final double dist = data.getEntityTracker().getPredictedLocation(attackedData.getPing()).stream().mapToDouble(vector -> vector.clone().setY(0).distance(eyeLoc.toVector().clone().setY(0)) - 0.4).min().orElse(3);
+            final double dist = data.getEntityTracker().getPredictedLocation(attackedData.getTransactionPing()).stream().mapToDouble(vector -> vector.clone().setY(0).distance(eyeLoc.toVector().clone().setY(0)) - 0.4).min().orElse(3);
             final double maxDist = data.getPlayer().getGameMode() == GameMode.CREATIVE ? (Config.MAX_REACH + 3.0) : Config.MAX_REACH;
 
             if (dist > maxDist){
-                if (++preVL > 2)flag(data, "hit farther than possible! dist: " + dist);
-            }else preVL = Math.max(0, preVL - 1);
+                if (++buffer > 2)flag(data, "hit farther than possible! dist: " + dist);
+            }else buffer = Math.max(0, buffer - 1);
         }
     }
 }

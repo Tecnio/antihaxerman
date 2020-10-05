@@ -1,10 +1,13 @@
 package me.tecnio.antihaxerman.processors;
 
+import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.blockdig.WrappedPacketInBlockDig;
 import io.github.retrooper.packetevents.packetwrappers.in.entityaction.WrappedPacketInEntityAction;
 import io.github.retrooper.packetevents.packetwrappers.in.flying.WrappedPacketInFlying;
+import io.github.retrooper.packetevents.packetwrappers.in.transaction.WrappedPacketInTransaction;
+import io.github.retrooper.packetevents.packetwrappers.out.transaction.WrappedPacketOutTransaction;
 import me.tecnio.antihaxerman.playerdata.DataManager;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 import me.tecnio.antihaxerman.utils.MathUtils;
@@ -88,6 +91,21 @@ public final class PacketProcessor {
                 if (data.getPlayer().getItemInHand().toString().toLowerCase().contains("sword")) {
                     data.setBlocking(true);
                 }
+            }else if (event.getPacketId() == PacketType.Client.TRANSACTION) {
+                final WrappedPacketInTransaction wrappedPacketInTransaction = new WrappedPacketInTransaction(event.getNMSPacket());
+
+                if (wrappedPacketInTransaction.getActionNumber() == data.getTransPingID()) {
+                    data.setTransactionPing((int) Math.abs(data.getTransPingSent() - System.currentTimeMillis()));
+
+                    int id = data.getRandom().nextInt(32766);
+                    id = id != data.getVelocityID() ? id : id + 1;
+
+                    data.setTransPingID((short) id);
+                    PacketEvents.getAPI().getPlayerUtils().sendPacket(data.getPlayer(), new WrappedPacketOutTransaction(0, data.getTransPingID(), false));
+                    data.setTransPingSent(System.currentTimeMillis());
+                }
+            }else if (event.getPacketId() == PacketType.Client.USE_ENTITY) {
+                data.setAttackTicks(data.getTicks());
             }
         }
     }

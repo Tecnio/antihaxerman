@@ -27,10 +27,10 @@ public final class AuraD extends Check {
 
                 if(target != lastTarget) {
                     if((data.getDeltaYaw() == 0.0 && ticks <= 5) || (data.getDeltaYaw() > 5 && ticks < 2)) {
-                        if(++preVL > 1) {
+                        if(++buffer > 1) {
                             flag(data, "rot = " + data.getDeltaYaw() + ", ticks = " + ticks);
                         }
-                    }else preVL = 0;
+                    }else buffer = 0;
                 }
 
                 ticks = 0;

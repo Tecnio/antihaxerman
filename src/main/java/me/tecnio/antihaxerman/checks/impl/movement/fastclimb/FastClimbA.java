@@ -25,9 +25,9 @@ public final class FastClimbA extends Check {
         }
 
         if (((float)data.getDeltaY()) > Config.CLIMB_SPEED) {
-            if (++preVL > 3) {
+            if (++buffer > 3) {
                 flag(data, "going up a ladder faster than possible. s: " + data.getDeltaY());
             }
-        } else preVL = 0;
+        } else buffer = 0;
     }
 }

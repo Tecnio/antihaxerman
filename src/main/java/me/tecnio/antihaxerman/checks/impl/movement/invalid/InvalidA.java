@@ -14,11 +14,11 @@ public final class InvalidA extends Check {
     public void onMove() {
         if (data.isOnClimbableBlock() && !data.isTakingVelocity() && !data.isOnGround() && !data.isInWeb() && !data.getPlayer().isInsideVehicle() && !data.getPlayer().isFlying()){
             if(data.getDeltaY() < 0 && data.isSneaking()) {
-                if(preVL++ >= 3) {
+                if(buffer++ >= 3) {
                     flag(data, "moving downwards while sneaking on a climbable");
-                    preVL = 0;
+                    buffer = 0;
                 }
-            } else preVL = Math.max(0, preVL--);
+            } else buffer = Math.max(0, buffer--);
         }
     }
 }

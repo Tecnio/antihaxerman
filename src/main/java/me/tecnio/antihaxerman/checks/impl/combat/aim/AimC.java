@@ -19,10 +19,10 @@ public final class AimC extends Check {
     public void onPacketReceive(PacketReceiveEvent e) {
         if (isRotationPacket(e)) {
             if (data.getDeltaYaw() % .25 == 0 && data.getDeltaYaw() > 0) {
-                if (++preVL > 2) {
+                if (++buffer > 2) {
                     flag(data, "invalid yaw.");
                 }
-            }else preVL = 0;
+            }else buffer = 0;
         }
     }
 }

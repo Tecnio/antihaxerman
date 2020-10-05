@@ -25,8 +25,8 @@ public final class BadPacketsD extends Check {
             if(packet.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
                 long attackTime = time();
                 long diff = armSwingTime - attackTime;
-                if(diff < -100) { if (++preVL > 2){ flag(data, "noswing, delay: " + diff); }
-                }else preVL = 0;
+                if(diff < -200) { if (++buffer > 2){ flag(data, "noswing, delay: " + diff); }
+                }else buffer = 0;
             }
         }
     }

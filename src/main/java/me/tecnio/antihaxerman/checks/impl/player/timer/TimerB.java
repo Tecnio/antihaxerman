@@ -31,12 +31,14 @@ public final class TimerB extends Check {
 
             samples.add(delay);
             if (samples.size() >= 20) {
-                double timerAverage = samples.parallelStream().mapToDouble(value -> value).average().orElse(0.0D);
-                double timerSpeed = 50 / timerAverage;
+                final double timerAverage = samples.parallelStream().mapToDouble(value -> value).average().orElse(0.0D);
+                final double timerSpeed = 50 / timerAverage;
 
-                if (timerSpeed > Config.MAX_TIMER || timerSpeed < Config.MIN_TIMER) {
-                    flag(data, "gamespeed changed. gs: " + timerSpeed);
-                } else preVL = 0;
+                if (data.teleportTicks() > 20) {
+                    if (timerSpeed > Config.MAX_TIMER || timerSpeed < Config.MIN_TIMER) {
+                        flag(data, "gamespeed changed. gs: " + timerSpeed);
+                    }
+                }
 
                 samples.clear();
             }

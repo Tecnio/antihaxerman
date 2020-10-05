@@ -24,10 +24,10 @@ public final class VelocityA extends Check {
                         && !data.isOnClimbableBlock()
                         && data.underBlockTicks() > 20
                         && !data.isNearWall()) {
-                    if (++preVL > 1) {
+                    if (++buffer > 1) {
                         flag(data, "took less velocity than expected. p: " + percentage);
                     }
-                }else preVL = 0;
+                }else buffer = 0;
             }
         }
     }

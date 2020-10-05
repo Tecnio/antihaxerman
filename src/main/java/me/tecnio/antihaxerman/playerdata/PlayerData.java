@@ -5,6 +5,7 @@ import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.useentity.WrappedPacketInUseEntity;
+import io.github.retrooper.packetevents.packetwrappers.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,27 +34,35 @@ public final class PlayerData {
     private Vector lastVelocity, direction;
     private double deltaXZ, deltaY, lastDeltaXZ, lastDeltaY;
     private float deltaYaw, deltaPitch, lastDeltaPitch, lastDeltaYaw, yaw, pitch;
-    private short velocityID;
-    private int ticks, airTicks, velTick, maxVelTicks, velocityTicks, iceTicks, legitTick, slimeTicks, liquidTicks, underBlockTicks, sprintingTicks, teleportTicks, groundTicks, totalFlags, cps;
-    private long lastSetBack = System.nanoTime() / 1000000, lastShoot;
+    private short velocityID, transPingID;
+    private int ticks, airTicks, velTick, maxVelTicks, velocityTicks, attackTicks, iceTicks, legitTick, slimeTicks, liquidTicks, underBlockTicks, sprintingTicks, teleportTicks, groundTicks, totalFlags, cps, transactionPing;
+    private long lastSetBack = System.nanoTime() / 1000000, lastShoot, transPingSent;
     private boolean isSprinting, isSneaking, blocking, onGround, serverOnGround, alerts, verifyingVelocity, digging;
     private List<Check> checks;
 
     private Player lastAttackedPlayer;
-    public EntityTracker entityTracker = new EntityTracker();
+    private EntityTracker entityTracker;
+
     private ExecutorService executorService;
     private LogUtils.TextFile logFile;
+
+    private final Random random = new Random();
 
     public PlayerData(UUID uuid){
         this.player = Bukkit.getPlayer(uuid);
         this.checks = CheckManager.loadChecks(this);
         executorService = Executors.newSingleThreadExecutor();
         logFile = new LogUtils.TextFile("" + uuid, "\\\\logs");
+        entityTracker = new EntityTracker();
         Bukkit.getScheduler().runTaskTimerAsynchronously(AntiHaxerman.getInstance(), () -> {
             if(lastAttackedPlayer != null) {
                 entityTracker.addLocation(lastAttackedPlayer.getLocation());
             }
         }, 0, 1);
+
+        transPingID = (short) random.nextInt(32767);
+        PacketEvents.getAPI().getPlayerUtils().sendPacket(player, new WrappedPacketOutTransaction(0, transPingID, false) );
+        transPingSent = System.currentTimeMillis();
     }
 
     public boolean isTakingVelocity() { return velocityTicks() < maxVelTicks; }
@@ -83,15 +93,17 @@ public final class PlayerData {
 
     public int sprintingTicks() { return Math.abs(ticks - sprintingTicks); }
 
+    public int attackTicks() { return Math.abs(ticks - attackTicks); }
+
 
     /*
     PacketShit
      */
 
     public void inbound(PacketReceiveEvent event){
-        executorService.execute(() -> checks.forEach(check -> check.onPacketReceive(event)));
         if (event.getPacketId() == PacketType.Client.USE_ENTITY)onAttack(new WrappedPacketInUseEntity(event.getNMSPacket()));
         if (event.getPacketId() == PacketType.Client.POSITION || event.getPacketId() == PacketType.Client.POSITION_LOOK || event.getPacketId() == PacketType.Client.LOOK)onMove();
+        executorService.execute(() -> checks.forEach(check -> check.onPacketReceive(event)));
     }
 
     public void outgoing(PacketSendEvent event){
@@ -99,6 +111,7 @@ public final class PlayerData {
     }
 
     public void onAttack(WrappedPacketInUseEntity packet){
+        if (packet.getEntity() instanceof Player) lastAttackedPlayer = (Player) packet.getEntity();
         executorService.execute(() -> checks.forEach(check -> check.onAttack(packet)));
     }
 

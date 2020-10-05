@@ -12,6 +12,7 @@ import me.tecnio.antihaxerman.checks.impl.combat.autoclicker.AutoClickerB;
 import me.tecnio.antihaxerman.checks.impl.combat.fastbow.FastBowA;
 import me.tecnio.antihaxerman.checks.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.checks.impl.combat.velocity.VelocityA;
+import me.tecnio.antihaxerman.checks.impl.combat.velocity.VelocityB;
 import me.tecnio.antihaxerman.checks.impl.movement.fastclimb.FastClimbA;
 import me.tecnio.antihaxerman.checks.impl.movement.fastclimb.FastClimbB;
 import me.tecnio.antihaxerman.checks.impl.movement.flight.FlightA;
@@ -33,6 +34,7 @@ import me.tecnio.antihaxerman.checks.impl.movement.sprint.SprintA;
 import me.tecnio.antihaxerman.checks.impl.player.badpackets.*;
 import me.tecnio.antihaxerman.checks.impl.player.invmove.InvMoveA;
 import me.tecnio.antihaxerman.checks.impl.player.nofall.NoFallA;
+import me.tecnio.antihaxerman.checks.impl.player.pingspoof.PingSpoofA;
 import me.tecnio.antihaxerman.checks.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.checks.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
@@ -59,6 +61,7 @@ public final class CheckManager {
             AngleA.class,
             ReachA.class,
             VelocityA.class,
+            VelocityB.class,
             FastBowA.class,
             SpeedA.class,
             SpeedB.class,
@@ -88,6 +91,7 @@ public final class CheckManager {
             BadPacketsD.class,
             BadPacketsE.class,
             BadPacketsF.class,
+            PingSpoofA.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

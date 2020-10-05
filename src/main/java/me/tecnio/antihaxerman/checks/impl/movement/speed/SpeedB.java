@@ -23,10 +23,10 @@ public final class SpeedB extends Check {
                 && !data.getPlayer().isInsideVehicle()
                 && !data.getPlayer().isFlying()
                 && data.teleportTicks() > 10) {
-            if (++preVL > 6) {
+            if (++buffer > 6) {
                 flag(data, "breached limit, s: " + data.getDeltaXZ());
             }
-        } else preVL *= 0.75;
+        } else buffer *= 0.75;
     }
 
 

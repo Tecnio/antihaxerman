@@ -25,9 +25,9 @@ public final class ScaffoldB extends Check {
         final double diff = data.getDeltaYaw();
 
         if(diff > 100 && dist <= 2.0 && event.getBlockPlaced().getType().isSolid()) {
-            if(++preVL > 4) {
+            if(++buffer > 4) {
                 flag(data, "suspicious rotations, r: " + diff + ", d: " + dist);
             }
-        }else preVL = 0;
+        }else buffer = 0;
     }
 }

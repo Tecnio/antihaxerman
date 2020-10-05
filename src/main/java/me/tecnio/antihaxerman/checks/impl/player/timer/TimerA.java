@@ -29,8 +29,8 @@ public final class TimerA extends Check {
                 final double deviation = MathUtils.getStandardDeviation(flyingDeque.stream().mapToLong(l -> l).toArray());
 
                 if (deviation <= Config.TIMER_DEVIATION && (Math.abs(deviation - lastDeviation) < Config.TIMER_DEVIATION_DIFF)) {
-                    if (++preVL > 1) flag(data, "deviation = " + deviation);
-                } else preVL = 0;
+                    if (++buffer > 1) flag(data, "deviation = " + deviation);
+                } else buffer = 0;
                 this.lastDeviation = deviation;
                 flyingDeque.clear();
             }

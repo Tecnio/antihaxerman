@@ -14,6 +14,7 @@ public final class FlightA extends Check {
     @Override
     public void onMove() {
         final double predicted = (data.getLastDeltaY() - 0.08) * 0.9800000190734863;
+        final double diff = Math.abs(data.getDeltaY() - predicted);
 
         if (!data.isOnGround() && data.getAirTicks() > 6 && !data.isTakingVelocity()){
             if (!PlayerUtils.inLiquid(data)
@@ -22,7 +23,6 @@ public final class FlightA extends Check {
                     && data.getPlayer().getVelocity().getY() < -0.075D
                     && !data.getPlayer().isInsideVehicle()
                     && data.teleportTicks() > 10){
-                final double diff = Math.abs(data.getDeltaY() - predicted);
                 if (diff > 0.001 && Math.abs(predicted) >= 0.005){
                     flag(data, "invalid vertical movement. diff: " + diff);
                 }

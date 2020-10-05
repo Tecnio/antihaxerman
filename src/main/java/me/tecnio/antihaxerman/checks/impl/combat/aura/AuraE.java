@@ -70,10 +70,10 @@ public final class AuraE extends Check {
                         final int combinedDuplicates = duplicates + pitchDuplicates;
 
                         if(Double.isNaN(deviation) && combinedDuplicates <= 7) {
-                            if (++preVL > 1) {
+                            if (++buffer > 1) {
                                 flag(data, "LiquidBounce Killaura (or similar)");
                             }
-                        }else preVL = 0;
+                        }else buffer = 0;
 
                         samples.clear();
                         pitchSamples.clear();

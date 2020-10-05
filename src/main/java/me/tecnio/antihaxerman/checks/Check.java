@@ -25,7 +25,7 @@ public abstract class Check implements Listener {
     public boolean enabled, punishable;
     public String checkName, checkType, punishCommand;
 
-    protected double preVL;
+    protected double buffer;
 
     public Check(PlayerData data) {
         this.data = data;

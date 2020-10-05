@@ -23,9 +23,9 @@ public final class SpeedD extends Check {
                 && !data.getPlayer().isFlying()
                 && data.teleportTicks() > 40
                 && data.getAirTicks() == 0) {
-            if (++preVL > 1) {
+            if (++buffer > 1) {
                 flag(data, "dist = " + data.getDeltaXZ());
             }
-        }else preVL = 0;
+        } else buffer = 0;
     }
 }

@@ -22,9 +22,9 @@ public final class InvMoveA extends Check {
         if (data.isInWeb() || data.isInLiquid() || data.isOnClimbableBlock() || data.isTakingVelocity() || event.getClick() == ClickType.CREATIVE || event.getAction() == InventoryAction.PLACE_ALL) return;
 
         if (data.isOnGround() && data.getDeltaXZ() > 0.15) {
-            if (++preVL > 2) {
+            if (++buffer > 2) {
                 flag(data, "player used inventory while moving.");
             }
-        } else preVL = 0;
+        } else buffer = 0;
     }
 }

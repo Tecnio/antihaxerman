@@ -11,8 +11,6 @@ import me.tecnio.antihaxerman.playerdata.DataManager;
 import me.tecnio.antihaxerman.playerdata.PlayerData;
 import org.bukkit.util.Vector;
 
-import java.util.Random;
-
 public final class VelocityProcessor {
     public static void processSend(PacketSendEvent e){
         if (e.getPacketId() == PacketType.Server.ENTITY_VELOCITY) {
@@ -24,7 +22,10 @@ public final class VelocityProcessor {
 
                 data.setVerifyingVelocity(true);
 
-                data.setVelocityID((short) new Random().nextInt(32767));
+                int id = data.getRandom().nextInt(32766);
+                id = id != data.getTransPingID() ? id : id + 1;
+
+                data.setVelocityID((short) id);
                 PacketEvents.getAPI().getPlayerUtils().sendPacket(e.getPlayer(), new WrappedPacketOutTransaction(0, data.getVelocityID(), false));
             }
         }

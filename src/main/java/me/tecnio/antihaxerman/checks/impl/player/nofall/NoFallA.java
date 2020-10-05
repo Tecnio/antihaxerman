@@ -18,10 +18,10 @@ public final class NoFallA extends Check {
     public void onPacketReceive(PacketReceiveEvent e) {
         if (PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())){
             if (new WrappedPacketInFlying(e.getNMSPacket()).isOnGround() && !PlayerUtils.onGround(data)){
-                if (++preVL > 8){
+                if (++buffer > 8){
                     flag(data, "spoofed ground.");
                 }
-            }else preVL = 0;
+            }else buffer = 0;
         }
     }
 }

@@ -22,8 +22,8 @@ public final class AutoBlockA extends Check {
         }else if (e.getPacketId() == PacketType.Client.BLOCK_PLACE){
             if(attacked) {
                 if(ticks < 2) {
-                    if (++preVL > 2)flag(data, "low tick delay, t: " + ticks);
-                }else preVL = 0;
+                    if (++buffer > 1)flag(data, "low tick delay, t: " + ticks);
+                }else buffer = 0;
                 attacked = false;
             }
             ticks = 0;

@@ -55,10 +55,10 @@ public final class AimA extends Check {
                 final boolean invalidY = moduloY > 90.d && floorModuloY > 0.1;
 
                 if (invalidX && invalidY) {
-                    if (++preVL > 6) {
+                    if (++buffer > 2) {
                         flag(data, "invalid rotations.");
                     }
-                } preVL = Math.max(preVL - 2, 0);
+                } else buffer = Math.max(0, buffer - 1);
             }
         }
     }

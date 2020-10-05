@@ -19,9 +19,9 @@ public final class SprintA extends Check {
         final double delta = move.distanceSquared(data.getDirection());
 
         if (delta >= (data.getPlayer().getWalkSpeed() > 0.2f ? .23 * 1 + ((data.getPlayer().getWalkSpeed() / 0.2f) * 0.36) : 0.23 + (PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.062f)) && data.isSprinting() && data.getDeltaXZ() > 0.1 && !PlayerUtils.inLiquid(data) && !PlayerUtils.isInWeb(data) && !data.isTakingVelocity() && data.isOnGround()) {
-            if (++preVL > 4) {
+            if (++buffer > 4) {
                 flag(data, "omnidirectional sprint, p: " + delta);
             }
-        } else preVL = 0;
+        } else buffer = 0;
     }
 }

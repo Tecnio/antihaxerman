@@ -22,10 +22,10 @@ public final class BadPacketsB extends Check {
             final long timeDiff = elapsed(time(), lastFlying);
 
             if (timeDiff < 5) {
-                if (++preVL > 10) {
+                if (++buffer > 10) {
                     flag(data, "low flying delay, d: " + timeDiff);
                 }
-            } else preVL = 0;
+            } else buffer = 0;
         }
     }
 }
