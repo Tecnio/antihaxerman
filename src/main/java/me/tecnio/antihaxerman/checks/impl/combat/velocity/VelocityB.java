@@ -21,6 +21,8 @@ public final class VelocityB extends Check {
                     final double expectedVelZ = data.getLastVelocity().getZ() * (data.attackTicks() < 2 ? 0.6 : 1.0);
                     final double expectedHorizontalVel = Math.hypot(expectedVelX, expectedVelZ);
 
+                    if (expectedHorizontalVel < 0.1) return;
+
                     //Get the current horizontal vel.
                     final double velTaken = data.getDeltaXZ();
 

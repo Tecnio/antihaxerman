@@ -18,7 +18,7 @@ public final class AuraE extends Check {
     }
 
     /*
-     * Skidded from https://github.com/ElevatedDev/Frequency
+     * Skidded from https://github.com/ElevatedDev/Frequency and GladUrBad
      */
 
     private int hitTicks;
@@ -65,6 +65,7 @@ public final class AuraE extends Check {
                     pitchSamples.add(deltaPitch);
                     if(samples.size() > 20 && pitchSamples.size() > 20) {
                         final double deviation = MathUtils.getStandardDeviation((List<Double>) samples);
+
                         final int duplicates = (int) (samples.size() - samples.parallelStream().distinct().count());
                         final int pitchDuplicates = (int) (pitchSamples.size() - pitchSamples.parallelStream().distinct().count());
                         final int combinedDuplicates = duplicates + pitchDuplicates;
@@ -73,7 +74,7 @@ public final class AuraE extends Check {
                             if (++buffer > 1) {
                                 flag(data, "LiquidBounce Killaura (or similar)");
                             }
-                        }else buffer = 0;
+                        } else buffer = 0;
 
                         samples.clear();
                         pitchSamples.clear();

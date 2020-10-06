@@ -15,7 +15,7 @@ public final class MotionB extends Check {
     @Override
     public void onMove() {
         if (!data.isInLiquid() && !data.getPlayer().isFlying() && !data.isInWeb() && data.teleportTicks() > 10) {
-            double max = 0.7 + PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
+            final double max = 0.7 + PlayerUtils.getPotionEffectLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
 
             if (data.getDeltaY() > max && data.getPlayer().getVelocity().getY() < -0.075 && !data.isTakingVelocity()) {
                 flag(data, "accelerating faster than possible on Y axis. d: " + data.getDeltaY());

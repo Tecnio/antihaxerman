@@ -31,7 +31,7 @@ public final class PlayerData {
     private final Player player;
 
     private Location location, lastLocation, lastOnGroundLocation, lastLegitLocation;
-    private Vector lastVelocity, direction;
+    private Vector lastVelocity = new Vector(0.0D, 0.0D, 0.0D), direction;
     private double deltaXZ, deltaY, lastDeltaXZ, lastDeltaY;
     private float deltaYaw, deltaPitch, lastDeltaPitch, lastDeltaYaw, yaw, pitch;
     private short velocityID, transPingID;
