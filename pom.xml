@@ -89,6 +89,12 @@
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
             <version>1.6.9</version>
+            <scope>provided</scope>
         </dependency>
+    	<dependency>
+	        <groupId>com.github.godead</groupId>
+	        <artifactId>lilliputian</artifactId>
+	        <version>0.1.13</version>
+	    </dependency>
     </dependencies>
 </project>

@@ -43,6 +43,10 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.tecnio.antihaxerman.listeners.NetworkListener;
+import io.github.retrooper.packetevents.PacketEvents;
+
+
 public final class CheckManager {
 
     public static final Class[] checks = new Class[]{
@@ -97,6 +101,7 @@ public final class CheckManager {
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
 
     public static void registerChecks() {
+        PacketEvents.getAPI().getEventManager().registerListener(new NetworkListener());
         for (Class clazz : checks) {
             try {
                 CONSTRUCTORS.add(clazz.getConstructor(PlayerData.class));
