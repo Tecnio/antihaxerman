@@ -1,27 +1,41 @@
 package me.tecnio.antihaxerman;
 
+import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.CheckManager;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+
 public final class Config {
 
-    public static int MAX_CPS;
-    public static double MAX_REACH, TIMER_DEVIATION, TIMER_DEVIATION_DIFF, MAX_TIMER, MIN_TIMER;
-    public static float CLIMB_SPEED;
+    public static String ALERT_FORMAT;
 
-    public static boolean ENABLE_ALERTS_ON_JOIN;
+    public static boolean LOG_TO_CONSOLE;
 
-    public static boolean LOG_TO_CONSOLE, ENABLE_LOGGING;
+    public static Map<String, Boolean> ENABLED_CHECKS = new HashMap<>();
+    public static Map<String, List<String>> PUNISH_COMMANDS = new HashMap<>();
 
-    public static void updateConfig(){
-        MAX_CPS = AntiHaxerman.getInstance().getConfig().getInt("check-settings.max-cps");
-        MAX_REACH = AntiHaxerman.getInstance().getConfig().getDouble("check-settings.max-reach");
-        TIMER_DEVIATION = AntiHaxerman.getInstance().getConfig().getDouble("check-settings.lowest-deviation");
-        TIMER_DEVIATION_DIFF = AntiHaxerman.getInstance().getConfig().getDouble("check-settings.deviation-diff-limit");
-        MAX_TIMER = AntiHaxerman.getInstance().getConfig().getDouble("check-settings.max-timer");
-        MIN_TIMER = AntiHaxerman.getInstance().getConfig().getDouble("check-settings.min-timer");
-        CLIMB_SPEED = (float) AntiHaxerman.getInstance().getConfig().getDouble("check-settings.climb-speed");
+    public static void updateSettings() {
+        try {
+            ALERT_FORMAT = AntiHaxerman.getInstance().getConfig().getString("alerts.format");
 
-        ENABLE_ALERTS_ON_JOIN = AntiHaxerman.getInstance().getConfig().getBoolean("enable-alerts-on-join");
+            LOG_TO_CONSOLE = AntiHaxerman.getInstance().getConfig().getBoolean("alerts.log-to-console");
 
-        LOG_TO_CONSOLE = AntiHaxerman.getInstance().getConfig().getBoolean("logging.log-to-console");
-        ENABLE_LOGGING = AntiHaxerman.getInstance().getConfig().getBoolean("logging.enabled");
+            for (final Class<?> clazz : CheckManager.getCHECKS()) {
+                 if (clazz.isAnnotationPresent(CheckInfo.class)) {
+                     final CheckInfo checkInfo = clazz.getAnnotation(CheckInfo.class);
+
+                     final boolean enabled = AntiHaxerman.getInstance().getConfig().getBoolean("checks." + checkInfo.name().toLowerCase() + ".enabled");
+                     final List<String> punishments = AntiHaxerman.getInstance().getConfig().getStringList("checks." + checkInfo.name().toLowerCase() + ".punish-commands");
+
+                    ENABLED_CHECKS.put(checkInfo.name(), enabled);
+                    PUNISH_COMMANDS.put(checkInfo.name(), punishments);
+                 }
+            }
+        } catch (Exception exception) {
+            AntiHaxerman.getInstance().getLogger().log(Level.SEVERE, "Unable to load the config for AntiHaxerman!\nRestarting the server is advised!\nIf the issue persists reset the config file.");
+        }
     }
 }

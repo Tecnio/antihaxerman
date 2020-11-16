@@ -1,52 +1,77 @@
 package me.tecnio.antihaxerman;
 
-import me.tecnio.antihaxerman.checks.CheckManager;
-import me.tecnio.antihaxerman.commands.AntiHaxermanCommand;
-import me.tecnio.antihaxerman.listeners.BukkitListener;
 import io.github.retrooper.packetevents.PacketEvents;
+import lombok.Getter;
+import me.tecnio.antihaxerman.check.CheckManager;
+import me.tecnio.antihaxerman.commands.api.CommandManager;
+import me.tecnio.antihaxerman.commands.impl.AlertsCommand;
+import me.tecnio.antihaxerman.commands.impl.LogsCommand;
+import me.tecnio.antihaxerman.commands.impl.VerboseCommand;
 import me.tecnio.antihaxerman.listeners.NetworkListener;
-import me.tecnio.antihaxerman.playerdata.DataManager;
-import me.tecnio.antihaxerman.playerdata.PlayerData;
-import org.bukkit.entity.Player;
+import me.tecnio.antihaxerman.listeners.RegistrationListener;
+import me.tecnio.antihaxerman.manager.TickManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public final class AntiHaxerman extends JavaPlugin {
 
-    private static AntiHaxerman instance;
+    @Getter private static AntiHaxerman instance;
+
+    @Getter private static final ExecutorService checkExecutor = Executors.newSingleThreadExecutor();
+    @Getter private final TickManager tickProcessor = new TickManager();
 
     @Override
-    public void onLoad() { PacketEvents.load(); }
+    public void onLoad() {
+        PacketEvents.load();
+    }
 
     @Override
     public void onEnable() {
         instance = this;
 
+        setupConfig();
+
         CheckManager.registerChecks();
 
+        setupProcessors();
+
+        registerListeners();
+        setupCommands();
+
+        startPacketEvents();
+    }
+
+    private void setupConfig() {
         saveDefaultConfig();
-        Config.updateConfig();
+        Config.updateSettings();
+    }
 
-        getCommand("antihaxerman").setExecutor(new AntiHaxermanCommand());
+    private void setupProcessors() {
+        tickProcessor.start();
+    }
 
-        //PacketEvents
-        PacketEvents.getSettings().setIdentifier("antihaxerman_handler");
-        PacketEvents.getSettings().setUninjectAsync(true);
-        PacketEvents.getSettings().setInjectAsync(true);
+    private void setupCommands() {
+        CommandManager.setup(this);
+
+        CommandManager.register(new AlertsCommand());
+        CommandManager.register(new LogsCommand());
+        CommandManager.register(new VerboseCommand());
+    }
+
+    private void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(new RegistrationListener(), this);
+
+        PacketEvents.getAPI().getEventManager().registerListeners(new NetworkListener());
+    }
+
+    private void startPacketEvents() {
+        PacketEvents.getSettings().injectAsync(true);
+        PacketEvents.getSettings().ejectAsync(true);
+
+        PacketEvents.getSettings().checkForUpdates(false);
+
         PacketEvents.init(this);
-
-        // Register listeners
-        PacketEvents.getAPI().getEventManager().registerListener(new NetworkListener());
-        getServer().getPluginManager().registerEvents(new BukkitListener(), this);
-
-        for (Player player : getServer().getOnlinePlayers()){ DataManager.INSTANCE.register(new PlayerData(player.getUniqueId())); }
-    }
-
-    @Override
-    public void onDisable() {
-       PacketEvents.stop();
-    }
-
-    public static AntiHaxerman getInstance() {
-        return instance;
     }
 }

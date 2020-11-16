@@ -1,12 +1,4 @@
 name: AntiHaxerman
-version: 1.0-PRE
-author: Tecnio
+authors: [ Tecnio ]
+version: 1.0
 main: me.tecnio.antihaxerman.AntiHaxerman
-load: STARTUP
-
-commands:
-  antihaxerman:
-    description: Base command for AntiHaxerman.
-    usage: /<command>
-    permission: antihaxerman.command
-    permission-message: "No permission."

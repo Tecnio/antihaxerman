@@ -1,139 +1,94 @@
-######################
-#     AntiHaxerman   #
-######################
 #
-# Links:
-#     Discord: https://discord.me/cypherdev
-#
-# Developers:
-#     Tecnio: https://github.com/Tecnio
+# AntiHaxerman Config File
+# by Tecnio
 #
 
-# When a staff member joins automatically enable alerts.
-enable-alerts-on-join: false
-
-# Logging settings.
-logging:
-  enabled: true
+alerts:
+  format: "&cAntiHaxerman &8> &c%player%&8 has failed &c%check% &8(&cType %type%&8) VL: &c%vl%"
   log-to-console: false
 
-# Configure check values and limits here.
-check-settings:
-  #AutoClicker
-  max-cps: 20
-  #Reach
-  max-reach: 3.2
-  #FastClimb
-  climb-speed: 0.1176
-  #Timer
-  lowest-deviation: 710
-  deviation-diff-limit: 20
-  max-timer: 1.075
-  min-timer: 0.925
-
-# Check Part
-angle:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-aura:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-aim:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-autoblock:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-autoclicker:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-criticals:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-reach:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-velocity:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-fastclimb:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-flight:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-invalid:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-motion:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-noslow:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-scaffold:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-speed:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-sprint:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-badpackets:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-invmove:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-nofall:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-timer:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 10
-pingspoof:
-  enabled: true
-  punishable: true
-  punish-command: 'kick %player% Unfair Advantage'
-  max-vl: 50
+checks:
+  aim:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  angle:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  aura:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  autoblock:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  autoclicker:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  badpackets:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  fastclimb:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  flight:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  inventory:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  invmove:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  largemove:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  motion:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  nofall:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  noslowdown:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  omnisprint:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  pingspoof:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  post:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  reach:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  speed:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  timer:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
+  velocity:
+    enabled: true
+    punish-commands:
+      - ban %player% Unfair Advantage
