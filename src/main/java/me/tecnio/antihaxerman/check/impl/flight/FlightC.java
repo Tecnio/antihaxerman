@@ -15,38 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.aim;
+package me.tecnio.antihaxerman.check.impl.flight;
 
-import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.utils.packet.PacketUtils;
 
-@CheckInfo(name = "Aim", type = "C")
-public final class AimC extends Check {
-    public AimC(PlayerData data) {
+@CheckInfo(name = "Flight", type = "C")
+public final class FlightC extends Check {
+    public FlightC(PlayerData data) {
         super(data);
     }
 
     @Override
-    public void onPacketReceive(PacketReceiveEvent event) {
-        if (PacketUtils.isRotationPacket(event.getPacketId())) {
-            final float pitch = data.getLocation().getPitch();
-            if (pitch > 89 || pitch < 1) return;
+    public void onMove() {
+        final double diff = Math.abs(data.getDeltaY() - data.getLastDeltaY());
 
-            final float deltaPitch = data.getDeltaPitch();
-            final float deltaYaw = data.getDeltaYaw();
+        final boolean exempt = data.getServerAirTicks() < 3 || data.pistonTicks() < 10 || data.flyingTicks() < 40 || data.isNearBoat() || data.liquidTicks() < 20 || data.climbableTicks() < 20 || data.teleportTicks() < 40 || data.getPlayer().isInsideVehicle() || data.isTakingVelocity() || data.isInWeb() || data.isInVoid();
 
-            final boolean invalid = deltaPitch == 0.0F && deltaYaw >= 15.6F;
-
-            if (invalid) {
-                if (increaseBuffer() > 7) {
-                    flag();
-                }
-            } else {
-                decreaseBufferBy(0.5);
+        if (diff < 0.01 && !exempt) {
+            if (increaseBuffer() > 4) {
+                flag();
             }
+        } else {
+            decreaseBufferBy(0.5);
         }
     }
 }

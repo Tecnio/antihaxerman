@@ -20,7 +20,8 @@ package me.tecnio.antihaxerman.check.impl.aura;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.utils.math.MathUtils;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 @CheckInfo(name = "Aura", type = "A")
 public final class AuraA extends Check {
@@ -30,16 +31,19 @@ public final class AuraA extends Check {
 
     @Override
     public void onMove() {
+        final Entity target = data.getTarget();
+
         final double accel = Math.abs(data.getDeltaXZ() - data.getLastDeltaXZ());
 
-        final boolean exempt = data.getDeltaXZ() < 0.21 || data.attackTicks() > 1 || !data.isSprinting();
+        final boolean exempt = !(target instanceof Player);
+        final boolean invalid = accel < 0.0027 && data.isSprinting() && data.getDeltaXZ() > 0.22 && data.attackTicks() < 2;
 
-        if (MathUtils.isScientificNotation(accel) && !exempt) {
-            if (increaseBuffer() > 2) {
+        if (invalid && !exempt) {
+            if (increaseBuffer() > 4) {
                 flag();
             }
         } else {
-            decreaseBufferBy(0.01);
+            decreaseBufferBy(0.1);
         }
     }
 }

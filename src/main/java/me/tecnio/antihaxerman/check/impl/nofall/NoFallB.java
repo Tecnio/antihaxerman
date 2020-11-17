@@ -53,7 +53,7 @@ public final class NoFallB extends Check {
             final boolean exempt = data.liquidTicks() < 10 || data.pistonTicks() < 10 || data.climbableTicks() < 10 || ticksSinceInVehicle < 10 || data.isNearBoat();
 
             if (serverOnGround != clientOnGround && !exempt) {
-                if (increaseBuffer() > 10) {
+                if (increaseBufferBy(2) > 10) {
                     flag();
                 }
             } else {

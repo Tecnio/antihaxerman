@@ -59,4 +59,9 @@ public final class AuraE extends Check {
             movements = 0;
         }
     }
+
+    @Override
+    public void onFlying() {
+        ++movements;
+    }
 }

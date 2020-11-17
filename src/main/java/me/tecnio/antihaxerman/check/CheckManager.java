@@ -31,6 +31,7 @@ import me.tecnio.antihaxerman.check.impl.fastclimb.FastClimbA;
 import me.tecnio.antihaxerman.check.impl.fastclimb.FastClimbB;
 import me.tecnio.antihaxerman.check.impl.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.flight.FlightB;
+import me.tecnio.antihaxerman.check.impl.flight.FlightC;
 import me.tecnio.antihaxerman.check.impl.inventory.InventoryA;
 import me.tecnio.antihaxerman.check.impl.invmove.InvMoveA;
 import me.tecnio.antihaxerman.check.impl.largemove.LargeMoveA;
@@ -86,6 +87,7 @@ public final class CheckManager {
             AngleA.class,
             FlightA.class,
             FlightB.class,
+            FlightC.class,
             SpeedA.class,
             SpeedB.class,
             SpeedC.class,

@@ -42,7 +42,7 @@ public final class VelocityB extends Check {
 
             if (exempt) return;
 
-            if (percentage < 30 || percentage > 300) {
+            if (percentage < 30) {
                 if (increaseBuffer() > 3) {
                     flag();
                 }

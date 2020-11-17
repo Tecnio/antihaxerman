@@ -222,7 +222,7 @@ public final class PlayerData {
                     y = wrapper.getY();
                     z = wrapper.getZ();
 
-                    onGround = wrapper.isOnGround();
+                    onGround = wrapper.isOnGround() && y % 0.015625 == 0.0;
                 }
 
                 if (wrapper.isLook()) {

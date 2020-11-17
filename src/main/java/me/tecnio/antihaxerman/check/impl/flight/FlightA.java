@@ -32,14 +32,14 @@ public final class FlightA extends Check {
         final double predicted = (data.getLastDeltaY() - 0.08) * 0.9800000190734863;
         final double diff = Math.abs(data.getDeltaY() - predicted);
 
-        final boolean exempt = data.getAirTicks() < 7 || data.isOnServerGround() || data.isTakingVelocity() || data.pistonTicks() < 10 || data.liquidTicks() < 10 || data.climbableTicks() < 10 || data.isNearBoat() || data.getPlayer().getVelocity().getY() >= -0.075D || data.flyingTicks() < 20 || data.getPlayer().isInsideVehicle() || data.isInWeb();
+        final boolean exempt = data.getServerAirTicks() < 7 || data.isOnServerGround() || data.isTakingVelocity() || data.pistonTicks() < 10 || data.liquidTicks() < 10 || data.climbableTicks() < 10 || data.isNearBoat() || data.getPlayer().getVelocity().getY() >= -0.075D || data.flyingTicks() < 20 || data.getPlayer().isInsideVehicle() || data.isInWeb();
 
         if (diff > 0.001 && Math.abs(predicted) >= 0.005 && !exempt) {
-            if (increaseBuffer() > 4) {
+            if (increaseBuffer() > 3) {
                 flag();
             }
         } else {
-            decreaseBufferBy(0.25);
+            decreaseBufferBy(0.1);
         }
     }
 }
