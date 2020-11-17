@@ -5,6 +5,7 @@ import me.tecnio.antihaxerman.check.impl.aim.*;
 import me.tecnio.antihaxerman.check.impl.angle.AngleA;
 import me.tecnio.antihaxerman.check.impl.aura.*;
 import me.tecnio.antihaxerman.check.impl.autoblock.AutoBlockA;
+import me.tecnio.antihaxerman.check.impl.autoblock.AutoBlockB;
 import me.tecnio.antihaxerman.check.impl.autoclicker.AutoClickerA;
 import me.tecnio.antihaxerman.check.impl.autoclicker.AutoClickerB;
 import me.tecnio.antihaxerman.check.impl.autoclicker.AutoClickerC;
@@ -62,6 +63,7 @@ public final class CheckManager {
             AutoClickerB.class,
             AutoClickerC.class,
             AutoBlockA.class,
+            AutoBlockB.class,
             VelocityA.class,
             VelocityB.class,
             AngleA.class,
@@ -91,6 +93,8 @@ public final class CheckManager {
             BadPacketsC.class,
             BadPacketsD.class,
             BadPacketsE.class,
+            BadPacketsF.class,
+            BadPacketsG.class,
             PostA.class,
             PostB.class,
             PostC.class,
