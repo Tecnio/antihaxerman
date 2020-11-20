@@ -54,7 +54,6 @@ import me.tecnio.antihaxerman.data.CinematicProcessor;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.data.SensitivityProcessor;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,24 +124,11 @@ public final class CheckManager {
             SensitivityProcessor.class,
     };
 
-    public static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
-
-    public static void registerChecks() {
-        for (Class clazz : CHECKS) {
-            try {
-                CONSTRUCTORS.add(clazz.getConstructor(PlayerData.class));
-            } catch (NoSuchMethodException exception) {
-                exception.printStackTrace();
-            }
-        }
-    }
-
-
     public static List<Check> loadChecks(PlayerData data) {
         final List<Check> checkList = new ArrayList<>();
-        for (Constructor<?> constructor : CONSTRUCTORS) {
+        for (Class<?> c : CHECKS) {
             try {
-                checkList.add((Check) constructor.newInstance(data));
+                checkList.add((Check) c.getConstructor(PlayerData.class).newInstance(data));
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -19,7 +19,6 @@ package me.tecnio.antihaxerman;
 
 import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Getter;
-import me.tecnio.antihaxerman.check.CheckManager;
 import me.tecnio.antihaxerman.commands.api.CommandManager;
 import me.tecnio.antihaxerman.commands.impl.AlertsCommand;
 import me.tecnio.antihaxerman.commands.impl.LogsCommand;
@@ -49,8 +48,6 @@ public final class AntiHaxerman extends JavaPlugin {
         instance = this;
 
         setupConfig();
-
-        CheckManager.registerChecks();
 
         setupProcessors();
 
