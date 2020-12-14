@@ -23,7 +23,11 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.AimB;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimC;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -41,6 +45,10 @@ public final class CheckManager {
             AimD.class,
             AuraA.class,
             SpeedA.class,
+            SpeedB.class,
+            FlightA.class,
+            FlightB.class,
+            FlightC.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

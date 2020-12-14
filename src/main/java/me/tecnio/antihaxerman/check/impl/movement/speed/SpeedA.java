@@ -41,7 +41,8 @@ public final class SpeedA extends Check {
                     ExemptType.PISTON,
                     ExemptType.FLYING,
                     ExemptType.UNDERBLOCK,
-                    ExemptType.VEHICLE);
+                    ExemptType.VEHICLE,
+                    ExemptType.CLIMBABLE);
 
             final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
             
@@ -59,7 +60,7 @@ public final class SpeedA extends Check {
                     attributeSpeed += 0.2;
                 }
             } else {
-                attributeSpeed = sprinting ? 0.026 : 0.02;
+                attributeSpeed = sprinting ? 0.0263 : 0.02;
 
                 blockSlipperiness = 0.91f;
             }

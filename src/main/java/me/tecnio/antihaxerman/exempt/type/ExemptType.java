@@ -60,7 +60,11 @@ public enum ExemptType {
 
     FLYING(data -> data.getPositionProcessor().getSinceFlyingTicks() < 40),
 
-    AUTOCLICKER(data -> data.getExemptProcessor().isExempt(ExemptType.PLACING, ExemptType.DIGGING, ExemptType.BLOCK_BREAK));
+    AUTOCLICKER(data -> data.getExemptProcessor().isExempt(ExemptType.PLACING, ExemptType.DIGGING, ExemptType.BLOCK_BREAK)),
+
+    WEB(data -> data.getPositionProcessor().isInWeb()),
+
+    CLIMBABLE(data -> data.getPositionProcessor().isOnClimbable());
 
     private final Function<PlayerData, Boolean> exception;
 

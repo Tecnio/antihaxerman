@@ -13,12 +13,12 @@ testmode: false
 ########################################################################################################################
 response:
   anticheat:
-    prefix: '&cAntiHaxerman &8> '
+    prefix: '&cAHM &8> '
   command:
-    prefix: '&cAntiHaxerman &8> '
+    prefix: '&cAHM &8> '
 
 violations:
-  alert-format: '&cAntiHaxerman &8> &c%player%&8 has failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%'
+  alert-format: '&cAHM &8> &c%player%&8 has failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%'
   clear-violations-delay: 15
 
 ########################################################################################################################
@@ -54,6 +54,23 @@ checks:
   movement:
     speed:
       a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    flight:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
         enabled: true
         max-violations: 50
         punish-command: ''
