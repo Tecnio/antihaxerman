@@ -68,7 +68,7 @@ public enum AntiHaxerman {
         Bukkit.getServer().getPluginManager().registerEvents(new BukkitEventManager(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new ClientBrandListener(), plugin);
 
-        PacketEvents.getSettings()
+        PacketEvents.get().getSettings()
                 .injectAsync(true)
                 .ejectAsync(true)
                 .injectEarly(true)
@@ -76,7 +76,7 @@ public enum AntiHaxerman {
                 .checkForUpdates(true)
                 .backupServerVersion(ServerVersion.v_1_7_10);
 
-        PacketEvents.getAPI().getEventManager().registerListener(new NetworkManager());
+        PacketEvents.get().getEventManager().registerListener(new NetworkManager());
     }
 
     public void stop(final AntiHaxermanPlugin plugin) {

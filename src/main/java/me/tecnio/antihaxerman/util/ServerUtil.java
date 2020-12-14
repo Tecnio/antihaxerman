@@ -25,11 +25,11 @@ import lombok.experimental.UtilityClass;
 public class ServerUtil {
 
     public double getTPS() {
-        return PacketEvents.getAPI().getServerUtils().getTPS();
+        return PacketEvents.get().getServerUtils().getTPS();
     }
 
     public ServerVersion getServerVersion() {
-        return PacketEvents.getAPI().getServerUtils().getVersion();
+        return PacketEvents.get().getServerUtils().getVersion();
     }
 
     public boolean isLowerThan1_8() {

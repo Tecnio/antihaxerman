@@ -18,6 +18,10 @@
 package me.tecnio.antihaxerman.manager;
 
 import me.tecnio.antihaxerman.check.Check;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimA;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimB;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimC;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -29,6 +33,10 @@ import java.util.List;
 public final class CheckManager {
 
     public static final Class[] CHECKS = new Class[]{
+            AimA.class,
+            AimB.class,
+            AimC.class,
+            AimD.class
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

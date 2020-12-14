@@ -29,11 +29,11 @@ import org.bukkit.potion.PotionEffectType;
 public class PlayerUtil {
 
     public ClientVersion getClientVersion(final Player player) {
-        return PacketEvents.getAPI().getPlayerUtils().getClientVersion(player);
+        return PacketEvents.get().getPlayerUtils().getClientVersion(player);
     }
 
     public int getPing(final Player player) {
-        return  PacketEvents.getAPI().getPlayerUtils().getPing(player);
+        return PacketEvents.get().getPlayerUtils().getPing(player);
     }
 
     public int getDepthStriderLevel(final Player player) {

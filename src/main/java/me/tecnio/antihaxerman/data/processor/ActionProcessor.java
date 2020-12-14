@@ -17,10 +17,10 @@
 
 package me.tecnio.antihaxerman.data.processor;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.blockdig.WrappedPacketInBlockDig;
+import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
+import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
 import me.tecnio.antihaxerman.AntiHaxerman;
-import io.github.retrooper.packetevents.packetwrappers.in.blockdig.WrappedPacketInBlockDig;
-import io.github.retrooper.packetevents.packetwrappers.in.clientcommand.WrappedPacketInClientCommand;
-import io.github.retrooper.packetevents.packetwrappers.in.entityaction.WrappedPacketInEntityAction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.event.block.Action;

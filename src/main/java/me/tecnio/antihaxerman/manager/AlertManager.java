@@ -47,7 +47,7 @@ public final class AlertManager {
     }
 
     public static void handleAlert(final Check check, final PlayerData data, final String info) {
-        TextComponent alertMessage = new TextComponent(ColorUtil.translate(Config.ALERT_FORMAT)
+        final TextComponent alertMessage = new TextComponent(ColorUtil.translate(Config.ALERT_FORMAT)
                 .replaceAll("%player%", data.getPlayer().getName())
                 .replaceAll("%check%", check.getCheckInfo().name())
                 .replaceAll("%dev%", check.getCheckInfo().experimental() ? ColorUtil.translate("&7*") : "")
@@ -58,13 +58,14 @@ public final class AlertManager {
         alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ColorUtil.translate(
                 "&aDescription: &f" + check.getCheckInfo().description() +
                 "\n&aInfo: &7" + info +
-                "\n&aPing: &7" + PacketEvents.getAPI().getPlayerUtils().getPing(data.getPlayer()) +
-                "\n&aTPS: &7" + String.format("%.2f", PacketEvents.getAPI().getServerUtils().getTPS()) +
+                "\n&aPing: &7" + PacketEvents.get().getPlayerUtils().getPing(data.getPlayer()) +
+                "\n&aTPS: &7" + String.format("%.2f", Math.min(20, PacketEvents.get().getServerUtils().getTPS())) +
                 "\n&aClick to teleport.")).create()));
+
         alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));
     }
 
     public enum ToggleAlertType {
-        ADD, REMOVE;
+        ADD, REMOVE
     }
 }

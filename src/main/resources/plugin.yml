@@ -1,6 +1,6 @@
 name: AntiHaxerman
 version: 3.0
-main: me.tecnio.antihaxerman
+main: me.tecnio.antihaxerman.AntiHaxermanPlugin
 authors: [Tecnio]
 description: AntiHaxerman AntiCheat
 

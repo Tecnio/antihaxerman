@@ -40,6 +40,8 @@ public abstract class Check {
     private double buffer;
     @Setter private String punishCommand;
 
+    private boolean flagging;
+
     public Check(final PlayerData data) {
         this.data = data;
 
@@ -57,27 +59,32 @@ public abstract class Check {
     public abstract void handle(final Packet packet);
 
     public void fail(final Object info) {
-        ++vl;
-        data.setTotalViolations(data.getTotalViolations() + 1);
+        if (!flagging) {
+            flagging = true;
 
-        switch (checkType) {
-            case COMBAT:
-                data.setCombatViolations(data.getCombatViolations() + 1);
-                break;
-            case MOVEMENT:
-                data.setMovementViolations(data.getMovementViolations() + 1);
-                break;
-            case PLAYER:
-                data.setPlayerViolations(data.getPlayerViolations() + 1);
-                break;
+            ++vl;
+            data.setTotalViolations(data.getTotalViolations() + 1);
+
+            switch (checkType) {
+                case COMBAT:
+                    data.setCombatViolations(data.getCombatViolations() + 1);
+                    break;
+                case MOVEMENT:
+                    data.setMovementViolations(data.getMovementViolations() + 1);
+                    break;
+                case PLAYER:
+                    data.setPlayerViolations(data.getPlayerViolations() + 1);
+                    break;
+            }
+
+            AlertManager.handleAlert(this, data, Objects.toString(info));
+
+            flagging = false;
         }
-
-        AlertManager.handleAlert(this, data, Objects.toString(info));
     }
 
     public void fail() {
-        ++vl;
-        AlertManager.handleAlert(this, data, "");
+        fail("");
     }
 
     protected boolean isExempt(final ExemptType exemptType) {

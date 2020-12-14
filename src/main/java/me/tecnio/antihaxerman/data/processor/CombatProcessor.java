@@ -17,7 +17,7 @@
 
 package me.tecnio.antihaxerman.data.processor;
 
-import io.github.retrooper.packetevents.packetwrappers.in.useentity.WrappedPacketInUseEntity;
+import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.entity.Entity;

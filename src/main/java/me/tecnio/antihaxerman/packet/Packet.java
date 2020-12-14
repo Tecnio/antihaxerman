@@ -42,82 +42,82 @@ public final class Packet {
     }
 
     public boolean isFlying() {
-        return isReceiving() && PacketType.Client.Util.isInstanceOfFlying(packetId);
+        return isReceiving() && PacketType.Play.Client.Util.isInstanceOfFlying(packetId);
     }
 
     public boolean isUseEntity() {
-        return isReceiving() && packetId == PacketType.Client.USE_ENTITY;
+        return isReceiving() && packetId == PacketType.Play.Client.USE_ENTITY;
     }
 
     public boolean isRotation() {
-        return isReceiving() && (packetId == PacketType.Client.LOOK || packetId == PacketType.Client.POSITION_LOOK);
+        return isReceiving() && (packetId == PacketType.Play.Client.LOOK || packetId == PacketType.Play.Client.POSITION_LOOK);
     }
 
     public boolean isPosition() {
-        return isReceiving() && (packetId == PacketType.Client.POSITION || packetId == PacketType.Client.POSITION_LOOK);
+        return isReceiving() && (packetId == PacketType.Play.Client.POSITION || packetId == PacketType.Play.Client.POSITION_LOOK);
     }
 
     public boolean isArmAnimation() {
-        return isReceiving() && packetId == PacketType.Client.ARM_ANIMATION;
+        return isReceiving() && packetId == PacketType.Play.Client.ARM_ANIMATION;
     }
 
     public boolean isAbilities() {
-        return isReceiving() && packetId == PacketType.Client.ABILITIES;
+        return isReceiving() && packetId == PacketType.Play.Client.ABILITIES;
     }
 
     public boolean isBlockPlace() {
-        return isReceiving() && packetId == PacketType.Client.BLOCK_PLACE;
+        return isReceiving() && packetId == PacketType.Play.Client.BLOCK_PLACE;
     }
 
     public boolean isBlockDig() {
-        return isReceiving() && packetId == PacketType.Client.BLOCK_DIG;
+        return isReceiving() && packetId == PacketType.Play.Client.BLOCK_DIG;
     }
 
-    public boolean isWindowClick() { return isReceiving() && packetId == PacketType.Client.WINDOW_CLICK; }
+    public boolean isWindowClick() { return isReceiving() && packetId == PacketType.Play.Client.WINDOW_CLICK; }
 
     public boolean isEntityAction() {
-        return isReceiving() && packetId == PacketType.Client.ENTITY_ACTION;
+        return isReceiving() && packetId == PacketType.Play.Client.ENTITY_ACTION;
     }
 
     public boolean isPosLook() {
-        return isReceiving() && packetId == PacketType.Client.POSITION_LOOK;
+        return isReceiving() && packetId == PacketType.Play.Client.POSITION_LOOK;
     }
 
-    public boolean isCloseWindow() { return isReceiving() && packetId == PacketType.Client.CLOSE_WINDOW; }
+    public boolean isCloseWindow() { return isReceiving() && packetId == PacketType.Play.Client.CLOSE_WINDOW; }
 
-    public boolean isKeepAlive() { return isReceiving() && packetId == PacketType.Client.KEEP_ALIVE; }
+    public boolean isKeepAlive() { return isReceiving() && packetId == PacketType.Play.Client.KEEP_ALIVE; }
 
     public boolean isSteerVehicle() {
-        return isReceiving() && packetId == PacketType.Client.STEER_VEHICLE;
+        return isReceiving() && packetId == PacketType.Play.Client.STEER_VEHICLE;
     }
 
     public boolean isHeldItemSlot() {
-        return isReceiving() && packetId == PacketType.Client.HELD_ITEM_SLOT;
+        return isReceiving() && packetId == PacketType.Play.Client.HELD_ITEM_SLOT;
     }
 
     public boolean isClientCommand() {
-        return isReceiving() && packetId == PacketType.Client.CLIENT_COMMAND;
+        return isReceiving() && packetId == PacketType.Play.Client.CLIENT_COMMAND;
     }
 
-    public boolean isCustomPayload() { return isReceiving() && packetId == PacketType.Client.CUSTOM_PAYLOAD; }
+    public boolean isCustomPayload() { return isReceiving() && packetId == PacketType.Play.Client.CUSTOM_PAYLOAD; }
 
     public boolean isIncomingTransaction () {
-        return isReceiving() && packetId == PacketType.Client.TRANSACTION;
+        return isReceiving() && packetId == PacketType.Play.Client.TRANSACTION;
     }
 
     public boolean isSendingTransaction() {
-        return isSending() && packetId == PacketType.Server.TRANSACTION;
+        return isSending() && packetId == PacketType.Play.Server.TRANSACTION;
     }
 
 
-    public boolean isTeleport() { return isSending() && packetId == PacketType.Server.POSITION; }
+    public boolean isTeleport() { return isSending() && packetId == PacketType.Play.Server.POSITION; }
 
     public boolean isVelocity() {
-        return isSending() && packetId == PacketType.Server.ENTITY_VELOCITY;
+        return isSending() && packetId == PacketType.Play.Server.ENTITY_VELOCITY;
     }
 
     public boolean isRelEntityMove() {
-        return isSending() && packetId == PacketType.Server.REL_ENTITY_MOVE;
+        return isSending() && packetId == PacketType.Play.Server.REL_ENTITY_MOVE;
     }
 
     public enum Direction { SEND, RECEIVE }

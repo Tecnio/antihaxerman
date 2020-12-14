@@ -24,18 +24,18 @@ public final class AntiHaxermanPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.load();
+        PacketEvents.create().load();
     }
 
     @Override
     public void onEnable() {
         AntiHaxerman.INSTANCE.start(this);
-        PacketEvents.init(this);
+        PacketEvents.get().init(this);
     }
 
     @Override
     public void onDisable() {
-        PacketEvents.stop();
+        PacketEvents.get().stop();
         AntiHaxerman.INSTANCE.stop(this);
     }
 }

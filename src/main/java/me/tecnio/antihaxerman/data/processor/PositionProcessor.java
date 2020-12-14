@@ -158,7 +158,7 @@ public final class PositionProcessor {
         handleOnBoat();
 
         inLiquid = blocks.stream().anyMatch(Block::isLiquid);
-        inWeb = blocks.stream().anyMatch(block -> block.getType() == Material.WEB);
+        inWeb = blocks.stream().anyMatch(block -> block.getType().toString().contains("WEB"));
         inAir = blocks.stream().allMatch(block -> block.getType() == Material.AIR);
         onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
         onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());

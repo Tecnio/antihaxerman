@@ -17,8 +17,8 @@
 
 package me.tecnio.antihaxerman.packet.processor;
 
+import io.github.retrooper.packetevents.packetwrappers.play.out.entityvelocity.WrappedPacketOutEntityVelocity;
 import me.tecnio.antihaxerman.data.PlayerData;
-import io.github.retrooper.packetevents.packetwrappers.out.entityvelocity.WrappedPacketOutEntityVelocity;
 import me.tecnio.antihaxerman.packet.Packet;
 
 public final class SendingPacketProcessor  {
