@@ -46,3 +46,14 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    aura:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+  movement:
+    speed:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''

@@ -5,7 +5,7 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Aim", type = "D", description = "")
+@CheckInfo(name = "Aim", type = "D", description = "Checks for unlikely rotations.")
 public final class AimD extends Check {
     public AimD(final PlayerData data) {
         super(data);
