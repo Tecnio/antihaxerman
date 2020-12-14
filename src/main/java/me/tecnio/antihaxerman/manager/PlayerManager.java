@@ -15,18 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check;
+package me.tecnio.antihaxerman.manager;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface CheckInfo {
-    String name();
-    String type();
-    String description();
-    boolean experimental() default false;
+public final class PlayerManager implements Listener {
+
+    @EventHandler
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        PlayerDataManager.getInstance().add(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(final PlayerQuitEvent event) {
+        PlayerDataManager.getInstance().remove(event.getPlayer());
+    }
 }

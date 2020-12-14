@@ -15,18 +15,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check;
+package me.tecnio.antihaxerman.data.processor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.Getter;
+import me.tecnio.antihaxerman.data.PlayerData;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface CheckInfo {
-    String name();
-    String type();
-    String description();
-    boolean experimental() default false;
+@Getter
+public final class ClickProcessor {
+
+    private final PlayerData data;
+    private long lastSwing = -1;
+    private long delay;
+
+    public ClickProcessor(final PlayerData data) {
+        this.data = data;
+    }
+
+    public void handleArmAnimation() {
+        if (!data.getActionProcessor().isDigging() && !data.getActionProcessor().isPlacing()) {
+            if (lastSwing > 0) {
+                delay = System.currentTimeMillis() - lastSwing;
+            }
+            lastSwing = System.currentTimeMillis();
+        }
+    }
 }

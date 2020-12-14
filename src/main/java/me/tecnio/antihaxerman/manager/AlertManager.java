@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 Tecnio
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,73 +17,54 @@
 
 package me.tecnio.antihaxerman.manager;
 
-import io.github.retrooper.packetevents.PacketEvents;
-import me.tecnio.antihaxerman.AntiHaxerman;
-import me.tecnio.antihaxerman.Config;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.utils.other.ChatUtils;
+import me.tecnio.antihaxerman.util.ColorUtil;
+import io.github.retrooper.packetevents.PacketEvents;
+import lombok.Getter;
+import me.tecnio.antihaxerman.config.Config;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.HashSet;
+import java.util.Set;
 
+@Getter
 public final class AlertManager {
 
-    private static final ExecutorService alertExecutor = Executors.newSingleThreadExecutor();
+    private static final Set<PlayerData> alerts = new HashSet<>();
 
-    public static List<PlayerData> playersWithAlerts = new ArrayList<>();
-    public static List<PlayerData> playersWithVerbose= new ArrayList<>();
-
-    public static void toggleAlerts(PlayerData data) {
-        if (!playersWithAlerts.contains(data)) {
-            playersWithAlerts.add(data);
+    public static ToggleAlertType toggleAlerts(final PlayerData data) {
+        if (alerts.contains(data)) {
+            alerts.remove(data);
+            return ToggleAlertType.REMOVE;
         } else {
-            playersWithAlerts.remove(data);
+            alerts.add(data);
+            return ToggleAlertType.ADD;
         }
     }
 
-    public static void toggleVerbose(PlayerData data) {
-        if (!playersWithVerbose.contains(data)) {
-            playersWithVerbose.add(data);
-        } else {
-            playersWithVerbose.remove(data);
-        }
-    }
-
-    private static final String alertFormat = ChatUtils.color(Config.ALERT_FORMAT);
-
-    public static void alertCheck(PlayerData data, Check check, String information) {
-        final String message = alertFormat
+    public static void handleAlert(final Check check, final PlayerData data, final String info) {
+        TextComponent alertMessage = new TextComponent(ColorUtil.translate(Config.ALERT_FORMAT)
                 .replaceAll("%player%", data.getPlayer().getName())
                 .replaceAll("%check%", check.getCheckInfo().name())
-                .replaceAll("%type%", check.getCheckInfo().type())
-                .replaceAll("%vl%", "" + check.getVl());
+                .replaceAll("%dev%", check.getCheckInfo().experimental() ? ColorUtil.translate("&7*") : "")
+                .replaceAll("%vl%", Integer.toString(check.getVl()))
+                .replaceAll("%type%", check.getCheckInfo().type()));
 
-        if (Config.LOG_TO_CONSOLE) AntiHaxerman.getInstance().getLogger().info(message);
+        alertMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + data.getPlayer().getName()));
+        alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ColorUtil.translate(
+                "&aDescription: &f" + check.getCheckInfo().description() +
+                "\n&aInfo: &7" + info +
+                "\n&aPing: &7" + PacketEvents.getAPI().getPlayerUtils().getPing(data.getPlayer()) +
+                "\n&aTPS: &7" + String.format("%.2f", PacketEvents.getAPI().getServerUtils().getTPS()) +
+                "\n&aClick to teleport.")).create()));
+        alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));
+    }
 
-        alertExecutor.execute(() -> {
-            TextComponent alertMessage = new TextComponent(message);
-
-            alertMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + data.getPlayer().getName()));
-            alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatUtils.color("Info:\n" + information + "\n" +
-                    "\nPing: " + data.getKeepAlivePing() +
-                    "\nTPS: " + PacketEvents.getAPI().getServerUtils().getTPS() +
-                    "\n&cClick to teleport!")).create()));
-
-            playersWithAlerts.forEach(dataToAlert -> {
-                if (Math.abs(dataToAlert.getLastAlertMessage() - System.currentTimeMillis()) > 1000) {
-                    dataToAlert.getPlayer().spigot().sendMessage(alertMessage);
-                    dataToAlert.setLastAlertMessage(System.currentTimeMillis());
-                }
-            });
-
-            playersWithVerbose.forEach(dataToAlert -> dataToAlert.getPlayer().spigot().sendMessage(alertMessage));
-        });
+    public enum ToggleAlertType {
+        ADD, REMOVE;
     }
 }

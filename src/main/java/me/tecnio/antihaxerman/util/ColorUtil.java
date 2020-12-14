@@ -15,18 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check;
+package me.tecnio.antihaxerman.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.experimental.UtilityClass;
+import org.bukkit.ChatColor;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface CheckInfo {
-    String name();
-    String type();
-    String description();
-    boolean experimental() default false;
+@UtilityClass
+public class ColorUtil {
+
+    public String translate(final String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
 }

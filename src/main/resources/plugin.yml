@@ -1,4 +1,16 @@
 name: AntiHaxerman
-authors: [ Tecnio ]
-version: 1.0
-main: me.tecnio.antihaxerman.AntiHaxerman
+version: 3.0
+main: me.tecnio.antihaxerman
+authors: [Tecnio]
+description: AntiHaxerman AntiCheat
+
+commands:
+  antihaxerman:
+    description: Commands for AntiHaxerman Anticheat.
+    usage: /antihaxerman
+    aliases: [ahm]
+    permission: antihaxerman.commands
+  alerts:
+    description: Toggles alerts for AntiHaxerman Anticheat.
+    usage: /alerts
+    permission: antihaxerman.alerts

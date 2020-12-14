@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check;
+package me.tecnio.antihaxerman.command;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,9 +24,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface CheckInfo {
+public @interface CommandInfo {
     String name();
-    String type();
-    String description();
-    boolean experimental() default false;
+    String purpose();
+    String syntax() default "";
 }

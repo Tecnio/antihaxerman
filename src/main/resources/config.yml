@@ -1,94 +1,32 @@
-#
-# AntiHaxerman Config File
-# by Tecnio
-#
+##############################
+# AntiHaxerman Configuration #
+##############################
 
-alerts:
-  format: "&cAntiHaxerman &8> &c%player%&8 has failed &c%check% &8(&cType %type%&8) VL: &c%vl%"
-  log-to-console: false
+########################################################################################################################
+# Anticheat testing mode.                                                                                              #
+# If enabled, no punishments will occur and alerts will enable automatically on join.                                  #
+########################################################################################################################
+testmode: false
+########################################################################################################################
+# Anticheat response configuration.                                                                                    #
+# If you want to change how the anticheat looks/responds, you can do it here.                                          #
+########################################################################################################################
+response:
+  anticheat:
+    prefix: '&cAntiHaxerman &8> '
+  command:
+    prefix: '&cAntiHaxerman &8> '
 
+violations:
+  alert-format: '&cAntiHaxerman &8> &c%player%&8 has failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%"'
+  clear-violations-delay: 15
+
+########################################################################################################################
+# Check configuration                                                                                                  #
+# enabled: Turns the check on/off.                                                                                     #
+# max-violations: Amount of times a player can flag before running the specified punish-command.                       #
+# punish-command: Command ran by the server when a player exceeds the specified max-violations.                        #
+########################################################################################################################
 checks:
-  aim:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  angle:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  aura:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  autoblock:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  autoclicker:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  badpackets:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  fastclimb:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  flight:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  inventory:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  invmove:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  largemove:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  motion:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  nofall:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  noslowdown:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  omnisprint:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  pingspoof:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  post:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  reach:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  speed:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  timer:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
-  velocity:
-    enabled: true
-    punish-commands:
-      - ban %player% Unfair Advantage
+  combat:
+    aim:

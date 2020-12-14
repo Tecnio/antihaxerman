@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 Tecnio
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,29 +17,113 @@
 
 package me.tecnio.antihaxerman.check;
 
-import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
-import io.github.retrooper.packetevents.packetwrappers.in.useentity.WrappedPacketInUseEntity;
+import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
+import me.tecnio.antihaxerman.manager.AlertManager;
+import me.tecnio.antihaxerman.packet.Packet;
 import lombok.Getter;
 import lombok.Setter;
-import me.tecnio.antihaxerman.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.manager.AlertManager;
-import me.tecnio.antihaxerman.manager.PunishmentManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
-@Getter @Setter
+import java.util.Objects;
+
+@Getter
 public abstract class Check {
+
     protected final PlayerData data;
 
-    protected double buffer;
     private int vl;
-    private boolean flagging;
+    private CheckType checkType;
+    @Setter private int maxVl;
+    private double buffer;
+    @Setter private String punishCommand;
 
-    public boolean enabled;
-
-    public Check(PlayerData data) {
+    public Check(final PlayerData data) {
         this.data = data;
-        enabled = Config.ENABLED_CHECKS.get(this.getCheckInfo().name());
+
+        final String packageName = this.getClass().getPackage().getName();
+
+        if (packageName.contains("combat")) {
+            checkType = CheckType.COMBAT;
+        } else if (packageName.contains("movement")) {
+            checkType = CheckType.MOVEMENT;
+        } else if (packageName.contains("player")) {
+            checkType = CheckType.PLAYER;
+        }
+    }
+
+    public abstract void handle(final Packet packet);
+
+    public void fail(final Object info) {
+        ++vl;
+        data.setTotalViolations(data.getTotalViolations() + 1);
+
+        switch (checkType) {
+            case COMBAT:
+                data.setCombatViolations(data.getCombatViolations() + 1);
+                break;
+            case MOVEMENT:
+                data.setMovementViolations(data.getMovementViolations() + 1);
+                break;
+            case PLAYER:
+                data.setPlayerViolations(data.getPlayerViolations() + 1);
+                break;
+        }
+
+        AlertManager.handleAlert(this, data, Objects.toString(info));
+    }
+
+    public void fail() {
+        ++vl;
+        AlertManager.handleAlert(this, data, "");
+    }
+
+    protected boolean isExempt(final ExemptType exemptType) {
+        return data.getExemptProcessor().isExempt(exemptType);
+    }
+
+    protected boolean isExempt(final ExemptType... exemptTypes) {
+        return data.getExemptProcessor().isExempt(exemptTypes);
+    }
+
+    public long now() {
+        return System.currentTimeMillis();
+    }
+
+    public int ticks() { return AntiHaxerman.INSTANCE.getTickManager().getTicks(); }
+
+    public double increaseBuffer() {
+        return buffer = Math.min(10000, buffer + 1);
+    }
+
+    public double increaseBufferBy(final double amount) {
+        return buffer = Math.min(10000, buffer + amount);
+    }
+
+    public double decreaseBuffer() {
+        return buffer = Math.max(0, buffer - 1);
+    }
+
+    public double decreaseBufferBy(final double amount) {
+        return buffer = Math.max(0, buffer - amount);
+    }
+
+    public void resetBuffer() {
+        buffer = 0;
+    }
+
+    public void multiplyBuffer(final double multiplier) {
+        buffer *= multiplier;
+    }
+
+    public int hitTicks() {
+        return data.getCombatProcessor().getHitTicks();
+    }
+
+    public boolean digging() {
+        return data.getActionProcessor().isDigging();
     }
 
     public CheckInfo getCheckInfo() {
@@ -51,54 +135,17 @@ public abstract class Check {
         return null;
     }
 
-    protected void flag() {
-        flag("No information.");
+    public void debug(final Object object) {
+        Bukkit.broadcastMessage(ChatColor.GREEN + "[AHM-Debug] " + ChatColor.GRAY + object);
     }
 
-    protected void flag(String information) {
-        if (!flagging) {
-            flagging = true;
-
-            vl++;
-            AlertManager.alertCheck(data, this, information);
-
-            if (vl >= getCheckInfo().maxVL()) {
-                PunishmentManager.punish(this, data);
-            }
-
-            flagging = false;
+    public void debug(final Object... objects) {
+        for (Object object : objects) {
+            Bukkit.broadcastMessage(ChatColor.GREEN + "[AHM-Debug] " + ChatColor.GRAY + object);
         }
     }
 
-
-    public void onPacketReceive(final PacketReceiveEvent event) { }
-    public void onPacketSend(final PacketSendEvent event) { }
-    public void onFlying() {}
-    public void onMove() {}
-    public void onRotation() {}
-    public void onAttack(final WrappedPacketInUseEntity wrapper) {}
-
-    public double increaseBufferBy(final double num) {
-        buffer = Math.min(Double.MAX_VALUE, buffer + num);
-        return buffer;
-    }
-
-    public double increaseBuffer() {
-        buffer = Math.min(Double.MAX_VALUE, buffer + 1);
-        return buffer;
-    }
-
-    public double decreaseBuffer() {
-        buffer = Math.max(0, buffer - 1);
-        return buffer;
-    }
-
-    public double decreaseBufferBy(final double num) {
-        buffer = Math.max(0, buffer - num);
-        return buffer;
-    }
-
-    public void resetBuffer() {
-        buffer = 0;
+    enum CheckType {
+        COMBAT, MOVEMENT, PLAYER;
     }
 }

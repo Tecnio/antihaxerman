@@ -15,18 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check;
+package me.tecnio.antihaxerman;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.retrooper.packetevents.PacketEvents;
+import org.bukkit.plugin.java.JavaPlugin;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface CheckInfo {
-    String name();
-    String type();
-    String description();
-    boolean experimental() default false;
+public final class AntiHaxermanPlugin extends JavaPlugin {
+
+    @Override
+    public void onLoad() {
+        PacketEvents.load();
+    }
+
+    @Override
+    public void onEnable() {
+        AntiHaxerman.INSTANCE.start(this);
+        PacketEvents.init(this);
+    }
+
+    @Override
+    public void onDisable() {
+        PacketEvents.stop();
+        AntiHaxerman.INSTANCE.stop(this);
+    }
 }
