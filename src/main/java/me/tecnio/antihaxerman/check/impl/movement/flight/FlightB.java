@@ -33,22 +33,24 @@ public final class FlightB extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final double deltaY = data.getPositionProcessor().getDeltaY();
+        if (packet.isFlying()) {
+            final double deltaY = data.getPositionProcessor().getDeltaY();
 
-        final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-        final int airTicksLimit = 6 + airTicksModifier;
+            final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
+            final int airTicksLimit = 6 + airTicksModifier;
 
-        final int airTicks = data.getPositionProcessor().getAirTicks();
+            final int airTicks = data.getPositionProcessor().getAirTicks();
 
-        final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-        final boolean invalid = airTicks > airTicksLimit && deltaY > 0.0;
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
+            final boolean invalid = airTicks > airTicksLimit && deltaY > 0.0;
 
-        if (invalid && !exempt) {
-            if (increaseBuffer() > 2) {
-                fail();
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 2) {
+                    fail();
+                }
+            } else {
+                decreaseBufferBy(0.01);
             }
-        } else {
-            decreaseBufferBy(0.01);
         }
     }
 }

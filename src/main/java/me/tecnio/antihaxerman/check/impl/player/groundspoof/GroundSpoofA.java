@@ -42,7 +42,7 @@ public final class GroundSpoofA extends Check {
             final boolean serverGround = wrapper.getY() % 0.015625 == 0.0 && lastY % 0.015625 == 0.0;
 
             final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.LIQUID, ExemptType.CLIMBABLE, ExemptType.VEHICLE);
-            final boolean invalid = clientGround != serverGround && data.getPositionProcessor().isInAir();
+            final boolean invalid = clientGround != serverGround;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {

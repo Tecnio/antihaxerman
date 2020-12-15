@@ -31,22 +31,24 @@ public final class FlightC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final boolean onGround = !data.getPositionProcessor().isInAir();
+        if (packet.isFlying()) {
+            final boolean onGround = !data.getPositionProcessor().isInAir();
 
-        final double deltaY = data.getPositionProcessor().getDeltaY();
-        final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+            final double deltaY = data.getPositionProcessor().getDeltaY();
+            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
-        final double difference = Math.abs(deltaY - lastDeltaY);
+            final double difference = Math.abs(deltaY - lastDeltaY);
 
-        final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE);
-        final boolean invalid = difference < 0.01 && !onGround;
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE);
+            final boolean invalid = difference < 0.01 && !onGround;
 
-        if (invalid && !exempt) {
-            if (increaseBuffer() > 2) {
-                fail();
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 2) {
+                    fail();
+                }
+            } else {
+                decreaseBufferBy(0.25);
             }
-        } else {
-            decreaseBufferBy(0.25);
         }
     }
 }

@@ -33,26 +33,28 @@ public final class FlightA extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final int airTicks = data.getPositionProcessor().getAirTicks();
+        if (packet.isFlying()) {
+            final int airTicks = data.getPositionProcessor().getAirTicks();
 
-        final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-        final int airTicksLimit = 10 + airTicksModifier;
+            final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
+            final int airTicksLimit = 10 + airTicksModifier;
 
-        final double deltaY = data.getPositionProcessor().getDeltaY();
-        final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+            final double deltaY = data.getPositionProcessor().getDeltaY();
+            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
-        final double predicted = (lastDeltaY - 0.08) * 0.9800000190734863;
-        final double difference = Math.abs(deltaY - predicted);
+            final double predicted = (lastDeltaY - 0.08) * 0.9800000190734863;
+            final double difference = Math.abs(deltaY - predicted);
 
-        final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-        final boolean invalid = difference > 0.005 && Math.abs(predicted) >= 0.005 && airTicks > airTicksLimit;
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
+            final boolean invalid = difference > 0.005 && Math.abs(predicted) >= 0.005 && airTicks > airTicksLimit;
 
-        if (invalid && !exempt) {
-            if (increaseBuffer() > 4) {
-                fail();
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 4) {
+                    fail();
+                }
+            } else {
+                decreaseBufferBy(0.05);
             }
-        } else {
-            decreaseBufferBy(0.05);
         }
     }
 }

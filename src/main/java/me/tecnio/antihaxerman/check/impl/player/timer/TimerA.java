@@ -30,6 +30,8 @@ public final class TimerA extends Check {
 
     @Override
     public void handle(final Packet packet) {
+        if (packet.isFlying()) {
 
+        }
     }
 }
