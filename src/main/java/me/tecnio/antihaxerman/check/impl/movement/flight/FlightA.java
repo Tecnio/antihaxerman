@@ -33,11 +33,10 @@ public final class FlightA extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final boolean onGround = data.getPositionProcessor().isOnGround();
         final int airTicks = data.getPositionProcessor().getAirTicks();
 
         final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-        final int airTicksLimit = 6 + airTicksModifier;
+        final int airTicksLimit = 10 + airTicksModifier;
 
         final double deltaY = data.getPositionProcessor().getDeltaY();
         final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
@@ -46,7 +45,7 @@ public final class FlightA extends Check {
         final double difference = Math.abs(deltaY - predicted);
 
         final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-        final boolean invalid = difference > 0.005 && Math.abs(predicted) >= 0.005 && !onGround && airTicks > airTicksLimit && data.getPlayer().getVelocity().getY() < 0.075;
+        final boolean invalid = difference > 0.005 && Math.abs(predicted) >= 0.005 && airTicks > airTicksLimit;
 
         if (invalid && !exempt) {
             if (increaseBuffer() > 4) {

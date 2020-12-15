@@ -15,12 +15,15 @@ public final class AimC extends Check {
     public void handle(final Packet packet) {
         final double sensitivity = data.getRotationProcessor().getSensitivity();
 
-        if (sensitivity < 0.0F) {
+        final boolean exempt = data.getRotationProcessor().isCinematic();
+        final boolean invalid = sensitivity < 0.0F;
+
+        if (invalid && !exempt) {
             if (increaseBuffer() > 5) {
                 fail();
             }
         } else {
-            decreaseBuffer();
+            decreaseBufferBy(2);
         }
     }
 }

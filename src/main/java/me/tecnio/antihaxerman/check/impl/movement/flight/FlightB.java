@@ -39,17 +39,16 @@ public final class FlightB extends Check {
         final int airTicksLimit = 6 + airTicksModifier;
 
         final int airTicks = data.getPositionProcessor().getAirTicks();
-        final boolean onGround = data.getPositionProcessor().isOnGround();
 
         final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-        final boolean invalid = airTicks > airTicksLimit && deltaY > 0.0 && !onGround && data.getPlayer().getVelocity().getY() < 0.075;
+        final boolean invalid = airTicks > airTicksLimit && deltaY > 0.0;
 
         if (invalid && !exempt) {
             if (increaseBuffer() > 2) {
                 fail();
             }
         } else {
-            decreaseBufferBy(0.05);
+            decreaseBufferBy(0.01);
         }
     }
 }

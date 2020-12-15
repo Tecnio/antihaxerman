@@ -143,12 +143,12 @@ public abstract class Check {
     }
 
     public void debug(final Object object) {
-        Bukkit.broadcastMessage(ChatColor.GREEN + "[AHM-Debug] " + ChatColor.GRAY + object);
+        Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
     }
 
     public void debug(final Object... objects) {
         for (Object object : objects) {
-            Bukkit.broadcastMessage(ChatColor.GREEN + "[AHM-Debug] " + ChatColor.GRAY + object);
+            Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
         }
     }
 

@@ -51,6 +51,27 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    autoclicker:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
   movement:
     speed:
       a:
@@ -71,6 +92,26 @@ checks:
         max-violations: 50
         punish-command: ''
       c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    motion:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+  player:
+    groundspoof:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    timer:
+      a:
         enabled: true
         max-violations: 50
         punish-command: ''

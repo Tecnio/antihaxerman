@@ -31,7 +31,7 @@ public final class FlightC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final boolean onGround = data.getPositionProcessor().isOnGround();
+        final boolean onGround = !data.getPositionProcessor().isInAir();
 
         final double deltaY = data.getPositionProcessor().getDeltaY();
         final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();

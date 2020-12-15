@@ -19,6 +19,8 @@ package me.tecnio.antihaxerman.data.processor;
 
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.util.MathUtil;
+import me.tecnio.antihaxerman.util.type.EvictingList;
 
 @Getter
 public final class ClickProcessor {
@@ -26,6 +28,9 @@ public final class ClickProcessor {
     private final PlayerData data;
     private long lastSwing = -1;
     private long delay;
+    private int movements;
+    private double cps, rate;
+    private final EvictingList<Integer> clicks = new EvictingList<>(10);
 
     public ClickProcessor(final PlayerData data) {
         this.data = data;
@@ -38,5 +43,27 @@ public final class ClickProcessor {
             }
             lastSwing = System.currentTimeMillis();
         }
+
+        final boolean digging = data.getActionProcessor().getLastDiggingTick() < 10;
+
+        click: {
+            if (digging || movements > 5) break click;
+
+            clicks.add(movements);
+        }
+
+        if (clicks.size() > 5) {
+            final double cps = MathUtil.getCps(clicks);
+            final double rate = cps * movements;
+
+            this.cps = cps;
+            this.rate = rate;
+        }
+
+        movements = 0;
+    }
+
+    public void handleFlying() {
+        movements++;
     }
 }

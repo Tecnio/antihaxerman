@@ -23,11 +23,19 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.AimB;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimC;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
+import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerA;
+import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerB;
+import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerC;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
+import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -44,11 +52,19 @@ public final class CheckManager {
             AimC.class,
             AimD.class,
             AuraA.class,
+            AuraB.class,
+            AuraC.class,
+            AutoClickerA.class,
+            AutoClickerB.class,
+            AutoClickerC.class,
             SpeedA.class,
             SpeedB.class,
             FlightA.class,
             FlightB.class,
             FlightC.class,
+            MotionA.class,
+            GroundSpoofA.class,
+            GroundSpoofB.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

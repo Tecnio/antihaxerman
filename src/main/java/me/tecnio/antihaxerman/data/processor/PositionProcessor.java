@@ -162,7 +162,7 @@ public final class PositionProcessor {
         inAir = blocks.stream().allMatch(block -> block.getType() == Material.AIR);
         onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
         onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
-        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.8)
+        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5)
                 .anyMatch(block -> block.getType() != Material.AIR);
         onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
         nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
