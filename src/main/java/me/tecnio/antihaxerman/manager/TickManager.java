@@ -17,9 +17,9 @@
 
 package me.tecnio.antihaxerman.manager;
 
+import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.util.type.Pair;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -48,7 +48,7 @@ public final class TickManager implements Runnable {
     public void run() {
         ticks++;
 
-        PlayerDataManager.getInstance().getAllData().parallelStream()
+        PlayerDataManager.getInstance().getAllData()
                 .forEach(data -> {
                     final Entity target = data.getCombatProcessor().getTarget();
                     final Entity lastTarget = data.getCombatProcessor().getLastTarget();

@@ -85,7 +85,9 @@ public final class Packet {
 
     public boolean isCloseWindow() { return isReceiving() && packetId == PacketType.Play.Client.CLOSE_WINDOW; }
 
-    public boolean isKeepAlive() { return isReceiving() && packetId == PacketType.Play.Client.KEEP_ALIVE; }
+    public boolean isIncomingKeepAlive() { return isReceiving() && packetId == PacketType.Play.Client.KEEP_ALIVE; }
+
+    public boolean isOutgoingKeepAlive() { return isSending() && packetId == PacketType.Play.Server.KEEP_ALIVE; }
 
     public boolean isSteerVehicle() {
         return isReceiving() && packetId == PacketType.Play.Client.STEER_VEHICLE;

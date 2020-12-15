@@ -17,14 +17,14 @@
 
 package me.tecnio.antihaxerman.data;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.tecnio.antihaxerman.check.Check;
+import me.tecnio.antihaxerman.data.processor.*;
 import me.tecnio.antihaxerman.exempt.ExemptProcessor;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.type.EvictingList;
 import me.tecnio.antihaxerman.util.type.Pair;
-import lombok.Getter;
-import lombok.Setter;
-import me.tecnio.antihaxerman.data.processor.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

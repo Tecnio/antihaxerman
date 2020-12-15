@@ -21,7 +21,6 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.blockdig.WrappedP
 import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
-import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
@@ -75,11 +74,6 @@ public final class ReceivingPacketProcessor  {
             data.getClickProcessor().handleArmAnimation();
 
             data.getCombatProcessor().handleArmAnimation();
-        }
-        if (packet.isIncomingTransaction()) {
-            final WrappedPacketInTransaction wrapper = new WrappedPacketInTransaction(packet.getRawPacket());
-
-            data.getVelocityProcessor().handleTransaction(wrapper);
         }
         data.getChecks().forEach(check -> check.handle(packet));
     }

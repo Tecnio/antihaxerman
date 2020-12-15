@@ -36,6 +36,7 @@ import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
+import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -65,6 +66,7 @@ public final class CheckManager {
             MotionA.class,
             GroundSpoofA.class,
             GroundSpoofB.class,
+            TimerA.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
