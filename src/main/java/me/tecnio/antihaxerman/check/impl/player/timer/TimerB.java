@@ -33,17 +33,17 @@ public final class TimerB extends Check {
         super(data);
     }
 
-    // Thanks to GladUrBad for informing me about this check. Lets see if its good lol.
+    // Thanks to GladUrBad for informing me about this check. I have made it lets see if its good lol.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final long now = now();
 
-            final boolean exempt = isExempt(ExemptType.JOINED) || (now - lastFlying) < 1;
+            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
 
-            analyze: {
-                if (exempt) break analyze;
+            handle: {
+                if (exempt) break handle;
 
                 balance += 50;
                 balance -= (now - lastFlying);
