@@ -50,7 +50,7 @@ public final class TimerB extends Check {
 
                 if (balance > 0) {
                     fail();
-                    balance -= 50;
+                    balance = 0;
                 }
             }
 
