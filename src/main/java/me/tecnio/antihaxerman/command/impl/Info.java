@@ -40,20 +40,20 @@ public final class Info extends AntiHaxermanCommand {
 
                 if (playerData != null) {
                     sendLineBreak(sender);
-                    sendMessage(sender, ColorUtil.translate("&aInformation for &c" + playerData.getPlayer().getName() + "&a."));
+                    sendMessage(sender, ColorUtil.translate("&cInformation for &c" + playerData.getPlayer().getName() + "&a."));
                     sendRetardedNewLine(sender);
                     sendMessage(sender, ColorUtil.translate("&2&oGeneral information:"));
                     sendMessage(sender, ColorUtil.translate("&aLatency → &2" + PacketEvents.get().getPlayerUtils().getPing(playerData.getPlayer())) + "ms");
-                    sendMessage(sender, ColorUtil.translate("&aChecks amount → &2" + playerData.getChecks().size()));
-                    sendMessage(sender, ColorUtil.translate("&aSensitivity → &2" + playerData.getRotationProcessor().getSensitivity() + "%"));
+                    sendMessage(sender, ColorUtil.translate("&cChecks amount → &2" + playerData.getChecks().size()));
+                    sendMessage(sender, ColorUtil.translate("&cSensitivity → &2" + playerData.getRotationProcessor().getSensitivity() + "%"));
                     final String clientBrand = playerData.getClientBrand() == null ? "&cCould not resolve client brand for this player." : playerData.getClientBrand();
-                    sendMessage(sender, ColorUtil.translate("&aClient brand: → &2" + clientBrand));
+                    sendMessage(sender, ColorUtil.translate("&cClient brand: → &2" + clientBrand));
                     sendRetardedNewLine(sender);
                     sendMessage(sender, ColorUtil.translate("&2&oViolations information:"));
-                    sendMessage(sender, ColorUtil.translate("&aTotal check violations → &2" + playerData.getTotalViolations()));
-                    sendMessage(sender, ColorUtil.translate("&aCombat check violations → &2" + playerData.getCombatViolations()));
-                    sendMessage(sender, ColorUtil.translate("&aMovement check violations → &2" + playerData.getMovementViolations()));
-                    sendMessage(sender, ColorUtil.translate("&aPlayer check violations → &2" + playerData.getPlayerViolations()));
+                    sendMessage(sender, ColorUtil.translate("&cTotal check violations → &2" + playerData.getTotalViolations()));
+                    sendMessage(sender, ColorUtil.translate("&cCombat check violations → &2" + playerData.getCombatViolations()));
+                    sendMessage(sender, ColorUtil.translate("&cMovement check violations → &2" + playerData.getMovementViolations()));
+                    sendMessage(sender, ColorUtil.translate("&cPlayer check violations → &2" + playerData.getPlayerViolations()));
                     sendLineBreak(sender);
                     return true;
                 }

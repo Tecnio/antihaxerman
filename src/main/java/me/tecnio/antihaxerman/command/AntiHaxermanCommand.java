@@ -27,7 +27,7 @@ public abstract class AntiHaxermanCommand implements Comparable<AntiHaxermanComm
     protected abstract boolean handle(final CommandSender sender, final Command command, final String label, final String[] args);
 
     public void sendLineBreak(final CommandSender sender) {
-        sender.sendMessage(ColorUtil.translate("&2&m--------------------------------------------------"));
+        sender.sendMessage(ColorUtil.translate("&8&m--------------------------------------------------"));
     }
 
     public void sendRetardedNewLine(final CommandSender sender) {

@@ -56,11 +56,11 @@ public final class AlertManager {
 
         alertMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + data.getPlayer().getName()));
         alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ColorUtil.translate(
-                "&aDescription: &f" + check.getCheckInfo().description() +
-                "\n&aInfo: &7" + info +
-                "\n&aPing: &7" + PacketEvents.get().getPlayerUtils().getPing(data.getPlayer()) +
-                "\n&aTPS: &7" + String.format("%.2f", Math.min(20, PacketEvents.get().getServerUtils().getTPS())) +
-                "\n&aClick to teleport.")).create()));
+                "&cDescription: &f" + check.getCheckInfo().description() +
+                "\n&cInfo: &7" + info +
+                "\n&cPing: &7" + PacketEvents.get().getPlayerUtils().getPing(data.getPlayer()) +
+                "\n&cTPS: &7" + String.format("%.2f", Math.min(20, PacketEvents.get().getServerUtils().getTPS())) +
+                "\n&cClick to teleport.")).create()));
 
         alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));
     }

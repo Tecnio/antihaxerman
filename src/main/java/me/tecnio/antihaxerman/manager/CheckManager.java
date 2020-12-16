@@ -25,18 +25,22 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraD;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerA;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerB;
-import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerC;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightD;
 import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
+import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -55,18 +59,22 @@ public final class CheckManager {
             AuraA.class,
             AuraB.class,
             AuraC.class,
+            AuraD.class,
             AutoClickerA.class,
             AutoClickerB.class,
-            AutoClickerC.class,
             SpeedA.class,
             SpeedB.class,
+            SpeedC.class,
             FlightA.class,
             FlightB.class,
             FlightC.class,
+            FlightD.class,
             MotionA.class,
             GroundSpoofA.class,
             GroundSpoofB.class,
+            GroundSpoofC.class,
             TimerA.class,
+            TimerB.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

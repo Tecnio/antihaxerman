@@ -58,7 +58,6 @@ public final class VelocityProcessor {
     }
 
     public void handleTransaction(final WrappedPacketInTransaction wrapper) {
-
         if (this.verifyingVelocity && wrapper.getActionNumber() == this.velocityID) {
             this.verifyingVelocity = false;
             this.velocityTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();

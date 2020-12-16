@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.combat.autoclicker;
+package me.tecnio.antihaxerman.check.impl.combat.aura;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.check.Check;
@@ -23,12 +23,12 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "AutoClicker", type = "C", description = "Checks for consistent click pattern.")
-public final class AutoClickerC extends Check {
+@CheckInfo(name = "Aura", type = "D", description = "Checks for frequency of the clicks.")
+public final class AuraD extends Check {
 
     private int movements = 0, lastMovements = 0, total = 0, invalid = 0;
 
-    public AutoClickerC(final PlayerData data) {
+    public AuraD(final PlayerData data) {
         super(data);
     }
 

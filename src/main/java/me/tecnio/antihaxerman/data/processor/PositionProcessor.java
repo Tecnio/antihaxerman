@@ -45,7 +45,7 @@ public final class PositionProcessor {
             blockNearHead, onClimbable, onSolidGround, nearBoat, onSlime,
             onIce, nearPiston;
 
-    private int airTicks, sinceVehicleTicks, sinceFlyingTicks,
+    private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
             groundTicks, teleportTicks, sinceSlimeTicks, solidGroundTicks,
             iceTicks, sinceIceTicks;
 
@@ -84,13 +84,19 @@ public final class PositionProcessor {
     }
 
     public void handleTicks() {
-        if (onGround && mathematicallyOnGround) ++groundTicks;
+        if (onGround) ++groundTicks;
         else groundTicks = 0;
 
         if (inAir) {
             ++airTicks;
         } else {
             airTicks = 0;
+        }
+
+        if (!onGround) {
+            ++clientAirTicks;
+        } else {
+            clientAirTicks = 0;
         }
 
         ++teleportTicks;

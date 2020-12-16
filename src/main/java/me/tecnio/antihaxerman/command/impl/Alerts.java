@@ -38,9 +38,9 @@ public final class Alerts extends AntiHaxermanCommand {
 
             if (data != null) {
                 if (AlertManager.toggleAlerts(data) == AlertManager.ToggleAlertType.ADD) {
-                    sendMessage(sender, ColorUtil.translate("&aToggled your cheat alerts &2on&a."));
+                    sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &2on&a."));
                 } else {
-                    sendMessage(sender, ColorUtil.translate("&aToggled your cheat alerts &coff&a."));
+                    sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &coff&a."));
                 }
                 return true;
             }

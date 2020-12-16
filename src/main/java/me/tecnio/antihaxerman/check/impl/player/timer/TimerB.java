@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.flight;
+package me.tecnio.antihaxerman.check.impl.player.timer;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -23,32 +23,40 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Flight", type = "C", description = "Checks for small vertical movement.")
-public final class FlightC extends Check {
-    public FlightC(final PlayerData data) {
+@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
+public final class TimerB extends Check {
+
+    private long lastFlying = 0;
+    private long balance = 0;
+
+    public TimerB(final PlayerData data) {
         super(data);
     }
+
+    // Thanks to GladUrBad for informing me about this check. Lets see if its good lol.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean onGround = !data.getPositionProcessor().isInAir() || data.getPositionProcessor().isOnGround();
+            final long now = now();
 
-            final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+            final boolean exempt = isExempt(ExemptType.JOINED) || (now - lastFlying) < 1;
 
-            final double difference = Math.abs(deltaY - lastDeltaY);
+            analyze: {
+                if (exempt) break analyze;
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE);
-            final boolean invalid = difference < 0.01 && !onGround;
+                balance += 50;
+                balance -= (now - lastFlying);
 
-            if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (balance > 0) {
                     fail();
+                    balance -= 50;
                 }
-            } else {
-                decreaseBufferBy(0.25);
             }
+
+            this.lastFlying = now;
+        } else if (packet.isTeleport()) {
+            balance -= 50;
         }
     }
 }

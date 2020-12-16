@@ -27,12 +27,11 @@ import java.util.function.Function;
 @Getter
 public enum ExemptType {
 
-    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(data.getPlayer().getLocation().getBlockX() << 4,
-            data.getPlayer().getLocation().getBlockZ() << 4)),
+    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded((int) Math.floor(data.getPositionProcessor().getX()) << 4, (int) Math.floor(data.getPositionProcessor().getZ()) << 4)),
 
     TPS(data -> ServerUtil.getTPS() < 18.5D),
 
-    TELEPORT(data -> data.getPositionProcessor().getTeleportTicks() < 30),
+    TELEPORT(data -> data.getPositionProcessor().getTeleportTicks() < 40),
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
@@ -63,6 +62,8 @@ public enum ExemptType {
     AUTOCLICKER(data -> data.getExemptProcessor().isExempt(ExemptType.PLACING, ExemptType.DIGGING, ExemptType.BLOCK_BREAK)),
 
     WEB(data -> data.getPositionProcessor().isInWeb()),
+
+    JOINED(data -> System.currentTimeMillis() - data.getJoinTime() < 5000L),
 
     CLIMBABLE(data -> data.getPositionProcessor().isOnClimbable());
 

@@ -59,14 +59,14 @@ public final class CommandManager implements CommandExecutor {
                     }
                 }
             } else {
-                commandSender.sendMessage(ColorUtil.translate("&2&m--------------------------------------------------"));
-                commandSender.sendMessage(ColorUtil.translate("&AntiHaxerman AntiCheat Commands:\n" + " \n"));
+                commandSender.sendMessage(ColorUtil.translate("&8&m--------------------------------------------------"));
+                commandSender.sendMessage(ColorUtil.translate("&cAntiHaxerman Commands:\n" + " \n"));
                 for (final AntiHaxermanCommand antiHaxermanCommand : commands) {
-                    commandSender.sendMessage(ColorUtil.translate( "&a/antihaxerman " +
+                    commandSender.sendMessage(ColorUtil.translate( "&c/antihaxerman " +
                             antiHaxermanCommand.getCommandInfo().name() + " " +
                             antiHaxermanCommand.getCommandInfo().syntax()));
                 }
-                commandSender.sendMessage(ColorUtil.translate("&2&m--------------------------------------------------"));
+                commandSender.sendMessage(ColorUtil.translate("&8&m--------------------------------------------------"));
                 return true;
             }
         }

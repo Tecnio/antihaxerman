@@ -41,9 +41,9 @@ public final class Checks extends AntiHaxermanCommand {
 
                 if (playerData != null) {
                     sendLineBreak(sender);
-                    sendMessage(sender, ColorUtil.translate("&aThere are " + playerData.getChecks().size() + " registered checks for " + player.getName() + "\n" + " \n"));
+                    sendMessage(sender, ColorUtil.translate("&cThere are " + playerData.getChecks().size() + " registered checks for " + player.getName() + "\n" + " \n"));
                     for (final Check check : playerData.getChecks()) {
-                        sendMessage(sender, ColorUtil.translate("&a" + check.getCheckInfo().name() + " (" + check.getCheckInfo().type() + ")"));
+                        sendMessage(sender, ColorUtil.translate("&c" + check.getCheckInfo().name() + " (" + check.getCheckInfo().type() + ")"));
                     }
                     sendLineBreak(sender);
                     return true;

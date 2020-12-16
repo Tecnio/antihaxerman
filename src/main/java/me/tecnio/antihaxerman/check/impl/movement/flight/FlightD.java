@@ -22,12 +22,10 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.PlayerUtil;
-import org.bukkit.potion.PotionEffectType;
 
-@CheckInfo(name = "Flight", type = "A", description = "Flags flight's that don't obey gravity.")
-public final class FlightA extends Check {
-    public FlightA(final PlayerData data) {
+@CheckInfo(name = "Flight", type = "D", description = "Checks for acceleration mid-air.")
+public final class FlightD extends Check {
+    public FlightD(final PlayerData data) {
         super(data);
     }
 
@@ -35,22 +33,18 @@ public final class FlightA extends Check {
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
-            final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
-
-            final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-            final int airTicksLimit = 10 + airTicksModifier;
+            final int clientAirTicks = data.getPositionProcessor().getAirTicks();
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
-            final double predicted = (lastDeltaY - 0.08) * 0.9800000190734863;
-            final double difference = Math.abs(deltaY - predicted);
+            final double acceleration = deltaY - lastDeltaY;
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-            final boolean invalid = difference > 0.005 && Math.abs(predicted) >= 0.005 && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);
+            final boolean invalid = acceleration > 0.0 && (serverAirTicks > 1 || clientAirTicks > 1);
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 3) {
+                if (increaseBuffer() > 2) {
                     fail();
                 }
             } else {

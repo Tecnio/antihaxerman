@@ -32,13 +32,16 @@ public final class MotionA extends Check {
     }
 
     //Thanks to Elevated for that modifier jump. I stole that from his checks.
+    //Thanks to GladUrBad to sending this fix step fix on Discord much love!
     // Why 0.42F because client says so.
 
-    // TODO: 12/15/2020 STEPPING FALSES
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final double deltaY = data.getPositionProcessor().getDeltaY();
+            final double lastY = data.getPositionProcessor().getLastY();
+
+            final boolean step = deltaY % 0.015625 == 0.0 && lastY % 0.015625 == 0.0;
 
             final boolean onGround = data.getPositionProcessor().isOnGround();
             final boolean lastOnGround = data.getPositionProcessor().isLastOnGround();
@@ -47,14 +50,16 @@ public final class MotionA extends Check {
             final double expectedJumpMotion = 0.42F + modifierJump;
 
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK);
-            final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastOnGround;
+            final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastOnGround && !step;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                fail();
+            }
+
+            if (step && !exempt) {
+                if (deltaY > 0.6) {
                     fail();
                 }
-            } else {
-                decreaseBufferBy(0.005);
             }
         }
     }
