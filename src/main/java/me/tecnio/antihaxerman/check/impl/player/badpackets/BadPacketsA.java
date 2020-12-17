@@ -22,7 +22,7 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPackets", type = "A", description = "Checks if the player pitch is an impossible value.")
+@CheckInfo(name = "BadPacketsF", type = "A", description = "Checks if the player pitch is an impossible value.")
 public final class BadPacketsA extends Check {
     public BadPacketsA(final PlayerData data) {
         super(data);

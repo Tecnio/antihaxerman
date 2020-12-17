@@ -40,6 +40,8 @@ import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsB;
+import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsC;
+import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsF;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
@@ -90,6 +92,8 @@ public final class CheckManager {
             PostF.class,
             BadPacketsA.class,
             BadPacketsB.class,
+            BadPacketsC.class,
+            BadPacketsF.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

@@ -165,12 +165,24 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      f:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     badpackets:
       a:
         enabled: true
         max-violations: 50
         punish-command: ''
       b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      f:
         enabled: true
         max-violations: 50
         punish-command: ''

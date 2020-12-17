@@ -61,7 +61,11 @@ public final class Packet {
         return isReceiving() && packetId == PacketType.Play.Client.ARM_ANIMATION;
     }
 
-    public boolean isAbilities() {
+    public boolean isIncomingAbilities() {
+        return isReceiving() && packetId == PacketType.Play.Client.ABILITIES;
+    }
+
+    public boolean isOutgoingAbilities() {
         return isReceiving() && packetId == PacketType.Play.Client.ABILITIES;
     }
 

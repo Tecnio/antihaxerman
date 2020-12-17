@@ -17,32 +17,37 @@
 
 package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
-import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
+import io.github.retrooper.packetevents.packetwrappers.play.in.abilities.WrappedPacketInAbilities;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPacketsF", type = "B", description = "Checks for invalid sprint packets.")
-public final class BadPacketsB extends Check {
-    public BadPacketsB(final PlayerData data) {
+@CheckInfo(name = "BadPacketsF", type = "C", description = "Checks for fake abilities.")
+public final class BadPacketsC extends Check {
+
+    private boolean allowFlight, flying;
+
+    public BadPacketsC(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isEntityAction()) {
-            final WrappedPacketInEntityAction wrapper = new WrappedPacketInEntityAction(packet.getRawPacket());
+        if (packet.isOutgoingAbilities()) {
+            final WrappedPacketInAbilities wrapper = new WrappedPacketInAbilities(packet.getRawPacket());
 
-            final boolean sprinting = wrapper.getAction().name().contains("SPRINTING");
+            allowFlight = wrapper.isFlightAllowed();
+            flying = wrapper.isFlying();
+        } else if (packet.isIncomingAbilities()) {
+            final WrappedPacketInAbilities wrapper = new WrappedPacketInAbilities(packet.getRawPacket());
 
-            if (sprinting) {
-                if (increaseBuffer() > 1) {
-                    fail();
-                }
+            final boolean invalid = wrapper.isFlying() != flying || wrapper.isFlightAllowed() != allowFlight;
+
+            if (invalid) {
+                fail();
+                ban();
             }
-        } else if (packet.isFlying()) {
-            resetBuffer();
         }
     }
 }

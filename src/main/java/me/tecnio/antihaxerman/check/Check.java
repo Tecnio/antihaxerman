@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.check;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.manager.AlertManager;
+import me.tecnio.antihaxerman.manager.PunishmentManager;
 import me.tecnio.antihaxerman.packet.Packet;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,6 +82,10 @@ public abstract class Check {
 
             flagging = false;
         }
+    }
+
+    public void ban() {
+        PunishmentManager.punish(this, data);
     }
 
     public void fail() {
