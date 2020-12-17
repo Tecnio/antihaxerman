@@ -163,7 +163,7 @@ public class MathUtil {
     }
 
     public double getCps(final Collection<? extends Number> data) {
-        return (20 / getAverage(data)) * 50;
+        return 20 / getAverage(data);
     }
 
     public int getDuplicates(final Collection<? extends Number> data) {

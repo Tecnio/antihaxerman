@@ -15,48 +15,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.timer;
+package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
-public final class TimerB extends Check {
-
-    private long lastFlying = 0;
-    private long balance = 0;
-
-    public TimerB(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "B", description = "Checks for invalid sprint packets.")
+public final class BadPacketsB extends Check {
+    public BadPacketsB(final PlayerData data) {
         super(data);
     }
 
-    // Thanks to GladUrBad for informing me about this check. I have added it lets see if its good lol.
-
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final long now = now();
+        if (packet.isEntityAction()) {
+            final WrappedPacketInEntityAction wrapper = new WrappedPacketInEntityAction(packet.getRawPacket());
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
+            final boolean sprinting = wrapper.getAction().name().contains("SPRINTING");
 
-            handle: {
-                if (exempt) break handle;
-
-                balance += 50;
-                balance -= (now - lastFlying);
-
-                if (balance > 0) {
+            if (sprinting) {
+                if (increaseBuffer() > 1) {
                     fail();
-                    balance = 0;
                 }
             }
-
-            this.lastFlying = now;
-        } else if (packet.isTeleport()) {
-            balance -= 50;
+        } else if (packet.isFlying()) {
+            resetBuffer();
         }
     }
 }

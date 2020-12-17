@@ -21,15 +21,43 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.entity.Entity;
 
-@CheckInfo(name = "Aura", type = "C", description = "")
+@CheckInfo(name = "Aura", type = "C", description = "Checks for switch aura.")
 public final class AuraC extends Check {
+
+    private int ticks;
+
     public AuraC(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
+        if (packet.isUseEntity()) {
+            final Entity target = data.getCombatProcessor().getTarget();
+            final Entity lastTarget = data.getCombatProcessor().getLastTarget();
 
+            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
+
+            final boolean exempt = target == lastTarget;
+            final boolean invalid = (deltaYaw == 0.0 && ticks <= 5) || (deltaYaw > 5 && ticks < 2);
+
+            handle: {
+                if (exempt) break handle;
+
+                if (invalid) {
+                    if (increaseBuffer() > 1) {
+                        fail();
+                    }
+                } else {
+                    resetBuffer();
+                }
+            }
+
+            ticks = 0;
+        } else if (packet.isFlying()) {
+            ticks++;
+        }
     }
 }

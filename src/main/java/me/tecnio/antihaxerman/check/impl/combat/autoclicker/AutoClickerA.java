@@ -20,9 +20,10 @@ package me.tecnio.antihaxerman.check.impl.combat.autoclicker;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "AutoClicker", type = "A", description = "Detects high cps.")
+@CheckInfo(name = "AutoClicker", type = "A", description = "Detects high amounts of clicks in a second.")
 public final class AutoClickerA extends Check {
     public AutoClickerA(final PlayerData data) {
         super(data);
@@ -30,6 +31,15 @@ public final class AutoClickerA extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        // TODO: 12/15/2020 cps
+        if (packet.isArmAnimation()) {
+            final double cps = data.getClickProcessor().getCps();
+
+            final boolean exempt = isExempt(ExemptType.AUTOCLICKER);
+            final boolean invalid = cps > 25;
+
+            if (invalid && !exempt) {
+                fail(cps);
+            }
+        }
     }
 }

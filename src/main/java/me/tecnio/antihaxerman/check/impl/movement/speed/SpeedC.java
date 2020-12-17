@@ -54,8 +54,8 @@ public final class SpeedC extends Check {
 
             final double velocityXZ = Math.hypot(velocityX, velocityZ);
 
-            maxAirSpeed += velocityXZ + 0.2;
-            maxGroundSpeed += velocityXZ + 0.2;
+            maxAirSpeed += velocityXZ + 0.5;
+            maxGroundSpeed += velocityXZ + 0.5;
         }
 
         if (groundTicks <= 5) maxGroundSpeed += 0.15;

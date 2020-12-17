@@ -15,48 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.timer;
+package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
-public final class TimerB extends Check {
-
-    private long lastFlying = 0;
-    private long balance = 0;
-
-    public TimerB(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "A", description = "Checks if the player pitch is an impossible value.")
+public final class BadPacketsA extends Check {
+    public BadPacketsA(final PlayerData data) {
         super(data);
     }
-
-    // Thanks to GladUrBad for informing me about this check. I have added it lets see if its good lol.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long now = now();
+            final double absolutePitch = Math.abs(data.getRotationProcessor().getPitch());
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
-
-            handle: {
-                if (exempt) break handle;
-
-                balance += 50;
-                balance -= (now - lastFlying);
-
-                if (balance > 0) {
-                    fail();
-                    balance = 0;
-                }
+            if (absolutePitch > 90.0) {
+                fail();
             }
-
-            this.lastFlying = now;
-        } else if (packet.isTeleport()) {
-            balance -= 50;
         }
     }
 }

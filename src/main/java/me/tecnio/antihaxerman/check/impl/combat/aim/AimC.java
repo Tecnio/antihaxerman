@@ -13,17 +13,19 @@ public final class AimC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final double sensitivity = data.getRotationProcessor().getSensitivity();
+        if (packet.isRotation()) {
+            final double sensitivity = data.getRotationProcessor().getSensitivity();
 
-        final boolean exempt = data.getRotationProcessor().isCinematic();
-        final boolean invalid = sensitivity < 0.0F;
+            final boolean exempt = data.getRotationProcessor().isCinematic();
+            final boolean invalid = sensitivity < 0.0F;
 
-        if (invalid && !exempt) {
-            if (increaseBuffer() > 5) {
-                fail();
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 5) {
+                    fail();
+                }
+            } else {
+                decreaseBufferBy(2);
             }
-        } else {
-            decreaseBufferBy(2);
         }
     }
 }

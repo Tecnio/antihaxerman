@@ -90,6 +90,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    fastclimb:
+      a:
+        enabled: true
+        max-violations: 50
     flight:
       a:
         enabled: true
@@ -112,6 +116,11 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    noslow:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
   player:
     groundspoof:
       a:
@@ -127,6 +136,36 @@ checks:
         max-violations: 50
         punish-command: ''
     timer:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    post:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      e:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    badpackets:
       a:
         enabled: true
         max-violations: 50

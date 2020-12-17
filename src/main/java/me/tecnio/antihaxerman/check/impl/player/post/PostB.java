@@ -15,48 +15,54 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.timer;
+package me.tecnio.antihaxerman.check.impl.player.post;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
-public final class TimerB extends Check {
+@CheckInfo(name = "Post", type = "B", description = "Checks packet order for the packet 'BLOCK_DIG'.")
+public final class PostB extends Check {
 
-    private long lastFlying = 0;
-    private long balance = 0;
+    private boolean sent;
+    public long lastFlying, lastPacket;
 
-    public TimerB(final PlayerData data) {
+    public PostB(final PlayerData data) {
         super(data);
     }
-
-    // Thanks to GladUrBad for informing me about this check. I have added it lets see if its good lol.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long now = now();
+            final long now = System.currentTimeMillis();
+            final long delay = now - lastPacket;
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
+            if (sent) {
+                if (delay > 40L && delay < 100L) {
+                    increaseBufferBy(0.25);
 
-            handle: {
-                if (exempt) break handle;
-
-                balance += 50;
-                balance -= (now - lastFlying);
-
-                if (balance > 0) {
-                    fail();
-                    balance = 0;
+                    if (getBuffer() > 0.75) {
+                        fail();
+                    }
+                } else {
+                    decreaseBufferBy(0.025);
                 }
+
+                sent = false;
             }
 
             this.lastFlying = now;
-        } else if (packet.isTeleport()) {
-            balance -= 50;
+        } else if (packet.isBlockDig()){
+            final long now = System.currentTimeMillis();
+            final long delay = now - lastFlying;
+
+            if (delay < 10L) {
+                lastPacket = now;
+                sent = true;
+            } else {
+                decreaseBufferBy(0.0025);
+            }
         }
     }
 }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.timer;
+package me.tecnio.antihaxerman.check.impl.movement.fastclimb;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -23,40 +23,28 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
-public final class TimerB extends Check {
-
-    private long lastFlying = 0;
-    private long balance = 0;
-
-    public TimerB(final PlayerData data) {
+@CheckInfo(name = "FastClimb", type = "A", description = "Checks if player is going faster than possible on a climbable.")
+public final class FastClimbA extends Check {
+    public FastClimbA(final PlayerData data) {
         super(data);
     }
 
-    // Thanks to GladUrBad for informing me about this check. I have added it lets see if its good lol.
+    // Not the best thing. Works tho patches bad fast climbs.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long now = now();
+            final double deltaY = data.getPositionProcessor().getDeltaY();
+            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
+            final double acceleration = deltaY - lastDeltaY;
 
-            handle: {
-                if (exempt) break handle;
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.BOAT, ExemptType.VEHICLE);
+            final boolean invalid = deltaY > 0.1176F && acceleration == 0.0 && data.getPositionProcessor().isOnClimbable();
 
-                balance += 50;
-                balance -= (now - lastFlying);
-
-                if (balance > 0) {
-                    fail();
-                    balance = 0;
-                }
+            if (invalid && !exempt) {
+                fail();
             }
-
-            this.lastFlying = now;
-        } else if (packet.isTeleport()) {
-            balance -= 50;
         }
     }
 }

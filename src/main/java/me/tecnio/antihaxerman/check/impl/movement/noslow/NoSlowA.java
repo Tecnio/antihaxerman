@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.timer;
+package me.tecnio.antihaxerman.check.impl.movement.noslow;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -23,40 +23,36 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
-public final class TimerB extends Check {
+@CheckInfo(name = "NoSlow", type = "A", description = "Checks if the player is not slowing down while blocking.")
+public final class NoSlowA extends Check {
 
-    private long lastFlying = 0;
-    private long balance = 0;
+    private int blockingTicks;
 
-    public TimerB(final PlayerData data) {
+    public NoSlowA(final PlayerData data) {
         super(data);
     }
-
-    // Thanks to GladUrBad for informing me about this check. I have added it lets see if its good lol.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long now = now();
+            final boolean blocking = data.getActionProcessor().isBlocking() && data.getPlayer().isBlocking();
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
+            if (blocking) blockingTicks++;
+            else blockingTicks = 0;
 
-            handle: {
-                if (exempt) break handle;
+            final int blockingTicks = this.blockingTicks;
+            final int sprintingTicks = data.getActionProcessor().getSprintingTicks();
 
-                balance += 50;
-                balance -= (now - lastFlying);
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.VEHICLE) || data.getPositionProcessor().isInAir();
+            final boolean invalid = blockingTicks > 10 && sprintingTicks > 10;
 
-                if (balance > 0) {
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 10) {
                     fail();
-                    balance = 0;
                 }
+            } else {
+                decreaseBufferBy(2);
             }
-
-            this.lastFlying = now;
-        } else if (packet.isTeleport()) {
-            balance -= 50;
         }
     }
 }

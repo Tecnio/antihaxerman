@@ -71,7 +71,7 @@ public final class ActionProcessor {
                 digging = false;
                 break;
             case RELEASE_USE_ITEM:
-                blocking = true;
+                blocking = false;
                 break;
         }
     }
@@ -89,6 +89,7 @@ public final class ActionProcessor {
 
     public void handleBlockPlace() {
         placing = true;
+        if (data.getPlayer().getItemInHand().toString().contains("SWORD")) blocking = true;
     }
 
     public void handleCloseWindow() {
@@ -114,7 +115,6 @@ public final class ActionProcessor {
     }
 
     public void handleFlying() {
-        blocking = false;
         sendingDig = false;
         sendingAction = false;
         placing = false;

@@ -19,7 +19,6 @@ package me.tecnio.antihaxerman.util;
 
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.utils.player.ClientVersion;
-import io.github.retrooper.packetevents.utils.player.PlayerUtils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -53,7 +52,7 @@ public class PlayerUtil {
     }
 
     public double getBaseGroundSpeed(Player player) {
-        return 0.288 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
+        return 0.305 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
     }
 
     public int getPotionLevel(final Player player, final PotionEffectType effect) {

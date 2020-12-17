@@ -28,17 +28,22 @@ import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraD;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerA;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.AutoClickerB;
+import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightD;
 import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
+import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
+import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsA;
+import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
+import me.tecnio.antihaxerman.check.impl.player.post.*;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.config.Config;
@@ -70,11 +75,21 @@ public final class CheckManager {
             FlightC.class,
             FlightD.class,
             MotionA.class,
+            NoSlowA.class,
+            FastClimbA.class,
             GroundSpoofA.class,
             GroundSpoofB.class,
             GroundSpoofC.class,
             TimerA.class,
             TimerB.class,
+            PostA.class,
+            PostB.class,
+            PostC.class,
+            PostD.class,
+            PostE.class,
+            PostF.class,
+            BadPacketsA.class,
+            BadPacketsB.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

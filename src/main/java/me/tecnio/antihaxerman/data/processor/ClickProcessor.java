@@ -19,6 +19,7 @@ package me.tecnio.antihaxerman.data.processor;
 
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.type.EvictingList;
 
@@ -44,10 +45,10 @@ public final class ClickProcessor {
             lastSwing = System.currentTimeMillis();
         }
 
-        final boolean digging = data.getActionProcessor().getLastDiggingTick() < 10;
+        final boolean exempt = data.getExemptProcessor().isExempt(ExemptType.PLACING, ExemptType.DIGGING);
 
         click: {
-            if (digging || movements > 5) break click;
+            if (exempt || movements > 5) break click;
 
             clicks.add(movements);
         }
