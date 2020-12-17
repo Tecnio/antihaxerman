@@ -33,7 +33,7 @@ public final class FlightD extends Check {
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
-            final int clientAirTicks = data.getPositionProcessor().getAirTicks();
+            final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
