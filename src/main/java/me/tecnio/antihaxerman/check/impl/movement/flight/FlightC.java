@@ -43,7 +43,7 @@ public final class FlightC extends Check {
             final boolean invalid = difference < 0.01 && !onGround;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (increaseBuffer() > 4) {
                     fail();
                 }
             } else {

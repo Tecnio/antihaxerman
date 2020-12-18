@@ -65,6 +65,7 @@ public final class ActionProcessor {
         switch (wrapper.getDigType()) {
             case START_DESTROY_BLOCK:
                 digging = true;
+                lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
                 break;
             case STOP_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:

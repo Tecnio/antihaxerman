@@ -38,7 +38,7 @@ public final class FlightA extends Check {
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
             final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-            final int airTicksLimit = 10 + airTicksModifier;
+            final int airTicksLimit = 12 + airTicksModifier;
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
