@@ -33,7 +33,11 @@ import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightD;
+import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveA;
+import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveB;
+import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
+import me.tecnio.antihaxerman.check.impl.movement.motion.MotionB;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
@@ -41,7 +45,7 @@ import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsB;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsC;
-import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsF;
+import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsD;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
@@ -77,8 +81,12 @@ public final class CheckManager {
             FlightC.class,
             FlightD.class,
             MotionA.class,
+            MotionB.class,
             NoSlowA.class,
+            LargeMoveA.class,
+            LargeMoveB.class,
             FastClimbA.class,
+            LiquidSpeedA.class,
             GroundSpoofA.class,
             GroundSpoofB.class,
             GroundSpoofC.class,
@@ -93,7 +101,7 @@ public final class CheckManager {
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,
-            BadPacketsF.class,
+            BadPacketsD.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

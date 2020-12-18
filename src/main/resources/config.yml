@@ -116,7 +116,25 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     noslow:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    largemove:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    liquidspeed:
       a:
         enabled: true
         max-violations: 50
@@ -182,7 +200,7 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
-      f:
+      d:
         enabled: true
         max-violations: 50
         punish-command: ''

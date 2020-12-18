@@ -17,23 +17,35 @@
 
 package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.steervehicle.WrappedPacketInSteerVehicle;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPackets", type = "A", description = "Checks if the player pitch is an impossible value.")
-public final class BadPacketsA extends Check {
-    public BadPacketsA(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "D", description = "Detects steer vehicle disabler.")
+public final class BadPacketsD extends Check {
+    public BadPacketsD(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final double absolutePitch = Math.abs(data.getRotationProcessor().getPitch());
+        if (packet.isSteerVehicle()) {
+            final WrappedPacketInSteerVehicle wrapper = new WrappedPacketInSteerVehicle(packet.getRawPacket());
 
-            if (absolutePitch > 90.0) {
+            if (data.getPlayer().getVehicle() == null) {
+                ban();
+            }
+
+            final float forward = wrapper.getForwardValue();
+            final float sideways = wrapper.getSideValue();
+
+            if (forward != 0.0F && forward != 0.98F) {
+                ban();
+            }
+
+            if (sideways != 0.0F && sideways != 0.98F) {
                 ban();
             }
         }

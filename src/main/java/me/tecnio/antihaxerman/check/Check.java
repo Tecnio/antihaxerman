@@ -85,6 +85,7 @@ public abstract class Check {
     }
 
     public void ban() {
+        fail();
         PunishmentManager.punish(this, data);
     }
 

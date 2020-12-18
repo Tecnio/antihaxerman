@@ -37,6 +37,7 @@ public final class PlayerData {
     private final Player player;
     private String clientBrand;
     private int totalViolations, combatViolations, movementViolations, playerViolations;
+    private long flying, lastFlying;
     private final long joinTime = System.currentTimeMillis();
     private final List<Check> checks = CheckManager.loadChecks(this);
     private final EvictingList<Pair<Location, Integer>> targetLocations = new EvictingList<>(40);

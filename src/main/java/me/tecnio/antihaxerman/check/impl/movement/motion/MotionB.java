@@ -15,41 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.badpackets;
+package me.tecnio.antihaxerman.check.impl.movement.motion;
 
-import io.github.retrooper.packetevents.packetwrappers.play.in.steervehicle.WrappedPacketInSteerVehicle;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPackets", type = "F", description = "Detects steer vehicle disabler.")
-public final class BadPacketsF extends Check {
-    public BadPacketsF(final PlayerData data) {
+@CheckInfo(name = "Motion", type = "B", description = "Checks for terminal fall velocity.")
+public final class MotionB extends Check {
+    public MotionB(final PlayerData data) {
         super(data);
     }
 
+    // Thanks to frap for giving me the value that I forgot lol saved my life thanks.
+
     @Override
     public void handle(final Packet packet) {
-        if (packet.isSteerVehicle()) {
-            final WrappedPacketInSteerVehicle wrapper = new WrappedPacketInSteerVehicle(packet.getRawPacket());
+        if (packet.isFlying()) {
+            final double deltaY = data.getPositionProcessor().getDeltaY();
 
-            if (data.getPlayer().getVehicle() == null) {
+            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT);
+            final boolean invalid = deltaY < -3.92;
+
+            if (invalid && !exempt) {
                 fail();
-                ban();
-            }
-
-            final float forward = wrapper.getForwardValue();
-            final float sideways = wrapper.getSideValue();
-
-            if (forward != 0.0F && forward != 0.98F) {
-                fail();
-                ban();
-            }
-
-            if (sideways != 0.0F && sideways != 0.98F) {
-                fail();
-                ban();
             }
         }
     }

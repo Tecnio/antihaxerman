@@ -41,7 +41,7 @@ public final class PositionProcessor {
             deltaX, deltaY, deltaZ, deltaXZ,
             lastDeltaX, lastDeltaZ, lastDeltaY, lastDeltaXZ;
 
-    private boolean flying, inVehicle, inLiquid, inAir, inWeb,
+    private boolean flying, inVehicle, inWater, inLava,inLiquid, fullySubmergedInLiquid, inAir, inWeb,
             blockNearHead, onClimbable, onSolidGround, nearBoat, onSlime,
             onIce, nearPiston;
 
@@ -164,6 +164,9 @@ public final class PositionProcessor {
         handleOnBoat();
 
         inLiquid = blocks.stream().anyMatch(Block::isLiquid);
+        fullySubmergedInLiquid = blocks.stream().allMatch(Block::isLiquid);
+        inWater = blocks.stream().anyMatch(block -> block.getType().toString().contains("WATER"));
+        inLava = blocks.stream().anyMatch(block -> block.getType().toString().contains("LAVA"));
         inWeb = blocks.stream().anyMatch(block -> block.getType().toString().contains("WEB"));
         inAir = blocks.stream().allMatch(block -> block.getType() == Material.AIR);
         onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));

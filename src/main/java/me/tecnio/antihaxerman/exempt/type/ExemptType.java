@@ -65,6 +65,8 @@ public enum ExemptType {
 
     JOINED(data -> System.currentTimeMillis() - data.getJoinTime() < 5000L),
 
+    LAGGING(data -> data.getFlying() - data.getLastFlying() < 5),
+
     CLIMBABLE(data -> data.getPositionProcessor().isOnClimbable());
 
     private final Function<PlayerData, Boolean> exception;

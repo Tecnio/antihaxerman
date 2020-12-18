@@ -56,6 +56,9 @@ public final class ReceivingPacketProcessor  {
             data.getCombatProcessor().handleUseEntity(wrapper);
         }
         if (packet.isFlying()) {
+            data.setLastFlying(data.getFlying());
+            data.setFlying(System.currentTimeMillis());
+
             data.getActionProcessor().handleFlying();
             data.getVelocityProcessor().handleFlying();
             data.getCombatProcessor().handleFlying();

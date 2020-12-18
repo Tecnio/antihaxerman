@@ -78,7 +78,6 @@ public final class SpeedA extends Check {
             final double horizontalDistance = Math.hypot(deltaX, deltaZ);
             final double movementSpeed = (horizontalDistance - lastHorizontalDistance) / attributeSpeed;
 
-
             if (movementSpeed > 1.0 && !exempt) {
                 increaseBufferBy(10);
 

@@ -23,7 +23,7 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPacketsF", type = "C", description = "Checks for fake abilities.")
+@CheckInfo(name = "BadPackets", type = "C", description = "Checks for fake abilities.")
 public final class BadPacketsC extends Check {
 
     private boolean allowFlight, flying;
@@ -45,7 +45,6 @@ public final class BadPacketsC extends Check {
             final boolean invalid = wrapper.isFlying() != flying || wrapper.isFlightAllowed() != allowFlight;
 
             if (invalid) {
-                fail();
                 ban();
             }
         }

@@ -32,69 +32,71 @@ public final class SpeedC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
+        if (packet.isFlying()) {
+            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
 
-        final boolean onGround = data.getPositionProcessor().isOnGround();
+            final boolean onGround = data.getPositionProcessor().isOnGround();
 
-        final int groundTicks = data.getPositionProcessor().getGroundTicks();
-        final int airTicks = data.getPositionProcessor().getAirTicks();
+            final int groundTicks = data.getPositionProcessor().getGroundTicks();
+            final int airTicks = data.getPositionProcessor().getAirTicks();
 
-        final int iceTicks = data.getPositionProcessor().getSinceIceTicks();
-        final int slimeTicks = data.getPositionProcessor().getSinceSlimeTicks();
+            final int iceTicks = data.getPositionProcessor().getSinceIceTicks();
+            final int slimeTicks = data.getPositionProcessor().getSinceSlimeTicks();
 
-        final boolean blockNearHead = data.getPositionProcessor().isBlockNearHead();
-        final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
+            final boolean blockNearHead = data.getPositionProcessor().isBlockNearHead();
+            final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
 
-        double maxGroundSpeed = PlayerUtil.getBaseGroundSpeed(data.getPlayer());
-        double maxAirSpeed = PlayerUtil.getBaseSpeed(data.getPlayer());
+            double maxGroundSpeed = PlayerUtil.getBaseGroundSpeed(data.getPlayer());
+            double maxAirSpeed = PlayerUtil.getBaseSpeed(data.getPlayer());
 
-        if (takingVelocity) {
-            final double velocityX = data.getVelocityProcessor().getVelocityX();
-            final double velocityZ = data.getVelocityProcessor().getVelocityZ();
+            if (takingVelocity) {
+                final double velocityX = data.getVelocityProcessor().getVelocityX();
+                final double velocityZ = data.getVelocityProcessor().getVelocityZ();
 
-            final double velocityXZ = Math.hypot(velocityX, velocityZ);
+                final double velocityXZ = Math.hypot(velocityX, velocityZ);
 
-            maxAirSpeed += velocityXZ + 0.5;
-            maxGroundSpeed += velocityXZ + 0.5;
-        }
+                maxAirSpeed += velocityXZ + 0.5;
+                maxGroundSpeed += velocityXZ + 0.5;
+            }
 
-        if (groundTicks <= 5) maxGroundSpeed += 0.15;
-        if (airTicks == 0) maxAirSpeed += 0.3;
+            if (groundTicks <= 5) maxGroundSpeed += 0.15;
+            if (airTicks == 0) maxAirSpeed += 0.3;
 
-        if (blockNearHead) {
-            maxAirSpeed += 0.17;
-            maxGroundSpeed += 0.095;
-        }
+            if (blockNearHead) {
+                maxAirSpeed += 0.17;
+                maxGroundSpeed += 0.095;
+            }
 
-        if (iceTicks < 40) {
-            maxAirSpeed += 0.2;
-            maxGroundSpeed += 0.15;
-        }
+            if (iceTicks < 40) {
+                maxAirSpeed += 0.2;
+                maxGroundSpeed += 0.15;
+            }
 
-        if (slimeTicks < 40) {
-            maxAirSpeed += 0.2;
-        }
+            if (slimeTicks < 40) {
+                maxAirSpeed += 0.2;
+            }
 
-        final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.FLYING, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.FLYING, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
 
-        handle: {
-            if (exempt) break handle;
+            handle: {
+                if (exempt) break handle;
 
-            if (onGround) {
-                if (deltaXZ > maxGroundSpeed) {
-                    if (increaseBuffer() > 2) {
-                        fail();
+                if (onGround) {
+                    if (deltaXZ > maxGroundSpeed) {
+                        if (increaseBuffer() > 3) {
+                            fail();
+                        }
+                    } else {
+                        decreaseBufferBy(0.25);
                     }
                 } else {
-                    decreaseBufferBy(0.05);
-                }
-            } else {
-                if (deltaXZ > maxAirSpeed) {
-                    if (increaseBuffer() > 2) {
-                        fail();
+                    if (deltaXZ > maxAirSpeed) {
+                        if (increaseBuffer() > 3) {
+                            fail();
+                        }
+                    } else {
+                        decreaseBufferBy(0.25);
                     }
-                } else {
-                    decreaseBufferBy(0.05);
                 }
             }
         }

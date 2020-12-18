@@ -23,7 +23,7 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPacketsF", type = "B", description = "Checks for invalid sprint packets.")
+@CheckInfo(name = "BadPackets", type = "B", description = "Checks for invalid sprint packets.")
 public final class BadPacketsB extends Check {
     public BadPacketsB(final PlayerData data) {
         super(data);
