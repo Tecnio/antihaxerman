@@ -24,7 +24,7 @@ import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "Speed", type = "C", description = "Checks if player is going faster than possible")
+@CheckInfo(name = "Speed", type = "C", description = "Checks if player is going faster than possible", experimental = true)
 public final class SpeedC extends Check {
     public SpeedC(final PlayerData data) {
         super(data);
@@ -35,69 +35,35 @@ public final class SpeedC extends Check {
         if (packet.isFlying()) {
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
 
-            final boolean onGround = data.getPositionProcessor().isOnGround();
-
             final int groundTicks = data.getPositionProcessor().getGroundTicks();
-            final int airTicks = data.getPositionProcessor().getAirTicks();
-
             final int iceTicks = data.getPositionProcessor().getSinceIceTicks();
             final int slimeTicks = data.getPositionProcessor().getSinceSlimeTicks();
+            final int blockNearHeadTicks = data.getPositionProcessor().getSinceBlockNearHeadTicks();
 
-            final boolean blockNearHead = data.getPositionProcessor().isBlockNearHead();
+            final boolean nearStair = data.getPositionProcessor().isNearStair();
+
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
 
-            double maxGroundSpeed = PlayerUtil.getBaseGroundSpeed(data.getPlayer());
-            double maxAirSpeed = PlayerUtil.getBaseSpeed(data.getPlayer());
+            final double velocityX = data.getVelocityProcessor().getVelocityX();
+            final double velocityZ = data.getVelocityProcessor().getVelocityZ();
+            final double velocityXZ = Math.hypot(velocityX, velocityZ);
 
-            if (takingVelocity) {
-                final double velocityX = data.getVelocityProcessor().getVelocityX();
-                final double velocityZ = data.getVelocityProcessor().getVelocityZ();
+            double limit = groundTicks > 8 ? PlayerUtil.getBaseGroundSpeed(data.getPlayer()) : PlayerUtil.getBaseSpeed(data.getPlayer());
 
-                final double velocityXZ = Math.hypot(velocityX, velocityZ);
+            if (iceTicks < 40 || slimeTicks < 40) limit += 0.34;
+            if (blockNearHeadTicks < 40) limit += 0.91;
+            if (nearStair) limit += 0.34;
+            if (takingVelocity) limit += velocityXZ + 0.5;
 
-                maxAirSpeed += velocityXZ + 0.5;
-                maxGroundSpeed += velocityXZ + 0.5;
-            }
+            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT);
+            final boolean invalid = deltaXZ > limit;
 
-            if (groundTicks <= 5) maxGroundSpeed += 0.15;
-            if (airTicks == 0) maxAirSpeed += 0.3;
-
-            if (blockNearHead) {
-                maxAirSpeed += 0.17;
-                maxGroundSpeed += 0.095;
-            }
-
-            if (iceTicks < 40) {
-                maxAirSpeed += 0.2;
-                maxGroundSpeed += 0.15;
-            }
-
-            if (slimeTicks < 40) {
-                maxAirSpeed += 0.2;
-            }
-
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.FLYING, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
-
-            handle: {
-                if (exempt) break handle;
-
-                if (onGround) {
-                    if (deltaXZ > maxGroundSpeed) {
-                        if (increaseBuffer() > 3) {
-                            fail();
-                        }
-                    } else {
-                        decreaseBufferBy(0.25);
-                    }
-                } else {
-                    if (deltaXZ > maxAirSpeed) {
-                        if (increaseBuffer() > 3) {
-                            fail();
-                        }
-                    } else {
-                        decreaseBufferBy(0.25);
-                    }
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 3) {
+                    fail();
                 }
+            } else {
+                decreaseBuffer();
             }
         }
     }

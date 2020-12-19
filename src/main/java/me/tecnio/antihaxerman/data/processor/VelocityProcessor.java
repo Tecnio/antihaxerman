@@ -33,8 +33,7 @@ public final class VelocityProcessor {
     private double velocityX, velocityY, velocityZ;
     private double lastVelocityX, lastVelocityY, lastVelocityZ;
     private int maxVelocityTicks, velocityTicks, ticksSinceVelocity;
-    private short transactionID, velocityID;
-    private long transactionPing, transactionReply;
+    private short velocityID;
     private boolean verifyingVelocity;
 
     public VelocityProcessor(final PlayerData data) {
@@ -62,14 +61,6 @@ public final class VelocityProcessor {
             this.verifyingVelocity = false;
             this.velocityTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
             this.maxVelocityTicks = (int) (((lastVelocityZ + lastVelocityX) / 2 + 2) * 15);
-        }
-
-        if (wrapper.getActionNumber() == transactionID) {
-            transactionPing = System.currentTimeMillis() - transactionReply;
-
-            transactionID = (short) ThreadLocalRandom.current().nextInt(32767);
-            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), new WrappedPacketOutTransaction(0, transactionID, false));
-            transactionReply = System.currentTimeMillis();
         }
     }
 

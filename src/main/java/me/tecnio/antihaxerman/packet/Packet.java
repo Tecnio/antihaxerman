@@ -111,10 +111,9 @@ public final class Packet {
         return isReceiving() && packetId == PacketType.Play.Client.TRANSACTION;
     }
 
-    public boolean isSendingTransaction() {
+    public boolean isOutgoingTransaction() {
         return isSending() && packetId == PacketType.Play.Server.TRANSACTION;
     }
-
 
     public boolean isTeleport() { return isSending() && packetId == PacketType.Play.Server.POSITION; }
 

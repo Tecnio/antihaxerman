@@ -24,7 +24,7 @@ public final class AntiHaxermanPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.create().load();
+        PacketEvents.create(this).load();
     }
 
     @Override

@@ -42,13 +42,16 @@ import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
 import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedD;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsB;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsC;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.BadPacketsD;
+import me.tecnio.antihaxerman.check.impl.player.blink.BlinkA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
+import me.tecnio.antihaxerman.check.impl.player.pingspoof.PingSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.post.*;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
@@ -76,6 +79,7 @@ public final class CheckManager {
             SpeedA.class,
             SpeedB.class,
             SpeedC.class,
+            SpeedD.class,
             FlightA.class,
             FlightB.class,
             FlightC.class,
@@ -98,6 +102,8 @@ public final class CheckManager {
             PostD.class,
             PostE.class,
             PostF.class,
+            PingSpoofA.class,
+            BlinkA.class,
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,

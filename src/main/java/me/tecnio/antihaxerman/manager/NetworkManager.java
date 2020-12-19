@@ -18,14 +18,11 @@
 package me.tecnio.antihaxerman.manager;
 
 import io.github.retrooper.packetevents.event.PacketListenerDynamic;
+import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
+import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
-
-import io.github.retrooper.packetevents.event.PacketListener;
-import io.github.retrooper.packetevents.event.annotation.PacketHandler;
-import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import me.tecnio.antihaxerman.packet.Packet;
 
 
@@ -36,7 +33,7 @@ public final class NetworkManager extends PacketListenerDynamic {
     }
 
     @Override
-    public void onPacketReceive(final PacketReceiveEvent event) {
+    public void onPacketPlayReceive(PacketPlayReceiveEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {
@@ -46,7 +43,7 @@ public final class NetworkManager extends PacketListenerDynamic {
     }
 
     @Override
-    public void onPacketSend(PacketSendEvent event) {
+    public void onPacketPlaySend(PacketPlaySendEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {

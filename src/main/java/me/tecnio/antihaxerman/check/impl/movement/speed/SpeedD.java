@@ -15,32 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.fastclimb;
+package me.tecnio.antihaxerman.check.impl.movement.speed;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "FastClimb", type = "A", description = "Checks if player is going faster than possible on a climbable.", experimental = true)
-public final class FastClimbA extends Check {
-    public FastClimbA(final PlayerData data) {
+@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid acceleration.")
+public final class SpeedD extends Check {
+    public SpeedD(final PlayerData data) {
         super(data);
     }
-
-    // Not the best thing. Works tho patches bad fast climbs.
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
+            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
 
-            final double acceleration = deltaY - lastDeltaY;
+            final double acceleration = deltaXZ - lastDeltaXZ;
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.BOAT, ExemptType.VEHICLE);
-            final boolean invalid = deltaY > 0.1177F && acceleration == 0.0 && data.getPositionProcessor().isOnClimbable();
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
+            final boolean invalid = acceleration > PlayerUtil.getBaseSpeed(data.getPlayer());
 
             if (invalid && !exempt) {
                 fail();

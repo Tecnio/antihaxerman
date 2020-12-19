@@ -18,6 +18,8 @@
 package me.tecnio.antihaxerman.packet.processor;
 
 import io.github.retrooper.packetevents.packetwrappers.play.out.entityvelocity.WrappedPacketOutEntityVelocity;
+import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.WrappedPacketOutKeepAlive;
+import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
@@ -30,6 +32,16 @@ public final class SendingPacketProcessor  {
         }
         if (packet.isTeleport()) {
             data.getPositionProcessor().handleTeleport();
+        }
+        if (packet.isOutgoingTransaction()) {
+            final WrappedPacketOutTransaction wrapper = new WrappedPacketOutTransaction(packet.getRawPacket());
+
+            data.getConnectionProcessor().handleOutgoingTransaction(wrapper);
+        }
+        if (packet.isOutgoingKeepAlive()) {
+            final WrappedPacketOutKeepAlive wrapper = new WrappedPacketOutKeepAlive(packet.getRawPacket());
+
+            data.getConnectionProcessor().handleOutgoingKeepAlive(wrapper);
         }
         data.getChecks().forEach(check -> check.handle(packet));
     }

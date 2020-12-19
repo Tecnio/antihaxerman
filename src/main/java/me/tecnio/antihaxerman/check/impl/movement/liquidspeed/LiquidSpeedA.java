@@ -25,9 +25,6 @@ import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "LiquidSpeed", type = "A", description = "Predicts vertical motion in water.")
 public final class LiquidSpeedA extends Check {
-
-    private int doShit = 0;
-
     public LiquidSpeedA(final PlayerData data) {
         super(data);
     }
@@ -37,7 +34,7 @@ public final class LiquidSpeedA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean inLiquid = data.getPositionProcessor().isFullySubmergedInLiquid();
+            final boolean inLiquid = data.getPositionProcessor().isFullySubmergedInLiquidStat();
 
             final double multiplier = data.getPositionProcessor().isInWater() ? 0.8 : 0.5;
 

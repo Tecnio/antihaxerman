@@ -41,13 +41,13 @@ public final class PositionProcessor {
             deltaX, deltaY, deltaZ, deltaXZ,
             lastDeltaX, lastDeltaZ, lastDeltaY, lastDeltaXZ;
 
-    private boolean flying, inVehicle, inWater, inLava,inLiquid, fullySubmergedInLiquid, inAir, inWeb,
+    private boolean flying, inVehicle, inWater, inLava,inLiquid, fullySubmergedInLiquidStat, inAir, inWeb,
             blockNearHead, onClimbable, onSolidGround, nearBoat, onSlime,
-            onIce, nearPiston;
+            onIce, nearPiston, nearStair;
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
             groundTicks, teleportTicks, sinceSlimeTicks, solidGroundTicks,
-            iceTicks, sinceIceTicks;
+            iceTicks, sinceIceTicks, sinceBlockNearHeadTicks;
 
     private boolean onGround, lastOnGround, mathematicallyOnGround;
 
@@ -136,6 +136,12 @@ public final class PositionProcessor {
         } else {
             ++sinceSlimeTicks;
         }
+
+        if (blockNearHead) {
+            sinceBlockNearHeadTicks = 0;
+        } else {
+            ++sinceBlockNearHeadTicks;
+        }
     }
 
     public void handleCollisions() {
@@ -164,13 +170,14 @@ public final class PositionProcessor {
         handleOnBoat();
 
         inLiquid = blocks.stream().anyMatch(Block::isLiquid);
-        fullySubmergedInLiquid = blocks.stream().allMatch(Block::isLiquid);
+        fullySubmergedInLiquidStat = blocks.stream().allMatch(block -> block.getType() == Material.STATIONARY_WATER || block.getType() == Material.STATIONARY_LAVA);
         inWater = blocks.stream().anyMatch(block -> block.getType().toString().contains("WATER"));
         inLava = blocks.stream().anyMatch(block -> block.getType().toString().contains("LAVA"));
         inWeb = blocks.stream().anyMatch(block -> block.getType().toString().contains("WEB"));
         inAir = blocks.stream().allMatch(block -> block.getType() == Material.AIR);
         onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
         onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
+        nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
         blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5)
                 .anyMatch(block -> block.getType() != Material.AIR);
         onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));

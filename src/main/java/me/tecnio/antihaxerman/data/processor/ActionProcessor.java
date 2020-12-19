@@ -97,26 +97,21 @@ public final class ActionProcessor {
         inventory = false;
     }
 
-    public void handleArmAnimation() {
-        if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
-    }
-
     public void handleInteract(final PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+
         }
     }
 
     public void handleBukkitPlace() {
-        lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        ;
     }
 
     public void handleBukkitBlockBreak() {
-        lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        ;
     }
 
     public void handleFlying() {
-        sendingDig = false;
         sendingAction = false;
         placing = false;
         respawning = false;
@@ -126,5 +121,9 @@ public final class ActionProcessor {
 
         if (sneaking) ++sneakingTicks;
         else sneakingTicks = 0;
+
+        if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        if (placing) lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        if (digging) lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
     }
 }
