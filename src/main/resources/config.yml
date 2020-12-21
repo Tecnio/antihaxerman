@@ -17,6 +17,12 @@ response:
   command:
     prefix: '&cAHM &8> '
 
+system:
+  # Threading mode. If you have issues with performance try tinkering with this. Warning if you don't understand this just leave it at default. There are 3 modes:
+  # NETTY: Netty just runs the anti-cheat on the thread where all packets are called from. No fancy stuff just good ol' netty.
+  # PACKETEVENTS: This runs the anti-cheat on the PacketEvents thread.
+  threading: 'NETTY'
+
 violations:
   alert-format: '&cAHM &8> &c%player%&8 failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%'
   clear-violations-delay: 15

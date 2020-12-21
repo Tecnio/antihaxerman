@@ -17,25 +17,22 @@
 
 package me.tecnio.antihaxerman;
 
-import io.github.retrooper.packetevents.PacketEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AntiHaxermanPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.create(this).load();
+        AntiHaxerman.INSTANCE.load(this);
     }
 
     @Override
     public void onEnable() {
         AntiHaxerman.INSTANCE.start(this);
-        PacketEvents.get().init(this);
     }
 
     @Override
     public void onDisable() {
-        PacketEvents.get().stop();
         AntiHaxerman.INSTANCE.stop(this);
     }
 }

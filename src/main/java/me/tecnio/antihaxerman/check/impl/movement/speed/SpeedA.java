@@ -93,7 +93,7 @@ public final class SpeedA extends Check {
             final double y = data.getPositionProcessor().getY();
             final double z = data.getPositionProcessor().getZ();
 
-            final Location blockLocation = new Location(data.getPlayer().getWorld(), x, (Math.floor(y) - 0.15), z);
+            final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y - 0.1), z);
 
             this.blockSlipperiness = BlockUtil.getBlockFriction(blockLocation) * 0.91F;
             this.lastHorizontalDistance = horizontalDistance * blockSlipperiness;

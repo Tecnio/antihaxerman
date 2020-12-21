@@ -18,9 +18,11 @@
 package me.tecnio.antihaxerman.manager;
 
 import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.WrappedPacketOutKeepAlive;
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.type.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,31 +54,31 @@ public final class TickManager implements Runnable {
     public void run() {
         ticks++;
 
-        PlayerDataManager.getInstance().getAllData()
-                .forEach(data -> {
-                    final Entity target = data.getCombatProcessor().getTarget();
-                    final Entity lastTarget = data.getCombatProcessor().getLastTarget();
-                    if(target != null && lastTarget != null) {
-                        if (target != lastTarget) {
-                            data.getTargetLocations().clear();
-                        }
-                        Location location = target.getLocation();
-                        data.getTargetLocations().add(new Pair<>(location, ticks));
-                    }
+        for (final PlayerData data : PlayerDataManager.getInstance().getAllData()) {
+            final Entity target = data.getCombatProcessor().getTarget();
+            final Entity lastTarget = data.getCombatProcessor().getLastTarget();
 
-                    final Random random = new Random();
+            if(target != null && lastTarget != null) {
+                if (target != lastTarget) {
+                    data.getTargetLocations().clear();
+                }
+                Location location = target.getLocation();
+                data.getTargetLocations().add(new Pair<>(location, ticks));
+            }
 
-                    short transactionId = (short) (random.nextInt(32767));
-                    transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
+            final Random random = new Random();
 
-                    final int keepAliveId = random.nextInt();
+            short transactionId = (short) (random.nextInt(32767));
+            transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
 
-                    final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
-                    //final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
+            final int keepAliveId = random.nextInt();
 
-                    PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
-                    //PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
-                });
+            final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
+            final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
+
+            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
+            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
+        }
     }
 
 }

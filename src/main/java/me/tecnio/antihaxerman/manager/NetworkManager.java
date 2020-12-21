@@ -22,14 +22,14 @@ import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
-
 
 public final class NetworkManager extends PacketListenerDynamic {
 
     public NetworkManager() {
-        super(PacketEventPriority.MONITOR);
+        super(PacketEventPriority.MONITOR, Config.THREADING);
     }
 
     @Override
@@ -37,8 +37,7 @@ public final class NetworkManager extends PacketListenerDynamic {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {
-            AntiHaxerman.INSTANCE.getReceivingPacketProcessor()
-                    .handle(data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId()));
+            AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()));
         }
     }
 
@@ -47,8 +46,7 @@ public final class NetworkManager extends PacketListenerDynamic {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {
-            AntiHaxerman.INSTANCE.getSendingPacketProcessor()
-                    .handle(data, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId()));
+             AntiHaxerman.INSTANCE.getSendingPacketProcessor().handle(data, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()));
         }
     }
 }

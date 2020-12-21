@@ -60,28 +60,22 @@ public abstract class Check {
     public abstract void handle(final Packet packet);
 
     public void fail(final Object info) {
-        if (!flagging) {
-            flagging = true;
+        ++vl;
+        data.setTotalViolations(data.getTotalViolations() + 1);
 
-            ++vl;
-            data.setTotalViolations(data.getTotalViolations() + 1);
-
-            switch (checkType) {
-                case COMBAT:
-                    data.setCombatViolations(data.getCombatViolations() + 1);
-                    break;
-                case MOVEMENT:
-                    data.setMovementViolations(data.getMovementViolations() + 1);
-                    break;
-                case PLAYER:
-                    data.setPlayerViolations(data.getPlayerViolations() + 1);
-                    break;
-            }
-
-            AlertManager.handleAlert(this, data, Objects.toString(info));
-
-            flagging = false;
+        switch (checkType) {
+            case COMBAT:
+                data.setCombatViolations(data.getCombatViolations() + 1);
+                break;
+            case MOVEMENT:
+                data.setMovementViolations(data.getMovementViolations() + 1);
+                break;
+            case PLAYER:
+                data.setPlayerViolations(data.getPlayerViolations() + 1);
+                break;
         }
+
+        AlertManager.handleAlert(this, data, Objects.toString(info));
     }
 
     public void fail() {

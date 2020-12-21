@@ -18,19 +18,22 @@
 package me.tecnio.antihaxerman.packet;
 
 import io.github.retrooper.packetevents.packettype.PacketType;
+import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
 import lombok.Getter;
 
 @Getter
 public final class Packet {
 
     private final Direction direction;
-    private final Object rawPacket;
+    private final NMSPacket rawPacket;
     private final byte packetId;
+    private final long timeStamp;
 
-    public Packet(Direction direction, Object rawPacket, byte packetId) {
+    public Packet(final Direction direction, final NMSPacket rawPacket, final byte packetId, final long timeStamp) {
         this.direction = direction;
         this.rawPacket = rawPacket;
         this.packetId = packetId;
+        this.timeStamp = timeStamp;
     }
 
     public boolean isReceiving() {

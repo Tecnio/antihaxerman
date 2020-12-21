@@ -46,6 +46,8 @@ public final class PositionProcessor {
             onIce, nearPiston, nearStair;
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
+            liquidTicks, sinceLiquidTicks, climbableTicks, sinceClimbableTicks,
+            webTicks, sinceWebTicks,
             groundTicks, teleportTicks, sinceSlimeTicks, solidGroundTicks,
             iceTicks, sinceIceTicks, sinceBlockNearHeadTicks;
 
@@ -142,6 +144,30 @@ public final class PositionProcessor {
         } else {
             ++sinceBlockNearHeadTicks;
         }
+
+        if (inLiquid) {
+            ++liquidTicks;
+            sinceLiquidTicks = 0;
+        } else {
+            liquidTicks = 0;
+            ++sinceLiquidTicks;
+        }
+
+        if (onClimbable) {
+            ++climbableTicks;
+            sinceClimbableTicks = 0;
+        } else {
+            climbableTicks = 0;
+            ++sinceClimbableTicks;
+        }
+
+        if (inWeb) {
+            ++webTicks;
+            sinceWebTicks = 0;
+        } else {
+            webTicks = 0;
+            ++sinceWebTicks;
+        }
     }
 
     public void handleCollisions() {
@@ -178,8 +204,7 @@ public final class PositionProcessor {
         onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
         onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
         nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
-        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5)
-                .anyMatch(block -> block.getType() != Material.AIR);
+        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5).anyMatch(block -> block.getType() != Material.AIR);
         onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
         nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
 

@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.config;
 
+import io.github.retrooper.packetevents.event.threadmode.PacketListenerThreadMode;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.manager.CheckManager;
@@ -38,6 +39,7 @@ public final class Config {
     public static String COMMAND_NAME;
     public static int CLEAR_VIOLATIONS_DELAY;
 
+    public static PacketListenerThreadMode THREADING;
 
     public static List<String> ENABLED_CHECKS = new ArrayList<>();
     public static List<String> SETBACK_CHECKS = new ArrayList<>();
@@ -54,6 +56,14 @@ public final class Config {
             COMMAND_NAME = getStringFromConfig("response.command.name");
             CLEAR_VIOLATIONS_DELAY = getIntegerFromConfig("violations.clear-violations-delay");
             COMMAND_PREFIX = ColorUtil.translate(getStringFromConfig("response.command.prefix"));
+
+            final String threading = getStringFromConfig("system.threading");
+
+            if (threading.equalsIgnoreCase("netty")) {
+                THREADING = PacketListenerThreadMode.NETTY;
+            } else {
+                THREADING = PacketListenerThreadMode.PACKETEVENTS;
+            }
 
             VL_TO_ALERT = getIntegerFromConfig("violations.minimum-vl");
             ALERT_FORMAT = getStringFromConfig("violations.alert-format");

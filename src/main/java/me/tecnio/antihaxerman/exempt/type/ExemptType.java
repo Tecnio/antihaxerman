@@ -35,7 +35,7 @@ public enum ExemptType {
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
-    SLIME(data -> data.getPositionProcessor().getSinceSlimeTicks() < 30),
+    SLIME(data -> data.getPositionProcessor().getSinceSlimeTicks() < 20),
 
     DIGGING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastDiggingTick() < 10),
 
@@ -47,7 +47,7 @@ public enum ExemptType {
 
     VEHICLE(data -> data.getPositionProcessor().getSinceVehicleTicks() < 20),
 
-    LIQUID(data -> data.getPositionProcessor().isInLiquid()),
+    LIQUID(data -> data.getPositionProcessor().getSinceLiquidTicks() < 20),
 
     UNDERBLOCK(data -> data.getPositionProcessor().isBlockNearHead()),
 
@@ -61,13 +61,13 @@ public enum ExemptType {
 
     AUTOCLICKER(data -> data.getExemptProcessor().isExempt(ExemptType.PLACING, ExemptType.DIGGING, ExemptType.BLOCK_BREAK)),
 
-    WEB(data -> data.getPositionProcessor().isInWeb()),
+    WEB(data -> data.getPositionProcessor().getSinceWebTicks() < 10),
 
     JOINED(data -> System.currentTimeMillis() - data.getJoinTime() < 5000L),
 
     LAGGING(data -> data.getFlying() - data.getLastFlying() < 5),
 
-    CLIMBABLE(data -> data.getPositionProcessor().isOnClimbable());
+    CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10);
 
     private final Function<PlayerData, Boolean> exception;
 

@@ -43,9 +43,15 @@ public enum AntiHaxerman {
 
     private final CommandManager commandManager = new CommandManager(this.getPlugin());
 
+    public void load(final AntiHaxermanPlugin plugin) {
+        setupPacketEvents();
+    }
+
     public void start(final AntiHaxermanPlugin plugin) {
         this.plugin = plugin;
         assert plugin != null : "Error while starting AntiHaxerman.";
+
+        runPacketEvents();
 
         this.getPlugin().saveDefaultConfig();
         Config.updateConfig();
@@ -64,19 +70,7 @@ public enum AntiHaxerman {
 
         startTime = System.currentTimeMillis();
 
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerManager(), plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(new BukkitEventManager(), plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(new ClientBrandListener(), plugin);
-
-        PacketEvents.get().getSettings()
-                .injectAsync(true)
-                .ejectAsync(true)
-                .injectEarly(true)
-                .packetHandlingThreadCount(1)
-                .checkForUpdates(true)
-                .backupServerVersion(ServerVersion.v_1_7_10);
-
-        PacketEvents.get().getEventManager().registerListener(new NetworkManager());
+        registerEvents();
     }
 
     public void stop(final AntiHaxermanPlugin plugin) {
@@ -84,5 +78,36 @@ public enum AntiHaxerman {
         assert plugin != null : "Error while shutting down AntiHaxerman.";
 
         tickManager.stop();
+
+        stopPacketEvents();
+    }
+
+    private void setupPacketEvents() {
+        PacketEvents.create(plugin).getSettings()
+                .injectAsync(true)
+                .ejectAsync(true)
+                .injectEarly(true)
+                .packetProcessingThreadCount(1)
+                .checkForUpdates(true)
+                .injectionFailureMessage("AntiHaxerman is currently loading. Please wait until it loads.")
+                .backupServerVersion(ServerVersion.v_1_7_10);
+
+        PacketEvents.get().load();
+    }
+
+    private void runPacketEvents() {
+        PacketEvents.get().init(plugin);
+    }
+
+    private void stopPacketEvents() {
+        PacketEvents.get().stop();
+    }
+
+    private void registerEvents() {
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerManager(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new BukkitEventManager(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new ClientBrandListener(), plugin);
+
+        PacketEvents.get().getEventManager().registerListener(new NetworkManager());
     }
 }

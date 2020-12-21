@@ -17,12 +17,12 @@
 
 package me.tecnio.antihaxerman.manager;
 
-import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.util.ColorUtil;
 import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Getter;
+import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
+import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.util.ColorUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;

@@ -28,7 +28,6 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
 public final class ReceivingPacketProcessor  {
-
     public void handle(final PlayerData data, final Packet packet) {
         if (packet.isEntityAction()) {
             final WrappedPacketInEntityAction wrapper = new WrappedPacketInEntityAction(packet.getRawPacket());
