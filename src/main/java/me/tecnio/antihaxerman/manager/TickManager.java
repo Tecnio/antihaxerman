@@ -17,6 +17,8 @@
 
 package me.tecnio.antihaxerman.manager;
 
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.util.type.Pair;
@@ -24,6 +26,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Random;
 
 public final class TickManager implements Runnable {
 
@@ -59,6 +63,19 @@ public final class TickManager implements Runnable {
                         Location location = target.getLocation();
                         data.getTargetLocations().add(new Pair<>(location, ticks));
                     }
+
+                    final Random random = new Random();
+
+                    short transactionId = (short) (random.nextInt(32767));
+                    transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
+
+                    final int keepAliveId = random.nextInt();
+
+                    final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
+                    //final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
+
+                    PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
+                    //PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
                 });
     }
 

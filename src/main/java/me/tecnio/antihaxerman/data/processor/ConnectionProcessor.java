@@ -17,7 +17,6 @@
 
 package me.tecnio.antihaxerman.data.processor;
 
-import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.packetwrappers.play.in.keepalive.WrappedPacketInKeepAlive;
 import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.WrappedPacketOutKeepAlive;
@@ -25,8 +24,6 @@ import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.Wrap
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.type.EvictingMap;
-
-import java.util.Random;
 
 @Getter
 public final class ConnectionProcessor {
@@ -42,6 +39,12 @@ public final class ConnectionProcessor {
     private long keepAlivePing;
     private long transactionPing;
 
+    private long lastTransactionSent;
+    private long lastTransactionReceived;
+
+    private long lastKeepAliveSent;
+    private long lastKeepAliveReceived;
+
     public ConnectionProcessor(final PlayerData data) {
         this.data = data;
     }
@@ -52,6 +55,8 @@ public final class ConnectionProcessor {
         transactionUpdates.computeIfPresent(wrapper.getActionNumber(), (id, time) -> {
             transactionPing = now - time;
             transactionUpdates.remove(id);
+
+            lastTransactionReceived = now;
 
             return time;
         });
@@ -64,34 +69,30 @@ public final class ConnectionProcessor {
             keepAlivePing = now - time;
             keepAliveUpdates.remove(id);
 
+            lastKeepAliveReceived = now;
+
             return time;
         });
     }
 
     public void handleFlying() {
-        final Random random = new Random();
-
-        short transactionId = (short) (random.nextInt(32767));
-        transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
-
-        final int keepAliveId = random.nextInt();
-
-        final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
-        //final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
-
-        PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
-        //PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
     }
 
     public void handleOutgoingTransaction(final WrappedPacketOutTransaction wrapper) {
+        final long now = System.currentTimeMillis();
         final short actionNumber = wrapper.getActionNumber();
+
+        lastTransactionSent = now;
 
         transactionId = actionNumber;
         transactionUpdates.put(actionNumber, System.currentTimeMillis());
     }
 
     public void handleOutgoingKeepAlive(final WrappedPacketOutKeepAlive wrapper) {
+        final long now = System.currentTimeMillis();
         final long id = wrapper.getId();
+
+        lastKeepAliveSent = now;
 
         keepAliveId = id;
         keepAliveUpdates.put(id, System.currentTimeMillis());

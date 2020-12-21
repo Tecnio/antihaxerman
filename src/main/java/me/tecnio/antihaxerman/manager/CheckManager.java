@@ -31,7 +31,6 @@ import me.tecnio.antihaxerman.check.impl.movement.noslow.*;
 import me.tecnio.antihaxerman.check.impl.movement.speed.*;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
-import me.tecnio.antihaxerman.check.impl.player.blink.*;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.*;
 import me.tecnio.antihaxerman.check.impl.player.pingspoof.*;
 import me.tecnio.antihaxerman.check.impl.player.post.*;
@@ -74,6 +73,7 @@ public final class CheckManager {
             LargeMoveB.class,
             FastClimbA.class,
             LiquidSpeedA.class,
+            LiquidSpeedB.class,
             GroundSpoofA.class,
             GroundSpoofB.class,
             GroundSpoofC.class,
@@ -86,11 +86,12 @@ public final class CheckManager {
             PostE.class,
             PostF.class,
             PingSpoofA.class,
-            BlinkA.class,
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,
             BadPacketsD.class,
+            BadPacketsE.class,
+            BadPacketsF.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

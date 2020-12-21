@@ -153,6 +153,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
   player:
     groundspoof:
       a:
@@ -206,11 +210,6 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
-    blink:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
     badpackets:
       a:
         enabled: true
@@ -225,6 +224,14 @@ checks:
         max-violations: 50
         punish-command: ''
       d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      e:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      f:
         enabled: true
         max-violations: 50
         punish-command: ''

@@ -23,9 +23,9 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "LiquidSpeed", type = "A", description = "Predicts vertical motion in water.")
-public final class LiquidSpeedA extends Check {
-    public LiquidSpeedA(final PlayerData data) {
+@CheckInfo(name = "LiquidSpeed", type = "B", description = "Checks for vertical speed under water.")
+public final class LiquidSpeedB extends Check {
+    public LiquidSpeedB(final PlayerData data) {
         super(data);
     }
 
@@ -41,18 +41,18 @@ public final class LiquidSpeedA extends Check {
 
             final double acceleration = deltaY - lastDeltaY;
 
-            final double predicted = lastDeltaY * (multiplier) - 0.02F;
-            final double difference = Math.abs(deltaY - predicted);
+            final double predictedY = (lastDeltaY + 0.03999999910593033D) * multiplier - 0.02D;;
+            final double difference = Math.abs(deltaY - predictedY);
 
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.WEB, ExemptType.SLIME, ExemptType.BOAT);
-            final boolean invalid = difference > 0.05 && deltaY < 0.0 && acceleration <= 0.0 && inLiquid;
+            final boolean invalid = difference > 0.05 && deltaY > 0.0 && acceleration >= 0.0 && inLiquid;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (increaseBuffer() > 1) {
                     fail(difference);
                 }
             } else {
-                decreaseBufferBy(0.05);
+                decreaseBufferBy(0.01);
             }
         }
     }

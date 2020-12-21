@@ -17,14 +17,14 @@
 
 package me.tecnio.antihaxerman.check;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.manager.AlertManager;
 import me.tecnio.antihaxerman.manager.PunishmentManager;
 import me.tecnio.antihaxerman.packet.Packet;
-import lombok.Getter;
-import lombok.Setter;
-import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -84,13 +84,18 @@ public abstract class Check {
         }
     }
 
+    public void fail() {
+        fail("");
+    }
+
     public void ban() {
         fail();
         PunishmentManager.punish(this, data);
     }
 
-    public void fail() {
-        fail("");
+    public void kick(final String reason) {
+        fail();
+        Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().kickPlayer(reason));
     }
 
     protected boolean isExempt(final ExemptType exemptType) {

@@ -15,18 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.blink;
+package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.data.processor.ConnectionProcessor;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Blink", type = "A", description = "Checks for blink by checking if client doesn't send flying while connected.")
-public final class BlinkA extends Check {
-    public BlinkA(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "E", description = "Checks for blink by checking if client doesn't send flying while being still connected.", experimental = true)
+public final class BadPacketsE extends Check {
+    public BadPacketsE(final PlayerData data) {
         super(data);
     }
 
@@ -39,11 +40,11 @@ public final class BlinkA extends Check {
             final short actionNumber = wrapper.getActionNumber();
             final short lastTransaction = connectionProcessor.getTransactionId();
 
-            final boolean exempt = data.getPlayer().isDead();
+            final boolean exempt = isExempt(ExemptType.TPS) || data.getPlayer().isDead();
             final boolean eligible = actionNumber == lastTransaction;
 
             if (eligible && !exempt) {
-                if (increaseBuffer() > 4) {
+                if (increaseBuffer() > 10) {
                     fail();
                 }
             }
