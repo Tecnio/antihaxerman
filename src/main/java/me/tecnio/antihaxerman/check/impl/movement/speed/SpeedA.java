@@ -11,7 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-@CheckInfo(name = "Speed", type = "A", description = "Detects speed cheats based on prediction.")
+@CheckInfo(name = "Speed", type = "A", description = "Detects speed cheats based on friction.")
 public final class SpeedA extends Check {
 
     private double blockSlipperiness = 0.91;
@@ -48,7 +48,6 @@ public final class SpeedA extends Check {
             final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
             
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SPEED) * (float) 0.2 * attributeSpeed;
-
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SLOW) * (float) -.15 * attributeSpeed;
 
             if (onGround) {

@@ -76,6 +76,11 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    autoblock:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
   movement:
     speed:
       a:
@@ -112,6 +117,11 @@ checks:
         max-violations: 50
         punish-command: ''
       d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    strafe:
+      a:
         enabled: true
         max-violations: 50
         punish-command: ''
