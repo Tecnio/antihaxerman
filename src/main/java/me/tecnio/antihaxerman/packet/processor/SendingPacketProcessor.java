@@ -28,7 +28,10 @@ public final class SendingPacketProcessor  {
     public void handle(final PlayerData data, final Packet packet) {
         if (packet.isVelocity()) {
             final WrappedPacketOutEntityVelocity wrapper = new WrappedPacketOutEntityVelocity(packet.getRawPacket());
-            data.getVelocityProcessor().handle(wrapper.getVelocityX(), wrapper.getVelocityY(), wrapper.getVelocityZ());
+
+            if (wrapper.getEntityId() == data.getPlayer().getEntityId()) {
+                data.getVelocityProcessor().handle(wrapper.getVelocityX(), wrapper.getVelocityY(), wrapper.getVelocityZ());
+            }
         }
         if (packet.isTeleport()) {
             data.getPositionProcessor().handleTeleport();

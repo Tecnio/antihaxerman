@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.groundspoof;
+package me.tecnio.antihaxerman.check.impl.combat.velocity;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -23,35 +23,30 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "GroundSpoof", type = "B", description = "Compares server fall distance to client fall distance.")
-public final class GroundSpoofB extends Check {
-
-    private double serverFallDistance;
-
-    public GroundSpoofB(final PlayerData data) {
+@CheckInfo(name = "Velocity", type = "A", description = "Checks for vertical velocity modifications.")
+public final class VelocityA extends Check {
+    public VelocityA(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isPosition()) {
+        if (packet.isFlying()) {
+            final int ticksSinceVelocity = data.getVelocityProcessor().getTicksSinceVelocity();
+            if (ticksSinceVelocity != 1) return;
+
             final double deltaY = data.getPositionProcessor().getDeltaY();
+            final double expectedDeltaY = data.getVelocityProcessor().getVelocityY();
 
-            if (deltaY < 0.0 && data.getPositionProcessor().isInAir()) {
-                serverFallDistance -= deltaY;
-            } else {
-                serverFallDistance = 0.0;
-            }
+            final double difference = Math.abs(deltaY - expectedDeltaY);
+            final double percentage = (deltaY * 100.0) / expectedDeltaY;
 
-            final double serverFallDistance = this.serverFallDistance;
-            final double clientFallDistance = data.getPlayer().getFallDistance();
-
-            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.WEB, ExemptType.BOAT, ExemptType.VELOCITY);
-            final boolean invalid = Math.abs(serverFallDistance - clientFallDistance) >= 1.0;
+            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.FLYING);
+            final boolean invalid = difference > 1E-10 && expectedDeltaY > 1E-2;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 4) {
-                    fail();
+                if (increaseBuffer() > 3) {
+                    fail(String.format("(Vertical) Velocity: %.2f%%", percentage));
                 }
             } else {
                 decreaseBufferBy(0.25);

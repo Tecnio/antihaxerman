@@ -87,6 +87,11 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    velocity:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
   movement:
     speed:
       a:

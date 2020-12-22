@@ -46,6 +46,8 @@ public final class StrafeA extends Check {
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double deltaZ = data.getPositionProcessor().getDeltaZ();
 
+            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
+
             final double lastDeltaX = data.getPositionProcessor().getLastDeltaX();
             final double lastDeltaZ = data.getPositionProcessor().getLastDeltaZ();
 
@@ -84,8 +86,8 @@ public final class StrafeA extends Check {
             final double diffX = deltaX - predictedDeltaX;
             final double diffZ = deltaZ - predictedDeltaZ;
 
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY);
-            final boolean invalid = (diffX > 0.05 || diffZ > 0.05) && (airTicks > 2 || groundTicks > 2);
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY, ExemptType.UNDERBLOCK);
+            final boolean invalid = (diffX > 0.01 || diffZ > 0.01) && deltaXZ > .175 && (airTicks > 2 || groundTicks > 2);
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {

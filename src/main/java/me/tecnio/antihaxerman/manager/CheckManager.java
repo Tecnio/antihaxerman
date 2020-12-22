@@ -22,6 +22,7 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.*;
 import me.tecnio.antihaxerman.check.impl.combat.aura.*;
 import me.tecnio.antihaxerman.check.impl.combat.autoblock.*;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
+import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.*;
 import me.tecnio.antihaxerman.check.impl.movement.flight.*;
 import me.tecnio.antihaxerman.check.impl.movement.largemove.*;
@@ -57,6 +58,7 @@ public final class CheckManager {
             AutoClickerA.class,
             AutoClickerB.class,
             AutoBlockA.class,
+            VelocityA.class,
             SpeedA.class,
             SpeedB.class,
             SpeedC.class,
