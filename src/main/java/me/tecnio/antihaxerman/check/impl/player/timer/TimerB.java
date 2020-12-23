@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.check.impl.player.timer;
 
+import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -39,11 +40,13 @@ public final class TimerB extends Check {
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final long now = now();
+            final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
 
             final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
+            final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {
-                if (exempt) break handle;
+                if (exempt && !accepted) break handle;
 
                 balance += 50;
                 balance -= (now - lastFlying);

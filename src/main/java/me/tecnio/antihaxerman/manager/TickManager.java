@@ -52,7 +52,7 @@ public final class TickManager implements Runnable {
 
     @Override
     public void run() {
-        ticks++;
+        ++ticks;
 
         for (final PlayerData data : PlayerDataManager.getInstance().getAllData()) {
             final Entity target = data.getCombatProcessor().getTarget();
@@ -68,17 +68,26 @@ public final class TickManager implements Runnable {
 
             final Random random = new Random();
 
-            short transactionId = (short) (random.nextInt(32767));
-            transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
+            transaction: {
+                if (ticks == 0) break transaction;
 
-            final int keepAliveId = random.nextInt();
+                short transactionId = (short) (random.nextInt(32767));
+                transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
 
-            final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
-            final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
+                final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
 
-            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
-            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
+                PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
+            }
+
+            keepalive: {
+                if (ticks == 1) break keepalive;
+
+                final int keepAliveId = ticks;
+
+                final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
+
+                PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
+            }
         }
     }
-
 }

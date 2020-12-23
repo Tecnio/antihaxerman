@@ -18,10 +18,10 @@
 package me.tecnio.antihaxerman.util.type;
 
 import lombok.Getter;
+import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +56,13 @@ public final class BoundingBox {
         }
     }
 
-    public BoundingBox(final Player player) {
-        this.minX = player.getLocation().getX() - 0.3D;
-        this.minY = player.getLocation().getY();
-        this.minZ = player.getLocation().getZ() - 0.3D;
-        this.maxX = player.getLocation().getX() + 0.3D;
-        this.maxY = player.getLocation().getY() + 1.8D;
-        this.maxZ = player.getLocation().getZ() + 0.3D;
+    public BoundingBox(final PlayerData data) {
+        this.minX = data.getPositionProcessor().getX() - 0.3D;
+        this.minY = data.getPositionProcessor().getY();
+        this.minZ = data.getPositionProcessor().getZ() - 0.3D;
+        this.maxX = data.getPositionProcessor().getX() + 0.3D;
+        this.maxY = data.getPositionProcessor().getY() + 1.8D;
+        this.maxZ = data.getPositionProcessor().getZ() + 0.3D;
     }
 
     public BoundingBox move(final double x, final double y, final double z) {

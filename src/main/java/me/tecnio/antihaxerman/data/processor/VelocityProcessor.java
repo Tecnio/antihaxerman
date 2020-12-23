@@ -32,7 +32,7 @@ public final class VelocityProcessor {
     private final PlayerData data;
     private double velocityX, velocityY, velocityZ;
     private double lastVelocityX, lastVelocityY, lastVelocityZ;
-    private int maxVelocityTicks, velocityTicks, ticksSinceVelocity;
+    private int maxVelocityTicks, velocityTicks, ticksSinceVelocity, takingVelocityTicks;
     private short velocityID;
     private boolean verifyingVelocity;
 
@@ -66,6 +66,12 @@ public final class VelocityProcessor {
 
     public void handleFlying() {
         ++ticksSinceVelocity;
+
+        if (isTakingVelocity()) {
+            ++takingVelocityTicks;
+        } else {
+            takingVelocityTicks = 0;
+        }
     }
 
     public boolean isTakingVelocity() {

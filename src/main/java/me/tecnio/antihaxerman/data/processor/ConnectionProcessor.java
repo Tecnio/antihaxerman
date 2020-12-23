@@ -25,6 +25,9 @@ import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.type.EvictingMap;
 
+import java.util.Map;
+import java.util.Optional;
+
 @Getter
 public final class ConnectionProcessor {
 
@@ -54,8 +57,6 @@ public final class ConnectionProcessor {
 
         transactionUpdates.computeIfPresent(wrapper.getActionNumber(), (id, time) -> {
             transactionPing = now - time;
-            transactionUpdates.remove(id);
-
             lastTransactionReceived = now;
 
             return time;
@@ -67,8 +68,6 @@ public final class ConnectionProcessor {
 
         keepAliveUpdates.computeIfPresent(wrapper.getId(), (id, time) -> {
             keepAlivePing = now - time;
-            keepAliveUpdates.remove(id);
-
             lastKeepAliveReceived = now;
 
             return time;
@@ -96,5 +95,21 @@ public final class ConnectionProcessor {
 
         keepAliveId = id;
         keepAliveUpdates.put(id, System.currentTimeMillis());
+    }
+
+    public Optional<Long> getTransactionTime(final short actionNumber) {
+        final Map<Short, Long> entries = transactionUpdates;
+
+        if (entries.containsKey(actionNumber)) return Optional.of(entries.get(actionNumber));
+
+        return Optional.empty();
+    }
+
+    public Optional<Long> getKeepAliveTime(final long identification) {
+        final Map<Long, Long> entries = keepAliveUpdates;
+
+        if (entries.containsKey(identification)) return Optional.of(entries.get(identification));
+
+        return Optional.empty();
     }
 }

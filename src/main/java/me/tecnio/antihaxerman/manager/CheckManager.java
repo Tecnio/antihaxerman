@@ -22,6 +22,7 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.*;
 import me.tecnio.antihaxerman.check.impl.combat.aura.*;
 import me.tecnio.antihaxerman.check.impl.combat.autoblock.*;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
+import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.*;
 import me.tecnio.antihaxerman.check.impl.movement.flight.*;
@@ -29,6 +30,7 @@ import me.tecnio.antihaxerman.check.impl.movement.largemove.*;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.*;
 import me.tecnio.antihaxerman.check.impl.movement.motion.*;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.*;
+import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.*;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
@@ -51,6 +53,7 @@ public final class CheckManager {
             AimB.class,
             AimC.class,
             AimD.class,
+            AimE.class,
             AuraA.class,
             AuraB.class,
             AuraC.class,
@@ -58,6 +61,7 @@ public final class CheckManager {
             AutoClickerA.class,
             AutoClickerB.class,
             AutoBlockA.class,
+            ReachA.class,
             VelocityA.class,
             SpeedA.class,
             SpeedB.class,
@@ -71,6 +75,7 @@ public final class CheckManager {
             MotionA.class,
             MotionB.class,
             NoSlowA.class,
+            OmniSprintA.class,
             LargeMoveA.class,
             LargeMoveB.class,
             FastClimbA.class,

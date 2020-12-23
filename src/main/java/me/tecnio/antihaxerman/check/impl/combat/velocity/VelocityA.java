@@ -32,7 +32,7 @@ public final class VelocityA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final int ticksSinceVelocity = data.getVelocityProcessor().getTicksSinceVelocity();
+            final int ticksSinceVelocity = data.getVelocityProcessor().getTakingVelocityTicks();
             if (ticksSinceVelocity != 1) return;
 
             final double deltaY = data.getPositionProcessor().getDeltaY();

@@ -26,6 +26,8 @@ import me.tecnio.antihaxerman.packet.Packet;
 @CheckInfo(name = "BadPackets", type = "F", description = "Checks if player is sending flyings but not responding transactions.")
 public final class BadPacketsF extends Check {
 
+    private int ticks, transactionSentTicks, transactionReceivedTicks;
+
     public BadPacketsF(final PlayerData data) {
         super(data);
     }
@@ -33,17 +35,20 @@ public final class BadPacketsF extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long lastSent = data.getConnectionProcessor().getLastTransactionSent();
-            final long lastReceived = data.getConnectionProcessor().getLastTransactionReceived();
+            ++ticks;
 
-            final long difference = Math.abs(lastReceived - lastSent);
+            final int difference = Math.abs(transactionReceivedTicks - transactionSentTicks);
 
             final boolean exempt = isExempt(ExemptType.TPS, ExemptType.JOINED, ExemptType.TELEPORT);
-            final boolean invalid = difference > 1000;
+            final boolean invalid = difference > 200;
 
             if (invalid && !exempt) {
                 kick("Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host");
             }
+        } else if (packet.isIncomingTransaction()) {
+            transactionReceivedTicks = ticks;
+        } else if (packet.isOutgoingTransaction()) {
+            transactionSentTicks = ticks;
         }
     }
 }

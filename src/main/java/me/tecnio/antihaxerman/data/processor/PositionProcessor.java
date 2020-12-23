@@ -172,7 +172,7 @@ public final class PositionProcessor {
 
     public void handleCollisions() {
         blocks.clear();
-        final BoundingBox boundingBox = new BoundingBox(data.getPlayer())
+        final BoundingBox boundingBox = new BoundingBox(data)
                 .expandSpecific(0, 0, 0.55, 0.6, 0, 0);
 
         final double minX = boundingBox.getMinX();

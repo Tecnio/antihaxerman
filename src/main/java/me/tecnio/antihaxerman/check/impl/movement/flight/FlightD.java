@@ -41,14 +41,14 @@ public final class FlightD extends Check {
             final double acceleration = deltaY - lastDeltaY;
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-            final boolean invalid = acceleration > 0.0 && (serverAirTicks > 1 || clientAirTicks > 1);
+            final boolean invalid = acceleration > 0.0 && (serverAirTicks > 8 || clientAirTicks > 8);
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.05);
+                decreaseBufferBy(0.1);
             }
         }
     }

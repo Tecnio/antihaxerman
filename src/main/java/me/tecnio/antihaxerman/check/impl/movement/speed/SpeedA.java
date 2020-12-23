@@ -43,7 +43,8 @@ public final class SpeedA extends Check {
                     ExemptType.UNDERBLOCK,
                     ExemptType.VEHICLE,
                     ExemptType.CLIMBABLE,
-                    ExemptType.LIQUID);
+                    ExemptType.LIQUID,
+                    ExemptType.LAGGING);
 
             final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
             

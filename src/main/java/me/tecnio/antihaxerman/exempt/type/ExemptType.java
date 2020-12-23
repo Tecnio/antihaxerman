@@ -67,6 +67,8 @@ public enum ExemptType {
 
     LAGGING(data -> data.getFlying() - data.getLastFlying() < 5),
 
+    KEEPALIVE(data -> !data.getConnectionProcessor().getKeepAliveTime(AntiHaxerman.INSTANCE.getTickManager().getTicks()).isPresent()),
+
     CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10);
 
     private final Function<PlayerData, Boolean> exception;

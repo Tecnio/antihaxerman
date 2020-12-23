@@ -52,6 +52,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      e:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     aura:
       a:
         enabled: true
@@ -79,6 +83,11 @@ checks:
         max-violations: 50
         punish-command: ''
       c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    reach:
+      a:
         enabled: true
         max-violations: 50
         punish-command: ''
@@ -165,6 +174,11 @@ checks:
         max-violations: 50
         punish-command: ''
       b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    omnisprint:
+      a:
         enabled: true
         max-violations: 50
         punish-command: ''

@@ -30,7 +30,7 @@ public final class RotationProcessor {
     private final PlayerData data;
     private float yaw, pitch, lastYaw, lastPitch,
     deltaYaw, deltaPitch, lastDeltaYaw, lastDeltaPitch,
-    yawAccel, pitchAccel, lastYawAccel, lastPitchAccel, gcd;
+    yawAccel, pitchAccel, lastYawAccel, lastPitchAccel, gcd, actualGcd;
 
     private int mouseDeltaX, mouseDeltaY, lastMouseDeltaX, lastMouseDeltaY;
 
@@ -122,7 +122,9 @@ public final class RotationProcessor {
             this.sensitivity = MathUtil.getMode(sensitivitySamples);
 
             final float gcdOne = (sensitivity / 200F) * 0.6F + 0.2F;
+
             this.gcd = gcdOne * gcdOne * gcdOne * 1.2F;
+            this.actualGcd = gcdOne * gcdOne * gcdOne * 8.0F;
 
             sensitivitySamples.clear();
         }
