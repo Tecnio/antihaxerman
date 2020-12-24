@@ -15,34 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.speed;
+package me.tecnio.antihaxerman.check.impl.movement.noslow;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid acceleration.")
-public final class SpeedD extends Check {
-    public SpeedD(final PlayerData data) {
+@CheckInfo(name = "NoSlow", type = "B", description = "Checks if player is sneaking and sprinting.")
+public final class NoSlowB extends Check {
+    public NoSlowB(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
-            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
+            final int groundTicks = data.getPositionProcessor().getGroundTicks();
 
-            final double acceleration = deltaXZ - lastDeltaXZ;
+            final int sprintingTicks = data.getActionProcessor().getSprintingTicks();
+            final int sneakingTicks = data.getActionProcessor().getSneakingTicks();
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME);
-            final boolean invalid = acceleration > PlayerUtil.getBaseSpeed(data.getPlayer());
+            final boolean exempt = groundTicks < 10;
+            final boolean invalid = sprintingTicks > 10 && sneakingTicks > 10;
 
             if (invalid && !exempt) {
-                fail();
+                if (increaseBuffer() > 10) {
+                    fail();
+                }
+            } else {
+                resetBuffer();
             }
         }
     }

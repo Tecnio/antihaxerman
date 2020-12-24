@@ -35,16 +35,10 @@ public final class SpeedA extends Check {
 
             final boolean onGround = data.getPositionProcessor().isOnGround();
             final boolean sprinting = data.getActionProcessor().isSprinting();
-            final boolean exempt = this.isExempt(
-                    ExemptType.TPS,
-                    ExemptType.TELEPORT,
-                    ExemptType.PISTON,
-                    ExemptType.FLYING,
-                    ExemptType.UNDERBLOCK,
-                    ExemptType.VEHICLE,
-                    ExemptType.CLIMBABLE,
-                    ExemptType.LIQUID,
-                    ExemptType.LAGGING);
+
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON,
+                    ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE,
+                    ExemptType.LIQUID, ExemptType.LAGGING, ExemptType.SLIME);
 
             final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
             
@@ -61,7 +55,7 @@ public final class SpeedA extends Check {
                     attributeSpeed += 0.2;
                 }
             } else {
-                attributeSpeed = sprinting ? 0.0263 : 0.02;
+                attributeSpeed = sprinting ? 0.026 : 0.02;
 
                 blockSlipperiness = 0.91f;
             }
@@ -81,7 +75,7 @@ public final class SpeedA extends Check {
             if (movementSpeed > 1.0 && !exempt) {
                 increaseBufferBy(10);
 
-                if (getBuffer() > 40) {
+                if (getBuffer() > 50) {
                     fail();
 
                     multiplyBuffer(0.5);

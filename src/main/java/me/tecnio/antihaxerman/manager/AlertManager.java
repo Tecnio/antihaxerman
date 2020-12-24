@@ -65,6 +65,10 @@ public final class AlertManager {
         alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));
     }
 
+    public static void sendMessage(final String message) {
+        alerts.forEach(player -> player.getPlayer().sendMessage(Config.PREFIX + message));
+    }
+
     public enum ToggleAlertType {
         ADD, REMOVE
     }

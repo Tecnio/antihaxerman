@@ -15,35 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.speed;
+package me.tecnio.antihaxerman.check.impl.player.scaffold;
 
+import io.github.retrooper.packetevents.enums.Direction;
+import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid acceleration.")
-public final class SpeedD extends Check {
-    public SpeedD(final PlayerData data) {
+@CheckInfo(name = "Scaffold", type = "A", description = "")
+public final class ScaffoldA extends Check {
+    public ScaffoldA(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
-            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
+        if (packet.isBlockPlace()) {
+            final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
 
-            final double acceleration = deltaXZ - lastDeltaXZ;
+            final double locationY = data.getPositionProcessor().getY();
+            final double blockY = wrapper.getY();
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME);
-            final boolean invalid = acceleration > PlayerUtil.getBaseSpeed(data.getPlayer());
+            final Direction direction = wrapper.getDirection();
 
-            if (invalid && !exempt) {
-                fail();
-            }
+            final boolean exempt = isExempt(ExemptType.TELEPORT);
+            final boolean invalid = locationY > blockY && direction == Direction.DOWN;
+
+            if (invalid && !exempt) fail();
         }
     }
 }

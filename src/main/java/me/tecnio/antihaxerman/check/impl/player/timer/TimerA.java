@@ -27,7 +27,7 @@ public final class TimerA extends Check {
             final long now = now();
             final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
             
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.LAGGING);
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING);
             final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {

@@ -40,6 +40,7 @@ public final class Config {
     public static int CLEAR_VIOLATIONS_DELAY;
 
     public static PacketListenerThreadMode THREADING;
+    public static boolean AHM_THREAD;
 
     public static List<String> ENABLED_CHECKS = new ArrayList<>();
     public static List<String> SETBACK_CHECKS = new ArrayList<>();
@@ -59,10 +60,30 @@ public final class Config {
 
             final String threading = getStringFromConfig("system.threading");
 
-            if (threading.equalsIgnoreCase("netty")) {
-                THREADING = PacketListenerThreadMode.NETTY;
-            } else {
-                THREADING = PacketListenerThreadMode.PACKETEVENTS;
+            switch (threading.toLowerCase()) {
+                case "netty": {
+                    THREADING = PacketListenerThreadMode.NETTY;
+                    AHM_THREAD = false;
+                    break;
+                }
+
+                case "packetevents": {
+                    THREADING = PacketListenerThreadMode.PACKETEVENTS;
+                    AHM_THREAD = false;
+                    break;
+                }
+
+                case "antihaxerman": {
+                    THREADING = PacketListenerThreadMode.NETTY;
+                    AHM_THREAD = true;
+                    break;
+                }
+
+                default: {
+                    THREADING = PacketListenerThreadMode.NETTY;
+                    AHM_THREAD = false;
+                    break;
+                }
             }
 
             VL_TO_ALERT = getIntegerFromConfig("violations.minimum-vl");

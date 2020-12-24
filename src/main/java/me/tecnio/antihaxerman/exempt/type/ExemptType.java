@@ -21,6 +21,7 @@ import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.ServerUtil;
 import lombok.Getter;
+import org.bukkit.GameMode;
 
 import java.util.function.Function;
 
@@ -68,6 +69,8 @@ public enum ExemptType {
     LAGGING(data -> data.getFlying() - data.getLastFlying() < 5),
 
     KEEPALIVE(data -> !data.getConnectionProcessor().getKeepAliveTime(AntiHaxerman.INSTANCE.getTickManager().getTicks()).isPresent()),
+
+    CREATIVE(data -> data.getPlayer().getGameMode() == GameMode.CREATIVE),
 
     CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10);
 

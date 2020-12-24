@@ -19,25 +19,44 @@ package me.tecnio.antihaxerman.manager;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.impl.combat.aim.*;
-import me.tecnio.antihaxerman.check.impl.combat.aura.*;
-import me.tecnio.antihaxerman.check.impl.combat.autoblock.*;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
+import me.tecnio.antihaxerman.check.impl.combat.autoblock.AutoBlockA;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
 import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
-import me.tecnio.antihaxerman.check.impl.movement.fastclimb.*;
-import me.tecnio.antihaxerman.check.impl.movement.flight.*;
-import me.tecnio.antihaxerman.check.impl.movement.largemove.*;
-import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.*;
-import me.tecnio.antihaxerman.check.impl.movement.motion.*;
-import me.tecnio.antihaxerman.check.impl.movement.noslow.*;
+import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbA;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
+import me.tecnio.antihaxerman.check.impl.movement.flight.FlightD;
+import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveA;
+import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveB;
+import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedA;
+import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedB;
+import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
+import me.tecnio.antihaxerman.check.impl.movement.motion.MotionB;
+import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
+import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowB;
 import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
-import me.tecnio.antihaxerman.check.impl.movement.speed.*;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
+import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedD;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
-import me.tecnio.antihaxerman.check.impl.player.groundspoof.*;
-import me.tecnio.antihaxerman.check.impl.player.pingspoof.*;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
+import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryA;
+import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryB;
+import me.tecnio.antihaxerman.check.impl.player.pingspoof.PingSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.post.*;
-import me.tecnio.antihaxerman.check.impl.player.timer.*;
+import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldA;
+import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldB;
+import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
+import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -57,9 +76,12 @@ public final class CheckManager {
             AuraA.class,
             AuraB.class,
             AuraC.class,
-            AuraD.class,
+            AutoClickerF.class,
             AutoClickerA.class,
             AutoClickerB.class,
+            AutoClickerC.class,
+            AutoClickerD.class,
+            AutoClickerE.class,
             AutoBlockA.class,
             ReachA.class,
             VelocityA.class,
@@ -75,6 +97,7 @@ public final class CheckManager {
             MotionA.class,
             MotionB.class,
             NoSlowA.class,
+            NoSlowB.class,
             OmniSprintA.class,
             LargeMoveA.class,
             LargeMoveB.class,
@@ -92,13 +115,20 @@ public final class CheckManager {
             PostD.class,
             PostE.class,
             PostF.class,
+            InventoryA.class,
+            InventoryB.class,
             PingSpoofA.class,
+            ScaffoldA.class,
+            ScaffoldB.class,
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,
             BadPacketsD.class,
             BadPacketsE.class,
             BadPacketsF.class,
+            BadPacketsG.class,
+            BadPacketsH.class,
+            BadPacketsI.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

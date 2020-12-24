@@ -15,20 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.combat.aura;
+package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.entity.Entity;
 
-@CheckInfo(name = "Aura", type = "D", description = "Checks for frequency of the clicks.")
-public final class AuraD extends Check {
-
-    private int movements = 0, lastMovements = 0, total = 0, invalid = 0;
-
-    public AuraD(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "G", description = "Checks if player attacked themselves.")
+public final class BadPacketsG extends Check {
+    public BadPacketsG(final PlayerData data) {
         super(data);
     }
 
@@ -37,31 +35,12 @@ public final class AuraD extends Check {
         if (packet.isUseEntity()) {
             final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
 
-            if (wrapper.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
-                final boolean proper = data.getClickProcessor().getCps() > 7.2 && movements < 4 && lastMovements < 4;
+            final Entity player = data.getPlayer();
+            final Entity target = wrapper.getEntity();
 
-                if (proper) {
-                    final boolean flag = movements == lastMovements;
+            final boolean invalid = player == target;
 
-                    if (flag) {
-                        ++invalid;
-                    }
-
-                    if (++total == 30) {
-
-                        if (invalid > 28) {
-                            fail();
-                        }
-
-                        total = 0;
-                    }
-                }
-
-                lastMovements = movements;
-                movements = 0;
-            }
-        } else if (packet.isFlying()) {
-            movements++;
+            if (invalid) ban();
         }
     }
 }

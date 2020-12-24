@@ -15,54 +15,51 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.post;
+package me.tecnio.antihaxerman.check.impl.combat.autoclicker;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 
-@CheckInfo(name = "Post", type = "F", description = "Checks for packet order for the packet 'HELD_ITEM_SLOT'.")
-public final class PostF extends Check {
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-    private boolean sent;
-    public long lastFlying, lastPacket;
+@CheckInfo(name = "AutoClicker", type = "C", description = "Checks if the deviation is too low.")
+public final class AutoClickerC extends Check {
 
-    public PostF(final PlayerData data) {
+    private final Deque<Long> samples = new ArrayDeque<>();
+    private int ticks;
+
+    public AutoClickerC(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final long now = System.currentTimeMillis();
-            final long delay = now - lastPacket;
+        if (packet.isArmAnimation() && !isExempt(ExemptType.AUTOCLICKER)) {
+            if (ticks > 50) samples.clear();
+            else samples.add(ticks * 50L);
 
-            if (sent) {
-                if (delay > 40L && delay < 100L) {
-                    increaseBufferBy(0.25);
+            if (samples.size() == 50) {
+                final double deviation = MathUtil.getStandardDeviation(samples);
 
-                    if (getBuffer() > 0.75) {
+                if (deviation < 150) {
+                    if (increaseBuffer() > 2) {
                         fail();
                     }
                 } else {
-                    decreaseBufferBy(0.025);
+                    decreaseBufferBy(0.25);
                 }
 
-                sent = false;
+                samples.clear();
             }
 
-            this.lastFlying = now;
-        } else if (packet.isIncomingHeldItemSlot()){
-            final long now = System.currentTimeMillis();
-            final long delay = now - lastFlying;
-
-            if (delay < 10L) {
-                lastPacket = now;
-                sent = true;
-            } else {
-                decreaseBufferBy(0.0025);
-            }
+            ticks = 0;
+        } else if (packet.isFlying()) {
+            ++ticks;
         }
     }
 }

@@ -100,8 +100,12 @@ public final class Packet {
         return isReceiving() && packetId == PacketType.Play.Client.STEER_VEHICLE;
     }
 
-    public boolean isHeldItemSlot() {
+    public boolean isIncomingHeldItemSlot() {
         return isReceiving() && packetId == PacketType.Play.Client.HELD_ITEM_SLOT;
+    }
+
+    public boolean isOutgoingHeldItemSlot() {
+        return isSending() && packetId == PacketType.Play.Server.HELD_ITEM_SLOT;
     }
 
     public boolean isClientCommand() {

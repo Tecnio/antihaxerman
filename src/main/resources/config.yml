@@ -18,7 +18,8 @@ response:
     prefix: '&cAHM &8> '
 
 system:
-  # Threading mode. If you have issues with performance try tinkering with this. Warning if you don't understand this just leave it at default. There are 3 modes:
+  # Threading mode. If you have issues with performance/ping spikes try tinkering with this. Warning if you don't understand this just leave it at default. There are 3 modes:
+  # ANTIHAXERMAN: Runs the anticheat on a AntiHaxerman thread. This should be more performant than all.
   # NETTY: Netty just runs the anti-cheat on the thread where all packets are called from. No fancy stuff just good ol' netty.
   # PACKETEVENTS: This runs the anti-cheat on the PacketEvents thread.
   threading: 'NETTY'
@@ -69,10 +70,6 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
     autoclicker:
       a:
         enabled: true
@@ -83,6 +80,18 @@ checks:
         max-violations: 50
         punish-command: ''
       c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      e:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      f:
         enabled: true
         max-violations: 50
         punish-command: ''
@@ -159,6 +168,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     largemove:
       a:
         enabled: true
@@ -230,8 +243,26 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    inventory:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     pingspoof:
       a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    scaffold:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      b:
         enabled: true
         max-violations: 50
         punish-command: ''
@@ -257,6 +288,18 @@ checks:
         max-violations: 50
         punish-command: ''
       f:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      g:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      h:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      i:
         enabled: true
         max-violations: 50
         punish-command: ''

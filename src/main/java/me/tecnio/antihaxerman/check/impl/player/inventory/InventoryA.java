@@ -15,35 +15,42 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.speed;
+package me.tecnio.antihaxerman.check.impl.player.inventory;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.helditemslot.WrappedPacketInHeldItemSlot;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid acceleration.")
-public final class SpeedD extends Check {
-    public SpeedD(final PlayerData data) {
+@CheckInfo(name = "Inventory", type = "A", description = "Checks for slot change to same slot.")
+public final class InventoryA extends Check {
+
+    private int lastSlot = -1;
+    private boolean server;
+
+    public InventoryA(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
-            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
+        if (packet.isIncomingHeldItemSlot()) {
+            final WrappedPacketInHeldItemSlot wrapper = new WrappedPacketInHeldItemSlot(packet.getRawPacket());
 
-            final double acceleration = deltaXZ - lastDeltaXZ;
+            final int slot = wrapper.getCurrentSelectedSlot();
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME);
-            final boolean invalid = acceleration > PlayerUtil.getBaseSpeed(data.getPlayer());
+            final boolean invalid = slot == lastSlot;
+            final boolean exempt = server;
 
             if (invalid && !exempt) {
                 fail();
             }
+
+            lastSlot = slot;
+            server = false;
+        } else if (packet.isOutgoingHeldItemSlot()) {
+            server = true;
         }
     }
 }

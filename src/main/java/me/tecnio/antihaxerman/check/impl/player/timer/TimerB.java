@@ -42,24 +42,24 @@ public final class TimerB extends Check {
             final long now = now();
             final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TPS) || lastFlying == 0;
+            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.TPS) || lastFlying == 0;
             final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {
-                if (exempt && !accepted) break handle;
+                if (exempt || !accepted) break handle;
 
                 balance += 50;
                 balance -= (now - lastFlying);
 
-                if (balance > 0) {
-                    fail();
+                if (balance > 1) {
+                    fail(balance);
                     balance = 0;
                 }
             }
 
             this.lastFlying = now;
         } else if (packet.isTeleport()) {
-            balance -= 50;
+            balance = 0;
         }
     }
 }

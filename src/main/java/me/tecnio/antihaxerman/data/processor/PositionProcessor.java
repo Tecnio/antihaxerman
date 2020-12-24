@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.data.processor;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.util.type.BoundingBox;
 import lombok.Getter;
@@ -59,30 +60,37 @@ public final class PositionProcessor {
         this.data = data;
     }
 
-    public void handle(final double x, final double y, final double z, final boolean onGround) {
-        lastX = this.x;
-        lastY = this.y;
-        lastZ = this.z;
+    public void handle(final WrappedPacketInFlying wrapper) {
         this.lastOnGround = this.onGround;
+        this.onGround = wrapper.isOnGround();
 
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.onGround = onGround;
+        if (wrapper.isPosition()) {
+            lastX = this.x;
+            lastY = this.y;
+            lastZ = this.z;
+            this.lastOnGround = this.onGround;
 
-        lastDeltaX = deltaX;
-        lastDeltaY = deltaY;
-        lastDeltaZ = deltaZ;
-        lastDeltaXZ = deltaXZ;
+            this.x = wrapper.getX();
+            this.y = wrapper.getY();
+            this.z = wrapper.getZ();
+            this.onGround = wrapper.isOnGround();
 
-        deltaX = this.x - lastX;
-        deltaY = this.y - lastY;
-        deltaZ = this.z - lastZ;
-        deltaXZ = Math.hypot(deltaX, deltaZ);
+            lastDeltaX = deltaX;
+            lastDeltaY = deltaY;
+            lastDeltaZ = deltaZ;
+            lastDeltaXZ = deltaXZ;
 
-        mathematicallyOnGround = y % 0.015625 == 0.0;
+            deltaX = this.x - lastX;
+            deltaY = this.y - lastY;
+            deltaZ = this.z - lastZ;
+            deltaXZ = Math.hypot(deltaX, deltaZ);
 
-        handleCollisions();
+            mathematicallyOnGround = y % 0.015625 == 0.0;
+
+            handleCollisions();
+        }
+
+        handleTicks();
     }
 
     public void handleTicks() {
@@ -207,8 +215,6 @@ public final class PositionProcessor {
         blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5).anyMatch(block -> block.getType() != Material.AIR);
         onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
         nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
-
-        handleTicks();
     }
 
     public void handleClimbableCollision() {
@@ -234,7 +240,7 @@ public final class PositionProcessor {
         teleportTicks = 0;
     }
 
-    public boolean isColliding(CollisionType collisionType, Material blockType) {
+    public boolean isColliding(final CollisionType collisionType, final Material blockType) {
         if (collisionType == CollisionType.ALL) {
             return blocks.stream().allMatch(block -> block.getType() == blockType);
         }
@@ -246,14 +252,14 @@ public final class PositionProcessor {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();
         } else {
-            FutureTask<Block> futureTask = new FutureTask<>(() -> {
+            final FutureTask<Block> futureTask = new FutureTask<>(() -> {
                 location.getWorld().loadChunk(location.getBlockX() >> 4, location.getBlockZ() >> 4);
                 return location.getBlock();
             });
             Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), futureTask);
             try {
                 return futureTask.get();
-            } catch (Exception exception) {
+            } catch (final Exception exception) {
                 exception.printStackTrace();
             }
             return null;

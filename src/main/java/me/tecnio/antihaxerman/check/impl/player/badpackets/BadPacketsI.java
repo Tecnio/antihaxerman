@@ -15,33 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.speed;
+package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid acceleration.")
-public final class SpeedD extends Check {
-    public SpeedD(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "I", description = "Checks for no position packet in 20 ticks.")
+public final class BadPacketsI extends Check {
+    public BadPacketsI(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
-            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
+            final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
 
-            final double acceleration = deltaXZ - lastDeltaXZ;
+            if (!wrapper.isPosition() && !wrapper.isLook()) increaseBuffer();
+            else resetBuffer();
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME);
-            final boolean invalid = acceleration > PlayerUtil.getBaseSpeed(data.getPlayer());
-
-            if (invalid && !exempt) {
+            if (getBuffer() > 20) {
                 fail();
             }
         }

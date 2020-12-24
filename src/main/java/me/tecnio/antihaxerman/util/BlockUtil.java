@@ -31,11 +31,11 @@ public final class BlockUtil {
 
     public double getBlockFriction(final Location to) {
         try {
-            return (getBlockAsync(to.clone().subtract(0.0, 0.3, 0.0)).getType()) == Material.PACKED_ICE
-                    || getBlockAsync(to.clone().subtract(0.0, 1.0, 0.0)).getType() == Material.ICE ? 0.9800000190734863
-                    : (getBlockAsync(to.clone().subtract(0.0, 1.0, 0.0)).getType()).toString().toLowerCase().contains("slime") ? 0.800000011920929
+            return (getBlockAsync(to).getType()) == Material.PACKED_ICE
+                    || getBlockAsync(to).getType() == Material.ICE ? 0.9800000190734863
+                    : (getBlockAsync(to).getType()).toString().toLowerCase().contains("slime") ? 0.800000011920929
                     : 0.6000000238418579;
-        } catch (Exception ignored) {
+        } catch (final Exception ignored) {
             return 0.6000000238418579;
         }
     }
@@ -49,14 +49,14 @@ public final class BlockUtil {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();
         } else {
-            FutureTask<Block> futureTask = new FutureTask<>(() -> {
+            final FutureTask<Block> futureTask = new FutureTask<>(() -> {
                 location.getWorld().loadChunk(location.getBlockX() >> 4, location.getBlockZ() >> 4);
                 return location.getBlock();
             });
             Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), futureTask);
             try {
                 return futureTask.get();
-            } catch (Exception exception) {
+            } catch (final Exception exception) {
                 exception.printStackTrace();
             }
             return null;

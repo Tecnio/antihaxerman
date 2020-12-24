@@ -56,6 +56,10 @@ public final class ReceivingPacketProcessor  {
             data.getCombatProcessor().handleUseEntity(wrapper);
         }
         if (packet.isFlying()) {
+            final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
+
+            data.getPositionProcessor().handle(wrapper);
+
             data.setLastFlying(data.getFlying());
             data.setFlying(System.currentTimeMillis());
 
@@ -64,11 +68,6 @@ public final class ReceivingPacketProcessor  {
             data.getCombatProcessor().handleFlying();
             data.getClickProcessor().handleFlying();
             data.getConnectionProcessor().handleFlying();
-        }
-        if (packet.isPosition()) {
-            final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
-
-            data.getPositionProcessor().handle(wrapper.getX(), wrapper.getY(), wrapper.getZ(), wrapper.isOnGround());
         }
         if (packet.isRotation()) {
             final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());

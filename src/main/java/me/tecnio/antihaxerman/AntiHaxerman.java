@@ -89,7 +89,7 @@ public enum AntiHaxerman {
                 .injectEarly(true)
                 .packetProcessingThreadCount(1)
                 .checkForUpdates(true)
-                .injectionFailureMessage("AntiHaxerman is currently loading. Please wait until it loads.")
+                .injectionFailureMessage("AntiHaxerman is currently loading. Please join after it loads. (NOT AN ISSUE)")
                 .backupServerVersion(ServerVersion.v_1_7_10);
 
         PacketEvents.get().load();
