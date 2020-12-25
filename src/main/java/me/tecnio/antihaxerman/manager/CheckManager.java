@@ -19,6 +19,7 @@ package me.tecnio.antihaxerman.manager;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.impl.combat.aim.*;
+import me.tecnio.antihaxerman.check.impl.combat.angle.AngleA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
@@ -40,10 +41,7 @@ import me.tecnio.antihaxerman.check.impl.movement.motion.MotionB;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowB;
 import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
-import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedA;
-import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedB;
-import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedC;
-import me.tecnio.antihaxerman.check.impl.movement.speed.SpeedD;
+import me.tecnio.antihaxerman.check.impl.movement.speed.*;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
@@ -67,7 +65,7 @@ import java.util.List;
 
 public final class CheckManager {
 
-    public static final Class[] CHECKS = new Class[]{
+    public static final Class[] CHECKS = new Class[] {
             AimA.class,
             AimB.class,
             AimC.class,
@@ -84,11 +82,13 @@ public final class CheckManager {
             AutoClickerE.class,
             AutoBlockA.class,
             ReachA.class,
+            AngleA.class,
             VelocityA.class,
             SpeedA.class,
             SpeedB.class,
             SpeedC.class,
             SpeedD.class,
+            SpeedE.class,
             FlightA.class,
             FlightB.class,
             FlightC.class,

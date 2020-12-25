@@ -19,12 +19,11 @@ package me.tecnio.antihaxerman.util;
 
 import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
+import net.minecraft.server.v1_8_R3.Tuple;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @UtilityClass
 public class MathUtil {
@@ -37,7 +36,7 @@ public class MathUtil {
         double sum = 0.0;
         double variance = 0.0;
 
-        double average;
+        final double average;
 
         for (final Number number : data) {
             sum += number.doubleValue();
@@ -89,7 +88,7 @@ public class MathUtil {
         double sum = 0.0;
         int count = 0;
 
-        for (Number number : data) {
+        for (final Number number : data) {
             sum += number.doubleValue();
             ++count;
         }
@@ -113,12 +112,12 @@ public class MathUtil {
         return efficiencyFirst * (varianceSquared / Math.pow(variance / sum, 2.0)) - efficiencySecond;
     }
 
-    public static int getMode(Collection<? extends Number> array) {
+    public static int getMode(final Collection<? extends Number> array) {
         int mode = (int) array.toArray()[0];
         int maxCount = 0;
-        for (Number value : array) {
+        for (final Number value : array) {
             int count = 1;
-            for (Number i : array) {
+            for (final Number i : array) {
                 if (i.equals(value))
                     count++;
                 if (count > maxCount) {
@@ -136,6 +135,23 @@ public class MathUtil {
         } else {
             return data.get(data.size() / 2);
         }
+    }
+
+    public <T extends Number> T getModeNiggar(final Collection<T> collect) {
+        final Map<T, Integer> repeated = new HashMap<>();
+
+        //Sorting each value by how to repeat into a map.
+        collect.forEach(val -> {
+            final int number = repeated.getOrDefault(val, 0);
+
+            repeated.put(val, number + 1);
+        });
+
+        //Calculating the largest value to the key, which would be the mode.
+        return repeated.keySet().stream()
+                .map(key -> new Tuple<>(key, repeated.get(key))) //We map it into a Tuple for easier sorting.
+                .max(Comparator.comparing(Tuple::b, Comparator.naturalOrder()))
+                .orElseThrow(NullPointerException::new).a();
     }
 
     public boolean isExponentiallySmall(final Number number) {
@@ -175,27 +191,27 @@ public class MathUtil {
     }
 
     public static Vector getDirection(final float yaw, final float pitch) {
-        Vector vector = new Vector();
-        float rotX = (float)Math.toRadians(yaw);
-        float rotY = (float)Math.toRadians(pitch);
+        final Vector vector = new Vector();
+        final float rotX = (float)Math.toRadians(yaw);
+        final float rotY = (float)Math.toRadians(pitch);
         vector.setY(-Math.sin(rotY));
-        double xz = Math.cos(rotY);
+        final double xz = Math.cos(rotY);
         vector.setX(-xz * Math.sin(rotX));
         vector.setZ(xz * Math.cos(rotX));
         return vector;
     }
     
-    public static float[] getRotations(Location one, Location two) {
-        double diffX = two.getX() - one.getX();
-        double diffZ = two.getZ() - one.getZ();
-        double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
-        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-        float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
-        float pitch = (float) (-Math.atan2(diffY, dist) * 180.0 / 3.141592653589793);
+    public static float[] getRotations(final Location one, final Location two) {
+        final double diffX = two.getX() - one.getX();
+        final double diffZ = two.getZ() - one.getZ();
+        final double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
+        final double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
+        final float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
+        final float pitch = (float) (-Math.atan2(diffY, dist) * 180.0 / 3.141592653589793);
         return new float[]{yaw, pitch};
     }
 
-    public static float clamp(float val, float min, float max) {
+    public static float clamp(final float val, final float min, final float max) {
         return Math.max(min, Math.min(max, val));
     }
 }

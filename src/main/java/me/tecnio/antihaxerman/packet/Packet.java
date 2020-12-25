@@ -132,5 +132,9 @@ public final class Packet {
         return isSending() && packetId == PacketType.Play.Server.REL_ENTITY_MOVE;
     }
 
+    public boolean isChat() {
+        return isReceiving() && packetId == PacketType.Play.Client.CHAT;
+    }
+
     public enum Direction { SEND, RECEIVE }
 }

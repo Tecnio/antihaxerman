@@ -14,28 +14,28 @@ public final class EvictingMap<K, V> extends HashMap<K, V> {
     private final Deque<K> storedKeys = new LinkedList<>();
 
     @Override
-    public boolean remove(Object key, Object value) {
+    public boolean remove(final Object key, final Object value) {
         //noinspection SuspiciousMethodCalls
         storedKeys.remove(key);
         return super.remove(key, value);
     }
 
     @Override
-    public V putIfAbsent(K key, V value) {
+    public V putIfAbsent(final K key, final V value) {
         if(!storedKeys.contains(key) || !get(key).equals(value))
             checkAndRemove();
         return super.putIfAbsent(key, value);
     }
 
     @Override
-    public V put(K key, V value) {
+    public V put(final K key, final V value) {
         checkAndRemove();
         storedKeys.addLast(key);
         return super.put(key, value);
     }
 
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
+    public void putAll(final Map<? extends K, ? extends V> m) {
         m.forEach(this::put);
     }
 
@@ -46,7 +46,7 @@ public final class EvictingMap<K, V> extends HashMap<K, V> {
     }
 
     @Override
-    public V remove(Object key) {
+    public V remove(final Object key) {
         //noinspection SuspiciousMethodCalls
         storedKeys.remove(key);
         return super.remove(key);

@@ -15,24 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.combat.reach;
+package me.tecnio.antihaxerman.check.impl.combat.angle;
 
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-@CheckInfo(name = "Reach", type = "A", description = "Checks if player is attacking from a distance that's not possible.")
-public final class ReachA extends Check {
+@CheckInfo(name = "Angle", type = "A", description = "Checks if player is looking at the player they attacked.")
+public final class AngleA extends Check {
 
     private boolean attacked;
 
-    public ReachA(final PlayerData data) {
+    public AngleA(final PlayerData data) {
         super(data);
     }
 
@@ -60,24 +59,27 @@ public final class ReachA extends Check {
 
             final Vector origin = new Vector(x, 0.0, z);
 
-            final double maxDistance = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.0 : 3.0;
-            final double distance = data.getTargetLocations().stream()
+            final double angle = data.getTargetLocations().stream()
                     .filter(pair -> Math.abs(now - pair.getY() - latencyInTicks) < 3)
                     .mapToDouble(pair -> {
                         final Vector targetLocation = pair.getX().toVector().setY(0.0);
 
-                        return origin.distance(targetLocation) - 0.5658;
+                        final Vector dirToDestination = targetLocation.clone().subtract(origin);
+                        final Vector playerDirection = data.getPlayer().getEyeLocation().getDirection().setY(0.0);
+
+                        return dirToDestination.angle(playerDirection);
                     })
                     .min().orElse(-1);
 
-            final boolean invalid = distance > maxDistance && accepted;
+            final boolean exempt = origin.distance(target.getLocation().toVector()) < 1.2;
+            final boolean invalid = angle > 0.55 && accepted;
 
-            if (invalid) {
-                if (increaseBuffer() > 2) {
-                    fail(distance);
+            if (invalid && !exempt) {
+                if (increaseBuffer() > 4) {
+                    fail(angle);
                 }
             } else {
-                decreaseBufferBy(0.05);
+                decreaseBuffer();
             }
         } else if (packet.isUseEntity()) {
             attacked = true;

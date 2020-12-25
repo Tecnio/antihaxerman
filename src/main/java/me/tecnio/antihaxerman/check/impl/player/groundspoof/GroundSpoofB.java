@@ -37,7 +37,11 @@ public final class GroundSpoofB extends Check {
         if (packet.isPosition()) {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
-            if (deltaY < 0.0 && data.getPositionProcessor().isInAir()) {
+            final boolean inAir = data.getPositionProcessor().isInAir();
+            final boolean nearStair = data.getPositionProcessor().isNearStair();
+            final boolean inLiquid = data.getPositionProcessor().isInLiquid();
+
+            if (deltaY < 0.0 && !inAir && !nearStair && !inLiquid) {
                 serverFallDistance -= deltaY;
             } else {
                 serverFallDistance = 0.0;
@@ -46,8 +50,8 @@ public final class GroundSpoofB extends Check {
             final double serverFallDistance = this.serverFallDistance;
             final double clientFallDistance = data.getPlayer().getFallDistance();
 
-            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.WEB, ExemptType.BOAT, ExemptType.VELOCITY, ExemptType.LAGGING);
-            final boolean invalid = Math.abs(serverFallDistance - clientFallDistance) >= 1.0;
+            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.CREATIVE, ExemptType.WEB, ExemptType.CLIMBABLE,ExemptType.LIQUID, ExemptType.BOAT, ExemptType.VOID, ExemptType.VEHICLE);
+            final boolean invalid = Math.abs(serverFallDistance - clientFallDistance) - clientFallDistance >= 1.0;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {

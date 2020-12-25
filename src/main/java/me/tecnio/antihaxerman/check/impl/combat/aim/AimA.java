@@ -12,6 +12,8 @@ public final class AimA extends Check {
         super(data);
     }
 
+    // Again skidded from Elevated LOL
+
     @Override
     public void handle(final Packet packet) {
         if (packet.isRotation() && hitTicks() < 3) {
@@ -46,7 +48,7 @@ public final class AimA extends Check {
                 if (data.getRotationProcessor().isCinematic()) decreaseBufferBy(0.1);
 
                 if (invalidX && invalidY) {
-                    if (increaseBuffer() > 8) {
+                    if (increaseBuffer() > 6) {
                         fail();
                     }
                 } else {

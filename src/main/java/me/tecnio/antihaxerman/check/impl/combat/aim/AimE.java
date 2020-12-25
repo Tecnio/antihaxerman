@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.combat.aim;
 
@@ -21,16 +6,64 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 
-@CheckInfo(name = "Aim", type = "E", description = "", experimental = true)
+@CheckInfo(name = "Aim", type = "E", description = "Checks for bad GCD.", experimental = true)
 public final class AimE extends Check {
+
+    private boolean attacked;
+
     public AimE(final PlayerData data) {
         super(data);
     }
 
+    // Again skidded from Elevated LOL
+
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation()) {
+        if (packet.isFlying()) {
+            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
+            final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
+
+            final float lastDeltaYaw = data.getRotationProcessor().getLastDeltaYaw();
+            final float lastDeltaPitch = data.getRotationProcessor().getLastDeltaPitch();
+
+            if (deltaYaw > 0.0 && deltaPitch > 0.0 && deltaYaw < 30.d && deltaPitch < 20.d) {
+                final long expandedYaw = (long) (deltaYaw * MathUtil.EXPANDER);
+                final long previousExpandedYaw = (long) (lastDeltaYaw * MathUtil.EXPANDER);
+
+                final long expandedPitch = (long) (deltaPitch * MathUtil.EXPANDER);
+                final long previousExpandedPitch = (long) (lastDeltaPitch * MathUtil.EXPANDER);
+
+                final double divisorPitch = MathUtil.getGcd(expandedPitch, previousExpandedPitch);
+                final double divisorYaw = MathUtil.getGcd(expandedYaw, previousExpandedYaw);
+
+                final boolean cinematic = data.getRotationProcessor().isCinematic();
+
+                if (divisorYaw > 0.0 && divisorPitch > 0.0 && !cinematic) {
+                    final double threshold = 131072;
+
+                    if (divisorYaw < threshold || divisorPitch < threshold) {
+                        final double deltaDivisor = Math.abs(divisorYaw - divisorPitch);
+
+                        final boolean invalid = deltaDivisor > 700d;
+
+                        if (invalid && attacked) {
+                            if (increaseBuffer() > 7) {
+                                fail();
+                            }
+                        }
+                    } else {
+                        decreaseBufferBy(2.5);
+                    }
+                } else {
+                    resetBuffer();
+                }
+            }
+
+            attacked = false;
+        } else if (packet.isUseEntity()) {
+            attacked = true;
         }
     }
 }

@@ -110,8 +110,9 @@ public final class RotationProcessor {
 
     private void processSensitivity() {
         final float gcd = (float) MathUtil.getGcd(deltaPitch, lastDeltaPitch);
-        final double sensitivityModifier = Math.cbrt(0.8333 * gcd);
-        final double sensitivityStepTwo = (1.666 * sensitivityModifier) - 0.3333;
+
+        final double sensitivityModifier = Math.cbrt(0.83333333333 * gcd);
+        final double sensitivityStepTwo = (1.666666666666 * sensitivityModifier) - 0.3333333333333;
         final double finalSensitivity = sensitivityStepTwo * 200;
 
         this.finalSensitivity = finalSensitivity;

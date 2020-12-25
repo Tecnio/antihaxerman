@@ -24,9 +24,9 @@ import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.PlayerUtil;
 
-@CheckInfo(name = "Speed", type = "C", description = "Checks if player is going faster than possible", experimental = true)
-public final class SpeedC extends Check {
-    public SpeedC(final PlayerData data) {
+@CheckInfo(name = "Speed", type = "E", description = "Checks if player is going faster than possible on air.")
+public final class SpeedE extends Check {
+    public SpeedE(final PlayerData data) {
         super(data);
     }
 
@@ -35,35 +35,32 @@ public final class SpeedC extends Check {
         if (packet.isFlying()) {
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
 
-            final int groundTicks = data.getPositionProcessor().getGroundTicks();
             final int iceTicks = data.getPositionProcessor().getSinceIceTicks();
             final int slimeTicks = data.getPositionProcessor().getSinceSlimeTicks();
-            final int blockNearHeadTicks = data.getPositionProcessor().getSinceBlockNearHeadTicks();
-
-            final boolean nearStair = data.getPositionProcessor().isNearStair();
+            final int collidedVTicks = data.getPositionProcessor().getSinceBlockNearHeadTicks();
 
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
 
             final double velocityX = data.getVelocityProcessor().getVelocityX();
             final double velocityZ = data.getVelocityProcessor().getVelocityZ();
-            final double velocityXZ = Math.hypot(velocityX, velocityZ);
+            final double velocityXZ = Math.hypot(velocityX, velocityZ) + 0.15;
 
-            double limit = groundTicks > 8 ? PlayerUtil.getBaseGroundSpeed(data.getPlayer()) : PlayerUtil.getBaseSpeed(data.getPlayer());
+            double limit = PlayerUtil.getBaseSpeed(data.getPlayer(), 0.34F);
 
             if (iceTicks < 40 || slimeTicks < 40) limit += 0.34;
-            if (blockNearHeadTicks < 40) limit += 0.91;
-            if (nearStair) limit += 0.34;
-            if (takingVelocity) limit += velocityXZ + 0.5;
+            if (collidedVTicks < 40) limit += 0.91;
+            if (takingVelocity) limit += velocityXZ;
 
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT);
             final boolean invalid = deltaXZ > limit;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 5) {
+                if (increaseBuffer() > 7) {
                     fail();
+                    multiplyBuffer(0.75);
                 }
             } else {
-                decreaseBuffer();
+                multiplyBuffer(0.75);
             }
         }
     }

@@ -100,6 +100,11 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    angle:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     autoblock:
       a:
         enabled: true
@@ -125,6 +130,10 @@ checks:
         max-violations: 50
         punish-command: ''
       d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      e:
         enabled: true
         max-violations: 50
         punish-command: ''

@@ -52,7 +52,7 @@ public class PlayerUtil {
     }
 
     public double getBaseGroundSpeed(Player player) {
-        return 0.305 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
+        return 0.289 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
     }
 
     public int getPotionLevel(final Player player, final PotionEffectType effect) {

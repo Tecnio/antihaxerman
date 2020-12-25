@@ -43,7 +43,7 @@ public final class InventoryB extends Check {
             final boolean exempt = isExempt(ExemptType.WEB, ExemptType.FLYING, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.CREATIVE);
 
             final boolean invalidDelta = deltaXZ > PlayerUtil.getBaseSpeed(data.getPlayer(), 0.2F) && onGround;
-            final boolean invalidAcceleration = acceleration >= 0.0;
+            final boolean invalidAcceleration = acceleration >= 0.0 && deltaXZ > PlayerUtil.getBaseSpeed(data.getPlayer(), 0.1F);
 
             final boolean invalid = invalidDelta || invalidAcceleration;
 

@@ -49,7 +49,7 @@ public final class AutoClickerB extends Check {
                 final boolean invalid = difference < 6;
 
                 if (invalid && !exempt) {
-                    if (increaseBuffer() > 3) {
+                    if (increaseBuffer() > 5) {
                         fail();
                     }
                 } else {
