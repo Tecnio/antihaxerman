@@ -42,7 +42,7 @@ public final class PositionProcessor {
             deltaX, deltaY, deltaZ, deltaXZ,
             lastDeltaX, lastDeltaZ, lastDeltaY, lastDeltaXZ;
 
-    private boolean flying, inVehicle, inWater, inLava,inLiquid, fullySubmergedInLiquidStat, inAir, inWeb,
+    private boolean flying, inVehicle, inWater, inLava, inLiquid, fullySubmergedInLiquidStat, inAir, inWeb,
             blockNearHead, onClimbable, onSolidGround, nearBoat, onSlime,
             onIce, nearPiston, nearStair;
 

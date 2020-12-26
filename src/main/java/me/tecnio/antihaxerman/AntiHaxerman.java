@@ -44,13 +44,13 @@ public enum AntiHaxerman {
     private final CommandManager commandManager = new CommandManager(this.getPlugin());
 
     public void load(final AntiHaxermanPlugin plugin) {
+        this.plugin = plugin;
+        assert plugin != null : "Error while starting AntiHaxerman.";
+
         setupPacketEvents();
     }
 
     public void start(final AntiHaxermanPlugin plugin) {
-        this.plugin = plugin;
-        assert plugin != null : "Error while starting AntiHaxerman.";
-
         runPacketEvents();
 
         this.getPlugin().saveDefaultConfig();

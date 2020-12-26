@@ -28,7 +28,8 @@ import java.util.function.Function;
 @Getter
 public enum ExemptType {
 
-    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded((int) Math.floor(data.getPositionProcessor().getX()) << 4, (int) Math.floor(data.getPositionProcessor().getZ()) << 4)),
+    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(data.getPlayer().getLocation().getBlockX() << 4,
+            data.getPlayer().getLocation().getBlockZ() << 4)),
 
     TPS(data -> ServerUtil.getTPS() < 18.5D),
 

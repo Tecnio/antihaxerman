@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.liquidspeed;
+package me.tecnio.antihaxerman.check.impl.movement.motion;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -23,36 +23,27 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "LiquidSpeed", type = "B", description = "Checks for vertical speed under water.")
-public final class LiquidSpeedB extends Check {
-    public LiquidSpeedB(final PlayerData data) {
+@CheckInfo(name = "Motion", type = "C", description = "Checks for repeated and impossible vertical motion.")
+public final class MotionC extends Check {
+    public MotionC(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean inLiquid = data.getPositionProcessor().isFullySubmergedInLiquidStat();
-
-            final double multiplier = data.getPositionProcessor().isInWater() ? 0.8 : 0.5;
-
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
-            final double acceleration = deltaY - lastDeltaY;
-
-            final double predictedY = (lastDeltaY + 0.03999999910593033D) * multiplier - 0.02D;;
-            final double difference = Math.abs(deltaY - predictedY);
-
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.WEB, ExemptType.SLIME, ExemptType.BOAT);
-            final boolean invalid = difference > 0.075 && deltaY > 0.075 && acceleration >= 0.0 && inLiquid;
+            final boolean exempt = isExempt(ExemptType.UNDERBLOCK, ExemptType.PISTON, ExemptType.SLIME, ExemptType.TELEPORT);
+            final boolean invalid = deltaY == -lastDeltaY && deltaY != 0.0;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
-                    fail(difference);
+                if (increaseBuffer() > 4) {
+                    fail();
                 }
             } else {
-                decreaseBufferBy(0.25);
+                resetBuffer();
             }
         }
     }

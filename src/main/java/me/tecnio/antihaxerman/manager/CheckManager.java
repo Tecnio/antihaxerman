@@ -36,8 +36,11 @@ import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveA;
 import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveB;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedB;
+import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedC;
 import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
 import me.tecnio.antihaxerman.check.impl.movement.motion.MotionB;
+import me.tecnio.antihaxerman.check.impl.movement.motion.MotionC;
+import me.tecnio.antihaxerman.check.impl.movement.motion.MotionD;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowB;
 import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
@@ -47,6 +50,8 @@ import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
+import me.tecnio.antihaxerman.check.impl.player.interact.InteractA;
+import me.tecnio.antihaxerman.check.impl.player.interact.InteractB;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryA;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryB;
 import me.tecnio.antihaxerman.check.impl.player.pingspoof.PingSpoofA;
@@ -96,6 +101,8 @@ public final class CheckManager {
             StrafeA.class,
             MotionA.class,
             MotionB.class,
+            MotionC.class,
+            MotionD.class,
             NoSlowA.class,
             NoSlowB.class,
             OmniSprintA.class,
@@ -104,6 +111,7 @@ public final class CheckManager {
             FastClimbA.class,
             LiquidSpeedA.class,
             LiquidSpeedB.class,
+            LiquidSpeedC.class,
             GroundSpoofA.class,
             GroundSpoofB.class,
             GroundSpoofC.class,
@@ -120,6 +128,8 @@ public final class CheckManager {
             PingSpoofA.class,
             ScaffoldA.class,
             ScaffoldB.class,
+            InteractA.class,
+            InteractB.class,
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,
@@ -133,12 +143,12 @@ public final class CheckManager {
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
 
-    public static List<Check> loadChecks(PlayerData data) {
+    public static List<Check> loadChecks(final PlayerData data) {
         final List<Check> checkList = new ArrayList<>();
-        for (Constructor<?> constructor : CONSTRUCTORS) {
+        for (final Constructor<?> constructor : CONSTRUCTORS) {
             try {
                 checkList.add((Check) constructor.newInstance(data));
-            } catch (Exception exception) {
+            } catch (final Exception exception) {
                 System.err.println("Failed to load checks for " + data.getPlayer().getName());
                 exception.printStackTrace();
             }
@@ -147,12 +157,12 @@ public final class CheckManager {
     }
 
     public static void setup() {
-        for (Class clazz : CHECKS) {
+        for (final Class clazz : CHECKS) {
             if (Config.ENABLED_CHECKS.contains(clazz.getSimpleName())) {
                 try {
                     CONSTRUCTORS.add(clazz.getConstructor(PlayerData.class));
                     Bukkit.getLogger().info(clazz.getSimpleName() + " is enabled!");
-                } catch (NoSuchMethodException exception) {
+                } catch (final NoSuchMethodException exception) {
                     exception.printStackTrace();
                 }
             } else {

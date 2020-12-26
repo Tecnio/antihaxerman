@@ -79,7 +79,7 @@ public abstract class Check {
     }
 
     public void fail() {
-        fail("");
+        fail("No information.");
     }
 
     public void ban() {
