@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.check;
 import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.manager.AlertManager;
@@ -60,22 +61,26 @@ public abstract class Check {
     public abstract void handle(final Packet packet);
 
     public void fail(final Object info) {
-        ++vl;
-        data.setTotalViolations(data.getTotalViolations() + 1);
+        if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
+            if (!data.isExempt()) {
+                ++vl;
+                data.setTotalViolations(data.getTotalViolations() + 1);
 
-        switch (checkType) {
-            case COMBAT:
-                data.setCombatViolations(data.getCombatViolations() + 1);
-                break;
-            case MOVEMENT:
-                data.setMovementViolations(data.getMovementViolations() + 1);
-                break;
-            case PLAYER:
-                data.setPlayerViolations(data.getPlayerViolations() + 1);
-                break;
+                switch (checkType) {
+                    case COMBAT:
+                        data.setCombatViolations(data.getCombatViolations() + 1);
+                        break;
+                    case MOVEMENT:
+                        data.setMovementViolations(data.getMovementViolations() + 1);
+                        break;
+                    case PLAYER:
+                        data.setPlayerViolations(data.getPlayerViolations() + 1);
+                        break;
+                }
+
+                AlertManager.handleAlert(this, data, Objects.toString(info));
+            }
         }
-
-        AlertManager.handleAlert(this, data, Objects.toString(info));
     }
 
     public void fail() {
@@ -83,13 +88,21 @@ public abstract class Check {
     }
 
     public void ban() {
-        fail();
-        PunishmentManager.punish(this, data);
+        if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
+            if (!data.isExempt()) {
+                fail();
+                PunishmentManager.punish(this, data);
+            }
+        }
     }
 
     public void kick(final String reason) {
-        fail();
-        Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().kickPlayer(reason));
+        if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
+            if (!data.isExempt()) {
+                fail();
+                Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().kickPlayer(reason));
+            }
+        }
     }
 
     protected boolean isExempt(final ExemptType exemptType) {

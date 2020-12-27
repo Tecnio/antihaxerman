@@ -39,6 +39,11 @@ public final class Config {
     public static String COMMAND_NAME;
     public static int CLEAR_VIOLATIONS_DELAY;
 
+    public static boolean BYPASS_OP;
+
+    public static boolean LOGGING_ENABLED;
+    public static String LOG_FORMAT;
+
     public static PacketListenerThreadMode THREADING;
     public static boolean AHM_THREAD;
 
@@ -57,6 +62,11 @@ public final class Config {
             COMMAND_NAME = getStringFromConfig("response.command.name");
             CLEAR_VIOLATIONS_DELAY = getIntegerFromConfig("violations.clear-violations-delay");
             COMMAND_PREFIX = ColorUtil.translate(getStringFromConfig("response.command.prefix"));
+
+            BYPASS_OP = getBooleanFromConfig("bypass.bypass-operators");
+
+            LOGGING_ENABLED = getBooleanFromConfig("logging.enabled");
+            LOG_FORMAT = getStringFromConfig("logging.log-format");
 
             final String threading = getStringFromConfig("system.threading");
 

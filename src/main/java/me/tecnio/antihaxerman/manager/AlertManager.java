@@ -23,11 +23,14 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.ColorUtil;
+import me.tecnio.antihaxerman.util.LogUtil;
+import me.tecnio.antihaxerman.util.ServerUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +50,21 @@ public final class AlertManager {
     }
 
     public static void handleAlert(final Check check, final PlayerData data, final String info) {
+        if (Config.LOGGING_ENABLED) {
+            final String log = Config.LOG_FORMAT.replaceAll("%player%", data.getPlayer().getName())
+                    .replaceAll("%check%", check.getCheckInfo().name())
+                    .replaceAll("%dev%", check.getCheckInfo().experimental() ? ColorUtil.translate("&7*") : "")
+                    .replaceAll("%vl%", Integer.toString(check.getVl()))
+                    .replaceAll("%type%", check.getCheckInfo().type())
+                    .replaceAll("%date%", new Date().toString())
+                    .replaceAll("%tps%", String.valueOf(Math.min(ServerUtil.getTPS(), 20.0)))
+                    .replaceAll("%info%", info)
+                    .replaceAll("%tping%", String.valueOf(data.getConnectionProcessor().getTransactionPing()))
+                    .replaceAll("%kaping%", String.valueOf(data.getConnectionProcessor().getKeepAlivePing()));
+
+            LogUtil.logToFile(data.getLogFile(), log);
+        }
+
         final TextComponent alertMessage = new TextComponent(ColorUtil.translate(Config.ALERT_FORMAT)
                 .replaceAll("%player%", data.getPlayer().getName())
                 .replaceAll("%check%", check.getCheckInfo().name())

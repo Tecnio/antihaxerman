@@ -28,6 +28,9 @@ import me.tecnio.antihaxerman.manager.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.messaging.Messenger;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Getter
 public enum AntiHaxerman {
 
@@ -40,6 +43,8 @@ public enum AntiHaxerman {
     private final TickManager tickManager = new TickManager();
     private final ReceivingPacketProcessor receivingPacketProcessor = new ReceivingPacketProcessor();
     private final SendingPacketProcessor sendingPacketProcessor = new SendingPacketProcessor();
+
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private final CommandManager commandManager = new CommandManager(this.getPlugin());
 

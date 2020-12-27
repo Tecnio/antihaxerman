@@ -20,9 +20,11 @@ package me.tecnio.antihaxerman.data;
 import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.check.Check;
+import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.processor.*;
 import me.tecnio.antihaxerman.exempt.ExemptProcessor;
 import me.tecnio.antihaxerman.manager.CheckManager;
+import me.tecnio.antihaxerman.util.LogUtil;
 import me.tecnio.antihaxerman.util.type.EvictingList;
 import me.tecnio.antihaxerman.util.type.Pair;
 import org.bukkit.Location;
@@ -39,7 +41,11 @@ public final class PlayerData {
     private int totalViolations, combatViolations, movementViolations, playerViolations;
     private long flying, lastFlying;
     private final long joinTime = System.currentTimeMillis();
+    private boolean exempt;
+    private LogUtil.TextFile logFile;
+
     private final List<Check> checks = CheckManager.loadChecks(this);
+
     private final EvictingList<Pair<Location, Integer>> targetLocations = new EvictingList<>(40);
 
     private final ExemptProcessor exemptProcessor = new ExemptProcessor(this);
@@ -53,5 +59,6 @@ public final class PlayerData {
 
     public PlayerData(final Player player) {
         this.player = player;
+        if (Config.LOGGING_ENABLED) logFile = new LogUtil.TextFile("" + player.getUniqueId(), "\\\\logs");
     }
 }

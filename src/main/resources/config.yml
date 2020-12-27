@@ -17,6 +17,14 @@ response:
   command:
     prefix: '&cAHM &8> '
 
+# Logs are still beta and there is a chance it might lag the server so its disabled by default.
+logging:
+  enabled: false
+  log-format: '[%date%] %player% failed %check% (Type %type%)%dev% VL: %vl% [TPS: %tps%] [tPing: %tping% kaPing: %kaping%] [Info: %info%]'
+
+bypass:
+  bypass-operators: false
+
 system:
   # Threading mode. If you have issues with performance/ping spikes try tinkering with this. Warning if you don't understand this just leave it at default. There are 3 modes:
   # ANTIHAXERMAN: Runs the anticheat on a AntiHaxerman thread. This should be more performant than all.

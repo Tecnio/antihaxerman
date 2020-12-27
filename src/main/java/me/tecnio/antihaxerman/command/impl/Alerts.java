@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 public final class Alerts extends AntiHaxermanCommand {
 
     @Override
-    protected boolean handle(CommandSender sender, Command command, String label, String[] args) {
+    protected boolean handle(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);

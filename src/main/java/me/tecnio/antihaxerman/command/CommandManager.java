@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.command;
 import me.tecnio.antihaxerman.AntiHaxermanPlugin;
 import me.tecnio.antihaxerman.command.impl.Alerts;
 import me.tecnio.antihaxerman.command.impl.Checks;
+import me.tecnio.antihaxerman.command.impl.Exempt;
 import me.tecnio.antihaxerman.command.impl.Info;
 import me.tecnio.antihaxerman.util.ColorUtil;
 import me.tecnio.antihaxerman.config.Config;
@@ -39,6 +40,7 @@ public final class CommandManager implements CommandExecutor {
         commands.add(new Alerts());
         commands.add(new Checks());
         commands.add(new Info());
+        commands.add(new Exempt());
 
         Collections.sort(commands);
     }
