@@ -23,6 +23,7 @@ import me.tecnio.antihaxerman.check.impl.combat.angle.AngleA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
+import me.tecnio.antihaxerman.check.impl.combat.aura.AuraD;
 import me.tecnio.antihaxerman.check.impl.combat.autoblock.AutoBlockA;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
 import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
@@ -79,6 +80,7 @@ public final class CheckManager {
             AuraA.class,
             AuraB.class,
             AuraC.class,
+            AuraD.class,
             AutoClickerF.class,
             AutoClickerA.class,
             AutoClickerB.class,

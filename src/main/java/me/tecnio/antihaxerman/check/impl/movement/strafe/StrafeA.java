@@ -74,6 +74,8 @@ public final class StrafeA extends Check {
                 if (deltaY >= 0.42F + modifierJump * 0.1 && sprinting) {
                     attributeSpeed += 0.2;
                 }
+
+                attributeSpeed *= data.getPlayer().getWalkSpeed();
             } else {
                 attributeSpeed = sprinting ? 0.0263 : 0.02;
 
@@ -90,6 +92,7 @@ public final class StrafeA extends Check {
             final boolean invalid = (diffX > 0.01 || diffZ > 0.01) && deltaXZ > .175 && (airTicks > 2 || groundTicks > 2);
 
             if (invalid && !exempt) {
+                debug(String.format("diffX: %.3f diffZ: %.3f", diffX, diffZ));
                 if (increaseBuffer() > 2) {
                     fail(String.format("diffX: %.3f diffZ: %.3f airT: %s groundT: %s", diffX, diffZ, airTicks, groundTicks));
                 }

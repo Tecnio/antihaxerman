@@ -24,20 +24,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 
 public final class ClientBrandListener implements PluginMessageListener, Listener {
 
     @Override
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] msg) {
-        try {
-            final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
-            if (data == null) return;
-            data.setClientBrand(new String(msg, "UTF-8").substring(1));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
+        if (data == null) return;
+        data.setClientBrand(new String(msg, StandardCharsets.UTF_8).substring(1));
     }
 
     @EventHandler
@@ -49,7 +45,7 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
     private void addChannel(final Player player, final String channel) {
         try {
             player.getClass().getMethod("addChannel", String.class).invoke(player, channel);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+        } catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException e) {
             e.printStackTrace();
         }

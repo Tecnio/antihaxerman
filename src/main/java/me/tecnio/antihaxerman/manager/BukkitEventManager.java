@@ -27,7 +27,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public final class BukkitEventManager implements Listener {
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockBreak(final BlockBreakEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
         if (data != null) {
             data.getActionProcessor().handleBukkitBlockBreak();
@@ -35,7 +35,7 @@ public final class BukkitEventManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void onPlayerInteract(final PlayerInteractEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
         if (data != null) {
             data.getActionProcessor().handleInteract(event);
@@ -43,7 +43,7 @@ public final class BukkitEventManager implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
         if (data != null) {
             data.getActionProcessor().handleBukkitPlace();

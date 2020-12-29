@@ -58,18 +58,18 @@ public final class TickManager implements Runnable {
             final Entity target = data.getCombatProcessor().getTarget();
             final Entity lastTarget = data.getCombatProcessor().getLastTarget();
 
-            if(target != null && lastTarget != null) {
+            if (target != null && lastTarget != null) {
                 if (target != lastTarget) {
                     data.getTargetLocations().clear();
                 }
-                Location location = target.getLocation();
+                final Location location = target.getLocation();
                 data.getTargetLocations().add(new Pair<>(location, ticks));
             }
 
             final Random random = new Random();
 
             transaction: {
-                if (ticks == 0) break transaction;
+                if (ticks == 1) break transaction;
 
                 short transactionId = (short) (random.nextInt(32767));
                 transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
