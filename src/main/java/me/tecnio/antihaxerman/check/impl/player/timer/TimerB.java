@@ -24,7 +24,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.")
+@CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.", experimental = true)
 public final class TimerB extends Check {
 
     private long lastFlying = 0;
@@ -53,7 +53,7 @@ public final class TimerB extends Check {
 
                 if (balance > 1) {
                     fail(balance);
-                    balance = 0;
+                    balance -= 50;
                 }
             }
 

@@ -30,7 +30,7 @@ public final class SpeedB extends Check {
     }
 
     @Override
-    public void handle(Packet packet) {
+    public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final boolean sprinting = data.getActionProcessor().isSprinting();
             final int airTicks = data.getPositionProcessor().getAirTicks();

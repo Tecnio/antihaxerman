@@ -20,8 +20,8 @@ package me.tecnio.antihaxerman.data.processor;
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockdig.WrappedPacketInBlockDig;
 import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
-import me.tecnio.antihaxerman.AntiHaxerman;
 import lombok.Getter;
+import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -99,7 +99,7 @@ public final class ActionProcessor {
 
     public void handleInteract(final PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-
+            digging = true;
         }
     }
 

@@ -92,12 +92,11 @@ public final class StrafeA extends Check {
             final boolean invalid = (diffX > 0.01 || diffZ > 0.01) && deltaXZ > .175 && (airTicks > 2 || groundTicks > 2);
 
             if (invalid && !exempt) {
-                debug(String.format("diffX: %.3f diffZ: %.3f", diffX, diffZ));
                 if (increaseBuffer() > 2) {
                     fail(String.format("diffX: %.3f diffZ: %.3f airT: %s groundT: %s", diffX, diffZ, airTicks, groundTicks));
                 }
             } else {
-                decreaseBufferBy(0.05);
+                decreaseBufferBy(0.1);
             }
 
             final double x = data.getPositionProcessor().getX();

@@ -33,9 +33,6 @@ public final class SendingPacketProcessor  {
                 data.getVelocityProcessor().handle(wrapper.getVelocityX(), wrapper.getVelocityY(), wrapper.getVelocityZ());
             }
         }
-        if (packet.isTeleport()) {
-            data.getPositionProcessor().handleTeleport();
-        }
         if (packet.isOutgoingTransaction()) {
             final WrappedPacketOutTransaction wrapper = new WrappedPacketOutTransaction(packet.getRawPacket());
 

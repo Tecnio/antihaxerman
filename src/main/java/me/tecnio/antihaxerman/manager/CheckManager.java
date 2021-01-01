@@ -53,8 +53,11 @@ import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
 import me.tecnio.antihaxerman.check.impl.player.interact.InteractA;
 import me.tecnio.antihaxerman.check.impl.player.interact.InteractB;
+import me.tecnio.antihaxerman.check.impl.player.interact.InteractC;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryA;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryB;
+import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryC;
+import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryD;
 import me.tecnio.antihaxerman.check.impl.player.pingspoof.PingSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.post.*;
 import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldA;
@@ -127,11 +130,14 @@ public final class CheckManager {
             PostF.class,
             InventoryA.class,
             InventoryB.class,
+            InventoryC.class,
+            InventoryD.class,
             PingSpoofA.class,
             ScaffoldA.class,
             ScaffoldB.class,
             InteractA.class,
             InteractB.class,
+            InteractC.class,
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,

@@ -24,19 +24,11 @@ import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "Scaffold", type = "B", description = "Checks if player is not slowing down while moving head.")
 public final class ScaffoldB extends Check {
-
-    private boolean placing;
-
     public ScaffoldB(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            
-        } else if (packet.isBlockPlace()) {
-            placing = true;
-        }
     }
 }

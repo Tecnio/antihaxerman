@@ -15,33 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.largemove;
+package me.tecnio.antihaxerman.check.impl.player.inventory;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "LargeMove", type = "B", description = "Checks if the players vertical movement is faster than possible.")
-public final class LargeMoveB extends Check {
-    public LargeMoveB(final PlayerData data) {
+@CheckInfo(name = "Inventory", type = "C", description = "Checks if player is clicking windows while not in GUI.")
+public final class InventoryC extends Check {
+    public InventoryC(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+        if (packet.isWindowClick()) {
+            final boolean inventory = data.getActionProcessor().isInventory();
 
-            final double acceleration = deltaY - lastDeltaY;
-
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.LAGGING);
-            final boolean invalid = deltaY > 10.0 && acceleration > 10.0;
-
-            if (invalid && !exempt) {
+            if (!inventory) {
                 fail();
+                data.getPlayer().closeInventory();
             }
         }
     }

@@ -281,6 +281,14 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     pingspoof:
       a:
         enabled: true
@@ -301,6 +309,10 @@ checks:
         max-violations: 50
         punish-command: ''
       b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
         enabled: true
         max-violations: 50
         punish-command: ''
