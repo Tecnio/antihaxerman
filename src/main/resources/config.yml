@@ -123,6 +123,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
   movement:
     speed:
       a:
@@ -350,6 +354,18 @@ checks:
         max-violations: 50
         punish-command: ''
       i:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      j:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      k:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      l:
         enabled: true
         max-violations: 50
         punish-command: ''

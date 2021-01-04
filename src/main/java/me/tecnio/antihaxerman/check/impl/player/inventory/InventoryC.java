@@ -31,12 +31,7 @@ public final class InventoryC extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isWindowClick()) {
-            final boolean inventory = data.getActionProcessor().isInventory();
 
-            if (!inventory) {
-                fail();
-                data.getPlayer().closeInventory();
-            }
         }
     }
 }

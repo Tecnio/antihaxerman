@@ -28,8 +28,8 @@ import java.util.function.Function;
 @Getter
 public enum ExemptType {
 
-    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(data.getPlayer().getLocation().getBlockX() << 4,
-            data.getPlayer().getLocation().getBlockZ() << 4)),
+    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(data.getPlayer().getLocation().getBlockX() >> 4,
+            data.getPlayer().getLocation().getBlockZ() >> 4)),
 
     TPS(data -> ServerUtil.getTPS() < 18.5D),
 
@@ -55,7 +55,7 @@ public enum ExemptType {
 
     PISTON(data -> data.getPositionProcessor().isNearPiston()),
 
-    VOID(data -> data.getPlayer().getLocation().getY() < 4),
+    VOID(data -> data.getPositionProcessor().getY() < 4),
 
     COMBAT(data -> data.getCombatProcessor().getHitTicks() < 5),
 

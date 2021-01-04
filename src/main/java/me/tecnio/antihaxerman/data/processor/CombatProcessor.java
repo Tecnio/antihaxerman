@@ -22,7 +22,6 @@ import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.entity.Entity;
 
-
 @Getter
 public final class CombatProcessor {
 
@@ -31,7 +30,7 @@ public final class CombatProcessor {
     private double hitMissRatio, distance;
     private Entity target, lastTarget;
 
-    public CombatProcessor(PlayerData data) {
+    public CombatProcessor(final PlayerData data) {
         this.data = data;
     }
 

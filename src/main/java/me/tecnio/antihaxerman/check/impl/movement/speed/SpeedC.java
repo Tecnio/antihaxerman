@@ -55,7 +55,7 @@ public final class SpeedC extends Check {
             if (nearStair) limit += 0.34;
             if (takingVelocity) limit += velocityXZ + 0.5;
 
-            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT);
+            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.KEEPALIVE, ExemptType.CHUNK);
             final boolean invalid = deltaXZ > limit;
 
             if (invalid && !exempt) {

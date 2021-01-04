@@ -36,7 +36,7 @@ public final class MotionB extends Check {
         if (packet.isFlying()) {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT);
+            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.CHUNK);
             final boolean invalid = deltaY < -3.92;
 
             if (invalid && !exempt) {

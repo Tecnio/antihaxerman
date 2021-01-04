@@ -52,7 +52,12 @@ public final class InteractC extends Check {
                 final double maxDistance = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 7.0 : 5.0;
                 final double distance = eyeLocation.distance(blockLocation) - 0.7071 - deltaXZ - deltaY;
 
-                if (distance > maxDistance) fail(distance);
+                final boolean exempt = blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0;
+                final boolean invalid = distance > maxDistance;
+
+                if (invalid && !exempt) {
+                    fail(distance);
+                }
             }
 
             wrapper = null;

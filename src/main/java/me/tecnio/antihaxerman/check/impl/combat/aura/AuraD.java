@@ -22,7 +22,7 @@ import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Aura", type = "D", description = "Checks if player is digging while attacking.")
+@CheckInfo(name = "Aura", type = "D", description = "")
 public final class AuraD extends Check {
     public AuraD(final PlayerData data) {
         super(data);

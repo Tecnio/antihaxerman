@@ -63,7 +63,7 @@ public final class LiquidSpeedC extends Check {
             final double differenceX = deltaX - predictedX;
             final double differenceZ = deltaZ - predictedZ;
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.WEB, ExemptType.SLIME, ExemptType.BOAT);
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.WEB, ExemptType.SLIME, ExemptType.BOAT, ExemptType.CHUNK);
             final boolean invalid = (differenceX > 0.05 || differenceZ > 0.05) && isFullySubmerged;
 
             if (invalid && !exempt) {

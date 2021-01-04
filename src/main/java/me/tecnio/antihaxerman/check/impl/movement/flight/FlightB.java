@@ -37,12 +37,12 @@ public final class FlightB extends Check {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
             final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-            final int airTicksLimit = 6 + airTicksModifier;
+            final int airTicksLimit = 8 + airTicksModifier;
 
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
             final int clientAirTicks = data.getPositionProcessor().getAirTicks();
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit) && deltaY > 0.0;
 
             if (invalid && !exempt) {

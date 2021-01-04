@@ -39,7 +39,7 @@ public final class FlightC extends Check {
 
             final double difference = Math.abs(deltaY - lastDeltaY);
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = difference < 0.01 && !onGround;
 
             if (invalid && !exempt) {

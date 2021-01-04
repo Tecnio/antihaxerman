@@ -28,6 +28,7 @@ import me.tecnio.antihaxerman.check.impl.combat.autoblock.AutoBlockA;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
 import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
+import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityB;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
@@ -94,6 +95,7 @@ public final class CheckManager {
             ReachA.class,
             AngleA.class,
             VelocityA.class,
+            VelocityB.class,
             SpeedA.class,
             SpeedB.class,
             SpeedC.class,
@@ -147,6 +149,9 @@ public final class CheckManager {
             BadPacketsG.class,
             BadPacketsH.class,
             BadPacketsI.class,
+            BadPacketsJ.class,
+            BadPacketsK.class,
+            BadPacketsL.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.speed;
+package me.tecnio.antihaxerman.check.impl.combat.velocity;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -23,33 +23,37 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Speed", type = "B", description = "Checks for invalid friction on air.")
-public final class SpeedB extends Check {
-    public SpeedB(final PlayerData data) {
+@CheckInfo(name = "Velocity", type = "B", description = "Checks for horizontal velocity modifications.")
+public final class VelocityB extends Check {
+    public VelocityB(final PlayerData data) {
         super(data);
     }
+
+    // TODO: 1/4/2021 Check if near wall
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean sprinting = data.getActionProcessor().isSprinting();
-            final int airTicks = data.getPositionProcessor().getAirTicks();
+            final int ticksSinceVelocity = data.getVelocityProcessor().getTakingVelocityTicks();
+            if (ticksSinceVelocity != 1) return;
+
+            final double velocityX = data.getVelocityProcessor().getVelocityX() * (hitTicks() < 2 ? 0.6 : 1.0);
+            final double velocityZ = data.getVelocityProcessor().getVelocityZ() * (hitTicks() < 2 ? 0.6 : 1.0);
 
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
-            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
+            final double velocityXZ = Math.hypot(velocityX, velocityZ);
 
-            final double predicted = (lastDeltaXZ * 0.91F) + (sprinting ? 0.026 : 0.02);
-            final double difference = deltaXZ - predicted;
+            final double percentage = (deltaXZ / velocityXZ) * 100.0;
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.CHUNK);
-            final boolean invalid = difference > 1E-5 && predicted > 0.075 && airTicks > 2;
+            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.FLYING);
+            final boolean invalid = percentage < 10.0 && velocityXZ > 1E-2;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 5) {
-                    fail();
+                    //fail();
                 }
             } else {
-                decreaseBufferBy(1);
+                decreaseBuffer();
             }
         }
     }

@@ -39,7 +39,7 @@ public final class GroundSpoofC extends Check {
 
             final boolean step = deltaY % 0.015625 == 0.0 && lastY % 0.015625 == 0.0;
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.WEB, ExemptType.LIQUID, ExemptType.PISTON);
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.WEB, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CHUNK);
             final boolean invalid = groundTicks > 5 && deltaY != 0.0 && !step;
 
             if (invalid && !exempt) {

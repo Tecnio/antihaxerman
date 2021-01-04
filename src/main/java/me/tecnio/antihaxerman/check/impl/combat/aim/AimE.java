@@ -49,12 +49,12 @@ public final class AimE extends Check {
                         final boolean invalid = deltaDivisor > 700d;
 
                         if (invalid && attacked) {
-                            if (increaseBuffer() > 7) {
+                            if (increaseBuffer() > 8) {
                                 fail();
                             }
                         }
                     } else {
-                        decreaseBufferBy(2.5);
+                        decreaseBufferBy(3.0);
                     }
                 } else {
                     resetBuffer();

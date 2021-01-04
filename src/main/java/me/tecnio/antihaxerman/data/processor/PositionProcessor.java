@@ -218,12 +218,15 @@ public final class PositionProcessor {
     }
 
     public void handleClimbableCollision() {
-        final Location location = data.getPlayer().getLocation();
-        final int var1 = NumberConversions.floor(location.getX());
-        final int var2 = NumberConversions.floor(location.getY());
-        final int var3 = NumberConversions.floor(location.getZ());
-        final Block var4 = this.getBlock(new Location(location.getWorld(), var1, var2, var3));
-        this.onClimbable = var4.getType() == Material.LADDER || var4.getType() == Material.VINE;
+        final int var1 = NumberConversions.floor(this.x);
+        final int var2 = NumberConversions.floor(this.y);
+        final int var3 = NumberConversions.floor(this.z);
+
+        final Block var4 = this.getBlock(new Location(data.getPlayer().getWorld(), var1, var2, var3));
+
+        if (var4 != null) {
+            this.onClimbable = var4.getType() == Material.LADDER || var4.getType() == Material.VINE;
+        }
     }
 
     public void handleOnBoat() {

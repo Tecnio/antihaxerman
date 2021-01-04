@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.check.impl.movement.noslow;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "NoSlow", type = "B", description = "Checks if player is sneaking and sprinting.")
@@ -36,7 +37,7 @@ public final class NoSlowB extends Check {
             final int sprintingTicks = data.getActionProcessor().getSprintingTicks();
             final int sneakingTicks = data.getActionProcessor().getSneakingTicks();
 
-            final boolean exempt = groundTicks < 10;
+            final boolean exempt = isExempt(ExemptType.CHUNK) || groundTicks < 10;
             final boolean invalid = sprintingTicks > 10 && sneakingTicks > 10;
 
             if (invalid && !exempt) {

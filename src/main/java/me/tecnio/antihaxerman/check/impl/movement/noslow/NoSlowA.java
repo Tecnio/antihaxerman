@@ -43,7 +43,7 @@ public final class NoSlowA extends Check {
             final int blockingTicks = this.blockingTicks;
             final int sprintingTicks = data.getActionProcessor().getSprintingTicks();
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.VEHICLE) || data.getPositionProcessor().isInAir();
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.CHUNK) || data.getPositionProcessor().isInAir();
             final boolean invalid = blockingTicks > 10 && sprintingTicks > 10;
 
             if (invalid && !exempt) {

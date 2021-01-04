@@ -23,29 +23,23 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "BadPackets", type = "H", description = "Speed bypass flaw detected.")
-public final class BadPacketsH extends Check {
-    public BadPacketsH(final PlayerData data) {
+@CheckInfo(name = "BadPackets", type = "L", description = "Checks for 0 rotation with a rotation packet.")
+public final class BadPacketsL extends Check {
+    public BadPacketsL(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final double deltaY = data.getPositionProcessor().getDeltaY();
+        if (packet.isRotation()) {
+            final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
+            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            final int groundTicks = data.getPositionProcessor().getGroundTicks();
-            final int airTicks = data.getPositionProcessor().getAirTicks();
-
-            final boolean exempt = isExempt(ExemptType.SLIME);
-            final boolean invalid = deltaY == 0.0 && groundTicks == 1 && airTicks == 0;
+            final boolean exempt = isExempt(ExemptType.TELEPORT);
+            final boolean invalid = deltaPitch == 0.0F && deltaYaw  == 0.0F;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 8) {
-                    fail();
-                }
-            } else {
-                resetBuffer();
+                fail();
             }
         }
     }

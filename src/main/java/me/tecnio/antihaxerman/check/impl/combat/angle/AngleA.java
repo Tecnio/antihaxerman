@@ -71,7 +71,7 @@ public final class AngleA extends Check {
                     })
                     .min().orElse(-1);
 
-            final boolean exempt = origin.distance(target.getLocation().toVector()) < 1.5;
+            final boolean exempt = origin.distance(target.getLocation().toVector()) < 1.8;
             final boolean invalid = angle > 0.55 && accepted;
 
             if (invalid && !exempt) {

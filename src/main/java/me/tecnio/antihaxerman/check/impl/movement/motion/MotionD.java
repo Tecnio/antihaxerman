@@ -39,7 +39,7 @@ public final class MotionD extends Check {
             final double modifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
             final double maximum = 0.7 + modifier;
 
-            final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.LIQUID, ExemptType.FLYING, ExemptType.WEB, ExemptType.TELEPORT, ExemptType.SLIME);
+            final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.LIQUID, ExemptType.FLYING, ExemptType.WEB, ExemptType.TELEPORT, ExemptType.SLIME, ExemptType.CHUNK);
 
             final boolean invalidNoVelocity = deltaY > maximum && !isExempt(ExemptType.VELOCITY);
             final boolean invalidVelocity = deltaY > (maximum + data.getVelocityProcessor().getVelocityY()) && isExempt(ExemptType.VELOCITY);
