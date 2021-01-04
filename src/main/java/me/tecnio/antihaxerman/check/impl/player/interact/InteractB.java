@@ -58,27 +58,27 @@ public final class InteractB extends Check {
     private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final Direction face) {
         switch (face) {
             case UP: {
-                final double limit = blockLoc.getY() + 0.05;
+                final double limit = blockLoc.getY() + 0.0001;
                 return playerLoc.getY() > limit;
             }
             case DOWN: {
-                final double limit = blockLoc.getY() - 0.05;
+                final double limit = blockLoc.getY() - 0.0001;
                 return playerLoc.getY() < limit;
             }
             case WEST: {
-                final double limit = blockLoc.getX() + 0.05;
+                final double limit = blockLoc.getX() + 0.0001;
                 return limit > playerLoc.getX();
             }
             case EAST: {
-                final double limit = blockLoc.getX() - 0.05;
+                final double limit = blockLoc.getX() - 0.0001;
                 return playerLoc.getX() > limit;
             }
             case NORTH: {
-                final double limit = blockLoc.getZ() + 0.05;
+                final double limit = blockLoc.getZ() + 0.0001;
                 return playerLoc.getZ() < limit;
             }
             case SOUTH: {
-                final double limit = blockLoc.getZ() - 0.05;
+                final double limit = blockLoc.getZ() - 0.0001;
                 return playerLoc.getZ() > limit;
             }
 

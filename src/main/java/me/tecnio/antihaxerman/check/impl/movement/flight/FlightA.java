@@ -49,7 +49,7 @@ public final class FlightA extends Check {
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
             final double velocityY = data.getVelocityProcessor().getVelocityY();
 
-            final double limit = takingVelocity ? 0.005 + velocityY + 0.15 : 0.005;
+            final double limit = takingVelocity ? 0.001 + velocityY + 0.15 : 0.001;
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = difference > limit && Math.abs(predicted) >= 0.005 && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);

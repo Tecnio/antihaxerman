@@ -320,6 +320,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     badpackets:
       a:
         enabled: true

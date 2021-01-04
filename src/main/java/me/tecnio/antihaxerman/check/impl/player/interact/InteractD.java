@@ -22,20 +22,17 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-@CheckInfo(name = "Interact", type = "C", description = "Checks for block interaction distance.", experimental = true)
-public final class InteractC extends Check {
+@CheckInfo(name = "Interact", type = "D", description = "Checks if player is looking at the block interacted.")
+public final class InteractD extends Check {
 
     private WrappedPacketInBlockPlace wrapper = null;
 
-    public InteractC(final PlayerData data) {
+    public InteractD(final PlayerData data) {
         super(data);
     }
-
-    // You may ask are you retarded why are u subtracting deltas.
-    // Well you can place blocks between ticks and position updates and you as well can move your head between ticks so this made sense idk tho it might be sleepiness that might be killing my brain.
 
     @Override
     public void handle(final Packet packet) {
@@ -43,24 +40,35 @@ public final class InteractC extends Check {
             wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
         } else if (packet.isFlying()) {
             if (wrapper != null) {
-                final Vector eyeLocation = data.getPlayer().getEyeLocation().toVector();
-                final Vector blockLocation = new Vector(wrapper.getX(), wrapper.getY(), wrapper.getZ());
+                final Location eyeLocation = data.getPlayer().getEyeLocation();
+                final Location blockLocation = new Location(data.getPlayer().getWorld(), wrapper.getX(), wrapper.getY(), wrapper.getZ());
 
-                final double deltaXZ = Math.abs(data.getPositionProcessor().getDeltaXZ());
-                final double deltaY = Math.abs(data.getPositionProcessor().getDeltaY());
-
-                final double maxDistance = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 7.25 : 5.25;
-                final double distance = eyeLocation.distance(blockLocation) - 0.7071 - deltaXZ - deltaY;
+                final double difference = getDifference(eyeLocation, blockLocation);
+                // Stole the line down below from my first anticheat, its probabbly skidded so if I skidded from you sorry xd.
+                final double angle = Math.abs(180 - Math.abs(Math.abs(difference - data.getRotationProcessor().getYaw()) - 180));
 
                 final boolean exempt = blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0;
-                final boolean invalid = distance > maxDistance;
+                final boolean invalid = angle > 100.0F;
 
                 if (invalid && !exempt) {
-                    fail(distance);
+                    if (increaseBuffer() > 3) {
+                        fail();
+                    }
+                } else {
+                    decreaseBuffer();
                 }
             }
 
             wrapper = null;
         }
+    }
+
+    private double getDifference(final Location location1, final Location location2) {
+        final Location directionLocation = location1.clone();
+
+        final Vector origin = location1.toVector();
+        final Vector target = location2.toVector();
+
+        return directionLocation.setDirection(target.subtract(origin)).getYaw();
     }
 }

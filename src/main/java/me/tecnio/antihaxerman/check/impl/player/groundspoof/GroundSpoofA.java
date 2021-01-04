@@ -27,8 +27,6 @@ import me.tecnio.antihaxerman.packet.Packet;
 @CheckInfo(name = "GroundSpoof", type = "A", description = "Uses math to calculate if the player is onGround or not.")
 public final class GroundSpoofA extends Check {
 
-    private double lastY;
-
     public GroundSpoofA(final PlayerData data) {
         super(data);
     }
@@ -39,7 +37,7 @@ public final class GroundSpoofA extends Check {
             final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
 
             final boolean clientGround = wrapper.isOnGround();
-            final boolean serverGround = wrapper.getY() % 0.015625 == 0.0 && lastY % 0.015625 == 0.0;
+            final boolean serverGround = wrapper.getY() % 0.015625 == 0.0;
 
             final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.LIQUID, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.CHUNK);
             final boolean invalid = clientGround != serverGround;
@@ -49,10 +47,8 @@ public final class GroundSpoofA extends Check {
                     fail();
                 }
             } else {
-                resetBuffer();
+                decreaseBufferBy(0.25);
             }
-
-            lastY = wrapper.getY();
         }
     }
 }
