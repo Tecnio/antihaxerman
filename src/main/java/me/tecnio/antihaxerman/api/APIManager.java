@@ -30,6 +30,6 @@ public final class APIManager {
                 check.getVl(),
                 check.getBuffer());
 
-        Bukkit.getScheduler().runTaskAsynchronously(AntiHaxerman.INSTANCE.getPlugin(), () -> Bukkit.getPluginManager().callEvent(flagEvent));
+        Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> Bukkit.getPluginManager().callEvent(flagEvent));
     }
 }

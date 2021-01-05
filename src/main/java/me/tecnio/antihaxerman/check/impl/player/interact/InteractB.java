@@ -47,7 +47,13 @@ public final class InteractB extends Check {
             final Block block = BlockUtil.getBlockAsync(blockLocation);
             if (block == null) return;
 
-            final boolean invalid = !interactedCorrectly(blockLocation, data.getPlayer().getEyeLocation(), direction);
+            final double x = data.getPositionProcessor().getX();
+            final double y = data.getPositionProcessor().getY() + data.getPlayer().getEyeHeight();
+            final double z = data.getPositionProcessor().getZ();
+
+            final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
+
+            final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
 
             if (invalid) {
                 fail();
@@ -58,27 +64,27 @@ public final class InteractB extends Check {
     private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final Direction face) {
         switch (face) {
             case UP: {
-                final double limit = blockLoc.getY() + 0.0001;
+                final double limit = blockLoc.getY() + 0.03;
                 return playerLoc.getY() > limit;
             }
             case DOWN: {
-                final double limit = blockLoc.getY() - 0.0001;
+                final double limit = blockLoc.getY() - 0.03;
                 return playerLoc.getY() < limit;
             }
             case WEST: {
-                final double limit = blockLoc.getX() + 0.0001;
+                final double limit = blockLoc.getX() + 0.03;
                 return limit > playerLoc.getX();
             }
             case EAST: {
-                final double limit = blockLoc.getX() - 0.0001;
+                final double limit = blockLoc.getX() - 0.03;
                 return playerLoc.getX() > limit;
             }
             case NORTH: {
-                final double limit = blockLoc.getZ() + 0.0001;
+                final double limit = blockLoc.getZ() + 0.03;
                 return playerLoc.getZ() < limit;
             }
             case SOUTH: {
-                final double limit = blockLoc.getZ() - 0.0001;
+                final double limit = blockLoc.getZ() - 0.03;
                 return playerLoc.getZ() > limit;
             }
 

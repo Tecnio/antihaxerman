@@ -90,6 +90,11 @@ public final class ReceivingPacketProcessor  {
 
             data.getConnectionProcessor().handleIncomingKeepAlive(wrapper);
         }
+        if (packet.isClientCommand()) {
+            final WrappedPacketInClientCommand wrapper = new WrappedPacketInClientCommand(packet.getRawPacket());
+
+            data.getPositionProcessor().handleClientCommand(wrapper);
+        }
         data.getChecks().forEach(check -> check.handle(packet));
     }
 }

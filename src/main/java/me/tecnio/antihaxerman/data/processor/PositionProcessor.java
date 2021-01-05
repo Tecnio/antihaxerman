@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.data.processor;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.util.type.BoundingBox;
@@ -111,7 +112,7 @@ public final class PositionProcessor {
 
         ++teleportTicks;
 
-        if (data.getPlayer().isInsideVehicle()) {
+        if (data.getPlayer().getVehicle() != null) {
             sinceVehicleTicks = 0;
             inVehicle = true;
         } else {
@@ -241,6 +242,12 @@ public final class PositionProcessor {
 
     public void handleTeleport() {
         teleportTicks = 0;
+    }
+
+    public void handleClientCommand(final WrappedPacketInClientCommand wrapper) {
+        if (wrapper.getClientCommand() == WrappedPacketInClientCommand.ClientCommand.PERFORM_RESPAWN) {
+            handleTeleport();
+        }
     }
 
     public boolean isColliding(final CollisionType collisionType, final Material blockType) {

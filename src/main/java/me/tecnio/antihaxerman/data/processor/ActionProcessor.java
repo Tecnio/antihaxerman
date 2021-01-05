@@ -104,7 +104,7 @@ public final class ActionProcessor {
     }
 
     public void handleBukkitPlace() {
-        ;
+
     }
 
     public void handleBukkitBlockBreak() {

@@ -49,6 +49,7 @@ import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.*;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
+import me.tecnio.antihaxerman.check.impl.player.fastplace.FastPlaceA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
@@ -136,6 +137,7 @@ public final class CheckManager {
             InventoryC.class,
             InventoryD.class,
             PingSpoofA.class,
+            FastPlaceA.class,
             ScaffoldA.class,
             ScaffoldB.class,
             InteractA.class,

@@ -38,8 +38,7 @@ public final class SpeedA extends Check {
 
             final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON,
                     ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE,
-                    ExemptType.LIQUID, ExemptType.LAGGING, ExemptType.SLIME, ExemptType.KEEPALIVE,
-                    ExemptType.CHUNK);
+                    ExemptType.LIQUID, ExemptType.LAGGING, ExemptType.SLIME, ExemptType.CHUNK);
 
             final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
             
@@ -82,7 +81,7 @@ public final class SpeedA extends Check {
                     multiplyBuffer(0.5);
                 }
             } else {
-                decreaseBuffer();
+                decreaseBufferBy(2);
             }
 
             final double x = data.getPositionProcessor().getX();
