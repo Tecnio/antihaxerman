@@ -25,6 +25,9 @@ import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "Scaffold", type = "B", description = "Checks if player is not slowing down while moving head.")
 public final class ScaffoldB extends Check {
+
+    private boolean placing;
+
     public ScaffoldB(final PlayerData data) {
         super(data);
     }
@@ -40,7 +43,7 @@ public final class ScaffoldB extends Check {
             final double acceleration = deltaXZ - lastDeltaXZ;
 
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VELOCITY, ExemptType.VEHICLE, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.PISTON, ExemptType.CHUNK, ExemptType.WEB, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.FLYING, ExemptType.LIQUID);
-            final boolean invalid = deltaYaw > 8.0F && acceleration >= 0.0 && data.getActionProcessor().isPlacing();
+            final boolean invalid = deltaYaw > 10.0F && acceleration >= 0.0 && placing;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {
@@ -49,6 +52,10 @@ public final class ScaffoldB extends Check {
             } else {
                 decreaseBuffer();
             }
+
+            placing = false;
+        } else if (packet.isBlockPlace()) {
+            placing = true;
         }
     }
 }

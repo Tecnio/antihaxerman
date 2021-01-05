@@ -20,7 +20,6 @@ package me.tecnio.antihaxerman.check;
 import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
-import me.tecnio.antihaxerman.api.APIManager;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
@@ -64,7 +63,7 @@ public abstract class Check {
     public void fail(final Object info) {
         if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
             if (!data.isExempt()) {
-                APIManager.callFlagEvent(this);
+                //APIManager.callFlagEvent(this);
 
                 ++vl;
                 data.setTotalViolations(data.getTotalViolations() + 1);

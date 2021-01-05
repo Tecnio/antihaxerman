@@ -99,7 +99,7 @@ public final class Config {
             VL_TO_ALERT = getIntegerFromConfig("violations.minimum-vl");
             ALERT_FORMAT = getStringFromConfig("violations.alert-format");
 
-            for (Class check : CheckManager.CHECKS) {
+            for (final Class check : CheckManager.CHECKS) {
                 final CheckInfo checkInfo = (CheckInfo) check.getAnnotation(CheckInfo.class);
                 String checkType = "";
                 if (check.getName().contains("combat")) {
@@ -110,13 +110,13 @@ public final class Config {
                     checkType = "player";
                 }
 
-                for (Field field : check.getDeclaredFields()) {
+                for (final Field field : check.getDeclaredFields()) {
                     if (field.getType().equals(ConfigValue.class)) {
-                        boolean accessible = field.isAccessible();
+                        final boolean accessible = field.isAccessible();
                         field.setAccessible(true);
-                        String name = ((ConfigValue) field.get(null)).getName();
-                        ConfigValue value = ((ConfigValue) field.get(null));
-                        ConfigValue.ValueType type = value.getType();
+                        final String name = ((ConfigValue) field.get(null)).getName();
+                        final ConfigValue value = ((ConfigValue) field.get(null));
+                        final ConfigValue.ValueType type = value.getType();
 
                         switch (type) {
                             case BOOLEAN:
@@ -139,9 +139,9 @@ public final class Config {
                     }
                 }
 
-                final boolean enabled = getBooleanFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + String.valueOf(checkInfo.type()).toLowerCase() + ".enabled");
+                final boolean enabled = getBooleanFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".enabled");
 
-                Bukkit.broadcastMessage("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + String.valueOf(checkInfo.type()).toLowerCase() + ".enabled" + " " + enabled);
+                Bukkit.broadcastMessage("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".enabled" + " " + enabled);
                 final int maxViolations = getIntegerFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".max-violations");
                 final String punishCommand = getStringFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".punish-command");
 
@@ -158,30 +158,30 @@ public final class Config {
                 MAX_VIOLATIONS.put(check.getSimpleName(), maxViolations);
                 PUNISH_COMMANDS.put(check.getSimpleName(), punishCommand);
             }
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             Bukkit.getLogger().severe("Could not properly load config.");
             exception.printStackTrace();
         }
 
     }
 
-    private static boolean getBooleanFromConfig(String string) {
+    private static boolean getBooleanFromConfig(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getBoolean(string);
     }
 
-    public static String getStringFromConfig(String string) {
+    public static String getStringFromConfig(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getString(string);
     }
 
-    private static int getIntegerFromConfig(String string) {
+    private static int getIntegerFromConfig(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getInt(string);
     }
 
-    private static double getDoubleFromConfig(String string) {
+    private static double getDoubleFromConfig(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getDouble(string);
     }
 
-    private static long getLongFromConfig(String string) {
+    private static long getLongFromConfig(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getLong(string);
     }
 }

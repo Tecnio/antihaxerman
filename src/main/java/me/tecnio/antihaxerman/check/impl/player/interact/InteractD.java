@@ -21,8 +21,8 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.Wrappe
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 @CheckInfo(name = "Interact", type = "D", description = "Checks if player is looking at the block interacted.")
@@ -40,15 +40,16 @@ public final class InteractD extends Check {
             wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
         } else if (packet.isFlying()) {
             if (wrapper != null) {
-                final Location eyeLocation = data.getPlayer().getEyeLocation();
-                final Location blockLocation = new Location(data.getPlayer().getWorld(), wrapper.getX(), wrapper.getY(), wrapper.getZ());
+                final Vector eyeLocation = data.getPlayer().getEyeLocation().toVector();
+                final Vector blockLocation = new Vector(wrapper.getX(), wrapper.getY(), wrapper.getZ());
 
-                final double difference = getDifference(eyeLocation, blockLocation);
-                // Stole the line down below from my first anticheat, its probabbly skidded so if I skidded from you sorry xd.
-                final double angle = Math.abs(180 - Math.abs(Math.abs(difference - data.getRotationProcessor().getYaw()) - 180));
+                final Vector directionToDestination = blockLocation.clone().subtract(eyeLocation);
+                final Vector playerDirection = data.getPlayer().getEyeLocation().getDirection();
 
-                final boolean exempt = blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0;
-                final boolean invalid = angle > 100.0F;
+                final float angle = directionToDestination.angle(playerDirection);
+
+                final boolean exempt = isExempt(ExemptType.KEEPALIVE) || blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0;
+                final boolean invalid = angle > 1.0F;
 
                 if (invalid && !exempt) {
                     if (increaseBuffer() > 3) {
@@ -61,14 +62,5 @@ public final class InteractD extends Check {
 
             wrapper = null;
         }
-    }
-
-    private double getDifference(final Location location1, final Location location2) {
-        final Location directionLocation = location1.clone();
-
-        final Vector origin = location1.toVector();
-        final Vector target = location2.toVector();
-
-        return directionLocation.setDirection(target.subtract(origin)).getYaw();
     }
 }

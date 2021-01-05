@@ -19,6 +19,7 @@ package me.tecnio.antihaxerman.check.impl.player.fastplace;
 
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
+import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+@CheckInfo(name = "FastPlace", type = "A", description = "Checks if player placing blocks too fast.")
 public final class FastPlaceA extends Check implements Listener {
 
     private int blocks, movements;
