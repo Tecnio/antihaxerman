@@ -40,10 +40,7 @@ public final class SpeedE extends Check {
             final int collidedVTicks = data.getPositionProcessor().getSinceBlockNearHeadTicks();
 
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
-
-            final double velocityX = data.getVelocityProcessor().getVelocityX();
-            final double velocityZ = data.getVelocityProcessor().getVelocityZ();
-            final double velocityXZ = Math.hypot(velocityX, velocityZ) + 0.15;
+            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ() + 0.15;
 
             double limit = PlayerUtil.getBaseSpeed(data.getPlayer(), 0.34F);
 

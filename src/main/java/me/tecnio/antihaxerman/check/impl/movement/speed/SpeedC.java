@@ -43,10 +43,7 @@ public final class SpeedC extends Check {
             final boolean nearStair = data.getPositionProcessor().isNearStair();
 
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
-
-            final double velocityX = data.getVelocityProcessor().getVelocityX();
-            final double velocityZ = data.getVelocityProcessor().getVelocityZ();
-            final double velocityXZ = Math.hypot(velocityX, velocityZ);
+            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ();
 
             double limit = groundTicks > 8 ? PlayerUtil.getBaseGroundSpeed(data.getPlayer()) : PlayerUtil.getBaseSpeed(data.getPlayer());
 

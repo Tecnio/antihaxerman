@@ -30,8 +30,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class VelocityProcessor {
 
     private final PlayerData data;
-    private double velocityX, velocityY, velocityZ;
-    private double lastVelocityX, lastVelocityY, lastVelocityZ;
+    private double velocityX, velocityY, velocityZ, velocityXZ;
+    private double lastVelocityX, lastVelocityY, lastVelocityZ, lastVelocityXZ;
     private int maxVelocityTicks, velocityTicks, ticksSinceVelocity, takingVelocityTicks;
     private short velocityID;
     private boolean verifyingVelocity;
@@ -46,10 +46,12 @@ public final class VelocityProcessor {
         lastVelocityX = this.velocityX;
         lastVelocityY = this.velocityY;
         lastVelocityZ = this.velocityZ;
+        lastVelocityXZ = this.velocityXZ;
 
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.velocityZ = velocityZ;
+        this.velocityXZ = Math.hypot(velocityX, velocityZ);
 
         this.velocityID = (short) ThreadLocalRandom.current().nextInt(32767);
         this.verifyingVelocity = true;

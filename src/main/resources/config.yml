@@ -17,11 +17,18 @@ response:
   command:
     prefix: '&cAHM &8> '
 
-# Logs are still beta and there is a chance it might lag the server so its disabled by default.
+########################################################################################################################
+# Logging configuration.                                                                                               #
+# Logs are still beta and there is a chance it might lag the server so its disabled by default.                        #
+########################################################################################################################
 logging:
   enabled: false
   log-format: '[%date%] %player% failed %check% (Type %type%)%dev% VL: %vl% [TPS: %tps%] [tPing: %tping% kaPing: %kaping%] [Info: %info%]'
 
+########################################################################################################################
+# Bypass settings.                                                                                                     #
+# Bypass operators allows people with OP bypass checks.                                                                #
+########################################################################################################################
 bypass:
   bypass-operators: false
 
@@ -31,6 +38,9 @@ system:
   # NETTY: Netty just runs the anti-cheat on the thread where all packets are called from. No fancy stuff just good ol' netty.
   # PACKETEVENTS: This runs the anti-cheat on the PacketEvents thread.
   threading: 'NETTY'
+
+api:
+  enabled: false
 
 violations:
   alert-format: '&cAHM &8> &c%player%&8 failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%'

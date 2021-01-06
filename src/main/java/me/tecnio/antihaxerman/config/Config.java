@@ -47,6 +47,8 @@ public final class Config {
     public static PacketListenerThreadMode THREADING;
     public static boolean AHM_THREAD;
 
+    public static boolean API_ENABLED;
+
     public static List<String> ENABLED_CHECKS = new ArrayList<>();
     public static List<String> SETBACK_CHECKS = new ArrayList<>();
     public static Map<String, Integer> MAX_VIOLATIONS = new HashMap<>();
@@ -95,6 +97,8 @@ public final class Config {
                     break;
                 }
             }
+
+            API_ENABLED = getBooleanFromConfig("api.enabled");
 
             VL_TO_ALERT = getIntegerFromConfig("violations.minimum-vl");
             ALERT_FORMAT = getStringFromConfig("violations.alert-format");

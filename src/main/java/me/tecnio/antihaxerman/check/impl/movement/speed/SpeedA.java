@@ -61,15 +61,11 @@ public final class SpeedA extends Check {
             }
 
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
-
-            final double velocityX = data.getVelocityProcessor().getVelocityX();
-            final double velocityZ = data.getVelocityProcessor().getVelocityZ();
-
-            final double velocityXZ = Math.hypot(velocityX, velocityZ);
+            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ();
 
             if (takingVelocity) attributeSpeed += velocityXZ;
 
-            final double horizontalDistance = Math.hypot(deltaX, deltaZ);
+            final double horizontalDistance = data.getPositionProcessor().getDeltaXZ();
             final double movementSpeed = (horizontalDistance - lastHorizontalDistance) / attributeSpeed;
 
             if (movementSpeed > 1.0 && !exempt) {

@@ -23,6 +23,7 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.processor.*;
 import me.tecnio.antihaxerman.exempt.ExemptProcessor;
+import me.tecnio.antihaxerman.manager.AlertManager;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.LogUtil;
 import me.tecnio.antihaxerman.util.type.EvictingList;
@@ -60,5 +61,6 @@ public final class PlayerData {
     public PlayerData(final Player player) {
         this.player = player;
         if (Config.LOGGING_ENABLED) logFile = new LogUtil.TextFile("" + player.getUniqueId(), "\\\\logs");
+        AlertManager.toggleAlerts(this);
     }
 }

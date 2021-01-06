@@ -22,14 +22,11 @@ import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.Wrappe
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
-import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.type.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.Random;
 
 public final class TickManager implements Runnable {
 
@@ -54,28 +51,23 @@ public final class TickManager implements Runnable {
     public void run() {
         ++ticks;
 
-        for (final PlayerData data : PlayerDataManager.getInstance().getAllData()) {
+        PlayerDataManager.getInstance().getAllData().parallelStream().forEach(data -> {
             final Entity target = data.getCombatProcessor().getTarget();
             final Entity lastTarget = data.getCombatProcessor().getLastTarget();
 
             if (target != null && lastTarget != null) {
-                if (target != lastTarget) {
-                    data.getTargetLocations().clear();
-                }
+                if (target != lastTarget) data.getTargetLocations().clear();
+
                 final Location location = target.getLocation();
                 data.getTargetLocations().add(new Pair<>(location, ticks));
             }
 
-            final Random random = new Random();
-
             transaction: {
                 if (ticks == 1) break transaction;
 
-                short transactionId = (short) (random.nextInt(32767));
-                transactionId = transactionId == data.getVelocityProcessor().getVelocityID() ? (short) (transactionId - 1) : transactionId;
+                final short transactionId = (short) ticks;
 
                 final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
-
                 PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
             }
 
@@ -85,9 +77,8 @@ public final class TickManager implements Runnable {
                 final int keepAliveId = ticks;
 
                 final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
-
                 PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
             }
-        }
+        });
     }
 }

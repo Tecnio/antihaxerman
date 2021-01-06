@@ -18,14 +18,16 @@
 package me.tecnio.antihaxerman.manager;
 
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.api.APIManager;
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.config.Config;
+import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
 
 public final class PunishmentManager {
-
     public static void punish(final Check check, final PlayerData data) {
+        APIManager.callPunishEvent(check);
+
         if (!check.getPunishCommand().isEmpty()) {
             Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () ->
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), check.getPunishCommand()
