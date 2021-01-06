@@ -32,6 +32,7 @@ import org.bukkit.util.NumberConversions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
 
 @Getter
 public final class PositionProcessor {
@@ -56,6 +57,7 @@ public final class PositionProcessor {
     private boolean onGround, lastOnGround, mathematicallyOnGround;
 
     private final List<Block> blocks = new ArrayList<>();
+    private List<Block> blocksBelow = new ArrayList<>();
 
     public PositionProcessor(final PlayerData data) {
         this.data = data;
@@ -214,6 +216,7 @@ public final class PositionProcessor {
         onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
         nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
         blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5).anyMatch(block -> block.getType() != Material.AIR);
+        blocksBelow = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() <= 0.0).collect(Collectors.toList());
         onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
         nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
     }

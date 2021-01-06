@@ -34,6 +34,7 @@ import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightD;
+import me.tecnio.antihaxerman.check.impl.movement.jesus.JesusA;
 import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveA;
 import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveB;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedA;
@@ -67,6 +68,7 @@ import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldA;
 import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldB;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
+import me.tecnio.antihaxerman.check.impl.player.tower.TowerA;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -118,6 +120,7 @@ public final class CheckManager {
             LargeMoveA.class,
             LargeMoveB.class,
             FastClimbA.class,
+            JesusA.class,
             LiquidSpeedA.class,
             LiquidSpeedB.class,
             LiquidSpeedC.class,
@@ -140,6 +143,7 @@ public final class CheckManager {
             FastPlaceA.class,
             ScaffoldA.class,
             ScaffoldB.class,
+            TowerA.class,
             InteractA.class,
             InteractB.class,
             InteractC.class,

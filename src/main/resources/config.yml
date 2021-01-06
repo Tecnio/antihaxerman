@@ -220,6 +220,11 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    jesus:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     liquidspeed:
       a:
         enabled: true
@@ -319,6 +324,11 @@ checks:
         max-violations: 50
         punish-command: ''
       b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+    tower:
+      a:
         enabled: true
         max-violations: 50
         punish-command: ''
