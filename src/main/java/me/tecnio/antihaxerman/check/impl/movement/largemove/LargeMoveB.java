@@ -32,13 +32,10 @@ public final class LargeMoveB extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
-
-            final double acceleration = deltaY - lastDeltaY;
+            final double deltaY = Math.abs(data.getPositionProcessor().getDeltaY());
 
             final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.LAGGING);
-            final boolean invalid = deltaY > 10.0 && acceleration > 10.0;
+            final boolean invalid = deltaY > 10.0;
 
             if (invalid && !exempt) {
                 fail();
