@@ -24,11 +24,25 @@ import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "BadPackets", type = "K", description = "")
 public final class BadPacketsK extends Check {
+
+    private boolean swung;
+
     public BadPacketsK(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
+        if (packet.isUseEntity()) {
+            if (!swung) fail();
+        }
+
+        else if (packet.isArmAnimation()) {
+            swung = true;
+        }
+
+        else if (packet.isFlying()) {
+            swung = false;
+        }
     }
 }

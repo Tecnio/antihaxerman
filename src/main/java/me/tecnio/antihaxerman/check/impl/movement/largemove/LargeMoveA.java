@@ -37,9 +37,7 @@ public final class LargeMoveA extends Check {
             final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.LAGGING);
             final boolean invalid = deltaXZ > 10.0;
 
-            if (invalid && !exempt) {
-                fail();
-            }
+            if (invalid && !exempt) fail();
         }
     }
 }
