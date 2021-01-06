@@ -60,8 +60,6 @@ public final class StrafeA extends Check {
             final int airTicks = data.getPositionProcessor().getClientAirTicks();
             final int groundTicks = data.getPositionProcessor().getGroundTicks();
 
-            final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
-
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SPEED) * (float) 0.2 * attributeSpeed;
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SLOW) * (float) -.15 * attributeSpeed;
 
@@ -71,10 +69,7 @@ public final class StrafeA extends Check {
                 if (sprinting) attributeSpeed *= 1.3;
                 attributeSpeed *= 0.16277136 / Math.pow(blockSlipperiness, 3);
 
-                if (deltaY >= 0.42F + modifierJump * 0.1 && sprinting) {
-                    attributeSpeed += 0.2;
-                }
-
+                // GET AI SPEED WTF IS THAT SUPPOSED TO BEE AAAAAAAA
                 attributeSpeed *= data.getPlayer().getWalkSpeed();
             } else {
                 attributeSpeed = sprinting ? 0.0263 : 0.02;
