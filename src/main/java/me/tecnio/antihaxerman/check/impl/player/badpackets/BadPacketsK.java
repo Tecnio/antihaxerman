@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -33,5 +34,20 @@ public final class BadPacketsK extends Check {
 
     @Override
     public void handle(final Packet packet) {
+        if (packet.isUseEntity()) {
+            final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
+
+            if (wrapper.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
+                if (!swung) fail();
+            }
+        }
+
+        else if (packet.isArmAnimation()) {
+            swung = true;
+        }
+
+        else if (packet.isFlying()) {
+            swung = false;
+        }
     }
 }
