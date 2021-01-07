@@ -30,6 +30,7 @@ import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityB;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbA;
+import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightC;
@@ -121,6 +122,7 @@ public final class CheckManager {
             LargeMoveA.class,
             LargeMoveB.class,
             FastClimbA.class,
+            FastClimbB.class,
             JesusA.class,
             JesusB.class,
             LiquidSpeedA.class,

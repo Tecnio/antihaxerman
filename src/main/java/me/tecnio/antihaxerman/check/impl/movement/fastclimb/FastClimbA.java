@@ -23,7 +23,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "FastClimb", type = "A", description = "Checks if player is going faster than possible on a climbable.", experimental = true)
+@CheckInfo(name = "FastClimb", type = "A", description = "Checks if player is going faster than possible on a climbable.")
 public final class FastClimbA extends Check {
     public FastClimbA(final PlayerData data) {
         super(data);

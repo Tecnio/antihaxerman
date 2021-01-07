@@ -69,7 +69,7 @@ public final class StrafeA extends Check {
                 if (sprinting) attributeSpeed *= 1.3;
                 attributeSpeed *= 0.16277136 / Math.pow(blockSlipperiness, 3);
 
-                // GET AI SPEED WTF IS THAT SUPPOSED TO BEE AAAAAAAA
+                // GET AI SPEED WTF IS THAT SUPPOSED TO BEE AAAAAAAA SO BANDAGE FIX IT :kekw:
                 attributeSpeed *= data.getPlayer().getWalkSpeed();
             } else {
                 attributeSpeed = sprinting ? 0.0263 : 0.02;

@@ -52,7 +52,7 @@ public final class SpeedE extends Check {
             final boolean invalid = deltaXZ > limit;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 8) {
+                if (increaseBuffer() > 9) {
                     fail();
                     multiplyBuffer(0.75);
                 }

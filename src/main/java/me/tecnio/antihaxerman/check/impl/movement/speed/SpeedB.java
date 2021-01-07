@@ -49,7 +49,7 @@ public final class SpeedB extends Check {
                     fail();
                 }
             } else {
-                decreaseBufferBy(1);
+                decreaseBuffer();
             }
         }
     }

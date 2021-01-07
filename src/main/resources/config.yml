@@ -163,6 +163,11 @@ checks:
       a:
         enabled: true
         max-violations: 50
+        punish-command: ''
+      b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     flight:
       a:
         enabled: true

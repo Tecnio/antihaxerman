@@ -43,15 +43,15 @@ public class PlayerUtil {
         return 0;
     }
 
-    public float getBaseSpeed(Player player, float base) {
+    public float getBaseSpeed(final Player player, final float base) {
         return base + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
     }
 
-    public double getBaseSpeed(Player player) {
+    public double getBaseSpeed(final Player player) {
         return 0.36 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
     }
 
-    public double getBaseGroundSpeed(Player player) {
+    public double getBaseGroundSpeed(final Player player) {
         return 0.289 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
     }
 

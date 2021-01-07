@@ -63,13 +63,13 @@ public final class SpeedA extends Check {
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
             final double velocityXZ = data.getVelocityProcessor().getVelocityXZ();
 
-            if (takingVelocity) attributeSpeed += velocityXZ;
+            if (takingVelocity) attributeSpeed += velocityXZ + 0.15;
 
             final double horizontalDistance = data.getPositionProcessor().getDeltaXZ();
             final double movementSpeed = (horizontalDistance - lastHorizontalDistance) / attributeSpeed;
 
             if (movementSpeed > 1.0 && !exempt) {
-                increaseBufferBy(10);
+                increaseBufferBy(8);
 
                 if (getBuffer() > 50) {
                     fail();
@@ -77,7 +77,7 @@ public final class SpeedA extends Check {
                     multiplyBuffer(0.5);
                 }
             } else {
-                decreaseBufferBy(2);
+                decreaseBufferBy(5);
             }
 
             final double x = data.getPositionProcessor().getX();

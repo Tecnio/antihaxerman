@@ -15,46 +15,44 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.noslow;
+package me.tecnio.antihaxerman.check.impl.movement.fastclimb;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
-@CheckInfo(name = "NoSlow", type = "A", description = "Checks if the player is not slowing down while blocking.")
-public final class NoSlowA extends Check {
+import java.util.List;
 
-    private int blockingTicks;
-
-    public NoSlowA(final PlayerData data) {
+@CheckInfo(name = "FastClimb", type = "B", description = "Checks if player is going faster than possible on a climbable.")
+public final class FastClimbB extends Check {
+    public FastClimbB(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean blocking = data.getActionProcessor().isBlocking() && data.getPlayer().isBlocking();
+            final List<Block> blocks = data.getPositionProcessor().getBlocks();
+            if (blocks == null) return;
 
-            if (blocking) blockingTicks++;
-            else blockingTicks = 0;
+            final boolean onClimbable = blocks.stream().allMatch(block -> block.getType() == Material.LADDER || block.getType() == Material.VINE);
 
-            final int blockingTicks = this.blockingTicks;
-            final int sprintingTicks = data.getActionProcessor().getSprintingTicks();
+            final float deltaY = (float) data.getPositionProcessor().getDeltaY();
+            final float limit = 0.1176F;
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.CHUNK) || data.getPositionProcessor().isInAir();
-            final boolean invalid = blockingTicks > 10 && sprintingTicks > 10;
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.BOAT, ExemptType.VEHICLE);
+            final boolean invalid = deltaY > limit && onClimbable;
 
             if (invalid && !exempt) {
-                if (getBuffer() > 5) data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
-
-                if (increaseBuffer() > 10) {
+                if (increaseBuffer() > 2 || deltaY > (limit * 3.0F)) {
                     fail();
-                    data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
                 }
             } else {
-                decreaseBufferBy(2.5);
+                decreaseBufferBy(0.25);
             }
         }
     }

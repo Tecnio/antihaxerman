@@ -41,7 +41,10 @@ public final class MotionA extends Check {
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastY = data.getPositionProcessor().getLastY();
 
-            final boolean step = deltaY % 0.015625 == 0.0 && lastY % 0.015625 == 0.0;
+            final boolean deltaModulo = deltaY % 0.015625 == 0.0;
+            final boolean lastGround = lastY % 0.015625 == 0.0;
+
+            final boolean step = deltaModulo && lastGround;
 
             final boolean onGround = data.getPositionProcessor().isOnGround();
             final boolean lastOnGround = data.getPositionProcessor().isLastOnGround();
@@ -52,15 +55,8 @@ public final class MotionA extends Check {
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
             final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastOnGround && !step;
 
-            if (invalid && !exempt) {
-                fail();
-            }
-
-            if (step && !exempt) {
-                if (deltaY > 0.6) {
-                    fail();
-                }
-            }
+            if (invalid && !exempt) fail();
+            if (step && deltaY > 0.6F && !exempt) fail();
         }
     }
 }
