@@ -74,9 +74,6 @@ public final class ConnectionProcessor {
         });
     }
 
-    public void handleFlying() {
-    }
-
     public void handleOutgoingTransaction(final WrappedPacketOutTransaction wrapper) {
         final long now = System.currentTimeMillis();
         final short actionNumber = wrapper.getActionNumber();

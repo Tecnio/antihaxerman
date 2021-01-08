@@ -67,7 +67,6 @@ public final class ReceivingPacketProcessor  {
             data.getVelocityProcessor().handleFlying();
             data.getCombatProcessor().handleFlying();
             data.getClickProcessor().handleFlying();
-            data.getConnectionProcessor().handleFlying();
         }
         if (packet.isRotation()) {
             final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
