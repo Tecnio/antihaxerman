@@ -71,8 +71,8 @@ public final class AngleA extends Check {
                     })
                     .min().orElse(-1);
 
-            final boolean exempt = origin.distance(target.getLocation().toVector()) < 1.8;
-            final boolean invalid = angle > 0.55 && accepted;
+            final boolean exempt = data.getCombatProcessor().getDistance() < 1.8;
+            final boolean invalid = angle > 0.6 && accepted;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {

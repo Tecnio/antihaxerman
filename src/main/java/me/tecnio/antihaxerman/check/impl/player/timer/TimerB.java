@@ -40,7 +40,7 @@ public final class TimerB extends Check {
         if (packet.isFlying()) {
             final long now = now();
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.TPS, ExemptType.KEEPALIVE) || lastFlying == 0;
+            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.TPS) || lastFlying == 0;
 
             handle: {
                 if (exempt) break handle;

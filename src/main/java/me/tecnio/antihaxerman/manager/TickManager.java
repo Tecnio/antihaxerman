@@ -51,7 +51,7 @@ public final class TickManager implements Runnable {
     public void run() {
         ++ticks;
 
-        PlayerDataManager.getInstance().getAllData().parallelStream().forEach(data -> {
+        PlayerDataManager.getInstance().getAllData().forEach(data -> {
             final Entity target = data.getCombatProcessor().getTarget();
             final Entity lastTarget = data.getCombatProcessor().getLastTarget();
 

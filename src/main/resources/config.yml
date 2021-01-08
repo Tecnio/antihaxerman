@@ -37,7 +37,7 @@ system:
   # ANTIHAXERMAN: Runs the anticheat on a AntiHaxerman thread. This should be more performant than all.
   # NETTY: Netty just runs the anti-cheat on the thread where all packets are called from. No fancy stuff just good ol' netty.
   # PACKETEVENTS: This runs the anti-cheat on the PacketEvents thread.
-  threading: 'NETTY'
+  threading: 'ANTIHAXERMAN'
 
 api:
   enabled: false
