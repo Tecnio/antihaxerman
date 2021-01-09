@@ -50,8 +50,6 @@ public final class BadPacketsN extends Check implements Listener {
                 final boolean invalid = deltaXZ > 10.0 || lastDeltaXZ > 10.0 || deltaY > 10.0 || lastDeltaY > 10.0;
 
                 if (invalid) fail();
-
-                debug(String.format("dXZ: %.2f ldXZ: %.2f dY: %.2f ldY: %.2f", deltaXZ, lastDeltaXZ, deltaY, lastDeltaY));
             }
         }
     }
