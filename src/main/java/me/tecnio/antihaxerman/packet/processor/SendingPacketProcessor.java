@@ -43,6 +43,9 @@ public final class SendingPacketProcessor  {
 
             data.getConnectionProcessor().handleOutgoingKeepAlive(wrapper);
         }
+        if (packet.isTeleport()) {
+            data.getPositionProcessor().handleTeleport();
+        }
         data.getChecks().forEach(check -> check.handle(packet));
     }
 }

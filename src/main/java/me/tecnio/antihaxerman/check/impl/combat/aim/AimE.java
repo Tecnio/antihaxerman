@@ -54,7 +54,7 @@ public final class AimE extends Check {
                             }
                         }
                     } else {
-                        decreaseBufferBy(3.0);
+                        resetBuffer();
                     }
                 } else {
                     resetBuffer();

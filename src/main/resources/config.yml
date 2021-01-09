@@ -411,3 +411,7 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      n:
+        enabled: true
+        max-violations: 50
+        punish-command: ''

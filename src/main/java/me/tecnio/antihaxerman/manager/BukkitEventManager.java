@@ -23,7 +23,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 public final class BukkitEventManager implements Listener {
 
@@ -48,16 +47,6 @@ public final class BukkitEventManager implements Listener {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
         if (data != null) {
             data.getActionProcessor().handleBukkitPlace();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerTeleport(final PlayerTeleportEvent event) {
-        final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
-        if (data != null) {
-            if (event.getCause() != PlayerTeleportEvent.TeleportCause.UNKNOWN) {
-                data.getPositionProcessor().handleTeleport();
-            }
         }
     }
 }

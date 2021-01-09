@@ -165,6 +165,7 @@ public final class CheckManager {
             BadPacketsK.class,
             BadPacketsL.class,
             BadPacketsM.class,
+            BadPacketsN.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
@@ -183,7 +184,7 @@ public final class CheckManager {
     }
 
     public static void setup() {
-        for (final Class clazz : CHECKS) {
+        for (final Class<?> clazz : CHECKS) {
             if (Config.ENABLED_CHECKS.contains(clazz.getSimpleName())) {
                 try {
                     CONSTRUCTORS.add(clazz.getConstructor(PlayerData.class));
