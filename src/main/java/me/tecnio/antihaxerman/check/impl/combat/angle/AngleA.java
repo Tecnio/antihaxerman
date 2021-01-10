@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.check.impl.combat.angle;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -82,7 +83,11 @@ public final class AngleA extends Check {
                 decreaseBuffer();
             }
         } else if (packet.isUseEntity()) {
-            attacked = true;
+            final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
+
+            if (wrapper.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
+                attacked = true;
+            }
         }
     }
 }

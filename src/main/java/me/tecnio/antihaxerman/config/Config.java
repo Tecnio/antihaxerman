@@ -17,14 +17,17 @@
 
 package me.tecnio.antihaxerman.config;
 
-import io.github.retrooper.packetevents.event.threadmode.PacketListenerThreadMode;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.ColorUtil;
 import org.bukkit.Bukkit;
+
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class Config {
 
@@ -44,9 +47,6 @@ public final class Config {
     public static boolean LOGGING_ENABLED;
     public static String LOG_FORMAT;
 
-    public static PacketListenerThreadMode THREADING;
-    public static boolean AHM_THREAD;
-
     public static boolean API_ENABLED;
 
     public static List<String> ENABLED_CHECKS = new ArrayList<>();
@@ -57,55 +57,29 @@ public final class Config {
 
     public static void updateConfig() {
         try {
-            TESTMODE = getBooleanFromConfig("testmode");
+            TESTMODE = getBoolean("testmode");
 
-            PREFIX = ColorUtil.translate(getStringFromConfig("response.anticheat.prefix"));
-            NO_PERMS = getStringFromConfig("response.general.no-permission");
-            COMMAND_NAME = getStringFromConfig("response.command.name");
-            CLEAR_VIOLATIONS_DELAY = getIntegerFromConfig("violations.clear-violations-delay");
-            COMMAND_PREFIX = ColorUtil.translate(getStringFromConfig("response.command.prefix"));
+            PREFIX = ColorUtil.translate(getString("response.anticheat.prefix"));
+            NO_PERMS = getString("response.general.no-permission");
+            COMMAND_NAME = getString("response.command.name");
+            CLEAR_VIOLATIONS_DELAY = getInteger("violations.clear-violations-delay");
+            COMMAND_PREFIX = ColorUtil.translate(getString("response.command.prefix"));
 
-            BYPASS_OP = getBooleanFromConfig("bypass.bypass-operators");
+            BYPASS_OP = getBoolean("bypass.bypass-operators");
 
-            LOGGING_ENABLED = getBooleanFromConfig("logging.enabled");
-            LOG_FORMAT = getStringFromConfig("logging.log-format");
+            LOGGING_ENABLED = getBoolean("logging.enabled");
+            LOG_FORMAT = getString("logging.log-format");
 
-            final String threading = getStringFromConfig("system.threading");
+            API_ENABLED = getBoolean("api.enabled");
 
-            switch (threading.toLowerCase()) {
-                case "netty": {
-                    THREADING = PacketListenerThreadMode.NETTY;
-                    AHM_THREAD = false;
-                    break;
-                }
+            VL_TO_ALERT = getInteger("violations.minimum-vl");
+            ALERT_FORMAT = getString("violations.alert-format");
 
-                case "packetevents": {
-                    THREADING = PacketListenerThreadMode.PACKETEVENTS;
-                    AHM_THREAD = false;
-                    break;
-                }
+            for (final Class<?> check : CheckManager.CHECKS) {
+                final CheckInfo checkInfo = check.getAnnotation(CheckInfo.class);
 
-                case "antihaxerman": {
-                    THREADING = PacketListenerThreadMode.NETTY;
-                    AHM_THREAD = true;
-                    break;
-                }
-
-                default: {
-                    THREADING = PacketListenerThreadMode.NETTY;
-                    AHM_THREAD = false;
-                    break;
-                }
-            }
-
-            API_ENABLED = getBooleanFromConfig("api.enabled");
-
-            VL_TO_ALERT = getIntegerFromConfig("violations.minimum-vl");
-            ALERT_FORMAT = getStringFromConfig("violations.alert-format");
-
-            for (final Class check : CheckManager.CHECKS) {
-                final CheckInfo checkInfo = (CheckInfo) check.getAnnotation(CheckInfo.class);
                 String checkType = "";
+
                 if (check.getName().contains("combat")) {
                     checkType = "combat";
                 } else if (check.getName().contains("movement")) {
@@ -118,39 +92,43 @@ public final class Config {
                     if (field.getType().equals(ConfigValue.class)) {
                         final boolean accessible = field.isAccessible();
                         field.setAccessible(true);
+
                         final String name = ((ConfigValue) field.get(null)).getName();
                         final ConfigValue value = ((ConfigValue) field.get(null));
                         final ConfigValue.ValueType type = value.getType();
 
                         switch (type) {
                             case BOOLEAN:
-                                value.setValue(getBooleanFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
+                                value.setValue(getBoolean("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
                                 break;
                             case INTEGER:
-                                value.setValue(getIntegerFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
+                                value.setValue(getInteger("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
                                 break;
                             case DOUBLE:
-                                value.setValue(getDoubleFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
+                                value.setValue(getDouble("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
                                 break;
                             case STRING:
-                                value.setValue(getStringFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
+                                value.setValue(getString("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
                                 break;
                             case LONG:
-                                value.setValue(getLongFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
+                                value.setValue(getLong("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + "." + name));
                                 break;
                         }
+
                         field.setAccessible(accessible);
                     }
                 }
 
-                final boolean enabled = getBooleanFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".enabled");
+                final boolean enabled = getBoolean("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".enabled");
 
                 Bukkit.broadcastMessage("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".enabled" + " " + enabled);
-                final int maxViolations = getIntegerFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".max-violations");
-                final String punishCommand = getStringFromConfig("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".punish-command");
+
+                final int maxViolations = getInteger("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".max-violations");
+                final String punishCommand = getString("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".punish-command");
 
                 if (checkType.equals("movement")) {
-                    final boolean setBack = getBooleanFromConfig("checks.movement." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".setback");
+                    final boolean setBack = getBoolean("checks.movement." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".setback");
+
                     if (setBack) {
                         SETBACK_CHECKS.add(check.getSimpleName());
                     }
@@ -159,6 +137,7 @@ public final class Config {
                 if (enabled) {
                     ENABLED_CHECKS.add(check.getSimpleName());
                 }
+
                 MAX_VIOLATIONS.put(check.getSimpleName(), maxViolations);
                 PUNISH_COMMANDS.put(check.getSimpleName(), punishCommand);
             }
@@ -169,23 +148,23 @@ public final class Config {
 
     }
 
-    private static boolean getBooleanFromConfig(final String string) {
+    private static boolean getBoolean(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getBoolean(string);
     }
 
-    public static String getStringFromConfig(final String string) {
+    public static String getString(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getString(string);
     }
 
-    private static int getIntegerFromConfig(final String string) {
+    private static int getInteger(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getInt(string);
     }
 
-    private static double getDoubleFromConfig(final String string) {
+    private static double getDouble(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getDouble(string);
     }
 
-    private static long getLongFromConfig(final String string) {
+    private static long getLong(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getLong(string);
     }
 }

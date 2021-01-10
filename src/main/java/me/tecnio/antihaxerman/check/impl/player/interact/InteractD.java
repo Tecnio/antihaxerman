@@ -46,9 +46,10 @@ public final class InteractD extends Check {
                 final Vector playerDirection = data.getPlayer().getEyeLocation().getDirection();
 
                 final float angle = directionToDestination.angle(playerDirection);
+                final float distance = (float) eyeLocation.distance(blockLocation);
 
                 final boolean exempt = blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0;
-                final boolean invalid = angle > 1.0F;
+                final boolean invalid = angle > 1.0F && distance > 1.5;
 
                 if (invalid && !exempt) {
                     if (increaseBuffer() > 3) {

@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.check.impl.combat.reach;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
@@ -80,7 +81,11 @@ public final class ReachA extends Check {
                 decreaseBufferBy(0.05);
             }
         } else if (packet.isUseEntity()) {
-            attacked = true;
+            final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
+
+            if (wrapper.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
+                attacked = true;
+            }
         }
     }
 }
