@@ -41,6 +41,7 @@ public enum AntiHaxerman {
     private long startTime;
 
     private final TickManager tickManager = new TickManager();
+
     private final ReceivingPacketProcessor receivingPacketProcessor = new ReceivingPacketProcessor();
     private final SendingPacketProcessor sendingPacketProcessor = new SendingPacketProcessor();
 

@@ -44,7 +44,7 @@ public final class AutoClickerD extends Check {
             if (ticks > 50) samples.clear();
             else samples.add(ticks * 50L);
 
-            if (samples.size() == 10) {
+            if (samples.size() == 30) {
                 final double deviation = MathUtil.getStandardDeviation(samples);
                 final double skewness = MathUtil.getSkewness(samples);
                 final double kurtosis = MathUtil.getKurtosis(samples);
@@ -52,7 +52,7 @@ public final class AutoClickerD extends Check {
                 final boolean invalid = deviation == lastDeviation && skewness == lastSkewness && kurtosis == lastKurtosis;
 
                 if (invalid) {
-                    if (increaseBuffer() > 1) {
+                    if (increaseBuffer() > 3) {
                         fail();
                     }
                 } else {
