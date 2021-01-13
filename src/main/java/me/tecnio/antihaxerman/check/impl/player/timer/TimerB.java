@@ -17,46 +17,64 @@
 
 package me.tecnio.antihaxerman.check.impl.player.timer;
 
+import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
+import me.tecnio.antihaxerman.util.type.EvictingList;
 
 @CheckInfo(name = "Timer", type = "B", description = "Checks packet delay between packets.", experimental = true)
 public final class TimerB extends Check {
 
-    private long lastFlying = 0;
-    private long balance = 0;
+    private final EvictingList<Long> samples = new EvictingList<>(50);
+    private long lastFlying;
 
     public TimerB(final PlayerData data) {
         super(data);
     }
 
-    // Thanks to GladUrBad for informing me about this check. I have added it lets see if its good lol.
-
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final long now = now();
+            final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.TPS) || lastFlying == 0;
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
+            final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {
-                if (exempt) break handle;
+                if (exempt || !accepted) break handle;
 
-                balance += 50;
-                balance -= (now - lastFlying);
+                final long delay = now - lastFlying;
 
-                if (balance > 1) {
-                    //fail(balance);
-                    balance = 0;
+                if (delay != 0) {
+                    samples.add(delay);
+                }
+
+                if (samples.isFull()) {
+                    final double average = MathUtil.getAverage(samples);
+                    final double speed = 50.0 / average;
+                    final double deviation = MathUtil.getStandardDeviation(samples);
+
+                    final boolean invalid = deviation < 20.0 && speed < 0.6 && !Double.isNaN(deviation);
+
+                    if (invalid) {
+                        if (increaseBuffer() > 30) {
+                            fail();
+                            multiplyBuffer(0.50);
+                        }
+                    } else {
+                        decreaseBufferBy(10);
+                    }
                 }
             }
 
             this.lastFlying = now;
         } else if (packet.isTeleport()) {
-            balance = 0;
+            samples.add(125L);
         }
     }
 }

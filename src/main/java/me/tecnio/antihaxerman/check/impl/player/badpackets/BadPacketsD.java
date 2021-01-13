@@ -22,6 +22,9 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.entity.Entity;
+
+import java.util.List;
 
 @CheckInfo(name = "BadPackets", type = "D", description = "Detects steer vehicle disabler.")
 public final class BadPacketsD extends Check {
@@ -34,12 +37,19 @@ public final class BadPacketsD extends Check {
         if (packet.isSteerVehicle()) {
             final WrappedPacketInSteerVehicle wrapper = new WrappedPacketInSteerVehicle(packet.getRawPacket());
 
-            if (data.getPlayer().getVehicle() == null) {
-                ban();
+            handle: {
+                if (data.getPlayer().getVehicle() == null) {
+                    final List<Entity> nearbyEntities = data.getPositionProcessor().getNearbyEntities();
+                    if (nearbyEntities == null) break handle;
+
+                    if (nearbyEntities.isEmpty()) {
+                        ban();
+                    }
+                }
             }
 
-            final float forward = wrapper.getForwardValue();
-            final float sideways = wrapper.getSideValue();
+            final float forward = Math.abs(wrapper.getForwardValue());
+            final float sideways = Math.abs(wrapper.getSideValue());
 
             if (forward != 0.0F && forward != 0.98F) {
                 ban();

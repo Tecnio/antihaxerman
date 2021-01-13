@@ -29,6 +29,8 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -81,6 +83,8 @@ public final class AlertManager {
                 "\n&cClick to teleport.")).create()));
 
         alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));
+
+        Bukkit.getLogger().info(ChatColor.stripColor(alertMessage.getText()));
     }
 
     public static void sendMessage(final String message) {

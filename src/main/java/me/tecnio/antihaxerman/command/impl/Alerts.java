@@ -18,9 +18,9 @@
 package me.tecnio.antihaxerman.command.impl;
 
 import me.tecnio.antihaxerman.command.AntiHaxermanCommand;
+import me.tecnio.antihaxerman.command.CommandInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.manager.AlertManager;
-import me.tecnio.antihaxerman.command.CommandInfo;
 import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import me.tecnio.antihaxerman.util.ColorUtil;
 import org.bukkit.command.Command;
@@ -33,16 +33,18 @@ public final class Alerts extends AntiHaxermanCommand {
     @Override
     protected boolean handle(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (sender instanceof Player) {
-            final Player player = (Player) sender;
-            final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
+            if (sender.hasPermission("antihaxerman.alerts") || sender.isOp()) {
+                final Player player = (Player) sender;
+                final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
 
-            if (data != null) {
-                if (AlertManager.toggleAlerts(data) == AlertManager.ToggleAlertType.ADD) {
-                    sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &2on&a."));
-                } else {
-                    sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &coff&a."));
+                if (data != null) {
+                    if (AlertManager.toggleAlerts(data) == AlertManager.ToggleAlertType.ADD) {
+                        sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &2on&a."));
+                    } else {
+                        sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &coff&a."));
+                    }
+                    return true;
                 }
-                return true;
             }
         } else {
             sendMessage(sender, "Only players can execute this command.");

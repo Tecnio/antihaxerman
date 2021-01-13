@@ -25,7 +25,7 @@ import java.io.Serializable;
 public final class MovingStats implements Serializable {
 
     //this array contains all elements we have
-    private double[] elements;
+    private final double[] elements;
 
     //this is the current element index
     private int currentElement;
@@ -33,7 +33,7 @@ public final class MovingStats implements Serializable {
 
     private double variance;
 
-    public MovingStats(int size) {
+    public MovingStats(final int size) {
         this.elements = new double[size];
         this.variance = size * 2.5;
 
@@ -56,8 +56,8 @@ public final class MovingStats implements Serializable {
         this.currentElement = (currentElement + 1) % this.elements.length;
     }
 
-    public double getStdDev(double required) {
-        double stdDev = Math.sqrt(variance);
+    public double getStdDev(final double required) {
+        final double stdDev = Math.sqrt(variance);
 
         //the standard deviation is less than the requirement
         if (stdDev < required) {

@@ -40,7 +40,7 @@ public final class BadPacketsF extends Check {
             final int difference = Math.abs(transactionReceivedTicks - transactionSentTicks);
 
             final boolean exempt = isExempt(ExemptType.TPS, ExemptType.JOINED, ExemptType.TELEPORT);
-            final boolean invalid = difference > 200;
+            final boolean invalid = difference > 100;
 
             if (invalid && !exempt) {
                 kick("Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host");

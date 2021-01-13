@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.check;
 import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.api.APIManager;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
@@ -42,8 +43,6 @@ public abstract class Check {
     private double buffer;
     @Setter private String punishCommand;
 
-    private boolean flagging;
-
     public Check(final PlayerData data) {
         this.data = data;
 
@@ -63,7 +62,7 @@ public abstract class Check {
     public void fail(final Object info) {
         if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
             if (!data.isExempt()) {
-                //APIManager.callFlagEvent(this);
+                APIManager.callFlagEvent(this);
 
                 ++vl;
                 data.setTotalViolations(data.getTotalViolations() + 1);
@@ -167,7 +166,7 @@ public abstract class Check {
     }
 
     public void debug(final Object... objects) {
-        for (Object object : objects) {
+        for (final Object object : objects) {
             Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
         }
     }

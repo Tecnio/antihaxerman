@@ -35,7 +35,7 @@ public final class MotionC extends Check {
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
-            final boolean exempt = isExempt(ExemptType.UNDERBLOCK, ExemptType.PISTON, ExemptType.SLIME, ExemptType.TELEPORT, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.UNDERBLOCK, ExemptType.PISTON, ExemptType.SLIME, ExemptType.TELEPORT, ExemptType.CHUNK, ExemptType.VEHICLE, ExemptType.BOAT);
             final boolean invalid = deltaY == -lastDeltaY && deltaY != 0.0;
 
             if (invalid && !exempt) {

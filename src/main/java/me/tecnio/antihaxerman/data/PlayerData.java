@@ -61,6 +61,9 @@ public final class PlayerData {
     public PlayerData(final Player player) {
         this.player = player;
         if (Config.LOGGING_ENABLED) logFile = new LogUtil.TextFile("" + player.getUniqueId(), "\\\\logs");
-        AlertManager.toggleAlerts(this);
+
+        if (player.hasPermission("antihaxerman.alerts") || player.isOp()) {
+            AlertManager.toggleAlerts(this);
+        }
     }
 }

@@ -40,10 +40,10 @@ public final class FlightB extends Check {
             final int airTicksLimit = 8 + airTicksModifier;
 
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
-            final int clientAirTicks = data.getPositionProcessor().getAirTicks();
+            final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
-            final boolean invalid = (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit) && deltaY > 0.0;
+            final boolean invalid = (clientAirTicks > airTicksLimit) && deltaY > 0.0;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {

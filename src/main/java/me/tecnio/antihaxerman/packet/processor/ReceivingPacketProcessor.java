@@ -75,8 +75,8 @@ public final class ReceivingPacketProcessor  {
         }
         if (packet.isArmAnimation()) {
             data.getClickProcessor().handleArmAnimation();
-
             data.getCombatProcessor().handleArmAnimation();
+            data.getActionProcessor().handleArmAnimation();
         }
         if (packet.isIncomingTransaction()) {
             final WrappedPacketInTransaction wrapper = new WrappedPacketInTransaction(packet.getRawPacket());

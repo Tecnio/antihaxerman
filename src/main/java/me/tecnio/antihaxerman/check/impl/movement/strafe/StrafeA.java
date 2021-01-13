@@ -70,7 +70,9 @@ public final class StrafeA extends Check {
                 attributeSpeed *= 0.16277136 / Math.pow(blockSlipperiness, 3);
 
                 // GET AI SPEED WTF IS THAT SUPPOSED TO BEE AAAAAAAA SO BANDAGE FIX IT :kekw:
-                attributeSpeed *= data.getPlayer().getWalkSpeed();
+                attributeSpeed *= data.getPlayer().getWalkSpeed() / 2.0;
+                //cancel not usable in this way
+                attributeSpeed = 1000;
             } else {
                 attributeSpeed = sprinting ? 0.0263 : 0.02;
 

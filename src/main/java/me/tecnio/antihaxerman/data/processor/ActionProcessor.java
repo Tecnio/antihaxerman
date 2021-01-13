@@ -111,6 +111,10 @@ public final class ActionProcessor {
         ;
     }
 
+    public void handleArmAnimation() {
+        if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+    }
+
     public void handleFlying() {
         sendingAction = false;
         placing = false;

@@ -46,7 +46,7 @@ public final class CommandManager implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String string, String[] args) {
+    public boolean onCommand(final CommandSender commandSender, final Command command, final String string, final String[] args) {
         if (commandSender.hasPermission("antihaxerman.commands") || commandSender.isOp()) {
             if (args.length > 0) {
                 for (final AntiHaxermanCommand antiHaxermanCommand : commands) {

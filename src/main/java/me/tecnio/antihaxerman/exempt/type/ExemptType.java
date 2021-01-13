@@ -31,7 +31,7 @@ public enum ExemptType {
     CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(data.getPlayer().getLocation().getBlockX() >> 4,
             data.getPlayer().getLocation().getBlockZ() >> 4)),
 
-    TPS(data -> ServerUtil.getTPS() < 18.5D),
+    TPS(data -> ServerUtil.getTPS() < 19.0D),
 
     TELEPORT(data -> data.getPositionProcessor().getTeleportTicks() < 40),
 

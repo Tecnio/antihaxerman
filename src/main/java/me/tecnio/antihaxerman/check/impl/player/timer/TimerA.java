@@ -14,6 +14,7 @@ import me.tecnio.antihaxerman.util.MovingStats;
 public final class TimerA extends Check {
 
     private final MovingStats movingStats = new MovingStats(20);
+
     private long lastFlying = 0L;
     private long allowance = 0;
 
@@ -27,7 +28,7 @@ public final class TimerA extends Check {
             final long now = now();
             final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
             
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING);
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
             final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {

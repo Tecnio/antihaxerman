@@ -35,7 +35,7 @@ public final class BadPacketsL extends Check {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT);
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE);
             final boolean invalid = deltaPitch == 0.0F && deltaYaw  == 0.0F;
 
             if (invalid && !exempt) {

@@ -19,11 +19,13 @@ package me.tecnio.antihaxerman.data.processor;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
-import me.tecnio.antihaxerman.AntiHaxerman;
-import me.tecnio.antihaxerman.util.type.BoundingBox;
 import lombok.Getter;
+import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
-import org.bukkit.*;
+import me.tecnio.antihaxerman.util.type.BoundingBox;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
@@ -60,6 +62,8 @@ public final class PositionProcessor {
 
     private List<Block> blocksBelow = new ArrayList<>();
     private List<Block> blocksAbove= new ArrayList<>();
+
+    private List<Entity> nearbyEntities = new ArrayList<>();
 
     public PositionProcessor(final PlayerData data) {
         this.data = data;
@@ -206,7 +210,7 @@ public final class PositionProcessor {
         }
 
         handleClimbableCollision();
-        handleOnBoat();
+        handleNearbyEntities();
 
         inLiquid = blocks.stream().anyMatch(Block::isLiquid);
         fullySubmergedInLiquidStat = blocks.stream().allMatch(block -> block.getType() == Material.STATIONARY_WATER || block.getType() == Material.STATIONARY_LAVA);
@@ -236,14 +240,14 @@ public final class PositionProcessor {
         }
     }
 
-    public void handleOnBoat() {
-        for (final Entity entity : data.getPlayer().getNearbyEntities(1.5, 1.5, 1.5)) {
-            if (entity instanceof Boat) {
-                nearBoat = true;
-                return;
-            }
-        }
+    public void handleNearbyEntities() {
+        nearbyEntities = data.getPlayer().getNearbyEntities(1.5, 1.5, 1.5);
+
         nearBoat = false;
+
+        nearbyEntities.forEach(entity -> {
+            if (entity instanceof Boat) nearBoat = true;
+        });
     }
 
     public void handleTeleport() {
