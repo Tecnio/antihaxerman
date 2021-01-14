@@ -71,6 +71,8 @@ public enum ExemptType {
 
     CREATIVE(data -> data.getPlayer().getGameMode() == GameMode.CREATIVE),
 
+    CINEMATIC(data -> data.getRotationProcessor().isCinematic()),
+
     CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10);
 
     private final Function<PlayerData, Boolean> exception;

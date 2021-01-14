@@ -14,7 +14,7 @@ public final class AimB extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation() && hitTicks() < 3) {
+        if (packet.isRotation()) {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float lastDeltaPitch = data.getRotationProcessor().getLastDeltaPitch();
 
@@ -28,7 +28,7 @@ public final class AimB extends Check {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.5);
+                decreaseBuffer();
             }
         }
     }

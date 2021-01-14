@@ -88,6 +88,8 @@ public final class CheckManager {
             AimC.class,
             AimD.class,
             AimE.class,
+            AimF.class,
+            AimG.class,
             AuraA.class,
             AuraB.class,
             AuraC.class,
