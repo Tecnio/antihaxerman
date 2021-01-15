@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.manager;
+package me.tecnio.antihaxerman.listener.packet;
 
 import io.github.retrooper.packetevents.event.PacketListenerDynamic;
 import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
@@ -26,6 +26,8 @@ import io.github.retrooper.packetevents.event.threadmode.PacketListenerThreadMod
 import io.github.retrooper.packetevents.utils.player.ClientVersion;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.manager.AlertManager;
+import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import me.tecnio.antihaxerman.packet.Packet;
 import org.bukkit.Bukkit;
 

@@ -25,7 +25,7 @@ import lombok.experimental.UtilityClass;
 public class ServerUtil {
 
     public double getTPS() {
-        return PacketEvents.get().getServerUtils().getTPS();
+        return Math.min(20.0, PacketEvents.get().getServerUtils().getTPS());
     }
 
     public ServerVersion getServerVersion() {

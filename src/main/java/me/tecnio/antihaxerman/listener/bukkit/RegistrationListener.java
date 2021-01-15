@@ -15,14 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.manager;
+package me.tecnio.antihaxerman.listener.bukkit;
 
+import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public final class PlayerManager implements Listener {
+public final class RegistrationListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
@@ -33,4 +34,5 @@ public final class PlayerManager implements Listener {
     public void onPlayerQuit(final PlayerQuitEvent event) {
         PlayerDataManager.getInstance().remove(event.getPlayer());
     }
+
 }

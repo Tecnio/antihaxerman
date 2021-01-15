@@ -31,7 +31,8 @@ public final class AuraC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation() && packet.isPosition()) {
+        if (packet.isUseEntity()) {
+
         }
     }
 }

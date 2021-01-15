@@ -11,8 +11,6 @@ import me.tecnio.antihaxerman.util.MathUtil;
 @CheckInfo(name = "Aim", type = "E", description = "Checks for bad GCD.", experimental = true)
 public final class AimE extends Check {
 
-    private boolean attacked;
-
     public AimE(final PlayerData data) {
         super(data);
     }
@@ -21,7 +19,7 @@ public final class AimE extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
+        if (packet.isRotation() && hitTicks() < 2) {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
 
@@ -48,7 +46,7 @@ public final class AimE extends Check {
 
                         final boolean invalid = deltaDivisor > 700d;
 
-                        if (invalid && attacked) {
+                        if (invalid) {
                             if (increaseBuffer() > 10) {
                                 fail();
                             }
@@ -60,10 +58,6 @@ public final class AimE extends Check {
                     resetBuffer();
                 }
             }
-
-            attacked = false;
-        } else if (packet.isUseEntity()) {
-            attacked = true;
         }
     }
 }

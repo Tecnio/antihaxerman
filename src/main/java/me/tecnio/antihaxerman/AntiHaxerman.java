@@ -19,6 +19,9 @@ package me.tecnio.antihaxerman;
 
 import me.tecnio.antihaxerman.command.CommandManager;
 import me.tecnio.antihaxerman.config.Config;
+import me.tecnio.antihaxerman.listener.bukkit.BukkitEventManager;
+import me.tecnio.antihaxerman.listener.bukkit.RegistrationListener;
+import me.tecnio.antihaxerman.listener.packet.NetworkManager;
 import me.tecnio.antihaxerman.packet.processor.ReceivingPacketProcessor;
 import me.tecnio.antihaxerman.packet.processor.SendingPacketProcessor;
 import io.github.retrooper.packetevents.PacketEvents;
@@ -110,7 +113,7 @@ public enum AntiHaxerman {
     }
 
     private void registerEvents() {
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerManager(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new RegistrationListener(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new BukkitEventManager(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new ClientBrandListener(), plugin);
 

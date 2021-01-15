@@ -22,6 +22,9 @@ import me.tecnio.antihaxerman.api.APIManager;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
+import me.tecnio.antihaxerman.util.LogUtil;
+import me.tecnio.antihaxerman.util.ServerUtil;
 import org.bukkit.Bukkit;
 
 public final class PunishmentManager {
@@ -35,6 +38,21 @@ public final class PunishmentManager {
                             .replaceAll("%prefix%", Config.PREFIX)
                             .replaceAll("%check%", check.getCheckInfo().name())
                             .replaceAll("%type%", check.getCheckInfo().type())));
+        }
+
+        if (Config.LOGGING_ENABLED) {
+            final String log = String.format("###\n%s has been punished for %s (Type %s)\n" +
+                            "Info:\n" +
+                            "kaPing: %.2d tPing: %.2d lag: %s\n" +
+                            "TPS: %.2f\n" +
+                            "deltaXZ: %.4f deltaY: %.4f" +
+                            "\n###",
+                    data.getPlayer().getName(), check.getCheckInfo().name(),
+                    check.getCheckInfo().type(), data.getConnectionProcessor().getKeepAlivePing(),
+                    data.getConnectionProcessor().getTransactionPing(), data.getExemptProcessor().isExempt(ExemptType.LAGGING),
+                    ServerUtil.getTPS(), data.getPositionProcessor().getDeltaXZ(), data.getPositionProcessor().getDeltaY());
+
+            LogUtil.logToFile(data.getLogFile(), log);
         }
     }
 }

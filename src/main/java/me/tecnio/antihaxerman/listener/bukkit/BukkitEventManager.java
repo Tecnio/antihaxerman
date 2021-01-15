@@ -15,9 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.manager;
+package me.tecnio.antihaxerman.listener.bukkit;
 
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
