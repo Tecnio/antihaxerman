@@ -28,9 +28,11 @@ import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
 import lombok.Getter;
 import me.tecnio.antihaxerman.manager.*;
+import me.tecnio.antihaxerman.update.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.messaging.Messenger;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,15 +44,18 @@ public enum AntiHaxerman {
     private AntiHaxermanPlugin plugin;
 
     private long startTime;
-
     private final TickManager tickManager = new TickManager();
 
     private final ReceivingPacketProcessor receivingPacketProcessor = new ReceivingPacketProcessor();
     private final SendingPacketProcessor sendingPacketProcessor = new SendingPacketProcessor();
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
     private final CommandManager commandManager = new CommandManager(this.getPlugin());
+
+    private final String version = "3.0.0";
+    private final UpdateChecker updateChecker = new UpdateChecker();
+
+    private boolean updateAvailable;
 
     public void load(final AntiHaxermanPlugin plugin) {
         this.plugin = plugin;
@@ -80,6 +85,15 @@ public enum AntiHaxerman {
         startTime = System.currentTimeMillis();
 
         registerEvents();
+
+        try {
+            updateAvailable = updateChecker.isUpdateAvailable();
+        } catch (final IOException ignored) {
+        }
+
+        if (updateAvailable) {
+            Bukkit.getLogger().info("New update available for AntiHaxerman! You have " + version + " latest is " +  updateChecker.getLatestVersion() + ".");
+        }
     }
 
     public void stop(final AntiHaxermanPlugin plugin) {
@@ -89,13 +103,14 @@ public enum AntiHaxerman {
         tickManager.stop();
 
         stopPacketEvents();
+        Bukkit.getScheduler().cancelAllTasks();
     }
 
     private void setupPacketEvents() {
         PacketEvents.create(plugin).getSettings()
-                .injectAsync(true)
-                .ejectAsync(true)
-                .injectEarly(true)
+                .injectAsync(Config.ASYNC_INJECT_UNINJECT)
+                .ejectAsync(Config.ASYNC_INJECT_UNINJECT)
+                .injectEarly(Config.EARLY_INJECT)
                 .packetProcessingThreadCount(1)
                 .checkForUpdates(true)
                 .injectionFailureMessage("AntiHaxerman is currently loading. Please join after it loads. (NOT AN ISSUE)")

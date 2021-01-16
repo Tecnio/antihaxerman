@@ -35,7 +35,7 @@ public final class AutoClickerA extends Check {
             final double cps = data.getClickProcessor().getCps();
 
             final boolean exempt = isExempt(ExemptType.AUTOCLICKER);
-            final boolean invalid = cps > 25;
+            final boolean invalid = cps > 25 && !Double.isInfinite(cps) && !Double.isNaN(cps);
 
             if (invalid && !exempt) {
                 fail(cps);

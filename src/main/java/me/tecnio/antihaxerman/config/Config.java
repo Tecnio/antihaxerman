@@ -47,6 +47,9 @@ public final class Config {
     public static boolean LOGGING_ENABLED;
     public static String LOG_FORMAT;
 
+    public static boolean EARLY_INJECT;
+    public static boolean ASYNC_INJECT_UNINJECT;
+
     public static boolean API_ENABLED;
 
     public static List<String> ENABLED_CHECKS = new ArrayList<>();

@@ -26,7 +26,7 @@ import me.tecnio.antihaxerman.util.PlayerUtil;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-@CheckInfo(name = "OmniSprint", type = "A", description = "Detects the people ")
+@CheckInfo(name = "OmniSprint", type = "A", description = "Detects sprinting in a wrong direction.")
 public final class OmniSprintA extends Check {
     public OmniSprintA(final PlayerData data) {
         super(data);

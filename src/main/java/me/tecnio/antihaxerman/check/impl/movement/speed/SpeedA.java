@@ -26,9 +26,7 @@ public final class SpeedA extends Check {
         if (packet.isFlying()) {
             final Player player = data.getPlayer();
 
-            final double deltaX = data.getPositionProcessor().getDeltaX();
             final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double deltaZ = data.getPositionProcessor().getDeltaZ();
 
             double blockSlipperiness = this.blockSlipperiness;
             double attributeSpeed = 1.d;
@@ -86,7 +84,7 @@ public final class SpeedA extends Check {
 
             final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y - 0.1), z);
 
-            this.blockSlipperiness = BlockUtil.getBlockFriction(blockLocation) * 0.91F;
+            this.blockSlipperiness = BlockUtil.getBlockFriction(blockLocation);
             this.lastHorizontalDistance = horizontalDistance * blockSlipperiness;
         }
     }
