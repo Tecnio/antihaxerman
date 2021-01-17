@@ -214,4 +214,32 @@ public class MathUtil {
     public static float clamp(final float val, final float min, final float max) {
         return Math.max(min, Math.min(max, val));
     }
+
+    public static double vectorDist3D(final Vector a, final Vector b) {
+        final double xSqrd = Math.pow(Math.abs(a.getX() - b.getX()), 2);
+        final double ySqrd = Math.pow(Math.abs(a.getY() - b.getY()), 2);
+        final double zSqrd = Math.pow(Math.abs(a.getZ() - b.getZ()), 2);
+
+        final double dist3D = Math.sqrt(xSqrd + ySqrd + zSqrd);
+
+        return dist3D;
+    }
+
+    public static double sortForMin(final ArrayList<Double> al) {
+        double min = al.get(0);
+
+        for (int i = 1; i < al.size(); i++) {
+            if (al.get(i) < min) {
+                min = al.get(i);
+            }
+        }
+
+        return min;
+    }
+
+    public double averageTwoNum(final double a, final double b) {
+        final double avg = (a + b) / 2;
+        return avg;
+    }
+
 }
