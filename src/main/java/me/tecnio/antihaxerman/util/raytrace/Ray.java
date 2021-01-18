@@ -104,21 +104,20 @@ public class Ray {
     public double getClosestPointDist(final double range, final double accuracy, final Entity entity) { //Gets multiple points on the ray, then returns the point closest to the specified hitbox
         final ArrayList<Vector> points = new ArrayList<>();
         final ArrayList<Double> distances = new ArrayList<>();
-        for(double i = 0; i <= range; i += accuracy) {
+        for (double i = 0; i <= range; i += accuracy) {
             points.add(getPoint(i));
         }
         final AABB aabb = new AABB(entity);
         final Vector aabbMin = aabb.getMin();
         final Vector aabbMax = aabb.getMax();
         final Vector aabbMid = aabb.getMid();
-        for(int i = 0; i < points.size(); i++) {
-            distances.add(MathUtil.vectorDist3D(points.get(i), aabbMin));
-            distances.add(MathUtil.vectorDist3D(points.get(i), aabbMax));
-            distances.add(MathUtil.vectorDist3D(points.get(i), aabbMid));
+        for (Vector point : points) {
+            distances.add(MathUtil.vectorDist3D(point, aabbMin));
+            distances.add(MathUtil.vectorDist3D(point, aabbMax));
+            distances.add(MathUtil.vectorDist3D(point, aabbMid));
         }
-        final double smallestDist = MathUtil.sortForMin(distances);
         // Bukkit.broadcastMessage(df.format(smallestDist) + "");
-        return smallestDist;
+        return MathUtil.sortForMin(distances);
     }
 
     public ArrayList<Vector> traverse(final double blocksAway, final double accuracy) {

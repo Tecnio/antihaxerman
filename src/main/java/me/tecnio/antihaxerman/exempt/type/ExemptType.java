@@ -17,10 +17,10 @@
 
 package me.tecnio.antihaxerman.exempt.type;
 
+import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.ServerUtil;
-import lombok.Getter;
 import org.bukkit.GameMode;
 
 import java.util.function.Function;
@@ -45,7 +45,7 @@ public enum ExemptType {
 
     PLACING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastPlaceTick() < 10),
 
-    BOAT(data -> data.getPositionProcessor().isNearBoat()),
+    BOAT(data -> data.getPositionProcessor().isNearVehicle()),
 
     VEHICLE(data -> data.getPositionProcessor().getSinceVehicleTicks() < 20),
 

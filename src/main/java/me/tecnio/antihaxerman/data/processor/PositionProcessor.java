@@ -22,13 +22,14 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPac
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.util.PlayerUtil;
 import me.tecnio.antihaxerman.util.type.BoundingBox;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.util.NumberConversions;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public final class PositionProcessor {
             lastDeltaX, lastDeltaZ, lastDeltaY, lastDeltaXZ;
 
     private boolean flying, inVehicle, inWater, inLava, inLiquid, fullySubmergedInLiquidStat, inAir, inWeb,
-            blockNearHead, onClimbable, onSolidGround, nearBoat, onSlime,
+            blockNearHead, onClimbable, onSolidGround, nearVehicle, onSlime,
             onIce, nearPiston, nearStair;
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
@@ -241,12 +242,19 @@ public final class PositionProcessor {
     }
 
     public void handleNearbyEntities() {
-        nearbyEntities = data.getPlayer().getNearbyEntities(1.5, 1.5, 1.5);
 
-        nearBoat = false;
+        nearbyEntities = PlayerUtil.getEntitiesWithinRadius(data.getPlayer().getLocation(), 2);
+
+        nearVehicle = false;
 
         nearbyEntities.forEach(entity -> {
-            if (entity instanceof Boat) nearBoat = true;
+
+            /*
+             We're checking for all entities that extend vehicle, Due to certain checks such as friction checks
+             Being vulnerable to false flags by horses or similar.
+             */
+            if (entity instanceof Vehicle) nearVehicle = true;
+
         });
     }
 
