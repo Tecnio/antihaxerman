@@ -57,6 +57,7 @@ import me.tecnio.antihaxerman.check.impl.player.fastplace.FastPlaceA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
+import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofD;
 import me.tecnio.antihaxerman.check.impl.player.interact.InteractA;
 import me.tecnio.antihaxerman.check.impl.player.interact.InteractB;
 import me.tecnio.antihaxerman.check.impl.player.interact.InteractC;
@@ -135,6 +136,7 @@ public final class CheckManager {
             GroundSpoofA.class,
             GroundSpoofB.class,
             GroundSpoofC.class,
+            GroundSpoofD.class,
             TimerA.class,
             TimerB.class,
             PostA.class,
@@ -143,6 +145,7 @@ public final class CheckManager {
             PostD.class,
             PostE.class,
             PostF.class,
+            PostG.class,
             InventoryA.class,
             InventoryB.class,
             InventoryC.class,

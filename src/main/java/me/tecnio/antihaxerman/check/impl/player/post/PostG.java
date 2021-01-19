@@ -15,44 +15,54 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.combat.autoblock;
+package me.tecnio.antihaxerman.check.impl.player.post;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "AutoBlock", type = "B", description = "Checks if player is blocking in a unlikely manner.")
-public class AutoBlockB extends Check {
+@CheckInfo(name = "Post", type = "G", description = "Checks for packet order for the packet 'WINDOW_CLICK'.")
+public final class PostG extends Check {
 
-    private boolean attacked;
-    private int ticks;
+    private boolean sent;
+    public long lastFlying, lastPacket;
 
-    public AutoBlockB(final PlayerData data) {
+    public PostG(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isUseEntity()) {
-            attacked = true;
-        } else if (packet.isBlockPlace()) {
-            final double cps = data.getClickProcessor().getCps();
+        if (packet.isFlying()) {
+            final long now = System.currentTimeMillis();
+            final long delay = now - lastPacket;
 
-            if (attacked) {
-                if (ticks < 2 && cps > 6.0) {
-                    if (increaseBuffer() > 4) {
+            if (sent) {
+                if (delay > 40L && delay < 100L) {
+                    increaseBufferBy(0.25);
+
+                    if (getBuffer() > 0.75) {
                         fail();
                     }
                 } else {
-                    resetBuffer();
+                    decreaseBufferBy(0.025);
                 }
-                attacked = false;
+
+                sent = false;
             }
 
-            ticks = 0;
-        } else if (packet.isFlying()) {
-            ++ticks;
+            this.lastFlying = now;
+        } else if (packet.isWindowClick()){
+            final long now = System.currentTimeMillis();
+            final long delay = now - lastFlying;
+
+            if (delay < 10L) {
+                lastPacket = now;
+                sent = true;
+            } else {
+                decreaseBufferBy(0.0025);
+            }
         }
     }
 }

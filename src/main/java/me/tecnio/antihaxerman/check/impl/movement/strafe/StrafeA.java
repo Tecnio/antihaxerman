@@ -43,7 +43,6 @@ public final class StrafeA extends Check {
             final Player player = data.getPlayer();
 
             final double deltaX = data.getPositionProcessor().getDeltaX();
-            final double deltaY = data.getPositionProcessor().getDeltaY();
             final double deltaZ = data.getPositionProcessor().getDeltaZ();
 
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
@@ -69,7 +68,7 @@ public final class StrafeA extends Check {
                 if (sprinting) attributeSpeed *= 1.3;
                 attributeSpeed *= 0.16277136 / Math.pow(blockSlipperiness, 3);
 
-                // GET AI SPEED WTF IS THAT SUPPOSED TO BEE AAAAAAAA SO BANDAGE FIX IT :kekw:
+                // getAiSpeed but I can't run it the way I am using right now
                 attributeSpeed *= data.getPlayer().getWalkSpeed() / 2.0;
                 //cancel not usable in this way
                 attributeSpeed = 1000;

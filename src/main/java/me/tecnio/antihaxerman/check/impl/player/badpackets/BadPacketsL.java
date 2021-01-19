@@ -38,9 +38,7 @@ public final class BadPacketsL extends Check {
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE);
             final boolean invalid = deltaPitch == 0.0F && deltaYaw  == 0.0F;
 
-            if (invalid && !exempt) {
-                fail();
-            }
+
         }
     }
 }

@@ -220,9 +220,7 @@ public class MathUtil {
         final double ySqrd = Math.pow(Math.abs(a.getY() - b.getY()), 2);
         final double zSqrd = Math.pow(Math.abs(a.getZ() - b.getZ()), 2);
 
-        final double dist3D = Math.sqrt(xSqrd + ySqrd + zSqrd);
-
-        return dist3D;
+        return Math.sqrt(xSqrd + ySqrd + zSqrd);
     }
 
     public static double sortForMin(final ArrayList<Double> al) {
@@ -238,8 +236,7 @@ public class MathUtil {
     }
 
     public double averageTwoNum(final double a, final double b) {
-        final double avg = (a + b) / 2;
-        return avg;
+        return (a + b) / 2;
     }
 
 }

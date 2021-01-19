@@ -46,7 +46,7 @@ public final class AutoClickerE extends Check {
             if (samples.size() == 30) {
                 final double kurtosis = MathUtil.getKurtosis(samples);
 
-                final boolean invalid = kurtosis < 45000 || Double.isNaN(kurtosis);
+                final boolean invalid = kurtosis < 40000 || Double.isNaN(kurtosis);
 
                 if (invalid) {
                     if (increaseBuffer() > 1) {

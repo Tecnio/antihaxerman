@@ -52,7 +52,7 @@ public final class AimG extends Check {
                 yawSamples.add(yawAccel);
                 pitchSamples.add(pitchAccel);
 
-                if (yawSamples.size() >= 40 && pitchSamples.size() > 40) {
+                if (yawSamples.size() >= 40 && pitchSamples.size() >= 40) {
                     final double yawDeviation = MathUtil.getStandardDeviation(yawSamples);
                     final double pitchDeviation = MathUtil.getStandardDeviation(pitchSamples);
 

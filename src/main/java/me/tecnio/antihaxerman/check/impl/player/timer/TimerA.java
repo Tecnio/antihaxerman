@@ -51,6 +51,8 @@ public final class TimerA extends Check {
             }
 
             this.lastFlying = now;
+        } else if (packet.isTeleport()) {
+            movingStats.add(125L);
         }
     }
 }

@@ -38,6 +38,8 @@ public final class MotionA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            final boolean onGround = data.getPositionProcessor().isOnGround();
+
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastY = data.getPositionProcessor().getLastY();
 
@@ -46,14 +48,11 @@ public final class MotionA extends Check {
 
             final boolean step = deltaModulo && lastGround;
 
-            final boolean onGround = data.getPositionProcessor().isOnGround();
-            final boolean lastOnGround = data.getPositionProcessor().isLastOnGround();
-
             final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1F;
             final double expectedJumpMotion = 0.42F + modifierJump;
 
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
-            final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastOnGround && !step;
+            final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastGround && !step;
 
             if (invalid && !exempt) fail();
             if (step && deltaY > 0.6F && !exempt) fail();

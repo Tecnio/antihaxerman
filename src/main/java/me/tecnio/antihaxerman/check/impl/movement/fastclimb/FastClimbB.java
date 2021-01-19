@@ -48,7 +48,7 @@ public final class FastClimbB extends Check {
             final boolean invalid = deltaY > limit && onClimbable;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2 || deltaY > (limit * 3.0F)) {
+                if (increaseBuffer() > 3 || deltaY > (limit * 5.0F)) {
                     fail();
                 }
             } else {
