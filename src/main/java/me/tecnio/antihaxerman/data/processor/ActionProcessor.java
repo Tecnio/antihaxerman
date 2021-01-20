@@ -32,7 +32,7 @@ public final class ActionProcessor {
     private final PlayerData data;
 
     private boolean sprinting, sneaking, sendingAction, placing, digging, blocking,
-            inventory, respawning, sendingDig;
+            inventory, respawning, sendingDig, eating;
 
     private int lastDiggingTick, lastPlaceTick, lastBreakTick;
 
@@ -73,6 +73,7 @@ public final class ActionProcessor {
                 break;
             case RELEASE_USE_ITEM:
                 blocking = false;
+                eating = false;
                 break;
         }
     }
@@ -90,7 +91,9 @@ public final class ActionProcessor {
 
     public void handleBlockPlace() {
         placing = true;
+
         if (data.getPlayer().getItemInHand().toString().contains("SWORD")) blocking = true;
+        if (data.getPlayer().getItemInHand().getType().isEdible()) eating = true;
     }
 
     public void handleCloseWindow() {
@@ -116,6 +119,9 @@ public final class ActionProcessor {
     }
 
     public void handleFlying() {
+        if (!data.getPlayer().getItemInHand().toString().contains("SWORD")) blocking = false;
+        if (!data.getPlayer().getItemInHand().getType().isEdible()) eating = false;
+
         if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (placing) lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (digging) lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();

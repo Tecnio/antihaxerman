@@ -27,6 +27,8 @@ import java.lang.annotation.Target;
 public @interface CheckInfo {
     String name();
     String type();
+
     String description();
+
     boolean experimental() default false;
 }

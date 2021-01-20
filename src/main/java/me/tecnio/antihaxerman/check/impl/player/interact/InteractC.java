@@ -56,7 +56,11 @@ public final class InteractC extends Check {
                 final boolean invalid = distance > maxDistance;
 
                 if (invalid && !exempt) {
-                    fail(distance);
+                    if (increaseBuffer() > 1) {
+                        fail(distance);
+                    }
+                } else {
+                    decreaseBufferBy(0.05);
                 }
             }
 

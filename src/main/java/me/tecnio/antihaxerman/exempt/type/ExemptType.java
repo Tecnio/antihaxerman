@@ -37,6 +37,8 @@ public enum ExemptType {
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
+    VELOCITY_ON_TICK(data -> data.getVelocityProcessor().getTicksSinceVelocity() < 3),
+
     SLIME(data -> data.getPositionProcessor().getSinceSlimeTicks() < 20),
 
     DIGGING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastDiggingTick() < 10),

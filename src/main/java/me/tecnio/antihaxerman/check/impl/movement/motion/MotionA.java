@@ -31,8 +31,8 @@ public final class MotionA extends Check {
         super(data);
     }
 
-    //Thanks to Elevated for that modifier jump. I stole that from his checks.
-    //Thanks to GladUrBad to sending this fix step fix on Discord much love!
+    // Thanks to Elevated for that modifier jump. I stole that from his checks.
+    // Thanks to GladUrBad to sending this fix step fix on Discord much love!
     // Why 0.42F because client says so.
 
     @Override
@@ -54,7 +54,7 @@ public final class MotionA extends Check {
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
             final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastGround && !step;
 
-            if (invalid && !exempt) fail();
+            if (invalid && !exempt) fail(deltaY + " vel: " + isExempt(ExemptType.VELOCITY));
             if (step && deltaY > 0.6F && !exempt) fail();
         }
     }

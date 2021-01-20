@@ -23,10 +23,10 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "NoSlow", type = "A", description = "Checks if the player is not slowing down while blocking.")
-public final class NoSlowA extends Check {
+@CheckInfo(name = "NoSlow", type = "C", description = "Checks for no slowdown while eating food.")
+public final class NoSlowC extends Check {
 
-    public NoSlowA(final PlayerData data) {
+    public NoSlowC(final PlayerData data) {
         super(data);
     }
 
@@ -34,12 +34,14 @@ public final class NoSlowA extends Check {
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final boolean sprinting = data.getActionProcessor().isSprinting();
-            final boolean blocking = data.getActionProcessor().isBlocking() && data.getPlayer().isBlocking();
+            final boolean eating = data.getActionProcessor().isEating();
 
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.CHUNK) || data.getPositionProcessor().isInAir();
-            final boolean invalid = blocking && sprinting;
+            final boolean invalid = eating && sprinting;
 
             if (invalid && !exempt) {
+                if (getBuffer() > 5) data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
+
                 if (increaseBuffer() > 8) {
                     fail();
                     data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());

@@ -47,6 +47,8 @@ public final class Config {
     public static boolean LOGGING_ENABLED;
     public static String LOG_FORMAT;
 
+    public static boolean LOG_TO_CONSOLE;
+
     public static boolean EARLY_INJECT;
     public static boolean ASYNC_INJECT_UNINJECT;
 
@@ -72,6 +74,11 @@ public final class Config {
 
             LOGGING_ENABLED = getBoolean("logging.enabled");
             LOG_FORMAT = getString("logging.log-format");
+
+            LOG_TO_CONSOLE = getBoolean("violations.alert-console");
+
+            EARLY_INJECT = getBoolean("general.early-inject");
+            ASYNC_INJECT_UNINJECT = getBoolean("general.async-inject-uninject");
 
             API_ENABLED = getBoolean("api.enabled");
 

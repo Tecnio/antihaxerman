@@ -49,6 +49,7 @@ import me.tecnio.antihaxerman.check.impl.movement.motion.MotionC;
 import me.tecnio.antihaxerman.check.impl.movement.motion.MotionD;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowB;
+import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowC;
 import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.*;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
@@ -123,6 +124,7 @@ public final class CheckManager {
             MotionD.class,
             NoSlowA.class,
             NoSlowB.class,
+            NoSlowC.class,
             OmniSprintA.class,
             LargeMoveA.class,
             LargeMoveB.class,

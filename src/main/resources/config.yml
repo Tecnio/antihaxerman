@@ -22,7 +22,9 @@ response:
 # Logs are still beta and there is a chance it might lag the server so its disabled by default.                        #
 ########################################################################################################################
 logging:
+  # When enabled starts logging violations to files created per player.
   enabled: false
+  # This is the format that logs are stored. Fully customizable and all available placeholders are in the default below.
   log-format: '[%date%] %player% failed %check% (Type %type%)%dev% VL: %vl% [TPS: %tps%] [tPing: %tping% kaPing: %kaping%] [Info: %info%]'
 
 ########################################################################################################################
@@ -30,11 +32,12 @@ logging:
 # Bypass operators allows people with OP bypass checks.                                                                #
 ########################################################################################################################
 bypass:
+  # When enabled this will bypass players that have OP and the players with the permission "antihaxerman.bypass".
   bypass-operators: false
 
 general:
-  # Early inject allows us to see client version etc. (Not used so I don't see a point it being enabled.)
-  early-inject: false
+  # Early inject allows us to see client version etc.
+  early-inject: true
   # Enable async injection and uninjection. Enabled by default for performance reasons but will cost us reload support. (RECOMMENDED TO KEEP IT ENABLED)
   async-inject-uninject: true
 
@@ -43,8 +46,12 @@ api:
   enabled: false
 
 violations:
+  # The format of violations can be set here. Fully customizable and all available placeholders are in the default below.
   alert-format: '&cAHM &8> &c%player%&8 failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%'
+  # Currently not implemented.
   clear-violations-delay: 15
+  # When enabled if a player fails a check it is gonna be logged to the console.
+  alert-console: true
 
 ########################################################################################################################
 # Check configuration                                                                                                  #
@@ -225,6 +232,10 @@ checks:
         max-violations: 50
         punish-command: ''
       b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
         enabled: true
         max-violations: 50
         punish-command: ''

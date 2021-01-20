@@ -56,8 +56,9 @@ public final class TimerB extends Check {
 
                 if (samples.isFull()) {
                     final double average = MathUtil.getAverage(samples);
-                    final double speed = 50.0 / average;
                     final double deviation = MathUtil.getStandardDeviation(samples);
+
+                    final double speed = 50.0 / average;
 
                     final boolean invalid = deviation < 20.0 && speed < 0.6 && !Double.isNaN(deviation);
 

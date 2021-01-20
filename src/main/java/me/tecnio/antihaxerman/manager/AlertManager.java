@@ -84,7 +84,9 @@ public final class AlertManager {
 
         alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));
 
-        Bukkit.getLogger().info(ChatColor.stripColor(alertMessage.getText()));
+        if (Config.LOG_TO_CONSOLE) {
+            Bukkit.getLogger().info(ChatColor.stripColor(alertMessage.getText()));
+        }
     }
 
     public static void sendMessage(final String message) {

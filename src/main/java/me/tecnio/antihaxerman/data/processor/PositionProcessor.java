@@ -78,12 +78,10 @@ public final class PositionProcessor {
             lastX = this.x;
             lastY = this.y;
             lastZ = this.z;
-            this.lastOnGround = this.onGround;
 
             this.x = wrapper.getX();
             this.y = wrapper.getY();
             this.z = wrapper.getZ();
-            this.onGround = wrapper.isOnGround();
 
             lastDeltaX = deltaX;
             lastDeltaY = deltaY;
