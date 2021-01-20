@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @UtilityClass
@@ -71,7 +72,7 @@ public class PlayerUtil {
      * @return The entities within that radius
      * @author Nik
      */
-    public List<Entity> getEntitiesWithinRadius(final Location location, final double radius) {
+    public static List<Entity> getEntitiesWithinRadius(final Location location, final double radius) {
 
         final double expander = 16.0D;
 
@@ -86,17 +87,25 @@ public class PlayerUtil {
 
         final World world = location.getWorld();
 
-        List<Entity> entities = new ArrayList<>();
+        List<Entity> entities = new LinkedList<>();
 
         for (int xVal = minX; xVal <= maxX; xVal++) {
+
             for (int zVal = minZ; zVal <= maxZ; zVal++) {
-                if (world.isChunkLoaded(xVal, zVal)) {
-                    entities.addAll(Arrays.asList(world.getChunkAt(xVal, zVal).getEntities()));
+
+                if (!world.isChunkLoaded(xVal, zVal)) continue;
+
+                for (Entity entity : world.getChunkAt(xVal, zVal).getEntities()) {
+                    //We have to do this due to stupidness
+                    if (entity == null) continue;
+
+                    //Make sure the entity is within the radius specified
+                    if (entity.getLocation().distanceSquared(location) > radius * radius) continue;
+
+                    entities.add(entity);
                 }
             }
         }
-
-        entities.removeIf(entity -> entity.getLocation().distanceSquared(location) > radius * radius);
 
         return entities;
     }

@@ -62,7 +62,7 @@ public final class PositionProcessor {
     private final List<Block> blocks = new ArrayList<>();
 
     private List<Block> blocksBelow = new ArrayList<>();
-    private List<Block> blocksAbove= new ArrayList<>();
+    private List<Block> blocksAbove = new ArrayList<>();
 
     private List<Entity> nearbyEntities = new ArrayList<>();
 
@@ -243,17 +243,7 @@ public final class PositionProcessor {
 
         nearbyEntities = PlayerUtil.getEntitiesWithinRadius(data.getPlayer().getLocation(), 2);
 
-        nearVehicle = false;
-
-        nearbyEntities.forEach(entity -> {
-
-            /*
-             We're checking for all entities that extend vehicle, Due to certain checks such as friction checks
-             Being vulnerable to false flags by horses or similar.
-             */
-            if (entity instanceof Vehicle) nearVehicle = true;
-
-        });
+        nearVehicle = nearbyEntities.stream().anyMatch(entity -> entity instanceof Vehicle);
     }
 
     public void handleTeleport() {
