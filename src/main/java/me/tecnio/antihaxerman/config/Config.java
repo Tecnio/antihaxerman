@@ -17,6 +17,7 @@
 
 package me.tecnio.antihaxerman.config;
 
+import lombok.experimental.UtilityClass;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.CheckInfo;
 import me.tecnio.antihaxerman.manager.CheckManager;
@@ -29,38 +30,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@UtilityClass
 public final class Config {
 
-    public static boolean TESTMODE;
+    public boolean TESTMODE;
 
-    public static String PREFIX;
-    public static String NO_PERMS;
-    public static String COMMAND_PREFIX;
+    public String PREFIX, NO_PERMS, COMMAND_PREFIX, ALERT_FORMAT, COMMAND_NAME, LOG_FORMAT;
 
-    public static int VL_TO_ALERT;
-    public static String ALERT_FORMAT;
-    public static String COMMAND_NAME;
-    public static int CLEAR_VIOLATIONS_DELAY;
+    public int VL_TO_ALERT, CLEAR_VIOLATIONS_DELAY;
 
-    public static boolean BYPASS_OP;
+    public boolean BYPASS_OP, LOGGING_ENABLED, LOG_TO_CONSOLE, EARLY_INJECT, ASYNC_INJECT_UNINJECT, API_ENABLED;
 
-    public static boolean LOGGING_ENABLED;
-    public static String LOG_FORMAT;
+    public List<String> ENABLED_CHECKS = new ArrayList<>();
+    public List<String> SETBACK_CHECKS = new ArrayList<>();
+    public Map<String, Integer> MAX_VIOLATIONS = new HashMap<>();
+    public Map<String, String> PUNISH_COMMANDS = new HashMap<>();
 
-    public static boolean LOG_TO_CONSOLE;
-
-    public static boolean EARLY_INJECT;
-    public static boolean ASYNC_INJECT_UNINJECT;
-
-    public static boolean API_ENABLED;
-
-    public static List<String> ENABLED_CHECKS = new ArrayList<>();
-    public static List<String> SETBACK_CHECKS = new ArrayList<>();
-    public static Map<String, Integer> MAX_VIOLATIONS = new HashMap<>();
-    public static Map<String, String> PUNISH_COMMANDS = new HashMap<>();
-
-
-    public static void updateConfig() {
+    public void updateConfig() {
         try {
             TESTMODE = getBoolean("testmode");
 
@@ -158,23 +144,23 @@ public final class Config {
 
     }
 
-    private static boolean getBoolean(final String string) {
+    private boolean getBoolean(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getBoolean(string);
     }
 
-    public static String getString(final String string) {
+    public String getString(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getString(string);
     }
 
-    private static int getInteger(final String string) {
+    private int getInteger(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getInt(string);
     }
 
-    private static double getDouble(final String string) {
+    private double getDouble(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getDouble(string);
     }
 
-    private static long getLong(final String string) {
+    private long getLong(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getLong(string);
     }
 }
