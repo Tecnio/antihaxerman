@@ -72,7 +72,7 @@ public class PlayerUtil {
      * @return The entities within that radius
      * @author Nik
      */
-    public static List<Entity> getEntitiesWithinRadius(final Location location, final double radius) {
+    public List<Entity> getEntitiesWithinRadius(final Location location, final double radius) {
 
         final double expander = 16.0D;
 
