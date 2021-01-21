@@ -18,7 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.movement.flight;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
@@ -40,7 +40,8 @@ public final class FlightD extends Check {
 
             final double acceleration = deltaY - lastDeltaY;
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
+                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = acceleration > 0.0 && (serverAirTicks > 8 || clientAirTicks > 8);
 
             if (invalid && !exempt) {

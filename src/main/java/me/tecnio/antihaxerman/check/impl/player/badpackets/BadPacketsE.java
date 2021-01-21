@@ -19,9 +19,8 @@ package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.data.processor.ConnectionProcessor;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
@@ -35,10 +34,9 @@ public final class BadPacketsE extends Check {
     public void handle(final Packet packet) {
         if (packet.isIncomingTransaction()) {
             final WrappedPacketInTransaction wrapper = new WrappedPacketInTransaction(packet.getRawPacket());
-            final ConnectionProcessor connectionProcessor = data.getConnectionProcessor();
 
             final short actionNumber = wrapper.getActionNumber();
-            final short lastTransaction = connectionProcessor.getTransactionId();
+            final short lastTransaction = data.getConnectionProcessor().getTransactionId();
 
             final boolean exempt = isExempt(ExemptType.TPS) || data.getPlayer().isDead();
             final boolean eligible = actionNumber == lastTransaction;

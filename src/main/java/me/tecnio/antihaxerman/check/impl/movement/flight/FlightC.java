@@ -18,7 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.movement.flight;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
@@ -39,7 +39,8 @@ public final class FlightC extends Check {
 
             final double difference = Math.abs(deltaY - lastDeltaY);
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
+                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = difference < 0.01 && !onGround;
 
             if (invalid && !exempt) {
