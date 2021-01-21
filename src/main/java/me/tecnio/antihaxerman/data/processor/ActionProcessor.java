@@ -111,7 +111,7 @@ public final class ActionProcessor {
     }
 
     public void handleBukkitBlockBreak() {
-        ;
+
     }
 
     public void handleArmAnimation() {

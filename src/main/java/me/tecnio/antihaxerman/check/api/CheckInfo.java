@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check;
+package me.tecnio.antihaxerman.check.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

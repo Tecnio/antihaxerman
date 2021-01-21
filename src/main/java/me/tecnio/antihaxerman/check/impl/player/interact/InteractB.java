@@ -20,7 +20,7 @@ package me.tecnio.antihaxerman.check.impl.player.interact;
 import io.github.retrooper.packetevents.enums.Direction;
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.BlockUtil;
@@ -45,18 +45,21 @@ public final class InteractB extends Check {
             final Direction direction = wrapper.getDirection();
 
             final Block block = BlockUtil.getBlockAsync(blockLocation);
-            if (block == null) return;
 
-            final double x = data.getPositionProcessor().getX();
-            final double y = data.getPositionProcessor().getY() + data.getPlayer().getEyeHeight();
-            final double z = data.getPositionProcessor().getZ();
+            check: {
+                if (block == null) break check;
 
-            final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
+                final double x = data.getPositionProcessor().getX();
+                final double y = data.getPositionProcessor().getY() + data.getPlayer().getEyeHeight();
+                final double z = data.getPositionProcessor().getZ();
 
-            final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
+                final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
 
-            if (invalid) {
-                fail();
+                final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
+
+                if (invalid) {
+                    fail();
+                }
             }
         }
     }

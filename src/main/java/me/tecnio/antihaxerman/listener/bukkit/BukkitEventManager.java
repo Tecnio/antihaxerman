@@ -31,7 +31,10 @@ public final class BukkitEventManager implements Listener {
     @EventHandler
     public void onBlockBreak(final BlockBreakEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
-        if (data != null) {
+
+        handle: {
+            if (data == null) break handle;
+
             data.getActionProcessor().handleBukkitBlockBreak();
         }
     }
@@ -39,7 +42,10 @@ public final class BukkitEventManager implements Listener {
     @EventHandler
     public void onPlayerInteract(final PlayerInteractEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
-        if (data != null) {
+
+        handle: {
+            if (data == null) break handle;
+
             data.getActionProcessor().handleInteract(event);
         }
     }
@@ -47,7 +53,10 @@ public final class BukkitEventManager implements Listener {
     @EventHandler
     public void onBlockPlace(final BlockPlaceEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
-        if (data != null) {
+
+        handle: {
+            if (data == null) break handle;
+
             data.getActionProcessor().handleBukkitPlace();
         }
     }
@@ -55,11 +64,11 @@ public final class BukkitEventManager implements Listener {
     @EventHandler
     public void onTeleport(final PlayerTeleportEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
-        if (data != null) {
-            if (event.getCause() != PlayerTeleportEvent.TeleportCause.UNKNOWN) {
-                data.getPositionProcessor().handleTeleport();
-            }
+
+        handle: {
+            if (data == null || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) break handle;
+
+            data.getPositionProcessor().handleTeleport();
         }
     }
-
 }

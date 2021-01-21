@@ -90,7 +90,7 @@ public final class AlertManager {
     }
 
     public static void sendMessage(final String message) {
-        alerts.forEach(player -> player.getPlayer().sendMessage(Config.PREFIX + message));
+        alerts.forEach(player -> player.getPlayer().sendMessage(ColorUtil.translate(Config.PREFIX + message)));
     }
 
     public enum ToggleAlertType {

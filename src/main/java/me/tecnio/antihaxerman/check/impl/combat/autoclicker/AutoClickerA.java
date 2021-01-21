@@ -18,7 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.combat.autoclicker;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
@@ -38,7 +38,7 @@ public final class AutoClickerA extends Check {
             final boolean invalid = cps > 25 && !Double.isInfinite(cps) && !Double.isNaN(cps);
 
             if (invalid && !exempt) {
-                fail(cps);
+                fail("CPS=" + cps);
             }
         }
     }

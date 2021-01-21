@@ -18,7 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
@@ -31,9 +31,9 @@ public final class BadPacketsA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final double absolutePitch = Math.abs(data.getRotationProcessor().getPitch());
+            final float pitch = data.getRotationProcessor().getPitch();
 
-            if (absolutePitch > 90.0) {
+            if (Math.abs(pitch)> 90.0f) {
                 ban();
             }
         }
