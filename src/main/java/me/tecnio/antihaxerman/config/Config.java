@@ -46,8 +46,7 @@ public final class Config {
     public Map<String, Integer> MAX_VIOLATIONS = new HashMap<>();
     public Map<String, String> PUNISH_COMMANDS = new HashMap<>();
 
-
-    public static void updateConfig() {
+    public void updateConfig() {
         try {
             TESTMODE = getBoolean("testmode");
 
