@@ -73,6 +73,7 @@ import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldA;
 import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldB;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
+import me.tecnio.antihaxerman.check.impl.player.timer.TimerC;
 import me.tecnio.antihaxerman.check.impl.player.tower.TowerA;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -141,6 +142,7 @@ public final class CheckManager {
             GroundSpoofD.class,
             TimerA.class,
             TimerB.class,
+            TimerC.class,
             PostA.class,
             PostB.class,
             PostC.class,

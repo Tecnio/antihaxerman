@@ -19,6 +19,7 @@ package me.tecnio.antihaxerman.data.processor;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
+import io.github.retrooper.packetevents.packetwrappers.play.out.position.WrappedPacketOutPosition;
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -31,6 +32,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.util.NumberConversions;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +61,10 @@ public final class PositionProcessor {
 
     private boolean onGround, lastOnGround, mathematicallyOnGround;
 
-    private final List<Block> blocks = new ArrayList<>();
+    private final List<Vector> teleportList = new ArrayList<>();
+    private boolean teleported;
 
+    private final List<Block> blocks = new ArrayList<>();
     private List<Block> blocksBelow = new ArrayList<>();
     private List<Block> blocksAbove = new ArrayList<>();
 
@@ -71,6 +75,8 @@ public final class PositionProcessor {
     }
 
     public void handle(final WrappedPacketInFlying wrapper) {
+        teleported = false;
+
         this.lastOnGround = this.onGround;
         this.onGround = wrapper.isOnGround();
 
@@ -96,6 +102,20 @@ public final class PositionProcessor {
             mathematicallyOnGround = y % 0.015625 == 0.0;
 
             handleCollisions();
+
+            if (wrapper.isLook()) {
+                for (final Vector wantedLocation : teleportList) {
+                    final boolean same = wantedLocation.getX() == x
+                            || wantedLocation.getY() == y
+                            || wantedLocation.getZ() == z;
+
+                    if (same) {
+                        teleported = true;
+                        teleportList.remove(wantedLocation);
+                        break;
+                    }
+                }
+            }
         }
 
         handleTicks();
@@ -240,19 +260,26 @@ public final class PositionProcessor {
     }
 
     public void handleNearbyEntities() {
-
         nearbyEntities = PlayerUtil.getEntitiesWithinRadius(data.getPlayer().getLocation(), 2);
 
         nearVehicle = nearbyEntities.stream().anyMatch(entity -> entity instanceof Vehicle);
     }
 
-    public void handleTeleport() {
+    public void handleTeleport(final WrappedPacketOutPosition wrapper) {
         teleportTicks = 0;
+
+        final Vector requestedLocation = new Vector(
+                wrapper.getX(),
+                wrapper.getY(),
+                wrapper.getZ()
+        );
+
+        teleportList.add(requestedLocation);
     }
 
     public void handleClientCommand(final WrappedPacketInClientCommand wrapper) {
         if (wrapper.getClientCommand() == WrappedPacketInClientCommand.ClientCommand.PERFORM_RESPAWN) {
-            handleTeleport();
+            //handleTeleport();
         }
     }
 

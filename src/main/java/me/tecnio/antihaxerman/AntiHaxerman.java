@@ -17,17 +17,20 @@
 
 package me.tecnio.antihaxerman;
 
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.utils.server.ServerVersion;
+import lombok.Getter;
 import me.tecnio.antihaxerman.command.CommandManager;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.listener.bukkit.BukkitEventManager;
 import me.tecnio.antihaxerman.listener.bukkit.RegistrationListener;
 import me.tecnio.antihaxerman.listener.packet.NetworkManager;
+import me.tecnio.antihaxerman.manager.CheckManager;
+import me.tecnio.antihaxerman.manager.ClientBrandListener;
+import me.tecnio.antihaxerman.manager.PlayerDataManager;
+import me.tecnio.antihaxerman.manager.TickManager;
 import me.tecnio.antihaxerman.packet.processor.ReceivingPacketProcessor;
 import me.tecnio.antihaxerman.packet.processor.SendingPacketProcessor;
-import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.utils.server.ServerVersion;
-import lombok.Getter;
-import me.tecnio.antihaxerman.manager.*;
 import me.tecnio.antihaxerman.update.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.messaging.Messenger;

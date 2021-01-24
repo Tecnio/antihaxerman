@@ -44,7 +44,7 @@ public final class MotionD extends Check {
             final boolean invalidNoVelocity = deltaY > maximum && !isExempt(ExemptType.VELOCITY);
             final boolean invalidVelocity = deltaY > (maximum + data.getVelocityProcessor().getVelocityY()) && isExempt(ExemptType.VELOCITY);
 
-            final boolean invalid = invalidNoVelocity || invalidVelocity;
+            final boolean invalid = invalidNoVelocity;
 
             if (invalid && !exempt) fail();
         }

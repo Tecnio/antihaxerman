@@ -302,6 +302,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      c:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     post:
       a:
         enabled: true

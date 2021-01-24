@@ -38,7 +38,7 @@ public final class FlightA extends Check {
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
             final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-            final int airTicksLimit = 6 + airTicksModifier;
+            final int airTicksLimit = 8 + airTicksModifier;
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
@@ -49,7 +49,7 @@ public final class FlightA extends Check {
             final double difference = Math.abs(deltaY - fixedPredicted);
 
             final double velocityY = data.getVelocityProcessor().getVelocityY();
-            final double limit = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY + 0.15 + 0.001 : 0.001;
+            final double limit = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY + 0.20 + 0.001 : 0.001;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = difference > limit && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);
@@ -59,7 +59,7 @@ public final class FlightA extends Check {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.05);
+                decreaseBufferBy(0.1);
             }
         }
     }

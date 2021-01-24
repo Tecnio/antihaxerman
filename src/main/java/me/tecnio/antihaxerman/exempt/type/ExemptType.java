@@ -33,7 +33,7 @@ public enum ExemptType {
 
     TPS(data -> ServerUtil.getTPS() < 19.0D),
 
-    TELEPORT(data -> data.getPositionProcessor().getTeleportTicks() < 40),
+    TELEPORT(data -> data.getPositionProcessor().isTeleported()),
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
@@ -51,7 +51,7 @@ public enum ExemptType {
 
     VEHICLE(data -> data.getPositionProcessor().getSinceVehicleTicks() < 20),
 
-    LIQUID(data -> data.getPositionProcessor().getSinceLiquidTicks() < 20),
+    LIQUID(data -> data.getPositionProcessor().isInLiquid()),
 
     UNDERBLOCK(data -> data.getPositionProcessor().isBlockNearHead()),
 
