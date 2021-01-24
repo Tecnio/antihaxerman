@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.api.APIManager;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;

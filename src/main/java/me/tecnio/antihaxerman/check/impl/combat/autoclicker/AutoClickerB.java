@@ -18,7 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.combat.autoclicker;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
@@ -50,7 +50,7 @@ public final class AutoClickerB extends Check {
 
                 if (invalid && !exempt) {
                     if (increaseBuffer() > 5) {
-                        fail();
+                        fail("deviation=" + deviation + " difference=" + difference);
                     }
                 } else {
                     decreaseBuffer();

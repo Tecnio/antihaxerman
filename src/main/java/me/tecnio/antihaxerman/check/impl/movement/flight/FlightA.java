@@ -18,7 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.movement.flight;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
@@ -51,7 +51,8 @@ public final class FlightA extends Check {
             final double velocityY = data.getVelocityProcessor().getVelocityY();
             final double limit = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY + 0.20 + 0.001 : 0.001;
 
-            final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT, ExemptType.LIQUID,
+                    ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK);
             final boolean invalid = difference > limit && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);
 
             if (invalid && !exempt) {

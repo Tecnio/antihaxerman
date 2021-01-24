@@ -19,7 +19,7 @@ package me.tecnio.antihaxerman.check.impl.player.tower;
 
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 import org.bukkit.Location;

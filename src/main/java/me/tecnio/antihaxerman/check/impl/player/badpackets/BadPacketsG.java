@@ -19,10 +19,9 @@ package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.entity.Entity;
 
 @CheckInfo(name = "BadPackets", type = "G", description = "Checks if player attacked themselves.")
 public final class BadPacketsG extends Check {
@@ -35,12 +34,9 @@ public final class BadPacketsG extends Check {
         if (packet.isUseEntity()) {
             final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
 
-            final Entity player = data.getPlayer();
-            final Entity target = wrapper.getEntity();
-
-            final boolean invalid = player == target;
-
-            if (invalid) ban();
+            if (data.getPlayer().getEntityId() == wrapper.getEntityId()) {
+                ban();
+            }
         }
     }
 }

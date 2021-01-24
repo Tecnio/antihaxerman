@@ -37,7 +37,7 @@ public final class RegistrationListener implements Listener {
                 final String version = AntiHaxerman.INSTANCE.getVersion();
                 final String latestVersion = AntiHaxerman.INSTANCE.getUpdateChecker().getLatestVersion();
 
-                AlertManager.sendMessage(ColorUtil.translate("An update is available for &cAntiHaxerman&8! You have &c" + version + "&8 latest is &c" + latestVersion + "&8."));
+                AlertManager.sendMessage("An update is available for &cAntiHaxerman&8! You have &c" + version + "&8 latest is &c" + latestVersion + "&8.");
             }
         }
     }
@@ -46,5 +46,4 @@ public final class RegistrationListener implements Listener {
     public void onPlayerQuit(final PlayerQuitEvent event) {
         PlayerDataManager.getInstance().remove(event.getPlayer());
     }
-
 }

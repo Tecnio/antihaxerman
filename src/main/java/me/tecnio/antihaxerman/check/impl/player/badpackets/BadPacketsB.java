@@ -19,7 +19,7 @@ package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
@@ -34,7 +34,8 @@ public final class BadPacketsB extends Check {
         if (packet.isEntityAction()) {
             final WrappedPacketInEntityAction wrapper = new WrappedPacketInEntityAction(packet.getRawPacket());
 
-            final boolean sprinting = wrapper.getAction().name().contains("SPRINTING");
+            final boolean sprinting = wrapper.getAction() == WrappedPacketInEntityAction.PlayerAction.START_SPRINTING
+                    || wrapper.getAction() == WrappedPacketInEntityAction.PlayerAction.STOP_SPRINTING;
 
             if (sprinting) {
                 if (increaseBuffer() > 1) {

@@ -19,7 +19,7 @@ package me.tecnio.antihaxerman.config;
 
 import lombok.experimental.UtilityClass;
 import me.tecnio.antihaxerman.AntiHaxerman;
-import me.tecnio.antihaxerman.check.CheckInfo;
+import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.ColorUtil;
 import org.bukkit.Bukkit;
