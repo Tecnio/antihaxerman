@@ -26,7 +26,7 @@ import org.bukkit.block.Block;
 
 import java.util.List;
 
-@CheckInfo(name = "Jesus", type = "B", description = "Checks if player is walking water on liquids.")
+@CheckInfo(name = "Jesus", type = "B", description = "Checks if player is walking water.")
 public final class JesusB extends Check {
     public JesusB(final PlayerData data) {
         super(data);
@@ -47,7 +47,7 @@ public final class JesusB extends Check {
 
             final boolean fullySubmerged = data.getPositionProcessor().isFullySubmergedInLiquidStat();
 
-            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.FLYING);
+            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.UNDERBLOCK);
             final boolean invalid = Math.abs(deltaY) < 0.0001 && liquidBelow && noLiquidAbove && !fullySubmerged;
 
             if (invalid && !exempt) {

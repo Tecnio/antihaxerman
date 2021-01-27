@@ -35,4 +35,5 @@ public final class AntiHaxermanPlugin extends JavaPlugin {
     public void onDisable() {
         AntiHaxerman.INSTANCE.stop(this);
     }
+
 }

@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogUtil {
+public final class LogUtil {
     public static boolean logToFile(final TextFile file, final String text) {
         try {
             file.addLine(text);

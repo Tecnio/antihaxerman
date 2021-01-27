@@ -36,7 +36,7 @@ public final class SpeedA extends Check {
 
             final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON,
                     ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE,
-                    ExemptType.LIQUID, ExemptType.LAGGING, ExemptType.SLIME, ExemptType.CHUNK);
+                    ExemptType.LIQUID, ExemptType.SLIME, ExemptType.CHUNK);
 
             final int modifierJump = PlayerUtil.getPotionLevel(player, PotionEffectType.JUMP);
             

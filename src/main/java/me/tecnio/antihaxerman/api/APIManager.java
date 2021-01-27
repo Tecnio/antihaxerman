@@ -28,11 +28,13 @@ public final class APIManager {
     public static void callFlagEvent(final Check check) {
         if (!Config.API_ENABLED) return;
 
-        final AHMFlagEvent flagEvent = new AHMFlagEvent(check.getData().getPlayer(),
+        final AHMFlagEvent flagEvent = new AHMFlagEvent(
+                check.getData().getPlayer(),
                 check.getCheckInfo().name(),
                 check.getCheckInfo().type(),
                 check.getVl(),
-                check.getBuffer());
+                check.getBuffer()
+        );
 
         Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> Bukkit.getPluginManager().callEvent(flagEvent));
     }
@@ -40,12 +42,14 @@ public final class APIManager {
     public static void callPunishEvent(final Check check) {
         if (!Config.API_ENABLED) return;
 
-        final AHMPunishEvent punishEvent = new AHMPunishEvent(check.getData().getPlayer(),
+        final AHMPunishEvent punishEvent = new AHMPunishEvent(
+                check.getData().getPlayer(),
                 check.getCheckInfo().name(),
                 check.getCheckInfo().type(),
                 check.getPunishCommand(),
                 check.getVl(),
-                check.getBuffer());
+                check.getBuffer()
+        );
 
         Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> Bukkit.getPluginManager().callEvent(punishEvent));
     }

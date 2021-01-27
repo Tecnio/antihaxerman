@@ -15,7 +15,6 @@ public final class EvictingMap<K, V> extends HashMap<K, V> {
 
     @Override
     public boolean remove(final Object key, final Object value) {
-        //noinspection SuspiciousMethodCalls
         storedKeys.remove(key);
         return super.remove(key, value);
     }
@@ -47,7 +46,6 @@ public final class EvictingMap<K, V> extends HashMap<K, V> {
 
     @Override
     public V remove(final Object key) {
-        //noinspection SuspiciousMethodCalls
         storedKeys.remove(key);
         return super.remove(key);
     }

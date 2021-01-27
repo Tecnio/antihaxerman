@@ -34,7 +34,9 @@ import org.bukkit.entity.Vehicle;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
@@ -61,7 +63,7 @@ public final class PositionProcessor {
 
     private boolean onGround, lastOnGround, mathematicallyOnGround;
 
-    private final List<Vector> teleportList = new ArrayList<>();
+    private final Deque<Vector> teleportList = new ArrayDeque<>();
     private boolean teleported;
 
     private final List<Block> blocks = new ArrayList<>();

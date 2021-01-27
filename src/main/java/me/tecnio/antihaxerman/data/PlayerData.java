@@ -68,7 +68,6 @@ public final class PlayerData {
         this.player = player;
         if (Config.LOGGING_ENABLED) logFile = new LogUtil.TextFile("" + player.getUniqueId(), "\\\\logs");
 
-        //If he's an operator he'll have every permission, no need to check if he's op.
         if (player.hasPermission("antihaxerman.alerts")) {
             AlertManager.toggleAlerts(this);
         }
