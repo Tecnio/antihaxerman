@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,10 +18,7 @@
 package me.tecnio.antihaxerman.command;
 
 import me.tecnio.antihaxerman.AntiHaxermanPlugin;
-import me.tecnio.antihaxerman.command.impl.Alerts;
-import me.tecnio.antihaxerman.command.impl.Checks;
-import me.tecnio.antihaxerman.command.impl.Exempt;
-import me.tecnio.antihaxerman.command.impl.Info;
+import me.tecnio.antihaxerman.command.impl.*;
 import me.tecnio.antihaxerman.util.ColorUtil;
 import me.tecnio.antihaxerman.config.Config;
 import org.bukkit.command.Command;
@@ -41,6 +38,7 @@ public final class CommandManager implements CommandExecutor {
         commands.add(new Checks());
         commands.add(new Info());
         commands.add(new Exempt());
+        commands.add(new Debug());
 
         Collections.sort(commands);
     }

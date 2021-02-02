@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,11 +40,7 @@ public final class MotionD extends Check {
             final double maximum = 0.6 + modifier;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.LIQUID, ExemptType.FLYING, ExemptType.WEB, ExemptType.TELEPORT, ExemptType.SLIME, ExemptType.CHUNK);
-
-            final boolean invalidNoVelocity = deltaY > maximum && !isExempt(ExemptType.VELOCITY);
-            final boolean invalidVelocity = deltaY > (maximum + data.getVelocityProcessor().getVelocityY()) && isExempt(ExemptType.VELOCITY);
-
-            final boolean invalid = invalidNoVelocity;
+            final boolean invalid = deltaY > maximum && !isExempt(ExemptType.VELOCITY);
 
             if (invalid && !exempt) fail();
         }

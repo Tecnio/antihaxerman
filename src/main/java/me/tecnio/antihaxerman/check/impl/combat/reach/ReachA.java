@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -52,7 +53,7 @@ public final class ReachA extends Check {
             if (data.getTargetLocations().size() < 30) return;
 
             final int now = AntiHaxerman.INSTANCE.getTickManager().getTicks();
-            final int latencyInTicks = (int) Math.floor(data.getConnectionProcessor().getTransactionPing() / 50.0);
+            final int latencyInTicks = MathUtil.msToTicks(data.getConnectionProcessor().getTransactionPing());
 
             final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(now).isPresent();
 

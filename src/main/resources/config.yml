@@ -226,6 +226,10 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+      e:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     noslow:
       a:
         enabled: true

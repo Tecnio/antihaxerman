@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 
 public final class ClientBrandListener implements PluginMessageListener, Listener {
@@ -39,14 +38,13 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        addChannel(player, "MC|BRAND");
+        addChannel(player);
     }
 
-    private void addChannel(final Player player, final String channel) {
+    private void addChannel(final Player player) {
         try {
-            player.getClass().getMethod("addChannel", String.class).invoke(player, channel);
-        } catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
+            player.getClass().getMethod("addChannel", String.class).invoke(player, "MC|BRAND");
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }

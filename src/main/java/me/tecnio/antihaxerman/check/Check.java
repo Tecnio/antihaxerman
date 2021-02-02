@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,9 +40,14 @@ public abstract class Check {
 
     private int vl;
     private CheckType checkType;
-    @Setter private int maxVl;
+    @Setter
+    private int maxVl;
     private double buffer;
-    @Setter private String punishCommand;
+    @Setter
+    private String punishCommand;
+
+    @Setter
+    private boolean debug;
 
     public Check(final PlayerData data) {
         this.data = data;
@@ -163,13 +168,13 @@ public abstract class Check {
     }
 
     public void debug(final Object object) {
-        Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
+        if (debug) {
+            data.getPlayer().sendMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
+        }
     }
 
-    public void debug(final Object... objects) {
-        for (final Object object : objects) {
-            Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
-        }
+    public void broadcast(final Object object) {
+        Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
     }
 
     enum CheckType {

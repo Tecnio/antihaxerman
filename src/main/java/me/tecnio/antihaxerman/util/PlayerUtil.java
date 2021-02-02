@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,8 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -73,7 +71,6 @@ public class PlayerUtil {
      * @author Nik
      */
     public List<Entity> getEntitiesWithinRadius(final Location location, final double radius) {
-
         final double expander = 16.0D;
 
         final double x = location.getX();
@@ -87,7 +84,7 @@ public class PlayerUtil {
 
         final World world = location.getWorld();
 
-        List<Entity> entities = new LinkedList<>();
+        final List<Entity> entities = new LinkedList<>();
 
         for (int xVal = minX; xVal <= maxX; xVal++) {
 
@@ -95,7 +92,7 @@ public class PlayerUtil {
 
                 if (!world.isChunkLoaded(xVal, zVal)) continue;
 
-                for (Entity entity : world.getChunkAt(xVal, zVal).getEntities()) {
+                for (final Entity entity : world.getChunkAt(xVal, zVal).getEntities()) {
                     //We have to do this due to stupidness
                     if (entity == null) continue;
 

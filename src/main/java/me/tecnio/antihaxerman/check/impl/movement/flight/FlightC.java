@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,7 +40,8 @@ public final class FlightC extends Check {
             final double difference = Math.abs(deltaY - lastDeltaY);
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
-                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID, ExemptType.CLIMBABLE, ExemptType.CHUNK);
+                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.SLIME, ExemptType.VOID,
+                    ExemptType.CLIMBABLE, ExemptType.CHUNK) || Math.abs(deltaY) > 3.0 || Math.abs(lastDeltaY) > 3.0;
             final boolean invalid = difference < 0.01 && !onGround;
 
             if (invalid && !exempt) {

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,21 +20,16 @@ package me.tecnio.antihaxerman.packet;
 import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public final class Packet {
 
     private final Direction direction;
     private final NMSPacket rawPacket;
     private final byte packetId;
     private final long timeStamp;
-
-    public Packet(final Direction direction, final NMSPacket rawPacket, final byte packetId, final long timeStamp) {
-        this.direction = direction;
-        this.rawPacket = rawPacket;
-        this.packetId = packetId;
-        this.timeStamp = timeStamp;
-    }
 
     public boolean isReceiving() {
         return direction == Direction.RECEIVE;

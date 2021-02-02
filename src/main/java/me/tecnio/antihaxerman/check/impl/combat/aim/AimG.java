@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.MathUtil;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -31,9 +30,6 @@ public final class AimG extends Check {
 
     private final Deque<Float> yawSamples = new ArrayDeque<>();
     private final Deque<Float> pitchSamples = new ArrayDeque<>();
-
-    private double lastPitchDeviation;
-    private double lastYawDeviation;
 
     public AimG(final PlayerData data) {
         super(data);
@@ -45,29 +41,11 @@ public final class AimG extends Check {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
 
-            final float yawAccel = data.getRotationProcessor().getYawAccel();
-            final float pitchAccel = data.getRotationProcessor().getPitchAccel();
+            yawSamples.add(deltaYaw);
+            pitchSamples.add(deltaPitch);
 
-            if (deltaPitch > 0.5F && deltaYaw > 0.5F) {
-                yawSamples.add(yawAccel);
-                pitchSamples.add(pitchAccel);
-
-                if (yawSamples.size() >= 40 && pitchSamples.size() >= 40) {
-                    final double yawDeviation = MathUtil.getStandardDeviation(yawSamples);
-                    final double pitchDeviation = MathUtil.getStandardDeviation(pitchSamples);
-
-                    final double yawDifference = Math.abs(yawDeviation - lastYawDeviation);
-                    final double pitchDifference = Math.abs(pitchDeviation - lastPitchDeviation);
-
-                    //debug(String.format("yawDiff: %.3f pitchDiff: %.3f", yawDifference, pitchDifference));
-
-                    lastYawDeviation = yawDeviation;
-                    lastPitchDeviation = pitchDeviation;
-
-                    yawSamples.clear();
-                    pitchSamples.clear();
-                }
-            }
+            yawSamples.clear();
+            pitchSamples.clear();
         }
     }
 }

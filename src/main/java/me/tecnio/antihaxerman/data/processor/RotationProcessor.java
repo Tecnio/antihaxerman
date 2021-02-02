@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -75,8 +75,8 @@ public final class RotationProcessor {
             lastMouseDeltaX = mouseDeltaX;
             lastMouseDeltaY = mouseDeltaY;
 
-            this.mouseDeltaX = (int)(deltaYaw / gcd);
-            this.mouseDeltaY = (int)(deltaPitch / gcd);
+            this.mouseDeltaX = Math.round(deltaYaw / gcd);
+            this.mouseDeltaY = Math.round(deltaPitch / gcd);
         }
     }
 

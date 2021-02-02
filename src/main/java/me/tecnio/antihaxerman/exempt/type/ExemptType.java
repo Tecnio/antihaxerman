@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,6 +46,8 @@ public enum ExemptType {
     BLOCK_BREAK(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastBreakTick() < 10),
 
     PLACING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastPlaceTick() < 10),
+
+    BUKKIT_PLACING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastBukkitPlaceTick() < 10),
 
     BOAT(data -> data.getPositionProcessor().isNearVehicle()),
 

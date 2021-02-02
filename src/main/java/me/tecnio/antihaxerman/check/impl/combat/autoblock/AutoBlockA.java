@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,8 @@ public final class AutoBlockA extends Check {
         if (packet.isUseEntity()) {
             final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
 
-            final boolean invalid = data.getActionProcessor().isPlacing() && wrapper.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK;
+            final boolean invalid = data.getActionProcessor().isPlacing()
+                    && wrapper.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK;
 
             if (invalid) {
                 fail();

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public final class BadPacketsL extends Check {
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE);
             final boolean invalid = deltaPitch == 0.0F && deltaYaw  == 0.0F;
 
-
+            if (invalid && !exempt) fail();
         }
     }
 }

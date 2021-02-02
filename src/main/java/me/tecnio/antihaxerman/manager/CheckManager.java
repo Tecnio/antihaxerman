@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,10 +43,7 @@ import me.tecnio.antihaxerman.check.impl.movement.largemove.LargeMoveB;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedA;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedB;
 import me.tecnio.antihaxerman.check.impl.movement.liquidspeed.LiquidSpeedC;
-import me.tecnio.antihaxerman.check.impl.movement.motion.MotionA;
-import me.tecnio.antihaxerman.check.impl.movement.motion.MotionB;
-import me.tecnio.antihaxerman.check.impl.movement.motion.MotionC;
-import me.tecnio.antihaxerman.check.impl.movement.motion.MotionD;
+import me.tecnio.antihaxerman.check.impl.movement.motion.*;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowA;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowB;
 import me.tecnio.antihaxerman.check.impl.movement.noslow.NoSlowC;
@@ -85,7 +82,7 @@ import java.util.List;
 
 public final class CheckManager {
 
-    public static final Class[] CHECKS = new Class[] {
+    public static final Class<?>[] CHECKS = new Class[]{
             AimA.class,
             AimB.class,
             AimC.class,
@@ -123,6 +120,7 @@ public final class CheckManager {
             MotionB.class,
             MotionC.class,
             MotionD.class,
+            MotionE.class,
             NoSlowA.class,
             NoSlowB.class,
             NoSlowC.class,

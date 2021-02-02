@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -129,6 +129,29 @@ public class MathUtil {
         return mode;
     }
 
+    public double getModeDouble(final Double[] data) {
+        double maxValue = -1.0d;
+        int maxCount = 0;
+
+        for (int i = 0; i < data.length; ++i) {
+            final double currentValue = data[i];
+            int currentCount = 1;
+            for (int j = i + 1; j < data.length; ++j) {
+                if (Math.abs(data[j] - currentValue) < 0.001) {
+                    ++currentCount;
+                }
+            }
+            if (currentCount > maxCount) {
+                maxCount = currentCount;
+                maxValue = currentValue;
+            } else if (currentCount == maxCount) {
+                maxValue = Double.NaN;
+            }
+        }
+
+        return maxValue;
+    }
+
     private double getMedian(final List<Double> data) {
         if (data.size() % 2 == 0) {
             return (data.get(data.size() / 2) + data.get(data.size() / 2 - 1)) / 2;
@@ -239,4 +262,8 @@ public class MathUtil {
         return (a + b) / 2;
     }
 
+
+    public int msToTicks(final double time) {
+        return (int) Math.round(time / 50.0);
+    }
 }

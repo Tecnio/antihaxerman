@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,21 +45,18 @@ public final class InteractB extends Check {
             final Direction direction = wrapper.getDirection();
 
             final Block block = BlockUtil.getBlockAsync(blockLocation);
+            if (block == null) return;
 
-            check: {
-                if (block == null) break check;
+            final double x = data.getPositionProcessor().getX();
+            final double y = data.getPositionProcessor().getY() + data.getPlayer().getEyeHeight();
+            final double z = data.getPositionProcessor().getZ();
 
-                final double x = data.getPositionProcessor().getX();
-                final double y = data.getPositionProcessor().getY() + data.getPlayer().getEyeHeight();
-                final double z = data.getPositionProcessor().getZ();
+            final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
 
-                final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
+            final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
 
-                final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
-
-                if (invalid) {
-                    fail();
-                }
+            if (invalid) {
+                fail();
             }
         }
     }

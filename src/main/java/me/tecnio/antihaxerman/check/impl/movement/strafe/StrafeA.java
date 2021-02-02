@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -102,6 +102,8 @@ public final class StrafeA extends Check {
             final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y - 0.1), z);
 
             this.blockSlipperiness = BlockUtil.getBlockFriction(blockLocation) * 0.91F;
+
+            debug(String.format("diffX: %.2f diffZ: %.2f buffer: %.2f airT: %s", diffX, diffZ, getBuffer(), airTicks));
         }
     }
 }

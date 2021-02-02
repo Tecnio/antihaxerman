@@ -22,29 +22,30 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.PlayerUtil;
+import org.bukkit.potion.PotionEffectType;
 
-@CheckInfo(name = "Motion", type = "C", description = "Checks for repeated and impossible vertical motion.")
-public final class MotionC extends Check {
-    public MotionC(final PlayerData data) {
+@CheckInfo(name = "Motion", type = "E", description = "Checks for invalid vertical acceleration.")
+public final class MotionE extends Check {
+    public MotionE(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+            final double deltaY = Math.abs(data.getPositionProcessor().getDeltaY());
+            final double lastDeltaY = Math.abs(data.getPositionProcessor().getLastDeltaY());
 
-            final boolean exempt = isExempt(ExemptType.UNDERBLOCK, ExemptType.PISTON, ExemptType.SLIME, ExemptType.TELEPORT, ExemptType.CHUNK, ExemptType.VEHICLE, ExemptType.BOAT);
-            final boolean invalid = deltaY == -lastDeltaY && deltaY != 0.0;
+            final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1F;
+            final double modifierVelocity = isExempt(ExemptType.VELOCITY) ? Math.abs(data.getVelocityProcessor().getVelocityY()) : 0.0;
 
-            if (invalid && !exempt) {
-                if (increaseBuffer() > 4) {
-                    fail();
-                }
-            } else {
-                resetBuffer();
-            }
+            final double limit = 1.0 + modifierJump + modifierVelocity;
+
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.SLIME);
+            final boolean invalid = deltaY > limit && lastDeltaY < 0.5;
+
+            if (invalid && !exempt) fail();
         }
     }
 }

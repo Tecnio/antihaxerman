@@ -1,18 +1,12 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020-2021 Tecnio
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This check is different than others, you can't take it or include it in any other application/project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  The license may allow you to use this check but in this scenario the license is not effective.
+ *  And for anyone who opposes claiming license is GPLv3 I clearly have written a different license here.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
+ *  Be aware.
  */
 
 package me.tecnio.antihaxerman.check.impl.combat.aim;
@@ -20,32 +14,42 @@ package me.tecnio.antihaxerman.check.impl.combat.aim;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 
-@CheckInfo(name = "Aim", type = "F", description = "Checks for unlikely and Aura like rotations.")
+@CheckInfo(name = "Aim", type = "F", description = "GCD bypass flaw detected (KEKW)")
 public final class AimF extends Check {
+
+    // Read the license above
+
     public AimF(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation() && hitTicks() < 3) {
-            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
+        if (packet.isRotation() && isExempt(ExemptType.COMBAT, ExemptType.BUKKIT_PLACING)) {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
+            final float lastDeltaPitch = data.getRotationProcessor().getLastDeltaPitch();
 
-            final boolean deltaYawSmall = MathUtil.isExponentiallySmall(deltaYaw);
-            final boolean deltaPitchSmall = MathUtil.isExponentiallySmall(deltaPitch);
+            if (deltaPitch > 0.5) {
+                final long expandedPitch = (long) (deltaPitch * MathUtil.EXPANDER);
+                final long lastExpandedPitch = (long) (lastDeltaPitch * MathUtil.EXPANDER);
 
-            final boolean invalid = (deltaPitchSmall && deltaYaw > 5.0F) || (deltaYawSmall && deltaPitch > 5.0F);
+                final double divisorPitch = MathUtil.getGcd(expandedPitch, lastExpandedPitch);
+                final double constantPitch = divisorPitch / MathUtil.EXPANDER;
 
-            if (invalid) {
-                if (increaseBuffer() > 4) {
-                    fail();
+                final double pitch = data.getRotationProcessor().getPitch();
+                final double moduloPitch = Math.abs(pitch % constantPitch);
+
+                if (moduloPitch < 1.0E-4) {
+                    if (increaseBuffer() > 4) {
+                        fail(moduloPitch);
+                    }
+                } else {
+                    decreaseBufferBy(0.2);
                 }
-            } else {
-                decreaseBuffer();
             }
         }
     }

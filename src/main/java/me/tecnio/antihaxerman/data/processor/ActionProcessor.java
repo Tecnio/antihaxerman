@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,10 +31,10 @@ public final class ActionProcessor {
 
     private final PlayerData data;
 
-    private boolean sprinting, sneaking, sendingAction, placing, digging, blocking,
+    private boolean sprinting, sneaking, sendingAction, placing, bukkitPlacing, digging, blocking,
             inventory, respawning, sendingDig, eating;
 
-    private int lastDiggingTick, lastPlaceTick, lastBreakTick;
+    private int lastDiggingTick, lastPlaceTick, lastBukkitPlaceTick, lastBreakTick;
 
     private int sprintingTicks, sneakingTicks;
 
@@ -107,7 +107,7 @@ public final class ActionProcessor {
     }
 
     public void handleBukkitPlace() {
-
+        bukkitPlacing = true;
     }
 
     public void handleBukkitBlockBreak() {
@@ -124,10 +124,12 @@ public final class ActionProcessor {
 
         if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (placing) lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        if (bukkitPlacing) lastBukkitPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (digging) lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
 
         sendingAction = false;
         placing = false;
+        bukkitPlacing = false;
         respawning = false;
 
         if (sprinting) ++sprintingTicks;
