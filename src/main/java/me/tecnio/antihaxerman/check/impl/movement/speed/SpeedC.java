@@ -85,7 +85,6 @@ public final class SpeedC extends Check {
             if (!exempt) {
                 if (airTicks > 0) {
                     if (deltaXZ > airLimit) {
-                        broadcast("nigger");
                         if (increaseBuffer() > 3) {
                             fail();
                         }
@@ -94,7 +93,6 @@ public final class SpeedC extends Check {
                     }
                 } else {
                     if (deltaXZ > groundLimit) {
-                        broadcast("ground nigger");
                         if (increaseBuffer() > 3) {
                             fail();
                         }
