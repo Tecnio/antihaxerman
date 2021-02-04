@@ -40,19 +40,19 @@ public final class SpeedE extends Check {
             final int collidedVTicks = data.getPositionProcessor().getSinceBlockNearHeadTicks();
 
             final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
-            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ() + 0.15;
+            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ();
 
             double limit = PlayerUtil.getBaseSpeed(data.getPlayer(), 0.34F);
 
             if (iceTicks < 40 || slimeTicks < 40) limit += 0.34;
             if (collidedVTicks < 40) limit += 0.91;
-            if (takingVelocity) limit += velocityXZ + 0.15;
+            if (takingVelocity) limit += (velocityXZ + 0.15);
 
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
-            final boolean invalid = deltaXZ > limit;
+            final boolean invalid = deltaXZ > limit && data.getPositionProcessor().getAirTicks() > 2;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 9) {
+                if (increaseBuffer() > 8) {
                     fail();
                     multiplyBuffer(0.75);
                 }

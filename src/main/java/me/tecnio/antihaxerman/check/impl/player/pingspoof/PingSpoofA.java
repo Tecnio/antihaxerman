@@ -20,7 +20,6 @@ package me.tecnio.antihaxerman.check.impl.player.pingspoof;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "PingSpoof", type = "A", description = "Checks the delta of the keep alive delay and transaction delay.")
@@ -32,21 +31,6 @@ public final class PingSpoofA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long transactionDelay = data.getConnectionProcessor().getTransactionPing();
-            final long keepAliveDelay = data.getConnectionProcessor().getKeepAlivePing();
-
-            final long delta = Math.abs(keepAliveDelay - transactionDelay);
-
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT, ExemptType.LAGGING);
-            final boolean invalid = delta > 50;
-
-            if (invalid && !exempt) {
-                if (increaseBuffer() > 200) {
-                    fail();
-                }
-            } else {
-                decreaseBufferBy(5);
-            }
         }
     }
 }

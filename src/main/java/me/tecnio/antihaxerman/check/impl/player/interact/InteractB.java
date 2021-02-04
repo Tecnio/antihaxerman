@@ -17,8 +17,8 @@
 
 package me.tecnio.antihaxerman.check.impl.player.interact;
 
-import io.github.retrooper.packetevents.enums.Direction;
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
+import io.github.retrooper.packetevents.utils.player.Direction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -42,48 +42,52 @@ public final class InteractB extends Check {
             final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
 
             final Location blockLocation = new Location(data.getPlayer().getWorld(), wrapper.getX(), wrapper.getY(), wrapper.getZ());
-            final Direction direction = wrapper.getDirection();
+            final byte direction = wrapper.getDirection();
 
             final Block block = BlockUtil.getBlockAsync(blockLocation);
             if (block == null) return;
 
-            final double x = data.getPositionProcessor().getX();
-            final double y = data.getPositionProcessor().getY() + data.getPlayer().getEyeHeight();
-            final double z = data.getPositionProcessor().getZ();
+            if (block.getType().isSolid()) {
+                final double x = data.getPositionProcessor().getX();
+                final double y = data.getPositionProcessor().getY();
+                final double z = data.getPositionProcessor().getZ();
 
-            final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
+                if ((y - block.getX()) > 0.45) {
+                    final Location location = new Location(data.getPlayer().getWorld(), x + data.getPlayer().getEyeHeight(), y, z);
 
-            final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
+                    final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
 
-            if (invalid) {
-                fail();
+                    if (invalid) {
+                        fail();
+                    }
+                }
             }
         }
     }
 
-    private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final Direction face) {
+    private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final byte face) {
         switch (face) {
-            case UP: {
+            case Direction.UP: {
                 final double limit = blockLoc.getY() + 0.03;
                 return playerLoc.getY() > limit;
             }
-            case DOWN: {
+            case Direction.DOWN: {
                 final double limit = blockLoc.getY() - 0.03;
                 return playerLoc.getY() < limit;
             }
-            case WEST: {
+            case Direction.WEST: {
                 final double limit = blockLoc.getX() + 0.03;
                 return limit > playerLoc.getX();
             }
-            case EAST: {
+            case Direction.EAST: {
                 final double limit = blockLoc.getX() - 0.03;
                 return playerLoc.getX() > limit;
             }
-            case NORTH: {
+            case Direction.NORTH: {
                 final double limit = blockLoc.getZ() + 0.03;
                 return playerLoc.getZ() < limit;
             }
-            case SOUTH: {
+            case Direction.SOUTH: {
                 final double limit = blockLoc.getZ() - 0.03;
                 return playerLoc.getZ() > limit;
             }

@@ -37,18 +37,20 @@ public final class JesusB extends Check {
         if (packet.isFlying()) {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
+            final List<Block> blocks = data.getPositionProcessor().getBlocks();
             final List<Block> blocksBelow = data.getPositionProcessor().getBlocksBelow();
             final List<Block> blocksAbove = data.getPositionProcessor().getBlocksAbove();
 
-            if (blocksBelow == null || blocksAbove == null) return;
+            if (blocks == null || blocksBelow == null || blocksAbove == null) return;
 
             final boolean liquidBelow = blocksBelow.stream().allMatch(Block::isLiquid);
             final boolean noLiquidAbove = blocksAbove.stream().noneMatch(Block::isLiquid);
+            final boolean noBlocks = blocks.stream().anyMatch(block -> block.getType().isSolid());
 
             final boolean fullySubmerged = data.getPositionProcessor().isFullySubmergedInLiquidStat();
 
             final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.UNDERBLOCK);
-            final boolean invalid = Math.abs(deltaY) < 0.0001 && liquidBelow && noLiquidAbove && !fullySubmerged;
+            final boolean invalid = Math.abs(deltaY) < 0.0001 && liquidBelow && noLiquidAbove && !fullySubmerged && !noBlocks;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {

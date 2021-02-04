@@ -84,11 +84,13 @@ public final class StrafeA extends Check {
             final double diffX = deltaX - predictedDeltaX;
             final double diffZ = deltaZ - predictedDeltaZ;
 
+            final double limit = sprinting ? 0.026 : 0.02;
+
             final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
-            final boolean invalid = (diffX > 0.01 || diffZ > 0.01) && deltaXZ > .175 && (airTicks > 2 || groundTicks > 2);
+            final boolean invalid = (diffX > limit || diffZ > limit) && deltaXZ > .175 && (airTicks > 2 || groundTicks > 2);
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (increaseBuffer() > 3) {
                     fail(String.format("diffX: %.3f diffZ: %.3f airT: %s groundT: %s", diffX, diffZ, airTicks, groundTicks));
                 }
             } else {

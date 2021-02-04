@@ -22,14 +22,8 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
-@CheckInfo(name = "Aim", type = "G", description = "Checks for dumb rotations.")
+@CheckInfo(name = "Aim", type = "G", description = "Checks for unlikely yaw deltas.")
 public final class AimG extends Check {
-
-    private final Deque<Float> yawSamples = new ArrayDeque<>();
-    private final Deque<Float> pitchSamples = new ArrayDeque<>();
 
     public AimG(final PlayerData data) {
         super(data);
@@ -38,14 +32,18 @@ public final class AimG extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isRotation()) {
-            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
+            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            yawSamples.add(deltaYaw);
-            pitchSamples.add(deltaPitch);
+            final boolean invalid = deltaYaw == 0.0F && deltaPitch >= 15.0F;
 
-            yawSamples.clear();
-            pitchSamples.clear();
+            if (invalid) {
+                if (increaseBuffer() > 4) {
+                    fail();
+                }
+            } else {
+                decreaseBufferBy(0.1);
+            }
         }
     }
 }

@@ -50,8 +50,8 @@ public final class GroundSpoofB extends Check {
             final double serverFallDistance = this.serverFallDistance;
             final double clientFallDistance = data.getPlayer().getFallDistance();
 
-            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.CREATIVE, ExemptType.WEB, ExemptType.CLIMBABLE,ExemptType.LIQUID, ExemptType.BOAT, ExemptType.VOID, ExemptType.VEHICLE, ExemptType.CHUNK);
-            final boolean invalid = Math.abs(serverFallDistance - clientFallDistance) - clientFallDistance >= 1.0;
+            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.CREATIVE, ExemptType.WEB, ExemptType.CLIMBABLE,ExemptType.LIQUID, ExemptType.BOAT, ExemptType.VOID, ExemptType.VEHICLE, ExemptType.CHUNK, ExemptType.PISTON);
+            final boolean invalid = Math.abs(serverFallDistance - clientFallDistance) - clientFallDistance >= 1.0 && inAir;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {

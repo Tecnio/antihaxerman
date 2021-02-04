@@ -20,18 +20,18 @@ package me.tecnio.antihaxerman.util.type;
 import lombok.Getter;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
-public final class EvictingList<T> extends LinkedList<T> {
+@Getter
+public final class ConcurrentEvictingList<T> extends ConcurrentLinkedDeque<T> {
 
-    @Getter
     private final int maxSize;
 
-    public EvictingList(final int maxSize) {
+    public ConcurrentEvictingList(final int maxSize) {
         this.maxSize = maxSize;
     }
 
-    public EvictingList(final Collection<? extends T> c, final int maxSize) {
+    public ConcurrentEvictingList(final Collection<? extends T> c, final int maxSize) {
         super(c);
         this.maxSize = maxSize;
     }

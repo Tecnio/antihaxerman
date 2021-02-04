@@ -36,10 +36,12 @@ public final class SpeedD extends Check {
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
 
+            final double limit = (PlayerUtil.getBaseSpeed(data.getPlayer()) + 0.1) + (isExempt(ExemptType.VELOCITY) ? data.getVelocityProcessor().getVelocityXZ() + 0.15 : 0.0);
+
             final double acceleration = deltaXZ - lastDeltaXZ;
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME, ExemptType.CHUNK);
-            final boolean invalid = acceleration > (PlayerUtil.getBaseSpeed(data.getPlayer()) + 0.1);
+            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME, ExemptType.CHUNK);
+            final boolean invalid = acceleration > limit;
 
             if (invalid && !exempt) fail();
         }

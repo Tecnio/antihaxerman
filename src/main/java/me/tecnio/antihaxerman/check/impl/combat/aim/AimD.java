@@ -22,7 +22,7 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Aim", type = "D", description = "Checks for unlikely rotations.")
+@CheckInfo(name = "Aim", type = "D", description = "Checks for unlikely pitch deltas.")
 public final class AimD extends Check {
     public AimD(final PlayerData data) {
         super(data);

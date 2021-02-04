@@ -17,8 +17,8 @@
 
 package me.tecnio.antihaxerman.check.impl.player.scaffold;
 
-import io.github.retrooper.packetevents.enums.Direction;
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
+import io.github.retrooper.packetevents.utils.player.Direction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -39,7 +39,7 @@ public final class ScaffoldA extends Check {
             final double locationY = data.getPositionProcessor().getY();
             final double blockY = wrapper.getY();
 
-            final Direction direction = wrapper.getDirection();
+            final byte direction = wrapper.getDirection();
 
             final boolean exempt = isExempt(ExemptType.TELEPORT);
             final boolean invalid = locationY > blockY && direction == Direction.DOWN;

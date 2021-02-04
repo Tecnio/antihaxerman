@@ -23,6 +23,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.PlayerUtil;
+import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Speed", type = "C", description = "Checks if player is going faster than possible", experimental = true)
 public final class SpeedC extends Check {
@@ -33,34 +34,74 @@ public final class SpeedC extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            final boolean sprinting = data.getActionProcessor().isSprinting();
+
+            final double lastDeltaX = data.getPositionProcessor().getLastDeltaX();
+            final double lastDeltaZ = data.getPositionProcessor().getLastDeltaZ();
+
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
+            final double deltaY = data.getPositionProcessor().getDeltaY();
 
             final int groundTicks = data.getPositionProcessor().getGroundTicks();
-            final int iceTicks = data.getPositionProcessor().getSinceIceTicks();
-            final int slimeTicks = data.getPositionProcessor().getSinceSlimeTicks();
-            final int blockNearHeadTicks = data.getPositionProcessor().getSinceBlockNearHeadTicks();
+            final int airTicks = data.getPositionProcessor().getClientAirTicks();
 
-            final boolean nearStair = data.getPositionProcessor().isNearStair();
+            final float modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1F;
+            final float jumpMotion = 0.42F + modifierJump;
 
-            final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
-            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ();
+            double groundLimit = PlayerUtil.getBaseGroundSpeed(data.getPlayer());
+            double airLimit = PlayerUtil.getBaseSpeed(data.getPlayer());
 
-            double limit = groundTicks > 8 ? PlayerUtil.getBaseGroundSpeed(data.getPlayer()) : PlayerUtil.getBaseSpeed(data.getPlayer());
+            // Straight from MCP so if you think its dumb fuck off.
+            if (Math.abs(deltaY - jumpMotion) < 1.0E-4 && airTicks == 1 && sprinting) {
+                final float f = data.getRotationProcessor().getYaw() * 0.017453292F;
 
-            if (iceTicks < 40 || slimeTicks < 40) limit += 0.34;
-            if (blockNearHeadTicks < 40) limit += 0.91;
-            if (nearStair) limit += 0.34;
-            if (takingVelocity) limit += velocityXZ + 0.5;
+                final double x = lastDeltaX - (Math.sin(f) * 0.2F);
+                final double z = lastDeltaZ + (Math.cos(f) * 0.2F);
+
+                airLimit += Math.hypot(x, z);
+            }
+
+            if (isExempt(ExemptType.ICE, ExemptType.SLIME)) {
+                airLimit += 0.34F;
+                groundLimit += 0.34F;
+            }
+
+            if (isExempt(ExemptType.UNDERBLOCK)) {
+                airLimit += 0.91F;
+                groundLimit += 0.91F;
+            }
+
+            if (groundTicks < 7) {
+                groundLimit += (0.25F / groundTicks);
+            }
+
+            if (data.getVelocityProcessor().isTakingVelocity()) {
+                groundLimit += data.getVelocityProcessor().getVelocityXZ() + 0.05;
+                airLimit += data.getVelocityProcessor().getVelocityXZ() + 0.05;
+            }
 
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
-            final boolean invalid = deltaXZ > limit;
 
-            if (invalid && !exempt) {
-                if (increaseBuffer() > 5) {
-                    fail();
+            if (!exempt) {
+                if (airTicks > 0) {
+                    if (deltaXZ > airLimit) {
+                        broadcast("nigger");
+                        if (increaseBuffer() > 3) {
+                            fail();
+                        }
+                    } else {
+                        decreaseBufferBy(0.15);
+                    }
+                } else {
+                    if (deltaXZ > groundLimit) {
+                        broadcast("ground nigger");
+                        if (increaseBuffer() > 3) {
+                            fail();
+                        }
+                    } else {
+                        decreaseBufferBy(0.15);
+                    }
                 }
-            } else {
-                decreaseBuffer();
             }
         }
     }

@@ -20,7 +20,6 @@ package me.tecnio.antihaxerman.listener.bukkit;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.manager.AlertManager;
 import me.tecnio.antihaxerman.manager.PlayerDataManager;
-import me.tecnio.antihaxerman.util.ColorUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -33,7 +32,7 @@ public final class RegistrationListener implements Listener {
         PlayerDataManager.getInstance().add(event.getPlayer());
 
         if (AntiHaxerman.INSTANCE.isUpdateAvailable()) {
-            if (event.getPlayer().isOp()) {
+            if (event.getPlayer().hasPermission("antihaxerman.alerts")) {
                 final String version = AntiHaxerman.INSTANCE.getVersion();
                 final String latestVersion = AntiHaxerman.INSTANCE.getUpdateChecker().getLatestVersion();
 

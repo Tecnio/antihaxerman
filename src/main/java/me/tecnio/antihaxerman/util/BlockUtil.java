@@ -44,8 +44,16 @@ public final class BlockUtil {
         return block.getType() == Material.PACKED_ICE || block.getType() == Material.ICE ? 0.9800000190734863 : block.getType().toString().contains("SLIME") ? 0.800000011920929 : 0.6000000238418579;
     }
 
-    //Taken from Fiona. If you have anything better, please let me know, thanks.
     public Block getBlockAsync(final Location location) {
+        if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+            return location.getWorld().getBlockAt(location);
+        } else {
+            return null;
+        }
+    }
+
+    //Taken from Fiona. If you have anything better, please let me know, thanks.
+    public Block shitAssBlockGetterThatCrashServer(final Location location) {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();
         } else {

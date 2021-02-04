@@ -41,7 +41,7 @@ public final class LiquidSpeedA extends Check {
 
             final double acceleration = deltaY - lastDeltaY;
 
-            final double predicted = lastDeltaY * (multiplier) - 0.02F;
+            final double predicted = lastDeltaY * multiplier - 0.02F;
             final double difference = Math.abs(deltaY - predicted);
 
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.WEB, ExemptType.SLIME, ExemptType.BOAT, ExemptType.CHUNK);

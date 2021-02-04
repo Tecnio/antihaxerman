@@ -49,7 +49,7 @@ public final class OmniSprintA extends Check {
             final Vector move = new Vector(deltaX, 0.0, deltaZ);
             final double delta = move.distanceSquared(direction);
 
-            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.WEB, ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK);
+            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.WEB, ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK, ExemptType.ICE);
             final boolean invalid = delta > getLimit() && deltaXZ > 0.1 && sprinting && onGround;
 
             if (invalid && !exempt) {

@@ -24,6 +24,7 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
+import me.tecnio.antihaxerman.util.PlayerUtil;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -53,9 +54,7 @@ public final class ReachA extends Check {
             if (data.getTargetLocations().size() < 30) return;
 
             final int now = AntiHaxerman.INSTANCE.getTickManager().getTicks();
-            final int latencyInTicks = MathUtil.msToTicks(data.getConnectionProcessor().getTransactionPing());
-
-            final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(now).isPresent();
+            final int latencyInTicks = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
 
             final double x = data.getPositionProcessor().getX();
             final double z = data.getPositionProcessor().getZ();
@@ -72,7 +71,7 @@ public final class ReachA extends Check {
                     })
                     .min().orElse(-1);
 
-            final boolean invalid = distance > maxDistance && accepted;
+            final boolean invalid = distance > maxDistance;
 
             if (invalid) {
                 if (increaseBuffer() > 2) {

@@ -43,10 +43,9 @@ public final class TimerB extends Check {
             final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
 
             final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
-            final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {
-                if (exempt || !accepted) break handle;
+                if (exempt) break handle;
 
                 final long delay = now - lastFlying;
 

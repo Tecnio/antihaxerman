@@ -21,18 +21,12 @@ import lombok.Getter;
 import lombok.Setter;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
-import me.tecnio.antihaxerman.data.processor.ActionProcessor;
-import me.tecnio.antihaxerman.data.processor.ClickProcessor;
-import me.tecnio.antihaxerman.data.processor.CombatProcessor;
-import me.tecnio.antihaxerman.data.processor.ConnectionProcessor;
-import me.tecnio.antihaxerman.data.processor.PositionProcessor;
-import me.tecnio.antihaxerman.data.processor.RotationProcessor;
-import me.tecnio.antihaxerman.data.processor.VelocityProcessor;
+import me.tecnio.antihaxerman.data.processor.*;
 import me.tecnio.antihaxerman.exempt.ExemptProcessor;
 import me.tecnio.antihaxerman.manager.AlertManager;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.LogUtil;
-import me.tecnio.antihaxerman.util.type.EvictingList;
+import me.tecnio.antihaxerman.util.type.ConcurrentEvictingList;
 import me.tecnio.antihaxerman.util.type.Pair;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -53,7 +47,7 @@ public final class PlayerData {
 
     private final List<Check> checks = CheckManager.loadChecks(this);
 
-    private final EvictingList<Pair<Location, Integer>> targetLocations = new EvictingList<>(40);
+    private final ConcurrentEvictingList<Pair<Location, Integer>> targetLocations = new ConcurrentEvictingList<>(40);
 
     private final ExemptProcessor exemptProcessor = new ExemptProcessor(this);
     private final CombatProcessor combatProcessor = new CombatProcessor(this);

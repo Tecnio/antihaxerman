@@ -21,11 +21,9 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.Wra
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import io.github.retrooper.packetevents.packetwrappers.play.out.position.WrappedPacketOutPosition;
 import lombok.Getter;
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.PlayerUtil;
 import me.tecnio.antihaxerman.util.type.BoundingBox;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -38,7 +36,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 @Getter
@@ -113,6 +110,8 @@ public final class PositionProcessor {
 
                     if (same) {
                         teleported = true;
+                        teleportTicks = 0;
+
                         teleportList.remove(wantedLocation);
                         break;
                     }
@@ -225,7 +224,10 @@ public final class PositionProcessor {
                 for (double z = minZ; z <= maxZ; z += (maxZ - minZ)) {
                     final Location location = new Location(data.getPlayer().getWorld(), x, y, z);
                     final Block block = this.getBlock(location);
-                    blocks.add(block);
+
+                    if (block != null) {
+                        blocks.add(block);
+                    }
                 }
             }
         }
@@ -242,8 +244,8 @@ public final class PositionProcessor {
         onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
         onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
         nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
-        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5).anyMatch(block -> block.getType() != Material.AIR);
-        blocksAbove = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() > 1.5).collect(Collectors.toList());
+        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).anyMatch(block -> block.getType() != Material.AIR);
+        blocksAbove = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).collect(Collectors.toList());
         blocksBelow = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() < 0.0).collect(Collectors.toList());
         onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
         nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
@@ -263,13 +265,10 @@ public final class PositionProcessor {
 
     public void handleNearbyEntities() {
         nearbyEntities = PlayerUtil.getEntitiesWithinRadius(data.getPlayer().getLocation(), 2);
-
         nearVehicle = nearbyEntities.stream().anyMatch(entity -> entity instanceof Vehicle);
     }
 
     public void handleTeleport(final WrappedPacketOutPosition wrapper) {
-        teleportTicks = 0;
-
         final Vector requestedLocation = new Vector(
                 wrapper.getX(),
                 wrapper.getY(),
@@ -292,21 +291,10 @@ public final class PositionProcessor {
         return blocks.stream().anyMatch(block -> block.getType() == blockType);
     }
 
-    //Taken from Fiona. If you have anything better, please let me know, thanks.
     public Block getBlock(final Location location) {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
-            return location.getBlock();
+            return location.getWorld().getBlockAt(location);
         } else {
-            final FutureTask<Block> futureTask = new FutureTask<>(() -> {
-                location.getWorld().loadChunk(location.getBlockX() >> 4, location.getBlockZ() >> 4);
-                return location.getBlock();
-            });
-            Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), futureTask);
-            try {
-                return futureTask.get();
-            } catch (final Exception exception) {
-                exception.printStackTrace();
-            }
             return null;
         }
     }

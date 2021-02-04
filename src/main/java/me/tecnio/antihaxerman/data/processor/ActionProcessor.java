@@ -110,10 +110,6 @@ public final class ActionProcessor {
         bukkitPlacing = true;
     }
 
-    public void handleBukkitBlockBreak() {
-
-    }
-
     public void handleArmAnimation() {
         if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
     }
@@ -131,6 +127,8 @@ public final class ActionProcessor {
         placing = false;
         bukkitPlacing = false;
         respawning = false;
+
+        eating = false;
 
         if (sprinting) ++sprintingTicks;
         else sprintingTicks = 0;

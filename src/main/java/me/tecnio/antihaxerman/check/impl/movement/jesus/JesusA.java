@@ -35,16 +35,19 @@ public final class JesusA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            final List<Block> blocks = data.getPositionProcessor().getBlocks();
             final List<Block> blocksBelow = data.getPositionProcessor().getBlocksBelow();
-            if (blocksBelow == null) return;
+
+            if (blocks == null || blocksBelow == null) return;
 
             final boolean onLiquid = blocksBelow.stream().allMatch(Block::isLiquid);
+            final boolean noBlock = blocksBelow.stream().anyMatch(block -> block.getType().isSolid());
 
             final boolean clientGround = data.getPositionProcessor().isOnGround();
             final boolean serverGround = data.getPositionProcessor().isMathematicallyOnGround();
 
             final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.FLYING);
-            final boolean invalid = (clientGround || serverGround) && onLiquid;
+            final boolean invalid = (clientGround || serverGround) && onLiquid && !noBlock;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 5) {

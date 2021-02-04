@@ -17,11 +17,9 @@
 
 package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
-import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "BadPackets", type = "E", description = "Checks for blink by checking if client doesn't send flying while being still connected.", experimental = true)
@@ -32,22 +30,5 @@ public final class BadPacketsE extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isIncomingTransaction()) {
-            final WrappedPacketInTransaction wrapper = new WrappedPacketInTransaction(packet.getRawPacket());
-
-            final short actionNumber = wrapper.getActionNumber();
-            final short lastTransaction = data.getConnectionProcessor().getTransactionId();
-
-            final boolean exempt = isExempt(ExemptType.TPS) || data.getPlayer().isDead();
-            final boolean eligible = actionNumber == lastTransaction;
-
-            if (eligible && !exempt) {
-                if (increaseBuffer() > 10) {
-                    fail();
-                }
-            }
-        } else if (packet.isFlying()) {
-            resetBuffer();
-        }
     }
 }

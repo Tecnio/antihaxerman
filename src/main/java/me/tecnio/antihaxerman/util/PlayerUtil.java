@@ -39,7 +39,7 @@ public class PlayerUtil {
     }
 
     public int getPing(final Player player) {
-        return PacketEvents.get().getPlayerUtils().getPing(player);
+        return PacketEvents.get().getPlayerUtils().getPing(player.getUniqueId());
     }
 
     public int getDepthStriderLevel(final Player player) {
@@ -54,7 +54,7 @@ public class PlayerUtil {
     }
 
     public double getBaseSpeed(final Player player) {
-        return 0.36 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
+        return 0.3615 + (getPotionLevel(player, PotionEffectType.SPEED) * 0.062f) + ((player.getWalkSpeed() - 0.2f) * 1.6f);
     }
 
     public double getBaseGroundSpeed(final Player player) {

@@ -36,11 +36,13 @@ public final class MotionD extends Check {
         if (packet.isFlying()) {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
-            final double modifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
-            final double maximum = 0.6 + modifier;
+            final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
+            final double modifierVelocity = isExempt(ExemptType.VELOCITY) ? data.getVelocityProcessor().getVelocityY() + 0.15 : 0.0;
+
+            final double maximum = 0.6 + modifierJump + modifierVelocity;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.LIQUID, ExemptType.FLYING, ExemptType.WEB, ExemptType.TELEPORT, ExemptType.SLIME, ExemptType.CHUNK);
-            final boolean invalid = deltaY > maximum && !isExempt(ExemptType.VELOCITY);
+            final boolean invalid = deltaY > maximum;
 
             if (invalid && !exempt) fail();
         }

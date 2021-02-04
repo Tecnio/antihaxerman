@@ -17,7 +17,6 @@
 
 package me.tecnio.antihaxerman.check.impl.player.timer;
 
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -29,6 +28,8 @@ import me.tecnio.antihaxerman.util.type.EvictingList;
 @CheckInfo(name = "Timer", type = "C", description = "Checks for game speed changes.")
 public final class TimerC extends Check {
 
+    // Bc 40 timer is bypassing I needed help GladUrBad said do this if no worky I die.
+
     private final EvictingList<Long> samples = new EvictingList<>(50);
     private long lastFlying;
 
@@ -38,42 +39,30 @@ public final class TimerC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
+        if (packet.isFlying() && !isExempt(ExemptType.TPS)) {
             final long now = now();
-            final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+            final long delta = now - lastFlying;
 
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
-            final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
+            if (delta > 1) {
+                samples.add(delta);
+            }
 
-            handle: {
-                if (exempt || !accepted) break handle;
+            if (samples.isFull()) {
+                final double average = MathUtil.getAverage(samples);
+                final double speed = 50 / average;
 
-                final long delay = now - lastFlying;
-
-                if (delay > 1) {
-                    samples.add(delay);
-                }
-
-                if (samples.isFull()) {
-                    final double average = MathUtil.getAverage(samples);
-                    final double speed = 50.0 / average;
-
-                    final boolean invalid = speed > 1.05;
-
-                    if (invalid) {
-                        if (increaseBuffer() > 30) {
-                            fail();
-                            multiplyBuffer(0.50);
-                        }
-                    } else {
-                        decreaseBufferBy(5);
+                if (speed >= 1.025) {
+                    if (increaseBuffer() > 30) {
+                        fail();
                     }
+                } else {
+                    decreaseBuffer();
                 }
             }
 
-            this.lastFlying = now;
+            lastFlying = now;
         } else if (packet.isTeleport()) {
-            samples.add(125L);
+            samples.add(135L);
         }
     }
 }

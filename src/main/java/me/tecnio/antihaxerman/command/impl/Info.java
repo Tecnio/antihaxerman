@@ -43,7 +43,7 @@ public final class Info extends AntiHaxermanCommand {
                     sendMessage(sender, ColorUtil.translate("&cInformation for &c" + playerData.getPlayer().getName() + "&a."));
                     sendRetardedNewLine(sender);
                     sendMessage(sender, ColorUtil.translate("&2&oGeneral information:"));
-                    sendMessage(sender, ColorUtil.translate("&aLatency → &2" + PacketEvents.get().getPlayerUtils().getPing(playerData.getPlayer())) + "ms");
+                    sendMessage(sender, ColorUtil.translate("&cLatency → &2" + PacketEvents.get().getPlayerUtils().getPing(playerData.getPlayer())) + "ms");
                     sendMessage(sender, ColorUtil.translate("&cChecks amount → &2" + playerData.getChecks().size()));
                     sendMessage(sender, ColorUtil.translate("&cSensitivity → &2" + playerData.getRotationProcessor().getSensitivity() + "%"));
                     final String clientBrand = playerData.getClientBrand() == null ? "&cCould not resolve client brand for this player." : playerData.getClientBrand();

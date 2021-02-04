@@ -146,6 +146,10 @@ public abstract class Check {
         buffer = 0;
     }
 
+    public void setBuffer(final double amount) {
+        buffer = amount;
+    }
+
     public void multiplyBuffer(final double multiplier) {
         buffer *= multiplier;
     }

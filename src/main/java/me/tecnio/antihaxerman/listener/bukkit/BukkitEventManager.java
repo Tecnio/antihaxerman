@@ -21,19 +21,10 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public final class BukkitEventManager implements Listener {
-
-    @EventHandler
-    public void onBlockBreak(final BlockBreakEvent event) {
-        final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
-        if (data != null) {
-            data.getActionProcessor().handleBukkitBlockBreak();
-        }
-    }
 
     @EventHandler
     public void onPlayerInteract(final PlayerInteractEvent event) {

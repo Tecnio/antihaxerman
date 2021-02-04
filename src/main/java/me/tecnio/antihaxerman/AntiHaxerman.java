@@ -114,9 +114,9 @@ public enum AntiHaxerman {
                 .injectAsync(Config.ASYNC_INJECT_UNINJECT)
                 .ejectAsync(Config.ASYNC_INJECT_UNINJECT)
                 .injectEarly(Config.EARLY_INJECT)
-                .packetProcessingThreadCount(1)
+                .injectAndEjectThreadCount(1)
                 .checkForUpdates(true)
-                .injectionFailureMessage("AntiHaxerman is currently loading. Please join after it loads. (NOT AN ISSUE)")
+                .injectionFailureMessage("We were unable to inject you. Rejoin and problem should be fixed.")
                 .backupServerVersion(ServerVersion.v_1_7_10);
 
         PacketEvents.get().load();

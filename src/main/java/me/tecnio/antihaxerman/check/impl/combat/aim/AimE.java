@@ -1,5 +1,3 @@
-
-
 /*
  *  Copyright (C) 2020 - 2021 Tecnio
  *
@@ -41,7 +39,10 @@ public final class AimE extends Check {
         if (packet.isRotation()) {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            if (deltaYaw < 5F && lastDeltaYaw > 20F && lastLastDeltaYaw < 5F && !isExempt(ExemptType.TELEPORT)) fail();
+            final boolean exempt = isExempt(ExemptType.TELEPORT_DELAY, ExemptType.TELEPORT);
+            final boolean invalid = deltaYaw < 3.0F && lastDeltaYaw > 20F && lastLastDeltaYaw < 3.0F;
+
+            if (invalid && !exempt) fail();
 
             lastLastDeltaYaw = lastDeltaYaw;
             lastDeltaYaw = deltaYaw;

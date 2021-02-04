@@ -22,18 +22,23 @@ import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.ServerUtil;
 import org.bukkit.GameMode;
+import org.bukkit.util.NumberConversions;
 
 import java.util.function.Function;
 
 @Getter
 public enum ExemptType {
 
-    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(data.getPlayer().getLocation().getBlockX() >> 4,
-            data.getPlayer().getLocation().getBlockZ() >> 4)),
+    CHUNK(data -> !data.getPlayer().getWorld().isChunkLoaded(
+            NumberConversions.floor(data.getPositionProcessor().getX()) >> 4,
+            NumberConversions.floor(data.getPositionProcessor().getZ()) >> 4)
+    ),
 
-    TPS(data -> ServerUtil.getTPS() < 19.0D),
+    TPS(data -> ServerUtil.getTPS() < 18.0D),
 
     TELEPORT(data -> data.getPositionProcessor().isTeleported()),
+
+    TELEPORT_DELAY(data -> data.getPositionProcessor().getTeleportTicks() > 10),
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
@@ -53,7 +58,7 @@ public enum ExemptType {
 
     VEHICLE(data -> data.getPositionProcessor().getSinceVehicleTicks() < 20),
 
-    LIQUID(data -> data.getPositionProcessor().isInLiquid()),
+    LIQUID(data -> data.getPositionProcessor().getSinceLiquidTicks() < 4),
 
     UNDERBLOCK(data -> data.getPositionProcessor().isBlockNearHead()),
 
@@ -77,7 +82,9 @@ public enum ExemptType {
 
     CINEMATIC(data -> data.getRotationProcessor().isCinematic()),
 
-    CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10);
+    CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10),
+
+    ICE(data -> data.getPositionProcessor().getSinceIceTicks() < 10);
 
     private final Function<PlayerData, Boolean> exception;
 

@@ -17,11 +17,9 @@
 
 package me.tecnio.antihaxerman.manager;
 
-import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.WrappedPacketOutKeepAlive;
-import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.type.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +35,7 @@ public final class TickManager implements Runnable {
     public void start() {
         assert task == null : "TickProcessor has already been started!";
 
-        task = Bukkit.getScheduler().runTaskTimer(AntiHaxerman.INSTANCE.getPlugin(), this, 0L, 1L);
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(AntiHaxerman.INSTANCE.getPlugin(), this, 0L, 1L);
     }
 
     public void stop() {
@@ -51,7 +49,7 @@ public final class TickManager implements Runnable {
     public void run() {
         ++ticks;
 
-        PlayerDataManager.getInstance().getAllData().parallelStream().forEach(data -> {
+        for (final PlayerData data : PlayerDataManager.getInstance().getAllData()) {
             final Entity target = data.getCombatProcessor().getTarget();
             final Entity lastTarget = data.getCombatProcessor().getLastTarget();
 
@@ -61,24 +59,6 @@ public final class TickManager implements Runnable {
                 final Location location = target.getLocation();
                 data.getTargetLocations().add(new Pair<>(location, ticks));
             }
-
-            transaction: {
-                if (ticks == 1) break transaction;
-
-                final short transactionId = (short) ticks;
-
-                final WrappedPacketOutTransaction transaction = new WrappedPacketOutTransaction(0, transactionId, false);
-                PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), transaction);
-            }
-
-            keepalive: {
-                if (ticks == 1) break keepalive;
-
-                final int keepAliveId = ticks;
-
-                final WrappedPacketOutKeepAlive keepAlive = new WrappedPacketOutKeepAlive(keepAliveId);
-                PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), keepAlive);
-            }
-        });
+        }
     }
 }

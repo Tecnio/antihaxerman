@@ -20,7 +20,6 @@ package me.tecnio.antihaxerman.check.impl.player.badpackets;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "BadPackets", type = "F", description = "Checks if player is sending flyings but not responding transactions.")
@@ -34,21 +33,5 @@ public final class BadPacketsF extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            ++ticks;
-
-            final int difference = Math.abs(transactionReceivedTicks - transactionSentTicks);
-
-            final boolean exempt = isExempt(ExemptType.TPS, ExemptType.JOINED, ExemptType.TELEPORT);
-            final boolean invalid = difference > 100;
-
-            if (invalid && !exempt) {
-                kick("Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host");
-            }
-        } else if (packet.isIncomingTransaction()) {
-            transactionReceivedTicks = ticks;
-        } else if (packet.isOutgoingTransaction()) {
-            transactionSentTicks = ticks;
-        }
     }
 }

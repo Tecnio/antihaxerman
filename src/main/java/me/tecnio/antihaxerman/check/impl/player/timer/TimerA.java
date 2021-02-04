@@ -44,16 +44,15 @@ public final class TimerA extends Check {
         if (packet.isFlying()) {
             final long now = now();
             final int serverTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
-            
+
             final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
-            final boolean accepted = data.getConnectionProcessor().getKeepAliveTime(serverTicks).isPresent();
 
             handle: {
-                if (exempt || !accepted) break handle;
+                if (exempt) break handle;
 
                 final long delay = now - lastFlying;
                 movingStats.add(delay);
-                
+
                 final double threshold = 7.07;
                 final double deviation = movingStats.getStdDev(threshold);
 
@@ -61,7 +60,7 @@ public final class TimerA extends Check {
                     allowance += 50;
                     allowance -= delay;
 
-                    if (allowance > Math.floor(threshold)) fail();
+                    if (allowance > Math.ceil(threshold)) fail();
                 } else {
                     allowance = 0;
                 }

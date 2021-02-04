@@ -42,11 +42,11 @@ public final class BadPacketsC extends Check {
         } else if (packet.isIncomingAbilities()) {
             final WrappedPacketInAbilities wrapper = new WrappedPacketInAbilities(packet.getRawPacket());
 
-            final boolean invalid = wrapper.isFlying() != flying || wrapper.isFlightAllowed() != allowFlight;
+            final boolean flying = wrapper.isFlying();
+            final boolean allowFlight = wrapper.isFlightAllowed();
 
-            if (invalid) {
-                ban();
-            }
+            if (this.flying != flying || this.allowFlight != allowFlight) ban();
+            if (!allowFlight && flying) ban();
         }
     }
 }
