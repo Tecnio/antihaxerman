@@ -25,7 +25,7 @@ import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.PlayerUtil;
 import org.bukkit.potion.PotionEffectType;
 
-@CheckInfo(name = "Speed", type = "C", description = "Checks if player is going faster than possible", experimental = true)
+@CheckInfo(name = "Speed", type = "C", description = "Checks if player is going faster than possible")
 public final class SpeedC extends Check {
     public SpeedC(final PlayerData data) {
         super(data);

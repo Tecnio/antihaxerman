@@ -65,7 +65,7 @@ public abstract class Check {
 
     public abstract void handle(final Packet packet);
 
-    public void fail(final Object info) {
+    public final void fail(final Object info) {
         if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
             if (!data.isExempt()) {
                 APIManager.callFlagEvent(this);
@@ -90,11 +90,11 @@ public abstract class Check {
         }
     }
 
-    public void fail() {
+    public final void fail() {
         fail("No information.");
     }
 
-    public void ban() {
+    public final void ban() {
         if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
             if (!data.isExempt()) {
                 fail();
@@ -103,7 +103,7 @@ public abstract class Check {
         }
     }
 
-    public void kick(final String reason) {
+    public final void kick(final String reason) {
         if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
             if (!data.isExempt()) {
                 fail();
@@ -112,57 +112,57 @@ public abstract class Check {
         }
     }
 
-    protected boolean isExempt(final ExemptType exemptType) {
+    protected final boolean isExempt(final ExemptType exemptType) {
         return data.getExemptProcessor().isExempt(exemptType);
     }
 
-    protected boolean isExempt(final ExemptType... exemptTypes) {
+    protected final boolean isExempt(final ExemptType... exemptTypes) {
         return data.getExemptProcessor().isExempt(exemptTypes);
     }
 
-    public long now() {
+    public final long now() {
         return System.currentTimeMillis();
     }
 
-    public int ticks() { return AntiHaxerman.INSTANCE.getTickManager().getTicks(); }
+    public final int ticks() { return AntiHaxerman.INSTANCE.getTickManager().getTicks(); }
 
-    public double increaseBuffer() {
+    public final double increaseBuffer() {
         return buffer = Math.min(10000, buffer + 1);
     }
 
-    public double increaseBufferBy(final double amount) {
+    public final double increaseBufferBy(final double amount) {
         return buffer = Math.min(10000, buffer + amount);
     }
 
-    public double decreaseBuffer() {
+    public final double decreaseBuffer() {
         return buffer = Math.max(0, buffer - 1);
     }
 
-    public double decreaseBufferBy(final double amount) {
+    public final double decreaseBufferBy(final double amount) {
         return buffer = Math.max(0, buffer - amount);
     }
 
-    public void resetBuffer() {
+    public final void resetBuffer() {
         buffer = 0;
     }
 
-    public void setBuffer(final double amount) {
+    public final void setBuffer(final double amount) {
         buffer = amount;
     }
 
-    public void multiplyBuffer(final double multiplier) {
+    public final void multiplyBuffer(final double multiplier) {
         buffer *= multiplier;
     }
 
-    public int hitTicks() {
+    public final int hitTicks() {
         return data.getCombatProcessor().getHitTicks();
     }
 
-    public boolean digging() {
+    public final boolean digging() {
         return data.getActionProcessor().isDigging();
     }
 
-    public CheckInfo getCheckInfo() {
+    public final CheckInfo getCheckInfo() {
         if (this.getClass().isAnnotationPresent(CheckInfo.class)) {
             return this.getClass().getAnnotation(CheckInfo.class);
         } else {
@@ -171,13 +171,13 @@ public abstract class Check {
         return null;
     }
 
-    public void debug(final Object object) {
+    public final void debug(final Object object) {
         if (debug) {
             data.getPlayer().sendMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
         }
     }
 
-    public void broadcast(final Object object) {
+    public final void broadcast(final Object object) {
         Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
     }
 

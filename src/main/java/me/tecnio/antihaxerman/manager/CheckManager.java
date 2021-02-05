@@ -30,6 +30,7 @@ import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
 import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityB;
+import me.tecnio.antihaxerman.check.impl.movement.chunk.ChunkA;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbA;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
@@ -56,10 +57,7 @@ import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofD;
-import me.tecnio.antihaxerman.check.impl.player.interact.InteractA;
-import me.tecnio.antihaxerman.check.impl.player.interact.InteractB;
-import me.tecnio.antihaxerman.check.impl.player.interact.InteractC;
-import me.tecnio.antihaxerman.check.impl.player.interact.InteractD;
+import me.tecnio.antihaxerman.check.impl.player.interact.*;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryA;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryB;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryC;
@@ -116,11 +114,13 @@ public final class CheckManager {
             FlightB.class,
             FlightC.class,
             FlightD.class,
+            ChunkA.class,
             StrafeA.class,
             MotionA.class,
             MotionB.class,
             MotionC.class,
             MotionD.class,
+            MotionE.class,
             MotionE.class,
             NoSlowA.class,
             NoSlowB.class,
@@ -162,6 +162,7 @@ public final class CheckManager {
             InteractB.class,
             InteractC.class,
             InteractD.class,
+            InteractE.class,
             BadPacketsA.class,
             BadPacketsB.class,
             BadPacketsC.class,

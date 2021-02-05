@@ -15,36 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.scaffold;
+package me.tecnio.antihaxerman.check.impl.movement.chunk;
 
-import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
-import io.github.retrooper.packetevents.utils.player.Direction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Scaffold", type = "A", description = "")
-public final class ScaffoldA extends Check {
-    public ScaffoldA(final PlayerData data) {
+@CheckInfo(name = "Chunk", type = "A", description = "Checks for vertical motion on an unloaded chunk.")
+public final class ChunkA extends Check {
+    public ChunkA(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isBlockPlace()) {
-            final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
+        if (packet.isFlying()) {
+            if (isExempt(ExemptType.CHUNK)) {
+                final double deltaY = data.getPositionProcessor().getDeltaY();
 
-            final double locationY = data.getPositionProcessor().getY();
-            final double blockY = wrapper.getY();
+                final boolean exempt = isExempt(ExemptType.TELEPORT);
+                final boolean invalid = deltaY > 0.0;
 
-            final Direction direction = wrapper.getDirection();
-
-            final boolean exempt = isExempt(ExemptType.TELEPORT);
-            final boolean invalid = locationY > blockY && direction == Direction.DOWN;
-
-            if (invalid && !exempt) fail();
+                if (invalid && !exempt) fail();
+            }
         }
     }
 }

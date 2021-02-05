@@ -15,19 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.player.scaffold;
+package me.tecnio.antihaxerman.check.impl.player.interact;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
-import io.github.retrooper.packetevents.utils.player.Direction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Scaffold", type = "A", description = "")
-public final class ScaffoldA extends Check {
-    public ScaffoldA(final PlayerData data) {
+@CheckInfo(name = "Interact", type = "E", description = "Checks for wrong interaction with a block.")
+public final class InteractE extends Check {
+
+    // All credits go to Hawk by Islandscout (https://github.com/HawkAnticheat/Hawk)
+    // Check made by Islanscout and I need it bc bad friend bypass Scaffold.
+
+    public InteractE(final PlayerData data) {
         super(data);
     }
 
@@ -36,15 +38,16 @@ public final class ScaffoldA extends Check {
         if (packet.isBlockPlace()) {
             final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
 
-            final double locationY = data.getPositionProcessor().getY();
-            final double blockY = wrapper.getY();
+            final float x = wrapper.getCursorX();
+            final float y = wrapper.getCursorY();
+            final float z = wrapper.getCursorZ();
 
-            final Direction direction = wrapper.getDirection();
+            for (final float value : new float[]{x, y, z}) {
+                // The variable value cannot be larger than 1 or smaller than 0, as stated here.
+                // https://wiki.vg/Protocol#Player_Block_Placement
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT);
-            final boolean invalid = locationY > blockY && direction == Direction.DOWN;
-
-            if (invalid && !exempt) fail();
+                if (value > 1.0 || value < 0.0) fail();
+            }
         }
     }
 }

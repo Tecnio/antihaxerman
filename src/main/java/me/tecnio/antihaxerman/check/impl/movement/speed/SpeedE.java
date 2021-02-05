@@ -48,7 +48,7 @@ public final class SpeedE extends Check {
             if (collidedVTicks < 40) limit += 0.91;
             if (takingVelocity) limit += (velocityXZ + 0.15);
 
-            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT);
             final boolean invalid = deltaXZ > limit && data.getPositionProcessor().getAirTicks() > 2;
 
             if (invalid && !exempt) {

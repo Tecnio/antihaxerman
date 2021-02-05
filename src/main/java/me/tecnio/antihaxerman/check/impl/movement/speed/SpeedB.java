@@ -41,7 +41,7 @@ public final class SpeedB extends Check {
             final double predicted = (lastDeltaXZ * 0.91F) + (sprinting ? 0.026 : 0.02);
             final double difference = deltaXZ - predicted;
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
             final boolean invalid = difference > 1E-5 && predicted > 0.075 && airTicks > 2;
 
             if (invalid && !exempt) {

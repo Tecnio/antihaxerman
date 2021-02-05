@@ -208,6 +208,11 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
+    chunk:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
     strafe:
       a:
         enabled: true
@@ -398,6 +403,10 @@ checks:
         max-violations: 50
         punish-command: ''
       d:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      e:
         enabled: true
         max-violations: 50
         punish-command: ''

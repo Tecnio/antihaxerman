@@ -46,7 +46,7 @@ public final class JesusA extends Check {
             final boolean clientGround = data.getPositionProcessor().isOnGround();
             final boolean serverGround = data.getPositionProcessor().isMathematicallyOnGround();
 
-            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.FLYING);
+            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.CHUNK);
             final boolean invalid = (clientGround || serverGround) && onLiquid && !noBlock;
 
             if (invalid && !exempt) {

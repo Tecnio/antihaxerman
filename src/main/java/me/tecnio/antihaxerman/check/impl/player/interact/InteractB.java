@@ -42,7 +42,7 @@ public final class InteractB extends Check {
             final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
 
             final Location blockLocation = new Location(data.getPlayer().getWorld(), wrapper.getX(), wrapper.getY(), wrapper.getZ());
-            final byte direction = wrapper.getDirection();
+            final Direction direction = wrapper.getDirection();
 
             final Block block = BlockUtil.getBlockAsync(blockLocation);
             if (block == null) return;
@@ -65,29 +65,29 @@ public final class InteractB extends Check {
         }
     }
 
-    private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final byte face) {
+    private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final Direction face) {
         switch (face) {
-            case Direction.UP: {
+            case UP: {
                 final double limit = blockLoc.getY() + 0.03;
                 return playerLoc.getY() > limit;
             }
-            case Direction.DOWN: {
+            case DOWN: {
                 final double limit = blockLoc.getY() - 0.03;
                 return playerLoc.getY() < limit;
             }
-            case Direction.WEST: {
+            case WEST: {
                 final double limit = blockLoc.getX() + 0.03;
                 return limit > playerLoc.getX();
             }
-            case Direction.EAST: {
+            case EAST: {
                 final double limit = blockLoc.getX() - 0.03;
                 return playerLoc.getX() > limit;
             }
-            case Direction.NORTH: {
+            case NORTH: {
                 final double limit = blockLoc.getZ() + 0.03;
                 return playerLoc.getZ() < limit;
             }
-            case Direction.SOUTH: {
+            case SOUTH: {
                 final double limit = blockLoc.getZ() - 0.03;
                 return playerLoc.getZ() > limit;
             }

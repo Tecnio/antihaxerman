@@ -49,7 +49,7 @@ public final class JesusB extends Check {
 
             final boolean fullySubmerged = data.getPositionProcessor().isFullySubmergedInLiquidStat();
 
-            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.UNDERBLOCK);
+            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
             final boolean invalid = Math.abs(deltaY) < 0.0001 && liquidBelow && noLiquidAbove && !fullySubmerged && !noBlocks;
 
             if (invalid && !exempt) {
