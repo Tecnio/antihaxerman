@@ -28,7 +28,7 @@ public final class ConfigValue {
     @Getter
     private final String name;
 
-    public ConfigValue(ValueType type, String name) {
+    public ConfigValue(final ValueType type, final String name) {
         this.type = type;
         this.name = name;
     }

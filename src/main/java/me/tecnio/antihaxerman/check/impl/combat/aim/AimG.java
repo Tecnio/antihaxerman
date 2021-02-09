@@ -1,18 +1,12 @@
 /*
- *  Copyright (C) 2020 - 2021 Tecnio
+ *  Copyright (C) 2020-2021 Tecnio
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This check is different than others, you can't take it or include it in any other application/project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  The license may allow you to use this check but in this scenario the license is not effective.
+ *  And for anyone who opposes claiming license is GPLv3 I clearly have written a different license here.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
+ *  Be aware.
  */
 
 package me.tecnio.antihaxerman.check.impl.combat.aim;
@@ -20,9 +14,11 @@ package me.tecnio.antihaxerman.check.impl.combat.aim;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 
-@CheckInfo(name = "Aim", type = "G", description = "Checks for unlikely yaw deltas.")
+@CheckInfo(name = "Aim", type = "G", description = "GCD bypass flaw detected (KEKW)")
 public final class AimG extends Check {
 
     public AimG(final PlayerData data) {
@@ -31,18 +27,27 @@ public final class AimG extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation()) {
-            final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
+        if (packet.isRotation() && isExempt(ExemptType.COMBAT, ExemptType.BUKKIT_PLACING)) {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
+            final float lastDeltaYaw = data.getRotationProcessor().getLastDeltaYaw();
 
-            final boolean invalid = deltaYaw == 0.0F && deltaPitch >= 15.0F;
+            if (deltaYaw < 0.5) {
+                final long expandedYaw = (long) (deltaYaw * MathUtil.EXPANDER);
+                final long lastExpandedYaw = (long) (lastDeltaYaw * MathUtil.EXPANDER);
 
-            if (invalid) {
-                if (increaseBuffer() > 4) {
-                    fail();
+                final double divisorYaw = MathUtil.getGcd(expandedYaw, lastExpandedYaw);
+                final double constantYaw = divisorYaw / MathUtil.EXPANDER;
+
+                final double yaw = data.getRotationProcessor().getYaw();
+                final double moduloYaw = Math.abs(yaw % constantYaw);
+
+                if (moduloYaw < 1.0E-5) {
+                    if (increaseBuffer() > 3) {
+                        fail(moduloYaw);
+                    }
+                } else {
+                    decreaseBufferBy(0.05);
                 }
-            } else {
-                decreaseBufferBy(0.1);
             }
         }
     }

@@ -17,42 +17,18 @@
 
 package me.tecnio.antihaxerman.check.impl.player.badpackets;
 
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 @CheckInfo(name = "BadPackets", type = "N", description = "Checks for disablers.")
-public final class BadPacketsN extends Check implements Listener {
+public final class BadPacketsN extends Check {
     public BadPacketsN(final PlayerData data) {
         super(data);
-        AntiHaxerman.INSTANCE.getPlugin().getServer().getPluginManager().registerEvents(this, AntiHaxerman.INSTANCE.getPlugin());
     }
 
     @Override
     public void handle(final Packet packet) {
-    }
-
-    @EventHandler
-    public void handleTeleport(final PlayerTeleportEvent event) {
-        if (event.getPlayer() == data.getPlayer()) {
-            if (event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
-                final double deltaXZ = Math.abs(data.getPositionProcessor().getDeltaXZ());
-                final double lastDeltaXZ = Math.abs(data.getPositionProcessor().getLastDeltaXZ());
-
-                final double deltaY = Math.abs(data.getPositionProcessor().getDeltaY());
-                final double lastDeltaY = Math.abs(data.getPositionProcessor().getLastDeltaY());
-
-                final boolean exempt = isExempt(ExemptType.JOINED);
-                final boolean invalid = deltaXZ > 10.0 || lastDeltaXZ > 10.0 || deltaY > 10.0 || lastDeltaY > 10.0;
-
-                if (invalid && !exempt) fail();
-            }
-        }
     }
 }

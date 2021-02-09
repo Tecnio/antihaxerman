@@ -43,7 +43,7 @@ public final class ScaffoldB extends Check {
             final double acceleration = deltaXZ - lastDeltaXZ;
 
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VELOCITY, ExemptType.VEHICLE, ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.PISTON, ExemptType.CHUNK, ExemptType.WEB, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.FLYING, ExemptType.LIQUID);
-            final boolean invalid = deltaYaw > 10.0F && acceleration >= 0.0 && placing;
+            final boolean invalid = deltaYaw > 10.0F && acceleration >= -1.0E-2 && placing;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {
@@ -54,7 +54,7 @@ public final class ScaffoldB extends Check {
             }
 
             placing = false;
-        } else if (packet.isBlockPlace()) {
+        } else if (packet.isBukkitBlockPlace()) {
             placing = true;
         }
     }

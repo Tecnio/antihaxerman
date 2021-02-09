@@ -17,24 +17,18 @@
 
 package me.tecnio.antihaxerman.check.impl.player.fastplace;
 
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 
 @CheckInfo(name = "FastPlace", type = "A", description = "Checks if player placing blocks too fast.")
-public final class FastPlaceA extends Check implements Listener {
+public final class FastPlaceA extends Check {
 
     private int blocks, movements;
 
     public FastPlaceA(final PlayerData data) {
         super(data);
-        AntiHaxerman.INSTANCE.getPlugin().getServer().getPluginManager().registerEvents(this, AntiHaxerman.INSTANCE.getPlugin());
     }
 
     @Override
@@ -43,19 +37,14 @@ public final class FastPlaceA extends Check implements Listener {
             ++movements;
 
             if (movements >= 20) {
-                if (blocks > 18) {
+                if (blocks > 16) {
                     fail();
                 }
 
                 movements = 0;
                 blocks = 0;
             }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onBlockPlace(final BlockPlaceEvent event) {
-        if (event.getPlayer() == data.getPlayer()) {
+        } else if (packet.isBukkitBlockPlace()) {
             ++blocks;
         }
     }

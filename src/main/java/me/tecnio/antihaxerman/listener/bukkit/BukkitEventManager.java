@@ -17,15 +17,17 @@
 
 package me.tecnio.antihaxerman.listener.bukkit;
 
+import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
+import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.manager.PlayerDataManager;
+import me.tecnio.antihaxerman.packet.Packet;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public final class BukkitEventManager implements Listener {
-
     @EventHandler
     public void onPlayerInteract(final PlayerInteractEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
@@ -39,7 +41,8 @@ public final class BukkitEventManager implements Listener {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
         if (data != null) {
             data.getActionProcessor().handleBukkitPlace();
+            AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(data, new Packet(Packet.Direction.RECEIVE,
+                    new NMSPacket(event), Byte.MAX_VALUE, System.currentTimeMillis()));
         }
     }
-
 }

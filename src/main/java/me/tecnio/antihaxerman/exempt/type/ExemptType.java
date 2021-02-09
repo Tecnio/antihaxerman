@@ -38,7 +38,7 @@ public enum ExemptType {
 
     TELEPORT(data -> data.getPositionProcessor().isTeleported()),
 
-    TELEPORT_DELAY(data -> data.getPositionProcessor().getTeleportTicks() > 10),
+    TELEPORT_DELAY(data -> data.getPositionProcessor().getTeleportTicks() < 5),
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
@@ -76,7 +76,11 @@ public enum ExemptType {
 
     JOINED(data -> System.currentTimeMillis() - data.getJoinTime() < 5000L),
 
-    LAGGING(data -> data.getFlying() - data.getLastFlying() < 5),
+    LAGGING(data -> {
+        final long delta = data.getFlying() - data.getLastFlying();
+
+        return delta > 100 || delta < 2;
+    }),
 
     CREATIVE(data -> data.getPlayer().getGameMode() == GameMode.CREATIVE),
 

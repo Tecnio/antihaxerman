@@ -28,8 +28,6 @@ import me.tecnio.antihaxerman.util.type.EvictingList;
 @CheckInfo(name = "Timer", type = "C", description = "Checks for game speed changes.")
 public final class TimerC extends Check {
 
-    // Bc 40 timer is bypassing I needed help GladUrBad said do this if no worky I die.
-
     private final EvictingList<Long> samples = new EvictingList<>(50);
     private long lastFlying;
 
@@ -43,7 +41,7 @@ public final class TimerC extends Check {
             final long now = now();
             final long delta = now - lastFlying;
 
-            if (delta > 1) {
+            if (delta > 0) {
                 samples.add(delta);
             }
 

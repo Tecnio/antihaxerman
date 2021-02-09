@@ -71,6 +71,10 @@ public final class Packet {
         return isReceiving() && packetId == PacketType.Play.Client.BLOCK_PLACE;
     }
 
+    public boolean isBukkitBlockPlace() {
+        return isReceiving() && packetId == Byte.MAX_VALUE;
+    }
+
     public boolean isBlockDig() {
         return isReceiving() && packetId == PacketType.Play.Client.BLOCK_DIG;
     }

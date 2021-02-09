@@ -30,7 +30,6 @@ import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
 import me.tecnio.antihaxerman.check.impl.combat.reach.ReachA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityA;
 import me.tecnio.antihaxerman.check.impl.combat.velocity.VelocityB;
-import me.tecnio.antihaxerman.check.impl.movement.chunk.ChunkA;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbA;
 import me.tecnio.antihaxerman.check.impl.movement.fastclimb.FastClimbB;
 import me.tecnio.antihaxerman.check.impl.movement.flight.FlightA;
@@ -69,6 +68,7 @@ import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldB;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerC;
+import me.tecnio.antihaxerman.check.impl.player.timer.TimerD;
 import me.tecnio.antihaxerman.check.impl.player.tower.TowerA;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -114,7 +114,6 @@ public final class CheckManager {
             FlightB.class,
             FlightC.class,
             FlightD.class,
-            ChunkA.class,
             StrafeA.class,
             MotionA.class,
             MotionB.class,
@@ -142,6 +141,7 @@ public final class CheckManager {
             TimerA.class,
             TimerB.class,
             TimerC.class,
+            TimerD.class,
             PostA.class,
             PostB.class,
             PostC.class,

@@ -1,12 +1,18 @@
 /*
- *  Copyright (C) 2020-2021 Tecnio
+ *  Copyright (C) 2020 - 2021 Tecnio
  *
- *  This check is different than others, you can't take it or include it in any other application/project.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  The license may allow you to use this check but in this scenario the license is not effective.
- *  And for anyone who opposes claiming license is GPLv3 I clearly have written a different license here.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  Be aware.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package me.tecnio.antihaxerman.check.impl.combat.aim;
@@ -16,11 +22,8 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Aim", type = "H", description = "L ez kot")
+@CheckInfo(name = "Aim", type = "H", description = "Checks for unlikely yaw deltas.")
 public final class AimH extends Check {
-
-    // Read the license above
-    private float lastDeltaYaw;
 
     public AimH(final PlayerData data) {
         super(data);
@@ -28,6 +31,19 @@ public final class AimH extends Check {
 
     @Override
     public void handle(final Packet packet) {
+        if (packet.isRotation()) {
+            final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
+            final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
+            final boolean invalid = deltaYaw == 0.0F && deltaPitch >= 20.0F;
+
+            if (invalid) {
+                if (increaseBuffer() > 1) {
+                    fail();
+                }
+            } else {
+                decreaseBufferBy(0.05);
+            }
+        }
     }
 }

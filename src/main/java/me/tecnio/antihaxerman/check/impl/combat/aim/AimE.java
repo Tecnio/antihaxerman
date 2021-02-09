@@ -40,12 +40,17 @@ public final class AimE extends Check {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
             final boolean exempt = isExempt(ExemptType.TELEPORT_DELAY, ExemptType.TELEPORT);
-            final boolean invalid = deltaYaw < 3.0F && lastDeltaYaw > 20F && lastLastDeltaYaw < 3.0F;
+            final boolean invalid = deltaYaw < 2.5F && lastDeltaYaw > 20F && lastLastDeltaYaw < 2.5F;
+
+            if (exempt) {
+                lastDeltaYaw = deltaYaw;
+                lastLastDeltaYaw = deltaYaw;
+            }
 
             if (invalid && !exempt) fail();
 
-            lastLastDeltaYaw = lastDeltaYaw;
-            lastDeltaYaw = deltaYaw;
+            this.lastLastDeltaYaw = lastDeltaYaw;
+            this.lastDeltaYaw = deltaYaw;
         }
     }
 }

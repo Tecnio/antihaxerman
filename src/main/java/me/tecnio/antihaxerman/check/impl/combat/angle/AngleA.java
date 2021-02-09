@@ -22,6 +22,7 @@ import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.PlayerUtil;
@@ -72,7 +73,7 @@ public final class AngleA extends Check {
                     })
                     .min().orElse(-1);
 
-            final boolean exempt = data.getCombatProcessor().getDistance() < 1.8;
+            final boolean exempt = data.getCombatProcessor().getDistance() < 1.8 || isExempt(ExemptType.LAGGING);
             final boolean invalid = angle > 0.6;
 
             if (invalid && !exempt) {

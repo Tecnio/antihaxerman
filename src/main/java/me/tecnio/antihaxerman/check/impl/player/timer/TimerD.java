@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package me.tecnio.antihaxerman.check.impl.movement.chunk;
+package me.tecnio.antihaxerman.check.impl.player.timer;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
@@ -23,23 +23,39 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Chunk", type = "A", description = "Checks for vertical motion on an unloaded chunk.")
-public final class ChunkA extends Check {
-    public ChunkA(final PlayerData data) {
+@CheckInfo(name = "Timer", type = "D", description = "Uses a balance/allowance system to flag game speed changes.")
+public final class TimerD extends Check {
+
+    private long balance = 0L;
+    private long lastFlying = 0L;
+
+    public TimerD(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            if (isExempt(ExemptType.CHUNK)) {
-                final double deltaY = data.getPositionProcessor().getDeltaY();
+            final long now = System.currentTimeMillis();
 
-                final boolean exempt = isExempt(ExemptType.TELEPORT);
-                final boolean invalid = deltaY > 0.0;
+            handle: {
+                if (isExempt(ExemptType.TPS, ExemptType.JOINED)) break handle;
+                if (lastFlying == 0L) break handle;
 
-                if (invalid && !exempt) fail();
+                final long delay = now - lastFlying;
+
+                balance += 50L;
+                balance -= delay;
+
+                if (balance > 0L) {
+                    fail("balance: " + balance);
+                    balance = -50L;
+                }
             }
+
+            this.lastFlying = now;
+        } else if (packet.isTeleport()) {
+            balance -= 55L;
         }
     }
 }

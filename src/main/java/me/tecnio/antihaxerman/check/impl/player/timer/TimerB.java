@@ -40,14 +40,14 @@ public final class TimerB extends Check {
         if (packet.isFlying()) {
             final long now = now();
 
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.VEHICLE);
 
             handle: {
                 if (exempt) break handle;
 
                 final long delay = now - lastFlying;
 
-                if (delay != 0) {
+                if (delay > 0) {
                     samples.add(delay);
                 }
 

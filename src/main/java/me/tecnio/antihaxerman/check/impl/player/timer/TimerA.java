@@ -43,12 +43,14 @@ public final class TimerA extends Check {
         if (packet.isFlying()) {
             final long now = now();
 
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.LAGGING, ExemptType.VEHICLE);
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.JOINED, ExemptType.VEHICLE);
 
             handle: {
                 if (exempt) break handle;
 
                 final long delay = now - lastFlying;
+                if (delay < 1) break handle;
+
                 movingStats.add(delay);
 
                 final double threshold = 7.07;

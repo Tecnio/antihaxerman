@@ -17,37 +17,28 @@
 
 package me.tecnio.antihaxerman.check.impl.player.tower;
 
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 @CheckInfo(name = "Tower", type = "A", description = "Checks if player is towering up too fast.")
-public final class TowerA extends Check implements Listener {
+public final class TowerA extends Check {
 
     private Location lastLocation;
     private int ticksSincePlace;
 
     public TowerA(final PlayerData data) {
         super(data);
-        AntiHaxerman.INSTANCE.getPlugin().getServer().getPluginManager().registerEvents(this, AntiHaxerman.INSTANCE.getPlugin());
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            ++ticksSincePlace;
-        }
-    }
+        if (packet.isBukkitBlockPlace()) {
+            final BlockPlaceEvent event = (BlockPlaceEvent) packet.getRawPacket().getRawNMSPacket();
 
-    @EventHandler
-    public void onBlockPlace(final BlockPlaceEvent event) {
-        if (event.getPlayer() == data.getPlayer()) {
             final Location location = event.getBlock().getLocation();
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
@@ -63,10 +54,11 @@ public final class TowerA extends Check implements Listener {
 
             lastLocation = location;
             ticksSincePlace = 0;
+        } else if (packet.isFlying()) {
+            ++ticksSincePlace;
         }
     }
 
-    // Ugly I know but I don't care.
     private boolean placementUnder(final Location blockLocation) {
         final double x = data.getPositionProcessor().getX();
         final double y = data.getPositionProcessor().getY();
@@ -78,6 +70,11 @@ public final class TowerA extends Check implements Listener {
 
         final double lastBlockY = lastLocation.getY();
 
-        return Math.floor(y - 0.25) == blockY && blockY < y && lastBlockY < y && lastBlockY < blockY && Math.abs(x - blockX) <= 0.8 && Math.abs(z - blockZ) <= 0.8;
+        return Math.floor(y - 0.25) == blockY
+                && blockY < y
+                && lastBlockY < y
+                && lastBlockY < blockY
+                && Math.abs(x - blockX) <= 0.8
+                && Math.abs(z - blockZ) <= 0.8;
     }
 }

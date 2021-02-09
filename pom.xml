@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>dev-59aa347e4e-1</version>
+            <version>v1.8-pre-3</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

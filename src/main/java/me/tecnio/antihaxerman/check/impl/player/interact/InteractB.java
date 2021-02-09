@@ -68,8 +68,8 @@ public final class InteractB extends Check {
     private boolean interactedCorrectly(final Location blockLoc, final Location playerLoc, final Direction face) {
         switch (face) {
             case UP: {
-                final double limit = blockLoc.getY() + 0.03;
-                return playerLoc.getY() > limit;
+                //final double limit = blockLoc.getY() + 0.03;
+                return true;/*playerLoc.getY() > limit;*/
             }
             case DOWN: {
                 final double limit = blockLoc.getY() - 0.03;

@@ -19,8 +19,8 @@ package me.tecnio.antihaxerman.command;
 
 import me.tecnio.antihaxerman.AntiHaxermanPlugin;
 import me.tecnio.antihaxerman.command.impl.*;
-import me.tecnio.antihaxerman.util.ColorUtil;
 import me.tecnio.antihaxerman.config.Config;
+import me.tecnio.antihaxerman.util.ColorUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,7 +51,7 @@ public final class CommandManager implements CommandExecutor {
                     final String commandName = antiHaxermanCommand.getCommandInfo().name();
                     if (commandName.equals(args[0])) {
                         if (!antiHaxermanCommand.handle(commandSender, command, string, args)) {
-                            commandSender.sendMessage(Config.COMMAND_PREFIX  + " Usage: /antihaxerman " +
+                            commandSender.sendMessage(Config.COMMAND_PREFIX + " Usage: /antihaxerman " +
                                     antiHaxermanCommand.getCommandInfo().name() + " " +
                                     antiHaxermanCommand.getCommandInfo().syntax());
                         }
@@ -62,7 +62,7 @@ public final class CommandManager implements CommandExecutor {
                 commandSender.sendMessage(ColorUtil.translate("&8&m--------------------------------------------------"));
                 commandSender.sendMessage(ColorUtil.translate("&cAntiHaxerman Commands:\n" + " \n"));
                 for (final AntiHaxermanCommand antiHaxermanCommand : commands) {
-                    commandSender.sendMessage(ColorUtil.translate( "&c/antihaxerman " +
+                    commandSender.sendMessage(ColorUtil.translate("&c/antihaxerman " +
                             antiHaxermanCommand.getCommandInfo().name() + " " +
                             antiHaxermanCommand.getCommandInfo().syntax()));
                 }
