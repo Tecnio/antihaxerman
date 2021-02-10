@@ -32,8 +32,14 @@ public final class AHMPunishEvent extends Event {
     private final int currentViolationLevel;
     private final double currentBuffer;
 
+    private static final HandlerList handlers = new HandlerList();
+
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }
