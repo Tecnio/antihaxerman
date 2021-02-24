@@ -62,7 +62,7 @@ public final class AimA extends Check {
                 final boolean invalidX = moduloX > 90.d && floorModuloX > 0.1;
                 final boolean invalidY = moduloY > 90.d && floorModuloY > 0.1;
 
-                if (data.getRotationProcessor().isCinematic()) decreaseBufferBy(0.1);
+                if (data.getRotationProcessor().isCinematic()) decreaseBufferBy(0.15);
 
                 if (invalidX && invalidY) {
                     if (increaseBuffer() > 6) {

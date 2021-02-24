@@ -22,6 +22,8 @@ import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.impl.PostPlayerInjectEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
+import io.github.retrooper.packetevents.packettype.PacketType.Play.*;
+import io.github.retrooper.packetevents.utils.immutableset.ImmutableSetCustom;
 import io.github.retrooper.packetevents.utils.player.ClientVersion;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -39,6 +41,18 @@ public final class NetworkManager extends PacketListenerDynamic {
 
     public NetworkManager() {
         super(PacketEventPriority.MONITOR);
+
+        // Filter all of the packets because retrooper best.
+        serverSidedPlayAllowance = new ImmutableSetCustom<>();
+
+        // Whitelist packets that we want to listen.
+        addServerSidedPlayFilter(
+                Server.ENTITY_VELOCITY,
+                Server.TRANSACTION,
+                Server.KEEP_ALIVE,
+                Server.POSITION,
+                Server.HELD_ITEM_SLOT
+        );
     }
 
     @Override

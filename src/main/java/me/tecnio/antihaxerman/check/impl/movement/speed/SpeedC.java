@@ -61,12 +61,17 @@ public final class SpeedC extends Check {
                 airLimit += Math.hypot(x, z);
             }
 
+            if (data.getPositionProcessor().isNearStair()) {
+                airLimit += 0.91F;
+                groundLimit += 0.91F;
+            }
+
             if (isExempt(ExemptType.ICE, ExemptType.SLIME)) {
                 airLimit += 0.34F;
                 groundLimit += 0.34F;
             }
 
-            if (isExempt(ExemptType.UNDERBLOCK)) {
+            if (data.getPositionProcessor().getSinceBlockNearHeadTicks() < 3) {
                 airLimit += 0.91F;
                 groundLimit += 0.91F;
             }
@@ -80,12 +85,13 @@ public final class SpeedC extends Check {
                 airLimit += data.getVelocityProcessor().getVelocityXZ() + 0.05;
             }
 
-            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON,
+                    ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
 
             if (!exempt) {
                 if (airTicks > 0) {
                     if (deltaXZ > airLimit) {
-                        if (increaseBuffer() > 3) {
+                        if (increaseBuffer() > 2) {
                             fail();
                         }
                     } else {
@@ -93,7 +99,7 @@ public final class SpeedC extends Check {
                     }
                 } else {
                     if (deltaXZ > groundLimit) {
-                        if (increaseBuffer() > 3) {
+                        if (increaseBuffer() > 2) {
                             fail();
                         }
                     } else {

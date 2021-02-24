@@ -36,6 +36,8 @@ public final class FastClimbB extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            final int sinceGround = data.getPositionProcessor().getClientAirTicks();
+
             final List<Block> blocks = data.getPositionProcessor().getBlocks();
             if (blocks == null) return;
 
@@ -44,15 +46,17 @@ public final class FastClimbB extends Check {
             final float deltaY = (float) data.getPositionProcessor().getDeltaY();
             final float limit = 0.1176F;
 
+            final float groundLimit = sinceGround < 4 ? 0.42F / (sinceGround / 2.0F) : 0.0F;
+
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.BOAT, ExemptType.VEHICLE);
-            final boolean invalid = deltaY > limit && onClimbable;
+            final boolean invalid = deltaY > (limit + groundLimit) && onClimbable;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 3 || deltaY > (limit * 5.0F)) {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.25);
+                decreaseBufferBy(0.1);
             }
         }
     }

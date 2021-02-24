@@ -31,7 +31,7 @@ public final class AimG extends Check {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
             final float lastDeltaYaw = data.getRotationProcessor().getLastDeltaYaw();
 
-            if (deltaYaw < 0.5) {
+            if (deltaYaw > 0.5) {
                 final long expandedYaw = (long) (deltaYaw * MathUtil.EXPANDER);
                 final long lastExpandedYaw = (long) (lastDeltaYaw * MathUtil.EXPANDER);
 
@@ -42,8 +42,8 @@ public final class AimG extends Check {
                 final double moduloYaw = Math.abs(yaw % constantYaw);
 
                 if (moduloYaw < 1.0E-5) {
-                    if (increaseBuffer() > 3) {
-                        fail(moduloYaw);
+                    if (increaseBuffer() > 2) {
+                        fail();
                     }
                 } else {
                     decreaseBufferBy(0.05);

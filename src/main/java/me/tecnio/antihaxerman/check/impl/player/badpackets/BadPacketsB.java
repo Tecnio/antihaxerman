@@ -21,6 +21,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.Wrap
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "BadPackets", type = "B", description = "Checks for invalid sprint packets.")
@@ -39,7 +40,9 @@ public final class BadPacketsB extends Check {
 
             if (sprinting) {
                 if (increaseBuffer() > 1) {
-                    fail();
+                    if (!isExempt(ExemptType.TELEPORT)) {
+                        fail();
+                    }
                 }
             }
         } else if (packet.isFlying()) {

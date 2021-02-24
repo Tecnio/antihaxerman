@@ -22,6 +22,7 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.List;
@@ -43,9 +44,13 @@ public final class JesusB extends Check {
 
             if (blocks == null || blocksBelow == null || blocksAbove == null) return;
 
-            final boolean liquidBelow = blocksBelow.stream().allMatch(Block::isLiquid);
+            final boolean containsLiquid = blocksBelow.stream().anyMatch(Block::isLiquid);
+            final boolean doesntContainSolid = blocksBelow.stream().noneMatch(block -> block.getType().isSolid());
+
+            final boolean liquidBelow = containsLiquid && doesntContainSolid;
+
             final boolean noLiquidAbove = blocksAbove.stream().noneMatch(Block::isLiquid);
-            final boolean noBlocks = blocks.stream().anyMatch(block -> block.getType().isSolid());
+            final boolean noBlocks = blocks.stream().anyMatch(block -> block.getType().isSolid() || (block.getType() != Material.AIR && !block.isLiquid()));
 
             final boolean fullySubmerged = data.getPositionProcessor().isFullySubmergedInLiquidStat();
 

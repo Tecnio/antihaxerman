@@ -34,12 +34,9 @@ import java.util.Map;
 public final class Config {
 
     public boolean TESTMODE;
-
     public String PREFIX, NO_PERMS, COMMAND_PREFIX, ALERT_FORMAT, COMMAND_NAME, LOG_FORMAT;
-
     public int VL_TO_ALERT, CLEAR_VIOLATIONS_DELAY;
-
-    public boolean BYPASS_OP, LOGGING_ENABLED, LOG_TO_CONSOLE, EARLY_INJECT, ASYNC_INJECT_UNINJECT, API_ENABLED;
+    public boolean BYPASS_OP, LOGGING_ENABLED, LOG_TO_CONSOLE, API_ENABLED, UPDATE_CHECKER_ENABLED;
 
     public List<String> ENABLED_CHECKS = new ArrayList<>();
     public List<String> SETBACK_CHECKS = new ArrayList<>();
@@ -60,13 +57,11 @@ public final class Config {
 
             LOGGING_ENABLED = getBoolean("logging.enabled");
             LOG_FORMAT = getString("logging.log-format");
-
             LOG_TO_CONSOLE = getBoolean("violations.alert-console");
 
-            EARLY_INJECT = getBoolean("general.early-inject");
-            ASYNC_INJECT_UNINJECT = getBoolean("general.async-inject-uninject");
-
             API_ENABLED = getBoolean("api.enabled");
+
+            UPDATE_CHECKER_ENABLED = getBoolean("update-checker.enabled");
 
             VL_TO_ALERT = getInteger("violations.minimum-vl");
             ALERT_FORMAT = getString("violations.alert-format");

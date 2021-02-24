@@ -22,6 +22,7 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.List;
@@ -40,21 +41,24 @@ public final class JesusA extends Check {
 
             if (blocks == null || blocksBelow == null) return;
 
-            final boolean onLiquid = blocksBelow.stream().allMatch(Block::isLiquid);
-            final boolean noBlock = blocksBelow.stream().anyMatch(block -> block.getType().isSolid());
+            final boolean containsLiquid = blocksBelow.stream().anyMatch(Block::isLiquid);
+            final boolean doesntContainSolid = blocksBelow.stream().noneMatch(block -> block.getType().isSolid());
+
+            final boolean liquidBelow = containsLiquid && doesntContainSolid;
+            final boolean noBlocks = blocks.stream().anyMatch(block -> block.getType().isSolid() || (block.getType() != Material.AIR && !block.isLiquid()));
 
             final boolean clientGround = data.getPositionProcessor().isOnGround();
             final boolean serverGround = data.getPositionProcessor().isMathematicallyOnGround();
 
             final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.CHUNK);
-            final boolean invalid = (clientGround || serverGround) && onLiquid && !noBlock;
+            final boolean invalid = (clientGround || serverGround) && liquidBelow && !noBlocks;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 5) {
+                if (increaseBuffer() > 2) {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.50);
+                decreaseBuffer();
             }
         }
     }

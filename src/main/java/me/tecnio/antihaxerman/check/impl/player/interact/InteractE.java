@@ -18,6 +18,7 @@
 package me.tecnio.antihaxerman.check.impl.player.interact;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.WrappedPacketInBlockPlace;
+import io.github.retrooper.packetevents.utils.player.Direction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -37,6 +38,8 @@ public final class InteractE extends Check {
     public void handle(final Packet packet) {
         if (packet.isBlockPlace()) {
             final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
+
+            if (wrapper.getDirection() == Direction.INVALID) fail();
 
             final float x = wrapper.getCursorX();
             final float y = wrapper.getCursorY();

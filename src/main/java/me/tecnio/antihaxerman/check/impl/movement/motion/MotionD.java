@@ -37,7 +37,7 @@ public final class MotionD extends Check {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
             final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1;
-            final double modifierVelocity = isExempt(ExemptType.VELOCITY) ? data.getVelocityProcessor().getVelocityY() + 0.15 : 0.0;
+            final double modifierVelocity = isExempt(ExemptType.VELOCITY) ? data.getVelocityProcessor().getVelocityY() + 0.5 : 0.0;
 
             final double maximum = 0.6 + modifierJump + modifierVelocity;
 

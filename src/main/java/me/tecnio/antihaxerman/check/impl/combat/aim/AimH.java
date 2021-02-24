@@ -21,6 +21,7 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 
 @CheckInfo(name = "Aim", type = "H", description = "Checks for unlikely yaw deltas.")
 public final class AimH extends Check {
@@ -35,7 +36,7 @@ public final class AimH extends Check {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            final boolean invalid = deltaYaw == 0.0F && deltaPitch >= 20.0F;
+            final boolean invalid = MathUtil.isExponentiallySmall(deltaYaw) && deltaPitch >= 20.0F;
 
             if (invalid) {
                 if (increaseBuffer() > 1) {

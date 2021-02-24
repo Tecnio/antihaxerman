@@ -178,7 +178,7 @@ public class MathUtil {
     }
 
     public boolean isExponentiallySmall(final Number number) {
-        return number.doubleValue() < 1 && Double.toString(number.doubleValue()).contains("E");
+        return number.doubleValue() < 1 && (Double.toString(number.doubleValue()).contains("E") || number.doubleValue() == 0.0);
     }
 
     public boolean isExponentiallyLarge(final Number number) {

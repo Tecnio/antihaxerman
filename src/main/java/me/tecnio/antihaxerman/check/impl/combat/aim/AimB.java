@@ -41,11 +41,11 @@ public final class AimB extends Check {
             final boolean invalid = gcd < 131072L && deltaPitch > 0.5F && deltaPitch < 20.0F && !cinematic;
 
             if (invalid) {
-                if (increaseBuffer() > 7) {
+                if (increaseBuffer() > 8) {
                     fail();
                 }
             } else {
-                decreaseBuffer();
+                decreaseBufferBy(2.5);
             }
         }
     }

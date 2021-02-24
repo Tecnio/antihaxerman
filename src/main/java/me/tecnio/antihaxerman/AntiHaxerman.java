@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman;
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
 import lombok.Getter;
+import lombok.Setter;
 import me.tecnio.antihaxerman.command.CommandManager;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.listener.bukkit.BukkitEventManager;
@@ -35,7 +36,6 @@ import me.tecnio.antihaxerman.update.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.messaging.Messenger;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,7 +58,7 @@ public enum AntiHaxerman {
     private final String version = "3.0.0";
     private final UpdateChecker updateChecker = new UpdateChecker();
 
-    private boolean updateAvailable;
+    @Setter private boolean updateAvailable;
 
     public void load(final AntiHaxermanPlugin plugin) {
         this.plugin = plugin;
@@ -89,10 +89,7 @@ public enum AntiHaxerman {
 
         registerEvents();
 
-        try {
-            updateAvailable = updateChecker.isUpdateAvailable();
-        } catch (final IOException ignored) {
-        }
+        if (Config.UPDATE_CHECKER_ENABLED) updateChecker.checkUpdates();
 
         if (updateAvailable) {
             Bukkit.getLogger().info("New update available for AntiHaxerman! You have " + version + " latest is " +  updateChecker.getLatestVersion() + ".");
@@ -111,9 +108,9 @@ public enum AntiHaxerman {
 
     private void setupPacketEvents() {
         PacketEvents.create(plugin).getSettings()
-                .injectAsync(Config.ASYNC_INJECT_UNINJECT)
-                .ejectAsync(Config.ASYNC_INJECT_UNINJECT)
-                .injectEarly(Config.EARLY_INJECT)
+                .injectAsync(true)
+                .ejectAsync(true)
+                .injectEarly(true)
                 .backupServerVersion(ServerVersion.v_1_7_10);
 
         PacketEvents.get().load();

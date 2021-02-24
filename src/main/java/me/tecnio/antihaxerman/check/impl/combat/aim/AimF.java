@@ -44,11 +44,11 @@ public final class AimF extends Check {
                 final double moduloPitch = Math.abs(pitch % constantPitch);
 
                 if (moduloPitch < 1.0E-5) {
-                    if (increaseBuffer() > 2) {
-                        fail(moduloPitch);
+                    if (increaseBuffer() > 1) {
+                        fail();
                     }
                 } else {
-                    decreaseBufferBy(0.05);
+                    decreaseBufferBy(0.01);
                 }
             }
         }

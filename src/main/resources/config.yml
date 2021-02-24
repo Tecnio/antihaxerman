@@ -35,11 +35,8 @@ bypass:
   # When enabled this will bypass players that have OP and the players with the permission "antihaxerman.bypass".
   bypass-operators: false
 
-general:
-  # Early inject allows us to see client version etc.
-  early-inject: true
-  # Enable async injection and uninjection. Enabled by default for performance reasons but will cost us reload support. (RECOMMENDED TO KEEP IT ENABLED)
-  async-inject-uninject: true
+update-checker:
+  enabled: true
 
 api:
   # API is disabled by default for performance reasons. Recommended to keep disabled unless the API is used.
@@ -262,6 +259,10 @@ checks:
         max-violations: 50
         punish-command: ''
       b:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      c:
         enabled: true
         max-violations: 50
         punish-command: ''

@@ -64,6 +64,8 @@ public enum ExemptType {
 
     PISTON(data -> data.getPositionProcessor().isNearPiston()),
 
+    STAIR(data -> data.getPositionProcessor().isNearStair()),
+
     VOID(data -> data.getPositionProcessor().getY() < 4),
 
     COMBAT(data -> data.getCombatProcessor().getHitTicks() < 5),
