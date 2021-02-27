@@ -27,7 +27,7 @@ import me.tecnio.antihaxerman.listener.bukkit.BukkitEventManager;
 import me.tecnio.antihaxerman.listener.bukkit.RegistrationListener;
 import me.tecnio.antihaxerman.listener.packet.NetworkManager;
 import me.tecnio.antihaxerman.manager.CheckManager;
-import me.tecnio.antihaxerman.manager.ClientBrandListener;
+//import me.tecnio.antihaxerman.manager.ClientBrandListener;
 import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import me.tecnio.antihaxerman.manager.TickManager;
 import me.tecnio.antihaxerman.packet.processor.ReceivingPacketProcessor;
@@ -83,7 +83,9 @@ public enum AntiHaxerman {
         tickManager.start();
 
         final Messenger messenger = Bukkit.getMessenger();
-        messenger.registerIncomingPluginChannel(plugin, "MC|Brand", new ClientBrandListener());
+        /*try {
+            messenger.registerIncomingPluginChannel(plugin, "MC|Brand", new ClientBrandListener());
+        } catch (Throwable t) {t.printStackTrace();}*/
 
         startTime = System.currentTimeMillis();
 
@@ -108,9 +110,6 @@ public enum AntiHaxerman {
 
     private void setupPacketEvents() {
         PacketEvents.create(plugin).getSettings()
-                .injectAsync(true)
-                .ejectAsync(true)
-                .injectEarly(true)
                 .backupServerVersion(ServerVersion.v_1_7_10);
 
         PacketEvents.get().load();
@@ -127,7 +126,7 @@ public enum AntiHaxerman {
     private void registerEvents() {
         Bukkit.getServer().getPluginManager().registerEvents(new RegistrationListener(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new BukkitEventManager(), plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(new ClientBrandListener(), plugin);
+        //Bukkit.getServer().getPluginManager().registerEvents(new ClientBrandListener(), plugin);
 
         PacketEvents.get().getEventManager().registerListener(new NetworkManager());
     }

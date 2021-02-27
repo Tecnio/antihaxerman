@@ -37,7 +37,7 @@ public final class ScaffoldA extends Check {
             final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
 
             final double locationY = data.getPositionProcessor().getY();
-            final double blockY = wrapper.getY();
+            final double blockY = wrapper.getBlockPosition().getY();
 
             final Direction direction = wrapper.getDirection();
 

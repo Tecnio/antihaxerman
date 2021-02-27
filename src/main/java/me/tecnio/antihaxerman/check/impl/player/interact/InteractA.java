@@ -37,7 +37,7 @@ public final class InteractA extends Check {
         if (packet.isBlockDig()) {
             final WrappedPacketInBlockDig wrapper = new WrappedPacketInBlockDig(packet.getRawPacket());
 
-            final Block block = BlockUtil.getBlockAsync(new Location(data.getPlayer().getWorld(), wrapper.getX(), wrapper.getY(), wrapper.getZ()));
+            final Block block = BlockUtil.getBlockAsync(new Location(data.getPlayer().getWorld(), wrapper.getBlockPosition().getX(), wrapper.getBlockPosition().getY(), wrapper.getBlockPosition().getZ()));
             if (block == null) return;
 
             if (block.isLiquid()) {
