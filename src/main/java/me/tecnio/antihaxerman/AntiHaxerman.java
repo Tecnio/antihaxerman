@@ -108,9 +108,8 @@ public enum AntiHaxerman {
 
     private void setupPacketEvents() {
         PacketEvents.create(plugin).getSettings()
-                .injectAsync(true)
-                .ejectAsync(true)
-                .injectEarly(true)
+                .compatInjector(false)
+                .checkForUpdates(false)
                 .backupServerVersion(ServerVersion.v_1_7_10);
 
         PacketEvents.get().load();

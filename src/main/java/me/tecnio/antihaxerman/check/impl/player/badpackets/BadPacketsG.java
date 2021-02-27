@@ -34,9 +34,7 @@ public final class BadPacketsG extends Check {
         if (packet.isUseEntity()) {
             final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
 
-            if (data.getPlayer().getEntityId() == wrapper.getEntityId()) {
-                ban();
-            }
+            if (data.getPlayer().getEntityId() == wrapper.getEntityId()) ban();
         }
     }
 }

@@ -41,7 +41,11 @@ public final class InteractB extends Check {
         if (packet.isBlockPlace()) {
             final WrappedPacketInBlockPlace wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
 
-            final Location blockLocation = new Location(data.getPlayer().getWorld(), wrapper.getX(), wrapper.getY(), wrapper.getZ());
+            final Location blockLocation = new Location(data.getPlayer().getWorld(),
+                    wrapper.getBlockPosition().getX(),
+                    wrapper.getBlockPosition().getY(),
+                    wrapper.getBlockPosition().getZ()
+            );
             final Direction direction = wrapper.getDirection();
 
             final Block block = BlockUtil.getBlockAsync(blockLocation);

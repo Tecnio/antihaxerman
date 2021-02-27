@@ -35,7 +35,7 @@ public final class BadPacketsH extends Check {
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
             final int groundTicks = data.getPositionProcessor().getGroundTicks();
-            final int airTicks = data.getPositionProcessor().getAirTicks();
+            final int airTicks = data.getPositionProcessor().getClientAirTicks();
 
             final boolean exempt = isExempt(ExemptType.SLIME);
             final boolean invalid = deltaY == 0.0 && groundTicks == 1 && airTicks == 0;

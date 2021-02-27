@@ -44,7 +44,11 @@ public final class InteractC extends Check {
         } else if (packet.isFlying()) {
             if (wrapper != null) {
                 final Vector eyeLocation = data.getPlayer().getEyeLocation().toVector();
-                final Vector blockLocation = new Vector(wrapper.getX(), wrapper.getY(), wrapper.getZ());
+                final Vector blockLocation = new Vector(
+                        wrapper.getBlockPosition().getX(),
+                        wrapper.getBlockPosition().getY(),
+                        wrapper.getBlockPosition().getZ()
+                );
 
                 final double deltaXZ = Math.abs(data.getPositionProcessor().getDeltaXZ());
                 final double deltaY = Math.abs(data.getPositionProcessor().getDeltaY());

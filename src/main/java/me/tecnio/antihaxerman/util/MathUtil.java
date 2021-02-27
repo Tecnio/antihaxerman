@@ -19,11 +19,13 @@ package me.tecnio.antihaxerman.util;
 
 import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
-import net.minecraft.server.v1_8_R3.Tuple;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @UtilityClass
 public class MathUtil {
@@ -158,23 +160,6 @@ public class MathUtil {
         } else {
             return data.get(data.size() / 2);
         }
-    }
-
-    public <T extends Number> T getModeNiggar(final Collection<T> collect) {
-        final Map<T, Integer> repeated = new HashMap<>();
-
-        //Sorting each value by how to repeat into a map.
-        collect.forEach(val -> {
-            final int number = repeated.getOrDefault(val, 0);
-
-            repeated.put(val, number + 1);
-        });
-
-        //Calculating the largest value to the key, which would be the mode.
-        return repeated.keySet().stream()
-                .map(key -> new Tuple<>(key, repeated.get(key))) //We map it into a Tuple for easier sorting.
-                .max(Comparator.comparing(Tuple::b, Comparator.naturalOrder()))
-                .orElseThrow(NullPointerException::new).a();
     }
 
     public boolean isExponentiallySmall(final Number number) {

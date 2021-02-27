@@ -40,7 +40,11 @@ public final class InteractD extends Check {
         } else if (packet.isFlying()) {
             if (wrapper != null) {
                 final Vector eyeLocation = data.getPlayer().getEyeLocation().toVector();
-                final Vector blockLocation = new Vector(wrapper.getX(), wrapper.getY(), wrapper.getZ());
+                final Vector blockLocation = new Vector(
+                        wrapper.getBlockPosition().getX(),
+                        wrapper.getBlockPosition().getY(),
+                        wrapper.getBlockPosition().getZ()
+                );
 
                 final Vector directionToDestination = blockLocation.clone().subtract(eyeLocation);
                 final Vector playerDirection = data.getPlayer().getEyeLocation().getDirection();

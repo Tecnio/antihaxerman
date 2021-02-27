@@ -42,9 +42,7 @@ public final class BadPacketsI extends Check {
                 return;
             }
 
-            if (++streak > 20) {
-                ban();
-            }
+            if (++streak > 20) fail();
         } else if (packet.isSteerVehicle()) {
             streak = 0;
         }

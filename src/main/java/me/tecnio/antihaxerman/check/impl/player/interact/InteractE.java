@@ -41,9 +41,9 @@ public final class InteractE extends Check {
 
             if (wrapper.getDirection() == Direction.INVALID) fail();
 
-            final float x = wrapper.getCursorX();
-            final float y = wrapper.getCursorY();
-            final float z = wrapper.getCursorZ();
+            final float x = wrapper.getCursorPosition().getX();
+            final float y = wrapper.getCursorPosition().getY();
+            final float z = wrapper.getCursorPosition().getZ();
 
             for (final float value : new float[]{x, y, z}) {
                 // The variable value cannot be larger than 1 or smaller than 0, as stated here.

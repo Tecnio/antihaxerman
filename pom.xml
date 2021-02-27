@@ -39,6 +39,12 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <finalName>AntiHaxerman</finalName>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.github.retrooper.packetevents</pattern>
+                                    <shadedPattern>me.tecnio.antihaxerman.packetevents</shadedPattern> <!--relocate packetevents package-->
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -79,7 +85,7 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>1.8-pre-5</version>
+            <version>v1.8-pre-5</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

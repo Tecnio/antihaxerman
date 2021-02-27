@@ -33,9 +33,7 @@ public final class BadPacketsA extends Check {
         if (packet.isFlying()) {
             final float pitch = data.getRotationProcessor().getPitch();
 
-            if (Math.abs(pitch)> 90.0f) {
-                ban();
-            }
+            if (Math.abs(pitch) > 90.0F) ban();
         }
     }
 }
