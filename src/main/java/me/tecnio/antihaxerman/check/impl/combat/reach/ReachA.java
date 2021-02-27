@@ -62,7 +62,6 @@ public final class ReachA extends Check {
 
             final Vector origin = new Vector(x, 0.0, z);
 
-
             final double maxDistance = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.0 : 3.0;
             final double distance = data.getTargetLocations().stream()
                     .filter(pair -> Math.abs(now - pair.getY() - latencyInTicks) < 3)
