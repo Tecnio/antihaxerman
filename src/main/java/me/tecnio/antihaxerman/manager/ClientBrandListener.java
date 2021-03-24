@@ -17,7 +17,10 @@
 
 package me.tecnio.antihaxerman.manager;
 
+import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +35,26 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] msg) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
         if (data == null) return;
-        data.setClientBrand(new String(msg, StandardCharsets.UTF_8).substring(1));
+
+        final String clientBrand = new String(msg, StandardCharsets.UTF_8).substring(1);
+
+        data.setClientBrand(clientBrand);
+
+        handle: {
+            if (!Config.CLIENT_ENABLED) break handle;
+
+            if (Config.CLIENT_CASE_SENSITIVE) {
+                if (Config.BLOCKED_CLIENTS.stream().noneMatch(s -> s.contains(clientBrand))) {
+                    break handle;
+                }
+            } else {
+                if (Config.BLOCKED_CLIENTS.stream().noneMatch(s -> s.toLowerCase().contains(clientBrand.toLowerCase()))) {
+                    break handle;
+                }
+            }
+
+            Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> player.kickPlayer(Config.CLIENT_KICK_MESSAGE));
+        }
     }
 
     @EventHandler
@@ -48,5 +70,4 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
             e.printStackTrace();
         }
     }
-
 }

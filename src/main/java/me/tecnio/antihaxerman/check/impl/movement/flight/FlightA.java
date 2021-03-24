@@ -52,7 +52,7 @@ public final class FlightA extends Check {
             final double limit = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY + 0.45 + 0.001 : 0.001;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
-                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB,
+                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,
                     ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID);
             final boolean invalid = difference > limit && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);
 

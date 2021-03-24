@@ -14,9 +14,7 @@ package me.tecnio.antihaxerman.check.impl.combat.aim;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.MathUtil;
 
 @CheckInfo(name = "Aim", type = "G", description = "GCD bypass flaw detected (KEKW)")
 public final class AimG extends Check {
@@ -27,7 +25,7 @@ public final class AimG extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation() && isExempt(ExemptType.COMBAT, ExemptType.BUKKIT_PLACING)) {
+        /*if (packet.isRotation() && isExempt(ExemptType.COMBAT, ExemptType.BUKKIT_PLACING)) {
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
             final float lastDeltaYaw = data.getRotationProcessor().getLastDeltaYaw();
 
@@ -49,6 +47,6 @@ public final class AimG extends Check {
                     decreaseBufferBy(0.05);
                 }
             }
-        }
+        }*/
     }
 }

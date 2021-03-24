@@ -38,10 +38,12 @@ public final class SpeedB extends Check {
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
 
-            final double predicted = (lastDeltaXZ * 0.91F) + (sprinting ? 0.026 : 0.02);
+            final double predicted = (lastDeltaXZ * 0.91F) + (sprinting ? 0.026F : 0.02F);
             final double difference = deltaXZ - predicted;
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE,
+                    ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID,
+                    ExemptType.PISTON, ExemptType.CLIMBABLE);
             final boolean invalid = difference > 1E-5 && predicted > 0.075 && airTicks > 2;
 
             if (invalid && !exempt) {
@@ -49,7 +51,7 @@ public final class SpeedB extends Check {
                     fail();
                 }
             } else {
-                decreaseBuffer();
+                decreaseBufferBy(0.5);
             }
         }
     }

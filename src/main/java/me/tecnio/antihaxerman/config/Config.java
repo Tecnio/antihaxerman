@@ -34,12 +34,17 @@ import java.util.Map;
 public final class Config {
 
     public boolean TESTMODE;
-    public String PREFIX, NO_PERMS, COMMAND_PREFIX, ALERT_FORMAT, COMMAND_NAME, LOG_FORMAT;
+    public String PREFIX, NO_PERMS, COMMAND_PREFIX, ALERT_FORMAT, COMMAND_NAME, LOG_FORMAT, CLIENT_KICK_MESSAGE;
     public int VL_TO_ALERT, CLEAR_VIOLATIONS_DELAY;
-    public boolean BYPASS_OP, LOGGING_ENABLED, LOG_TO_CONSOLE, API_ENABLED, UPDATE_CHECKER_ENABLED;
+    public boolean BYPASS_OP, LOGGING_ENABLED, LOG_TO_CONSOLE, API_ENABLED,
+            UPDATE_CHECKER_ENABLED, CLIENT_ENABLED, CLIENT_CASE_SENSITIVE;
+
+
+    public List<String> BLOCKED_CLIENTS = new ArrayList<>();
 
     public List<String> ENABLED_CHECKS = new ArrayList<>();
     public List<String> SETBACK_CHECKS = new ArrayList<>();
+
     public Map<String, Integer> MAX_VIOLATIONS = new HashMap<>();
     public Map<String, String> PUNISH_COMMANDS = new HashMap<>();
 
@@ -52,6 +57,12 @@ public final class Config {
             COMMAND_NAME = getString("response.command.name");
             CLEAR_VIOLATIONS_DELAY = getInteger("violations.clear-violations-delay");
             COMMAND_PREFIX = ColorUtil.translate(getString("response.command.prefix"));
+
+            CLIENT_ENABLED = getBoolean("client.enabled");
+            CLIENT_CASE_SENSITIVE = getBoolean("client.case-sensitive");
+
+            CLIENT_KICK_MESSAGE = getString("client.kick-message");
+            BLOCKED_CLIENTS = getStringList("client.blocked");
 
             BYPASS_OP = getBoolean("bypass.bypass-operators");
 
@@ -143,7 +154,7 @@ public final class Config {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getBoolean(string);
     }
 
-    public String getString(final String string) {
+    private String getString(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getString(string);
     }
 
@@ -157,5 +168,9 @@ public final class Config {
 
     private long getLong(final String string) {
         return AntiHaxerman.INSTANCE.getPlugin().getConfig().getLong(string);
+    }
+
+    private List<String> getStringList(final String string) {
+        return AntiHaxerman.INSTANCE.getPlugin().getConfig().getStringList(string);
     }
 }

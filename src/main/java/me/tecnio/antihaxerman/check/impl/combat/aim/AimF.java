@@ -43,12 +43,12 @@ public final class AimF extends Check {
                 final double pitch = data.getRotationProcessor().getPitch();
                 final double moduloPitch = Math.abs(pitch % constantPitch);
 
-                if (moduloPitch < 1.0E-5) {
-                    if (increaseBuffer() > 1) {
+                if (moduloPitch < 2.0E-5) {
+                    if (increaseBuffer() > 2) {
                         fail();
                     }
                 } else {
-                    decreaseBufferBy(0.01);
+                    decreaseBufferBy(0.05);
                 }
             }
         }

@@ -35,8 +35,29 @@ bypass:
   # When enabled this will bypass players that have OP and the players with the permission "antihaxerman.bypass".
   bypass-operators: false
 
+# Checks for updates to notify you about an important update.
 update-checker:
+  # Enable or disable the update checker here.
   enabled: true
+
+# Client handling. You can block the clients you want here.
+# For example Lunar Client.
+client:
+  # Enabled the client blocking system.
+  enabled: true
+
+  # This just makes the comparison case sensitive.
+  case-sensitive: false
+
+  # The kick message for the client check.
+  kick-message: 'The client you are using currently is blocked.\nPlease join with vanilla or a non blocked client in order to join.'
+
+  # If the client name CONTAINS anything on that list, they will automatically be kicked.
+  # Lunar is blocked by default as its broken and flags every anticheat.
+  # Its blocked for your players sake for them to not get false banned.
+  blocked:
+    - 'lunar'
+    - 'lc'
 
 api:
   # API is disabled by default for performance reasons. Recommended to keep disabled unless the API is used.

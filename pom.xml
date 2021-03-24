@@ -72,8 +72,8 @@
     <dependencies>
         <dependency>
             <groupId>org.github.spigot</groupId>
-            <artifactId>1.8</artifactId>
-            <version>1.8</version>
+            <artifactId>1.8.8</artifactId>
+            <version>1.8.8</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>v1.8-pre-5</version>
+            <version>1.8-pre-9</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

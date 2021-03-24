@@ -40,7 +40,9 @@ public final class SpeedD extends Check {
 
             final double acceleration = deltaXZ - lastDeltaXZ;
 
-            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.VEHICLE, ExemptType.SLIME);
+            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT,
+                    ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.CLIMBABLE,
+                    ExemptType.VEHICLE, ExemptType.SLIME, ExemptType.JOINED);
             final boolean invalid = acceleration > limit;
 
             if (invalid && !exempt) fail();
