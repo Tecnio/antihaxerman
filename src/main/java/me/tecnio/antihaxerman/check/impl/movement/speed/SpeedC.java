@@ -91,7 +91,7 @@ public final class SpeedC extends Check {
             if (!exempt) {
                 if (airTicks > 0) {
                     if (deltaXZ > airLimit) {
-                        if (increaseBuffer() > 2) {
+                        if (increaseBuffer() > 3) {
                             fail();
                         }
                     } else {
@@ -99,7 +99,7 @@ public final class SpeedC extends Check {
                     }
                 } else {
                     if (deltaXZ > groundLimit) {
-                        if (increaseBuffer() > 2) {
+                        if (increaseBuffer() > 3) {
                             fail();
                         }
                     } else {

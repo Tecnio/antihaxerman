@@ -127,6 +127,10 @@ public final class Packet {
         return isSending() && packetId == PacketType.Play.Server.ENTITY_VELOCITY;
     }
 
+    public boolean isExplosion() {
+        return isSending() && packetId == PacketType.Play.Server.EXPLOSION;
+    }
+
     public boolean isRelEntityMove() {
         return isSending() && packetId == PacketType.Play.Server.REL_ENTITY_MOVE;
     }

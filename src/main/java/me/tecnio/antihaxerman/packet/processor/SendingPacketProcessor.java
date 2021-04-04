@@ -18,6 +18,7 @@
 package me.tecnio.antihaxerman.packet.processor;
 
 import io.github.retrooper.packetevents.packetwrappers.play.out.entityvelocity.WrappedPacketOutEntityVelocity;
+import io.github.retrooper.packetevents.packetwrappers.play.out.explosion.WrappedPacketOutExplosion;
 import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.WrappedPacketOutKeepAlive;
 import io.github.retrooper.packetevents.packetwrappers.play.out.position.WrappedPacketOutPosition;
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
@@ -33,6 +34,10 @@ public final class SendingPacketProcessor  {
             if (wrapper.getEntityId() == data.getPlayer().getEntityId()) {
                 data.getVelocityProcessor().handle(wrapper.getVelocityX(), wrapper.getVelocityY(), wrapper.getVelocityZ());
             }
+        }
+        if (packet.isExplosion()) {
+            final WrappedPacketOutExplosion wrapper = new WrappedPacketOutExplosion(packet.getRawPacket());
+            data.getVelocityProcessor().handle(wrapper.getPlayerMotionX(), wrapper.getPlayerMotionY(), wrapper.getPlayerMotionZ());
         }
         if (packet.isOutgoingTransaction()) {
             final WrappedPacketOutTransaction wrapper = new WrappedPacketOutTransaction(packet.getRawPacket());
