@@ -34,6 +34,8 @@ public final class FlightA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            final double velocityY = data.getVelocityProcessor().getVelocityY();
+
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
@@ -45,11 +47,10 @@ public final class FlightA extends Check {
 
             final double predicted = (lastDeltaY - 0.08) * 0.9800000190734863;
 
-            final double fixedPredicted = Math.abs(predicted) < 0.005 ? 0.0 : predicted;
+            final double fixedPredicted = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY : Math.abs(predicted) < 0.005 ? -0.08 * 0.98F : predicted;
             final double difference = Math.abs(deltaY - fixedPredicted);
 
-            final double velocityY = data.getVelocityProcessor().getVelocityY();
-            final double limit = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY + 0.45 + 0.001 : 0.001;
+            final double limit = 0.001;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
                     ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,

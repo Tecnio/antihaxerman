@@ -42,7 +42,7 @@ public enum ExemptType {
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
-    VELOCITY_ON_TICK(data -> data.getVelocityProcessor().getTicksSinceVelocity() < 3),
+    VELOCITY_ON_TICK(data -> data.getVelocityProcessor().getTakingVelocityTicks() == 1),
 
     SLIME(data -> data.getPositionProcessor().getSinceSlimeTicks() < 20),
 

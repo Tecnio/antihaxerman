@@ -36,6 +36,8 @@ public final class ActionProcessor {
 
     private int lastDiggingTick, lastPlaceTick, lastBukkitPlaceTick, lastBreakTick;
 
+    private int sinceSprintTicks;
+
     private int sprintingTicks, sneakingTicks;
 
     public ActionProcessor(final PlayerData data) {
@@ -122,6 +124,9 @@ public final class ActionProcessor {
         if (placing) lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (bukkitPlacing) lastBukkitPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (digging) lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+
+        if (sprinting) sinceSprintTicks = 0;
+        else ++sinceSprintTicks;
 
         sendingAction = false;
         placing = false;

@@ -60,6 +60,9 @@ public final class PositionProcessor {
 
     private boolean onGround, lastOnGround, mathematicallyOnGround;
 
+    private Location location;
+    private Location lastLocation;
+
     private final Deque<Vector> teleportList = new ArrayDeque<>();
     private boolean teleported;
 
@@ -87,6 +90,9 @@ public final class PositionProcessor {
             this.x = wrapper.getX();
             this.y = wrapper.getY();
             this.z = wrapper.getZ();
+
+            lastLocation = location != null ? location : null;
+            location = new Location(data.getPlayer().getWorld(), x, y, z);
 
             lastDeltaX = deltaX;
             lastDeltaY = deltaY;
