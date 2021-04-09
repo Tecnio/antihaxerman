@@ -62,7 +62,11 @@ public final class InteractB extends Check {
                     final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
 
                     if (invalid) {
-                        fail();
+                        if (increaseBuffer() > 1) {
+                            fail();
+                        }
+                    } else {
+                        resetBuffer();
                     }
                 }
             }

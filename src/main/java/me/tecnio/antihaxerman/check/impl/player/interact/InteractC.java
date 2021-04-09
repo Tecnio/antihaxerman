@@ -40,7 +40,9 @@ public final class InteractC extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isBlockPlace()) {
-            wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
+            if (data.getPlayer().getItemInHand().getType().isBlock()) {
+                wrapper = new WrappedPacketInBlockPlace(packet.getRawPacket());
+            }
         } else if (packet.isFlying()) {
             if (wrapper != null) {
                 final Vector eyeLocation = data.getPlayer().getEyeLocation().toVector();

@@ -46,6 +46,8 @@ public enum ExemptType {
 
     SLIME(data -> data.getPositionProcessor().getSinceSlimeTicks() < 20),
 
+    SLIME_ON_TICK(data -> data.getPositionProcessor().getSinceSlimeTicks() < 2),
+
     DIGGING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastDiggingTick() < 10),
 
     BLOCK_BREAK(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastBreakTick() < 10),

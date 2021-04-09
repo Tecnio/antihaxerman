@@ -22,8 +22,6 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import me.tecnio.antihaxerman.util.PlayerUtil;
-import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Flight", type = "A", description = "Flags flight's that don't obey gravity.")
 public final class FlightA extends Check {
@@ -39,30 +37,28 @@ public final class FlightA extends Check {
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
-            final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
-            final int airTicksLimit = 8 + airTicksModifier;
-
             final double deltaY = data.getPositionProcessor().getDeltaY();
             final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
 
             final double predicted = (lastDeltaY - 0.08) * 0.9800000190734863;
 
-            final double fixedPredicted = isExempt(ExemptType.VELOCITY_ON_TICK) ? velocityY : Math.abs(predicted) < 0.005 ? -0.08 * 0.98F : predicted;
-            final double difference = Math.abs(deltaY - fixedPredicted);
+            double fixedPredicted = Math.abs(predicted) < 0.005 ? -0.08 * 0.9800000190734863 : predicted;
+            if (isExempt(ExemptType.VELOCITY_ON_TICK)) fixedPredicted = velocityY;
 
-            final double limit = 0.001;
+            final double difference = Math.abs(deltaY - fixedPredicted);
+            final double limit = 1.0E-8;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
                     ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,
-                    ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID);
-            final boolean invalid = difference > limit && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);
+                    ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.UNDERBLOCK);
+            final boolean invalid = difference > limit && (serverAirTicks > 1 || clientAirTicks > 1);
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
-                    fail();
+                if (increaseBuffer() > 3) {
+                    fail(String.format("pred: %.4f delta: %.4f vel: %s", fixedPredicted, deltaY, isExempt(ExemptType.VELOCITY_ON_TICK)));
                 }
             } else {
-                decreaseBufferBy(0.1);
+                decreaseBufferBy(0.15);
             }
         }
     }
