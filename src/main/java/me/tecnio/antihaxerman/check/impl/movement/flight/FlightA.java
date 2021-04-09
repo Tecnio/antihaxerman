@@ -51,7 +51,7 @@ public final class FlightA extends Check {
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
                     ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,
                     ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.UNDERBLOCK);
-            final boolean invalid = difference > limit && (serverAirTicks > 1 || clientAirTicks > 1);
+            final boolean invalid = difference > limit && (serverAirTicks > 8 || clientAirTicks > 8);
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 3) {
