@@ -125,8 +125,8 @@ public final class Config {
 
                 Bukkit.broadcastMessage("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".enabled" + " " + enabled);
 
-                final int maxViolations = getInteger("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".max-violations");
-                final String punishCommand = getString("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".punish-command");
+                final int maxViolations = getInteger("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".max-violations");
+                final String punishCommand = getString("checks." + checkType + "." + checkInfo.name().toLowerCase() + "." + checkInfo.type().toLowerCase() + ".punish-command");
 
                 if (checkType.equals("movement")) {
                     final boolean setBack = getBoolean("checks.movement." + checkInfo.name().toLowerCase() + "." + checkInfo.type() + ".setback");

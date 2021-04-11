@@ -32,10 +32,7 @@ import org.bukkit.entity.Vehicle;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -104,17 +101,16 @@ public final class PositionProcessor {
             deltaZ = this.z - lastZ;
             deltaXZ = Math.hypot(deltaX, deltaZ);
 
-            mathematicallyOnGround = y % 0.015625 < 5.0E-3;
+            mathematicallyOnGround = y % 0.015625 < 0.005;
 
             handleCollisions();
 
             if (wrapper.isLook()) {
                 for (final Vector wantedLocation : teleportList) {
-                    final boolean same = wantedLocation.getX() == x
+                    if ((wantedLocation.getX() == x
                             || wantedLocation.getY() == y
-                            || wantedLocation.getZ() == z;
-
-                    if (same) {
+                            || wantedLocation.getZ() == z)
+                            && !onGround) {
                         teleported = true;
                         teleportTicks = 0;
 

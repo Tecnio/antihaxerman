@@ -46,7 +46,7 @@ public final class FlightA extends Check {
             if (isExempt(ExemptType.VELOCITY_ON_TICK)) fixedPredicted = velocityY;
 
             final double difference = Math.abs(deltaY - fixedPredicted);
-            final double limit = 1.0E-8;
+            final double limit = 1.0E-4;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
                     ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,

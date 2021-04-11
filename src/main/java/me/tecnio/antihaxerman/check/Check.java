@@ -61,6 +61,11 @@ public abstract class Check {
         } else if (packageName.contains("player")) {
             checkType = CheckType.PLAYER;
         }
+
+        if (!this.getClass().getSimpleName().equalsIgnoreCase("check")) {
+            this.maxVl = Config.MAX_VIOLATIONS.get(this.getClass().getSimpleName());
+            this.punishCommand = Config.PUNISH_COMMANDS.get(this.getClass().getSimpleName());
+        }
     }
 
     public abstract void handle(final Packet packet);
@@ -86,6 +91,10 @@ public abstract class Check {
                 }
 
                 AlertManager.handleAlert(this, data, Objects.toString(info));
+
+                if (vl >= maxVl) {
+                    PunishmentManager.punish(this, data);
+                }
             }
         }
     }

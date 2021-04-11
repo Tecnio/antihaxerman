@@ -20,12 +20,7 @@ package me.tecnio.antihaxerman.check.impl.movement.jesus;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
-import java.util.List;
 
 @CheckInfo(name = "Jesus", type = "A", description = "Checks if player walking on liquids.")
 public final class JesusA extends Check {
@@ -36,7 +31,7 @@ public final class JesusA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final List<Block> blocks = data.getPositionProcessor().getBlocks();
+            /*final List<Block> blocks = data.getPositionProcessor().getBlocks();
             final List<Block> blocksBelow = data.getPositionProcessor().getBlocksBelow();
 
             if (blocks == null || blocksBelow == null) return;
@@ -59,7 +54,7 @@ public final class JesusA extends Check {
                 }
             } else {
                 decreaseBuffer();
-            }
+            }*/
         }
     }
 }
