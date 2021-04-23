@@ -27,6 +27,7 @@ import me.tecnio.antihaxerman.packet.Packet;
 public final class BadPacketsI extends Check {
 
     private int streak;
+    private boolean teleported;
 
     public BadPacketsI(final PlayerData data) {
         super(data);
@@ -35,6 +36,11 @@ public final class BadPacketsI extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            if (teleported) {
+                teleported = false;
+                return;
+            }
+
             final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
 
             if (wrapper.isPosition() || data.getPlayer().isInsideVehicle()) {
@@ -43,8 +49,14 @@ public final class BadPacketsI extends Check {
             }
 
             if (++streak > 20) fail();
-        } else if (packet.isSteerVehicle()) {
+        }
+
+        else if (packet.isSteerVehicle()) {
             streak = 0;
+        }
+
+        else if (packet.isTeleport()) {
+            teleported = true;
         }
     }
 }

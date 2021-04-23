@@ -85,6 +85,12 @@ public final class SpeedC extends Check {
                 airLimit += data.getVelocityProcessor().getVelocityXZ() + 0.05;
             }
 
+            // Problematic way of fixing it but good enough.
+            if (data.getPositionProcessor().getSinceTeleportTicks() < 15) {
+                airLimit += 0.1;
+                groundLimit += 0.1;
+            }
+
             final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON,
                     ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
 

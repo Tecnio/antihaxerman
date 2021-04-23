@@ -52,7 +52,7 @@ public final class PositionProcessor {
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
             liquidTicks, sinceLiquidTicks, climbableTicks, sinceClimbableTicks,
             webTicks, sinceWebTicks,
-            groundTicks, teleportTicks, sinceSlimeTicks, solidGroundTicks,
+            groundTicks, sinceTeleportTicks, sinceSlimeTicks, solidGroundTicks,
             iceTicks, sinceIceTicks, sinceBlockNearHeadTicks;
 
     private boolean onGround, lastOnGround, mathematicallyOnGround;
@@ -106,13 +106,18 @@ public final class PositionProcessor {
             handleCollisions();
 
             if (wrapper.isLook()) {
-                for (final Vector wantedLocation : teleportList) {
+                // Iterator used in order to prevent CME.
+                final Iterator<Vector> iterator = teleportList.iterator();
+
+                while (iterator.hasNext()) {
+                    final Vector wantedLocation = iterator.next();
+
                     if ((wantedLocation.getX() == x
                             || wantedLocation.getY() == y
                             || wantedLocation.getZ() == z)
                             && !onGround) {
                         teleported = true;
-                        teleportTicks = 0;
+                        sinceTeleportTicks = 0;
 
                         teleportList.remove(wantedLocation);
                         break;
@@ -140,7 +145,7 @@ public final class PositionProcessor {
             clientAirTicks = 0;
         }
 
-        ++teleportTicks;
+        ++sinceTeleportTicks;
 
         if (data.getPlayer().getVehicle() != null) {
             sinceVehicleTicks = 0;
@@ -266,8 +271,18 @@ public final class PositionProcessor {
     }
 
     public void handleNearbyEntities() {
-        nearbyEntities = PlayerUtil.getEntitiesWithinRadius(data.getPlayer().getLocation(), 2);
-        nearVehicle = nearbyEntities.stream().anyMatch(entity -> entity instanceof Vehicle);
+        try {
+            nearbyEntities = PlayerUtil.getEntitiesWithinRadius(data.getPlayer().getLocation(), 2);
+
+            if (nearbyEntities == null) {
+                nearVehicle = false;
+                return;
+            }
+
+            nearVehicle = nearbyEntities.stream().anyMatch(entity -> entity instanceof Vehicle);
+        } catch (final Throwable t) {
+            // I know stfu
+        }
     }
 
     public void handleTeleport(final WrappedPacketOutPosition wrapper) {

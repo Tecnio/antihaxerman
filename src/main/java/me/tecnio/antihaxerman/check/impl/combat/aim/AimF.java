@@ -33,7 +33,7 @@ public final class AimF extends Check {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float lastDeltaPitch = data.getRotationProcessor().getLastDeltaPitch();
 
-            if (deltaPitch > 0.5) {
+            if (deltaPitch > 0.5 && !data.getPositionProcessor().isTeleported()) {
                 final long expandedPitch = (long) (deltaPitch * MathUtil.EXPANDER);
                 final long lastExpandedPitch = (long) (lastDeltaPitch * MathUtil.EXPANDER);
 
@@ -43,7 +43,7 @@ public final class AimF extends Check {
                 final double pitch = data.getRotationProcessor().getPitch();
                 final double moduloPitch = Math.abs(pitch % constantPitch);
 
-                if (moduloPitch < 1.5E-5) {
+                if (moduloPitch < 1.3E-5) {
                     if (increaseBuffer() > 2) {
                         fail();
                     }

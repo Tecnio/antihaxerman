@@ -71,40 +71,46 @@ public class PlayerUtil {
      * @author Nik
      */
     public List<Entity> getEntitiesWithinRadius(final Location location, final double radius) {
-        final double expander = 16.0D;
+        try {
+            final double expander = 16.0D;
 
-        final double x = location.getX();
-        final double z = location.getZ();
+            final double x = location.getX();
+            final double z = location.getZ();
 
-        final int minX = (int) Math.floor((x - radius) / expander);
-        final int maxX = (int) Math.floor((x + radius) / expander);
+            final int minX = (int) Math.floor((x - radius) / expander);
+            final int maxX = (int) Math.floor((x + radius) / expander);
 
-        final int minZ = (int) Math.floor((z - radius) / expander);
-        final int maxZ = (int) Math.floor((z + radius) / expander);
+            final int minZ = (int) Math.floor((z - radius) / expander);
+            final int maxZ = (int) Math.floor((z + radius) / expander);
 
-        final World world = location.getWorld();
+            final World world = location.getWorld();
 
-        final List<Entity> entities = new LinkedList<>();
+            final List<Entity> entities = new LinkedList<>();
 
-        for (int xVal = minX; xVal <= maxX; xVal++) {
+            for (int xVal = minX; xVal <= maxX; xVal++) {
 
-            for (int zVal = minZ; zVal <= maxZ; zVal++) {
+                for (int zVal = minZ; zVal <= maxZ; zVal++) {
 
-                if (!world.isChunkLoaded(xVal, zVal)) continue;
+                    if (!world.isChunkLoaded(xVal, zVal)) continue;
 
-                for (final Entity entity : world.getChunkAt(xVal, zVal).getEntities()) {
-                    //We have to do this due to stupidness
-                    if (entity == null) continue;
+                    for (final Entity entity : world.getChunkAt(xVal, zVal).getEntities()) {
+                        //We have to do this due to stupidness
+                        if (entity == null) continue;
 
-                    //Make sure the entity is within the radius specified
-                    if (entity.getLocation().distanceSquared(location) > radius * radius) continue;
+                        //Make sure the entity is within the radius specified
+                        if (entity.getLocation().distanceSquared(location) > radius * radius) continue;
 
-                    entities.add(entity);
+                        entities.add(entity);
+                    }
                 }
             }
+
+            return entities;
+        } catch (final Throwable t) {
+            // I know stfu
         }
 
-        return entities;
+        return null;
     }
 
     public int getPotionLevel(final Player player, final PotionEffectType effect) {
