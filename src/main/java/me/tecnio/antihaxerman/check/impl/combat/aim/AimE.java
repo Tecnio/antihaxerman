@@ -26,13 +26,12 @@ import me.tecnio.antihaxerman.packet.Packet;
 @CheckInfo(name = "Aim", type = "E", description = "Checks for snappy rotations.", experimental = true)
 public final class AimE extends Check {
 
+    // Credits to Medusa, by GladUrBad.
     private float lastDeltaYaw, lastLastDeltaYaw;
 
     public AimE(final PlayerData data) {
         super(data);
     }
-
-    // Credits to Medusa, by GladUrBad.
 
     @Override
     public void handle(final Packet packet) {
