@@ -50,7 +50,7 @@ client:
   case-sensitive: false
 
   # The kick message for the client check.
-  kick-message: 'The client you are using currently is blocked.\nPlease join with vanilla or a non blocked client in order to join.'
+  kick-message: 'The client you are using currently is blocked (From the config file). Please join with vanilla or a non blocked client in order to join.'
 
   # If the client name CONTAINS anything on that list, they will automatically be kicked.
   # Lunar is blocked by default as its broken and flags every anticheat.

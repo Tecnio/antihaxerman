@@ -34,9 +34,11 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
     @Override
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] msg) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
-        if (data == null) return;
 
-        final String clientBrand = new String(msg, StandardCharsets.UTF_8).substring(1);
+        if (data == null) return;
+        if (msg.length == 0) return;
+
+        final String clientBrand = new String(msg, StandardCharsets.UTF_8).length() > 0 ? new String(msg, StandardCharsets.UTF_8).substring(1) : new String(msg, StandardCharsets.UTF_8);
 
         data.setClientBrand(clientBrand);
 
@@ -44,11 +46,12 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
             if (!Config.CLIENT_ENABLED) break handle;
 
             if (Config.CLIENT_CASE_SENSITIVE) {
-                if (Config.BLOCKED_CLIENTS.stream().noneMatch(s -> s.contains(clientBrand))) {
+                if (Config.BLOCKED_CLIENTS.stream().noneMatch(clientBrand::contains)) {
                     break handle;
                 }
             } else {
-                if (Config.BLOCKED_CLIENTS.stream().noneMatch(s -> s.toLowerCase().contains(clientBrand.toLowerCase()))) {
+                if (Config.BLOCKED_CLIENTS
+                        .stream().noneMatch(s -> clientBrand.toLowerCase().contains(s.toLowerCase()))) {
                     break handle;
                 }
             }
