@@ -25,6 +25,7 @@ import me.tecnio.antihaxerman.util.MathUtil;
 
 @CheckInfo(name = "Aim", type = "D", description = "Checks for unlikely pitch deltas.")
 public final class AimD extends Check {
+
     public AimD(final PlayerData data) {
         super(data);
     }
@@ -32,20 +33,19 @@ public final class AimD extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isRotation()) {
-            final float pitch = data.getRotationProcessor().getPitch();
-            if (pitch > 89 || pitch < 1) return;
+            final boolean cinematic = data.getRotationProcessor().isCinematic();
 
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            final boolean invalid = MathUtil.isExponentiallySmall(deltaPitch) && deltaYaw >= 10.0F;
+            final boolean invalid = MathUtil.isExponentiallySmall(deltaPitch) && deltaYaw >= 50.0F;
 
-            if (invalid) {
-                if (increaseBuffer() > 7) {
+            if (invalid && !cinematic) {
+                if (increaseBuffer() > 3) {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.5);
+                decreaseBufferBy(0.1);
             }
         }
     }

@@ -45,7 +45,7 @@ public final class MotionE extends Check {
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON,
                     ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.VEHICLE,
                     ExemptType.SLIME, ExemptType.CHUNK, ExemptType.FLYING);
-            final boolean invalid = deltaY > limit && lastDeltaY < 0.5;
+            final boolean invalid = deltaY > limit && lastDeltaY < 0.2;
 
             if (invalid && !exempt) fail();
         }

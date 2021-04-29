@@ -96,22 +96,6 @@ checks:
         enabled: true
         max-violations: 50
         punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      f:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      g:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      h:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
     aura:
       a:
         enabled: true
@@ -249,6 +233,10 @@ checks:
         max-violations: 50
         punish-command: ''
       e:
+        enabled: true
+        max-violations: 50
+        punish-command: ''
+      f:
         enabled: true
         max-violations: 50
         punish-command: ''

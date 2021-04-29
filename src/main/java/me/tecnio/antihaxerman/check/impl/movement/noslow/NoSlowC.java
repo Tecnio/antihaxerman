@@ -40,10 +40,7 @@ public final class NoSlowC extends Check {
             final boolean invalid = eating && sprinting;
 
             if (invalid && !exempt) {
-                if (getBuffer() > 5) data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
-
                 if (increaseBuffer() > 8) {
-                    fail();
                     data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
                 }
             } else {

@@ -33,37 +33,40 @@ public final class ClientBrandListener implements PluginMessageListener, Listene
 
     @Override
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] msg) {
-        final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
+        try {
+            final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
 
-        if (data == null) return;
-        if (msg.length == 0) return;
+            if (data == null) return;
+            if (msg.length == 0) return;
 
-        final String clientBrand = new String(msg, StandardCharsets.UTF_8).length() > 0 ? new String(msg, StandardCharsets.UTF_8).substring(1) : new String(msg, StandardCharsets.UTF_8);
+            final String clientBrand = new String(msg, StandardCharsets.UTF_8).length() > 0 ? new String(msg, StandardCharsets.UTF_8).substring(1) : new String(msg, StandardCharsets.UTF_8);
 
-        data.setClientBrand(clientBrand);
+            data.setClientBrand(clientBrand);
 
-        handle: {
-            if (!Config.CLIENT_ENABLED) break handle;
+            handle: {
+                if (!Config.CLIENT_ENABLED) break handle;
 
-            if (Config.CLIENT_CASE_SENSITIVE) {
-                if (Config.BLOCKED_CLIENTS.stream().noneMatch(clientBrand::contains)) {
-                    break handle;
+                if (Config.CLIENT_CASE_SENSITIVE) {
+                    if (Config.BLOCKED_CLIENTS.stream().noneMatch(clientBrand::contains)) {
+                        break handle;
+                    }
+                } else {
+                    if (Config.BLOCKED_CLIENTS
+                            .stream().noneMatch(s -> clientBrand.toLowerCase().contains(s.toLowerCase()))) {
+                        break handle;
+                    }
                 }
-            } else {
-                if (Config.BLOCKED_CLIENTS
-                        .stream().noneMatch(s -> clientBrand.toLowerCase().contains(s.toLowerCase()))) {
-                    break handle;
-                }
+
+                Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> player.kickPlayer(Config.CLIENT_KICK_MESSAGE));
             }
-
-            Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> player.kickPlayer(Config.CLIENT_KICK_MESSAGE));
+        } catch (final Throwable t) {
+            System.out.println("An error occurred with ClientBrandListener. You can ignore this.");
         }
     }
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        addChannel(player);
+        addChannel(event.getPlayer());
     }
 
     private void addChannel(final Player player) {

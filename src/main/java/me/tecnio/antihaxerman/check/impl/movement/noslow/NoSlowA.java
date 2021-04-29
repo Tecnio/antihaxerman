@@ -41,7 +41,6 @@ public final class NoSlowA extends Check {
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {
-                    fail();
                     data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
                 }
             } else {

@@ -23,7 +23,6 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.Wrap
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 @Getter
@@ -103,8 +102,15 @@ public final class ActionProcessor {
     }
 
     public void handleInteract(final PlayerInteractEvent event) {
-        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            digging = true;
+        switch (event.getAction()) {
+            case LEFT_CLICK_BLOCK:
+                digging = true;
+                break;
+
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+                if (data.getPlayer().getItemInHand().getType().isEdible()) eating = true;
+                break;
         }
     }
 
@@ -133,7 +139,7 @@ public final class ActionProcessor {
         bukkitPlacing = false;
         respawning = false;
 
-        eating = false;
+        //eating = false;
 
         if (sprinting) ++sprintingTicks;
         else sprintingTicks = 0;

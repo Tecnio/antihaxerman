@@ -17,11 +17,13 @@
 
 package me.tecnio.antihaxerman.check.impl.movement.noslow;
 
+import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.Bukkit;
 
 @CheckInfo(name = "NoSlow", type = "B", description = "Checks if player is sneaking and sprinting.")
 public final class NoSlowB extends Check {
@@ -42,7 +44,7 @@ public final class NoSlowB extends Check {
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 10) {
-                    fail();
+                    Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().teleport(data.getPlayer()));
                 }
             } else {
                 resetBuffer();
