@@ -22,6 +22,7 @@ import io.github.retrooper.packetevents.utils.player.Direction;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.BlockUtil;
 import org.bukkit.Location;
@@ -60,8 +61,9 @@ public final class InteractB extends Check {
                     final Location location = new Location(data.getPlayer().getWorld(), x + data.getPlayer().getEyeHeight(), y, z);
 
                     final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
+                    final boolean exempt = isExempt(ExemptType.BUKKIT_CANCELLED_PLACING);
 
-                    if (invalid) {
+                    if (invalid && !exempt) {
                         if (increaseBuffer() > 1) {
                             fail();
                         }
