@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.check.impl.player.fastplace;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "FastPlace", type = "A", description = "Checks if player placing blocks too fast.")
@@ -33,6 +34,12 @@ public final class FastPlaceA extends Check {
 
     @Override
     public void handle(final Packet packet) {
+
+        final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.BOAT);
+        if(exempt) {
+            return;
+        }
+
         if (packet.isFlying()) {
             ++movements;
 

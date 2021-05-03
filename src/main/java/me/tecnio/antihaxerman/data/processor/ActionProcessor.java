@@ -30,10 +30,10 @@ public final class ActionProcessor {
 
     private final PlayerData data;
 
-    private boolean sprinting, sneaking, sendingAction, placing, bukkitPlacing, digging, blocking,
+    private boolean sprinting, sneaking, sendingAction, placing, bukkitPlacing, bukkitCancelPlacing, digging, blocking,
             inventory, respawning, sendingDig, eating;
 
-    private int lastDiggingTick, lastPlaceTick, lastBukkitPlaceTick, lastBreakTick;
+    private int lastDiggingTick, lastPlaceTick, lastBukkitPlaceTick, lastBukkitCancelPlaceTick, lastBreakTick;
 
     private int sinceSprintTicks;
 
@@ -118,6 +118,10 @@ public final class ActionProcessor {
         bukkitPlacing = true;
     }
 
+    public void handleBukkitCancelPlace() {
+        bukkitCancelPlacing = true;
+    }
+
     public void handleArmAnimation() {
         if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
     }
@@ -129,6 +133,7 @@ public final class ActionProcessor {
         if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (placing) lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (bukkitPlacing) lastBukkitPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        if (bukkitCancelPlacing) lastBukkitCancelPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (digging) lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
 
         if (sprinting) sinceSprintTicks = 0;
@@ -137,6 +142,7 @@ public final class ActionProcessor {
         sendingAction = false;
         placing = false;
         bukkitPlacing = false;
+        bukkitCancelPlacing = false;
         respawning = false;
 
         //eating = false;

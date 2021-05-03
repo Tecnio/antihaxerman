@@ -40,6 +40,11 @@ public final class BukkitEventManager implements Listener {
     public void onBlockPlace(final BlockPlaceEvent event) {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
         if (data != null) {
+
+            if(event.isCancelled()) {
+                data.getActionProcessor().handleBukkitCancelPlace();
+            }
+
             data.getActionProcessor().handleBukkitPlace();
             AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(data, new Packet(Packet.Direction.RECEIVE,
                     new NMSPacket(event), Byte.MAX_VALUE, System.currentTimeMillis()));
