@@ -40,6 +40,8 @@ public enum ExemptType {
 
     TELEPORT_DELAY(data -> data.getPositionProcessor().getSinceTeleportTicks() < 5),
 
+    TELEPORT_DELAY_SMALL(data -> data.getPositionProcessor().getSinceTeleportTicks() < 3),
+
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
     VELOCITY_ON_TICK(data -> data.getVelocityProcessor().getTakingVelocityTicks() == 1),

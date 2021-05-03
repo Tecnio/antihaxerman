@@ -21,20 +21,29 @@ import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.util.type.Pair;
+import me.tecnio.antihaxerman.util.type.Velocity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 public final class VelocityProcessor {
 
     private final PlayerData data;
+
     private double velocityX, velocityY, velocityZ, velocityXZ;
     private double lastVelocityX, lastVelocityY, lastVelocityZ, lastVelocityXZ;
+
     private int maxVelocityTicks, velocityTicks, ticksSinceVelocity, takingVelocityTicks;
     private short velocityID;
-    private boolean verifyingVelocity;
+
+    private final Map<Short, Pair<Double, Double>> pendingVelocities = new HashMap<>();
+    private final Velocity transactionVelocity = new Velocity(0, 0, 0);
+
+    private int flyingTicks;
 
     public VelocityProcessor(final PlayerData data) {
         this.data = data;
@@ -53,21 +62,32 @@ public final class VelocityProcessor {
         this.velocityZ = velocityZ;
         this.velocityXZ = Math.hypot(velocityX, velocityZ);
 
-        this.velocityID = (short) ThreadLocalRandom.current().nextInt(32767);
-        this.verifyingVelocity = true;
-        PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), new WrappedPacketOutTransaction(0, velocityID, false));
+        this.velocityID = (short) ThreadLocalRandom.current().nextInt(Short.MAX_VALUE);
+
+        PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(),
+                new WrappedPacketOutTransaction(0, velocityID, false));
+        pendingVelocities.put(velocityID, new Pair<>(velocityX, velocityZ));
     }
 
     public void handleTransaction(final WrappedPacketInTransaction wrapper) {
-        if (this.verifyingVelocity && wrapper.getActionNumber() == this.velocityID) {
-            this.verifyingVelocity = false;
-            this.velocityTicks = AntiHaxerman.INSTANCE.getTickManager().getTicks();
-            this.maxVelocityTicks = (int) (((lastVelocityZ + lastVelocityX) / 2 + 2) * 15);
-        }
+        pendingVelocities.computeIfPresent(wrapper.getActionNumber(), (id, pair) -> {
+            transactionVelocity.setVelocityX(pair.getX());
+            transactionVelocity.setVelocityZ(pair.getY());
+
+            transactionVelocity.setIndex(transactionVelocity.getIndex() + 1);
+
+            this.velocityTicks = flyingTicks;
+            this.maxVelocityTicks = (int) (((pair.getX() + pair.getY()) / 2 + 2) * 15);
+
+            pendingVelocities.remove(wrapper.getActionNumber());
+
+            return pair;
+        });
     }
 
     public void handleFlying() {
         ++ticksSinceVelocity;
+        ++flyingTicks;
 
         if (isTakingVelocity()) {
             ++takingVelocityTicks;
@@ -77,6 +97,6 @@ public final class VelocityProcessor {
     }
 
     public boolean isTakingVelocity() {
-        return Math.abs(AntiHaxerman.INSTANCE.getTickManager().getTicks() - this.velocityTicks) < this.maxVelocityTicks;
+        return Math.abs(flyingTicks - this.velocityTicks) < this.maxVelocityTicks;
     }
 }
