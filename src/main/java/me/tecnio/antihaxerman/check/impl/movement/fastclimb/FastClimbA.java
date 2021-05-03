@@ -39,8 +39,10 @@ public final class FastClimbA extends Check {
 
             final double acceleration = deltaY - lastDeltaY;
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.BOAT, ExemptType.VEHICLE);
-            final boolean invalid = ((float) deltaY) > 0.1176F && acceleration == 0.0 && data.getPositionProcessor().isOnClimbable();
+            final boolean exempt = isExempt(ExemptType.TELEPORT,
+                    ExemptType.PISTON, ExemptType.FLYING, ExemptType.BOAT, ExemptType.VEHICLE);
+            final boolean invalid = ((float) deltaY) > 0.1176F
+                    && acceleration == 0.0 && data.getPositionProcessor().isOnClimbable();
 
             if (invalid && !exempt) {
                 fail();

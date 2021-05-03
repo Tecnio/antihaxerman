@@ -63,6 +63,7 @@ public final class OmniSprintA extends Check {
     }
 
     private double getLimit() {
-        return data.getPlayer().getWalkSpeed() > 0.2f ? .23 * 1 + ((data.getPlayer().getWalkSpeed() / 0.2f) * 0.36) : 0.23 + (PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.062f);
+        return data.getPlayer().getWalkSpeed() > 0.2f ? .23 * 1 +
+                ((data.getPlayer().getWalkSpeed() / 0.2f) * 0.36) : 0.23 + (PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.062f);
     }
 }

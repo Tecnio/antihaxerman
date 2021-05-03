@@ -34,10 +34,9 @@ public final class FastPlaceA extends Check {
 
     @Override
     public void handle(final Packet packet) {
-
-        final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.BOAT);
-        if(exempt) {
-            return;
+        if (isExempt(ExemptType.VEHICLE, ExemptType.BOAT)) {
+            movements = 0;
+            blocks = 0;
         }
 
         if (packet.isFlying()) {

@@ -48,8 +48,8 @@ public final class MotionF extends Check {
             final double difference = Math.abs(deltaY - predicted);
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
-                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,
-                    ExemptType.VELOCITY_ON_TICK, ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID);
+                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED, ExemptType.VELOCITY,
+                    ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.CHUNK_CLIENT_SPF);
             final boolean invalid = difference > 1.0E-4 && Math.abs(predicted) > 0.005 && clientAir && notUnderBlock;
 
             if (invalid && !exempt) fail();

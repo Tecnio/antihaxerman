@@ -287,9 +287,9 @@ public final class PositionProcessor {
 
     public void handleTeleport(final WrappedPacketOutPosition wrapper) {
         final Vector requestedLocation = new Vector(
-                wrapper.getX(),
-                wrapper.getY(),
-                wrapper.getZ()
+                wrapper.getPosition().getX(),
+                wrapper.getPosition().getY(),
+                wrapper.getPosition().getZ()
         );
 
         teleportList.add(requestedLocation);

@@ -94,7 +94,10 @@ public enum ExemptType {
 
     CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10),
 
-    ICE(data -> data.getPositionProcessor().getSinceIceTicks() < 10);
+    ICE(data -> data.getPositionProcessor().getSinceIceTicks() < 10),
+
+    // SPF stands for spoofable just wanted to tell.
+    CHUNK_CLIENT_SPF(data -> data.getPositionProcessor().getDeltaY() + 0.09800000190734881 <= 0.001);
 
     private final Function<PlayerData, Boolean> exception;
 

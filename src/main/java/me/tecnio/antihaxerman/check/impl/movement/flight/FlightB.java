@@ -27,6 +27,9 @@ import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Flight", type = "B", description = "Checks for the vertical acceleration of the player.")
 public final class FlightB extends Check {
+
+    private boolean lastGroundIsSlime;
+
     public FlightB(final PlayerData data) {
         super(data);
     }
@@ -34,6 +37,10 @@ public final class FlightB extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            if (data.getPositionProcessor().isOnGround()) {
+                lastGroundIsSlime = data.getPositionProcessor().isOnSlime();
+            }
+
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
             final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
@@ -44,7 +51,7 @@ public final class FlightB extends Check {
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE,
                     ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING,
                     ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-            final boolean invalid = (clientAirTicks > airTicksLimit) && deltaY > 0.0;
+            final boolean invalid = (clientAirTicks > airTicksLimit) && deltaY > 0.0 && !lastGroundIsSlime;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {

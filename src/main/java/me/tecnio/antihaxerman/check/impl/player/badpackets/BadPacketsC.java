@@ -37,13 +37,13 @@ public final class BadPacketsC extends Check {
         if (packet.isOutgoingAbilities()) {
             final WrappedPacketInAbilities wrapper = new WrappedPacketInAbilities(packet.getRawPacket());
 
-            allowFlight = wrapper.isFlightAllowed();
+            allowFlight = wrapper.isFlightAllowed().get();
             flying = wrapper.isFlying();
         } else if (packet.isIncomingAbilities()) {
             final WrappedPacketInAbilities wrapper = new WrappedPacketInAbilities(packet.getRawPacket());
 
             final boolean flying = wrapper.isFlying();
-            final boolean allowFlight = wrapper.isFlightAllowed();
+            final boolean allowFlight = wrapper.isFlightAllowed().get();
 
             if (this.flying != flying || this.allowFlight != allowFlight) ban();
             if (!allowFlight && flying) ban();
