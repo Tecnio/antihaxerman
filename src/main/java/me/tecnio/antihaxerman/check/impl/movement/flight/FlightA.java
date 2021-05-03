@@ -22,6 +22,8 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.PlayerUtil;
+import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Flight", type = "A", description = "Flags flight's that don't obey gravity.")
 public final class FlightA extends Check {
@@ -33,6 +35,9 @@ public final class FlightA extends Check {
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final double velocityY = data.getVelocityProcessor().getVelocityY();
+
+            final int airTicksModifier = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP);
+            final int airTicksLimit = 8 + airTicksModifier;
 
             final int serverAirTicks = data.getPositionProcessor().getAirTicks();
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
@@ -51,7 +56,7 @@ public final class FlightA extends Check {
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
                     ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,
                     ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.UNDERBLOCK);
-            final boolean invalid = difference > limit && (serverAirTicks > 8 || clientAirTicks > 8);
+            final boolean invalid = difference > limit && (serverAirTicks > airTicksLimit || clientAirTicks > airTicksLimit);
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 3) {
