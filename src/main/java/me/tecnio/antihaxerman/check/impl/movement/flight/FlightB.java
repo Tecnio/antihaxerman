@@ -41,9 +41,13 @@ public final class FlightB extends Check {
 
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE,
+            final boolean exempt = isExempt(
+                    ExemptType.PISTON, ExemptType.VEHICLE,
                     ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING,
-                    ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
+                    ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE,
+
+                    ExemptType.VELOCITY, ExemptType.VELOCITY_ON_TICK, ExemptType.VELOCITY_RECENTLY
+            );
             final boolean invalid = (clientAirTicks > airTicksLimit) && deltaY > 0.0;
 
             if (invalid && !exempt) {

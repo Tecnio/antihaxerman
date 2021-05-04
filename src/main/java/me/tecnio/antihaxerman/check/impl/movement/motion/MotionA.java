@@ -51,7 +51,13 @@ public final class MotionA extends Check {
             final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1F;
             final double expectedJumpMotion = 0.42F + modifierJump;
 
-            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK, ExemptType.CHUNK) || data.getPositionProcessor().getSinceBlockNearHeadTicks() < 5;
+            final boolean exempt = isExempt(
+                    ExemptType.VELOCITY, ExemptType.VELOCITY_ON_TICK, ExemptType.VELOCITY_RECENTLY,
+
+                    ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB,
+                    ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK, ExemptType.CHUNK)
+                    || data.getPositionProcessor().getSinceBlockNearHeadTicks() < 5;
+
             final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastGround && !step;
 
             if (invalid && !exempt) fail(deltaY + " vel: " + isExempt(ExemptType.VELOCITY));

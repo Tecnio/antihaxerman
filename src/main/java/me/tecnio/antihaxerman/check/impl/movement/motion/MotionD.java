@@ -42,7 +42,10 @@ public final class MotionD extends Check {
             final double maximum = 0.6 + modifierJump + modifierVelocity;
 
             final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.LIQUID,
-                    ExemptType.FLYING, ExemptType.WEB, ExemptType.TELEPORT, ExemptType.SLIME, ExemptType.CHUNK, ExemptType.BOAT);
+                    ExemptType.FLYING, ExemptType.WEB, ExemptType.TELEPORT, ExemptType.SLIME, ExemptType.CHUNK, ExemptType.BOAT,
+
+                    ExemptType.VELOCITY_ON_TICK, ExemptType.VELOCITY_RECENTLY
+            );
             final boolean invalid = deltaY > maximum;
 
             if (invalid && !exempt) fail();
