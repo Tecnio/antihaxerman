@@ -17,9 +17,9 @@
 
 package me.tecnio.antihaxerman;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import club.quar.plugin.QuarPlugin;
 
-public final class AntiHaxermanPlugin extends JavaPlugin {
+public final class AntiHaxermanPlugin extends QuarPlugin {
 
     @Override
     public void onLoad() {

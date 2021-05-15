@@ -44,6 +44,11 @@
                                     <pattern>io.github.retrooper.packetevents</pattern>
                                     <shadedPattern>me.tecnio.antihaxerman.packetevents</shadedPattern> <!--relocate packetevents package-->
                                 </relocation>
+
+                                <relocation>
+                                    <pattern>club.quar</pattern>
+                                    <shadedPattern>me.tecnio.antihaxerman.quar</shadedPattern> <!--relocate our Quar package!-->
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -85,13 +90,18 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>1.8-pre-14</version>
+            <version>1.8-pre-15</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.18</version>
+            <version>1.18.20</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.GardeningTool</groupId>
+            <artifactId>Quar</artifactId>
+            <version>1.0-PRE-2</version>
         </dependency>
     </dependencies>
 

@@ -33,6 +33,7 @@ import me.tecnio.antihaxerman.manager.TickManager;
 import me.tecnio.antihaxerman.packet.processor.ReceivingPacketProcessor;
 import me.tecnio.antihaxerman.packet.processor.SendingPacketProcessor;
 import me.tecnio.antihaxerman.update.UpdateChecker;
+import me.tecnio.antihaxerman.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.messaging.Messenger;
 
@@ -55,7 +56,7 @@ public enum AntiHaxerman {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final CommandManager commandManager = new CommandManager(this.getPlugin());
 
-    private final String version = "3.0.5";
+    private final String version = "3.1.1";
     private final UpdateChecker updateChecker = new UpdateChecker();
 
     @Setter private boolean updateAvailable;
@@ -94,6 +95,10 @@ public enum AntiHaxerman {
         if (updateAvailable) {
             Bukkit.getLogger().info("New update available for AntiHaxerman! You have " + version + " latest is " +  updateChecker.getLatestVersion() + ".");
         }
+
+        // Start bStats
+        final int pluginId = 11350; // <-- Replace with the id of your plugin!
+        final Metrics metrics = new Metrics(plugin, pluginId);
     }
 
     public void stop(final AntiHaxermanPlugin plugin) {

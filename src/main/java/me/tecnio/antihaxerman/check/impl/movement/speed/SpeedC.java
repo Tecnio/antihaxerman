@@ -52,13 +52,10 @@ public final class SpeedC extends Check {
             double airLimit = PlayerUtil.getBaseSpeed(data.getPlayer());
 
             // Straight from MCP so if you think its dumb fuck off.
-            if (Math.abs(deltaY - jumpMotion) < 1.0E-4 && airTicks == 1 && sprinting) {
-                final float f = data.getRotationProcessor().getYaw() * 0.017453292F;
-
-                final double x = lastDeltaX - (Math.sin(f) * 0.2F);
-                final double z = lastDeltaZ + (Math.cos(f) * 0.2F);
-
-                airLimit += Math.hypot(x, z);
+            // Assume the player is sprinting because thanks desync.
+            if (Math.abs(deltaY - jumpMotion) < 1.0E-4
+                    && airTicks == 1) {
+                airLimit += 0.2D;
             }
 
             if (data.getPositionProcessor().isNearStair()) {
