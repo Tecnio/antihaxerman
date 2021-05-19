@@ -51,7 +51,7 @@ public final class PositionProcessor {
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
             liquidTicks, sinceLiquidTicks, climbableTicks, sinceClimbableTicks,
-            webTicks, sinceWebTicks,
+            webTicks, sinceWebTicks, ticks,
             groundTicks, sinceTeleportTicks, sinceSlimeTicks, solidGroundTicks,
             iceTicks, sinceIceTicks, sinceBlockNearHeadTicks;
 
@@ -113,8 +113,8 @@ public final class PositionProcessor {
                     final Vector wantedLocation = iterator.next();
 
                     if ((wantedLocation.getX() == x
-                            || wantedLocation.getY() == y
-                            || wantedLocation.getZ() == z)
+                            && wantedLocation.getY() == y
+                            && wantedLocation.getZ() == z)
                             && !onGround) {
                         teleported = true;
                         sinceTeleportTicks = 0;
@@ -130,6 +130,8 @@ public final class PositionProcessor {
     }
 
     public void handleTicks() {
+        ++ticks;
+
         if (onGround) ++groundTicks;
         else groundTicks = 0;
 

@@ -48,7 +48,7 @@ public final class SpeedA extends Check {
             double blockSlipperiness = this.blockSlipperiness;
             double attributeSpeed = 1.d;
 
-            final boolean onGround = data.getPositionProcessor().isOnGround();
+            final boolean lastOnGround = data.getPositionProcessor().isLastOnGround();
             final boolean sprinting = data.getActionProcessor().isSprinting();
 
             final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON,
@@ -60,7 +60,7 @@ public final class SpeedA extends Check {
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SPEED) * (float) 0.2 * attributeSpeed;
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SLOW) * (float) -.15 * attributeSpeed;
 
-            if (onGround) {
+            if (lastOnGround) {
                 blockSlipperiness *= 0.91f;
 
                 if (sprinting) attributeSpeed *= 1.3;
@@ -99,7 +99,7 @@ public final class SpeedA extends Check {
             final double y = data.getPositionProcessor().getY();
             final double z = data.getPositionProcessor().getZ();
 
-            final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y - 0.1), z);
+            final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y) - 1, z);
 
             this.blockSlipperiness = BlockUtil.getBlockFriction(blockLocation);
             this.lastHorizontalDistance = horizontalDistance * blockSlipperiness;

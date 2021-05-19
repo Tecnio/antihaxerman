@@ -48,8 +48,8 @@ public final class StrafeA extends Check {
             double blockSlipperiness = 0.91F;
             double attributeSpeed = sprinting ? 0.026 : 0.02;;
 
-            final double predictedDeltaX = lastDeltaX * blockSlipperiness + attributeSpeed ;
-            final double predictedDeltaZ = lastDeltaZ * blockSlipperiness + attributeSpeed ;
+            final double predictedDeltaX = lastDeltaX * blockSlipperiness + attributeSpeed;
+            final double predictedDeltaZ = lastDeltaZ * blockSlipperiness + attributeSpeed;
 
             final double diffX = deltaX - predictedDeltaX;
             final double diffZ = deltaZ - predictedDeltaZ;

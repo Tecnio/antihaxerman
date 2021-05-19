@@ -36,7 +36,7 @@ public final class TimerD extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final long now = System.currentTimeMillis();
+            final long now = packet.getTimeStamp();
 
             handle: {
                 if (isExempt(ExemptType.TPS, ExemptType.JOINED)) break handle;
@@ -48,14 +48,22 @@ public final class TimerD extends Check {
                 balance -= delay;
 
                 if (balance > 0L) {
-                    fail("balance: " + balance);
-                    balance = -50L;
+                    if (increaseBuffer() > 5) {
+                        fail("balance: " + balance);
+                    }
+
+                    balance = 0;
+                } else {
+                    decreaseBufferBy(0.001);
                 }
             }
 
             this.lastFlying = now;
         } else if (packet.isTeleport()) {
-            balance -= 55L;
+            if (isExempt(ExemptType.TPS, ExemptType.JOINED)) return;
+            if (lastFlying == 0L) return;
+
+            balance -= 50L;
         }
     }
 }

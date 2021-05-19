@@ -52,10 +52,13 @@ public final class SpeedC extends Check {
             double airLimit = PlayerUtil.getBaseSpeed(data.getPlayer());
 
             // Straight from MCP so if you think its dumb fuck off.
-            // Assume the player is sprinting because thanks desync.
-            if (Math.abs(deltaY - jumpMotion) < 1.0E-4
-                    && airTicks == 1) {
-                airLimit += 0.2D;
+            if (Math.abs(deltaY - jumpMotion) < 1.0E-4 && airTicks == 1) {
+                final float f = data.getRotationProcessor().getYaw() * 0.017453292F;
+
+                final double x = lastDeltaX - (Math.sin(f) * 0.2F);
+                final double z = lastDeltaZ + (Math.cos(f) * 0.2F);
+
+                airLimit += Math.hypot(x, z);
             }
 
             if (data.getPositionProcessor().isNearStair()) {
@@ -88,26 +91,24 @@ public final class SpeedC extends Check {
                 groundLimit += 0.1;
             }
 
-            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.PISTON,
-                    ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
+            if (isExempt(ExemptType.VEHICLE, ExemptType.PISTON,
+                    ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK)) return;
 
-            if (!exempt) {
-                if (airTicks > 0) {
-                    if (deltaXZ > airLimit) {
-                        if (increaseBuffer() > 3) {
-                            fail();
-                        }
-                    } else {
-                        decreaseBufferBy(0.15);
+            if (airTicks > 0) {
+                if (deltaXZ > airLimit) {
+                    if (increaseBuffer() > 3) {
+                        fail();
                     }
                 } else {
-                    if (deltaXZ > groundLimit) {
-                        if (increaseBuffer() > 3) {
-                            fail();
-                        }
-                    } else {
-                        decreaseBufferBy(0.15);
+                    decreaseBufferBy(0.15);
+                }
+            } else {
+                if (deltaXZ > groundLimit) {
+                    if (increaseBuffer() > 3) {
+                        fail();
                     }
+                } else {
+                    decreaseBufferBy(0.15);
                 }
             }
         }

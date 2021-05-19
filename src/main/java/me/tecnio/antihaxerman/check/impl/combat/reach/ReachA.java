@@ -18,18 +18,19 @@
 package me.tecnio.antihaxerman.check.impl.combat.reach;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.PlayerUtil;
+import me.tecnio.antihaxerman.util.type.BoundingBox;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.stream.Stream;
 
 @CheckInfo(name = "Reach", type = "A", description = "Checks if player is attacking from a distance that's not possible.")
 public final class ReachA extends Check {
@@ -54,7 +55,7 @@ public final class ReachA extends Check {
             if (!(target instanceof Player)) return;
             if (data.getTargetLocations().size() < 30) return;
 
-            final int now = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+            final int now = data.getPositionProcessor().getTicks();
             final int latencyInTicks = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
 
             final double x = data.getPositionProcessor().getX();
@@ -62,21 +63,40 @@ public final class ReachA extends Check {
 
             final Vector origin = new Vector(x, 0.0, z);
 
-            final double maxDistance = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.05 : 3.05;
+            final double maxDistance = data.getPlayer().getGameMode() == GameMode.CREATIVE ? 6.1 : 3.1;
             final double distance = data.getTargetLocations().stream()
                     .filter(pair -> Math.abs(now - pair.getY() - latencyInTicks) < 4)
                     .mapToDouble(pair -> {
                         final Vector targetLocation = pair.getX().toVector().setY(0.0);
+                        final BoundingBox boundingBox = new BoundingBox(targetLocation);
 
-                        return origin.distance(targetLocation) - 0.5658;
+                        return Math.sqrt(Stream.of(
+                                // BoundingBox corners.
+                                origin.distanceSquared(new Vector(boundingBox.getMaxX(), 0.0, boundingBox.getMaxZ())),
+                                origin.distanceSquared(new Vector(boundingBox.getMinX(), 0.0, boundingBox.getMinZ())),
+
+                                // The ones left.
+                                origin.distanceSquared(new Vector(boundingBox.getMinX(), 0.0, boundingBox.getMaxZ())),
+                                origin.distanceSquared(new Vector(boundingBox.getMaxX(), 0.0, boundingBox.getMinZ())),
+
+                                // Middles of the gay part.
+                                origin.distanceSquared(new Vector(boundingBox.getMaxX() - 0.4D, 0.0, boundingBox.getMaxZ())),
+                                origin.distanceSquared(new Vector(boundingBox.getMaxX(), 0.0, boundingBox.getMaxZ() - 0.4D)),
+
+                                origin.distanceSquared(new Vector(boundingBox.getMinX() + 0.4D, 0.0, boundingBox.getMinZ())),
+                                origin.distanceSquared(new Vector(boundingBox.getMinX(), 0.0, boundingBox.getMinZ() + 0.4D)),
+
+                                // Distance from middle.
+                                origin.distanceSquared(targetLocation)
+                        ).mapToDouble(value -> value).min().orElse(-1));
                     })
                     .min().orElse(-1);
 
-            final boolean invalid = distance > maxDistance && !isExempt(ExemptType.LAGGING);
+            final boolean invalid = distance > maxDistance;
 
             if (invalid) {
-                if (increaseBuffer() > 2) {
-                    fail(distance);
+                if (increaseBuffer() > 3) {
+                    fail(String.format("dist: %.3f limit: %.3f", distance, maxDistance));
                 }
             } else {
                 decreaseBufferBy(0.05);

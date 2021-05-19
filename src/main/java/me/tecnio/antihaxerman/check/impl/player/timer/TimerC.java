@@ -50,7 +50,7 @@ public final class TimerC extends Check {
                 final double speed = 50 / average;
 
                 if (speed >= 1.025) {
-                    if (increaseBuffer() > 20) {
+                    if (increaseBuffer() > 30) {
                         fail();
                     }
                 } else {

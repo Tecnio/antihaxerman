@@ -18,11 +18,9 @@
 package me.tecnio.antihaxerman.check.impl.combat.angle;
 
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
-import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.PlayerUtil;
@@ -53,7 +51,7 @@ public final class AngleA extends Check {
             if (!(target instanceof Player)) return;
             if (data.getTargetLocations().size() < 30) return;
 
-            final int now = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+            final int now = data.getPositionProcessor().getTicks();
             final int latencyInTicks = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
 
             final double x = data.getPositionProcessor().getX();
@@ -73,7 +71,7 @@ public final class AngleA extends Check {
                     })
                     .min().orElse(-1);
 
-            final boolean exempt = data.getCombatProcessor().getDistance() < 1.8 || isExempt(ExemptType.LAGGING);
+            final boolean exempt = data.getCombatProcessor().getDistance() < 1.8;
             final boolean invalid = angle > 0.6;
 
             if (invalid && !exempt) {

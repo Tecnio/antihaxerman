@@ -53,7 +53,7 @@ public final class MotionF extends Check {
             final boolean invalid = difference > 1.0E-4 && Math.abs(predicted) > 0.005 && clientAir && notUnderBlock;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 1) {
+                if (increaseBuffer() > 2) {
                     fail();
                 }
             } else {

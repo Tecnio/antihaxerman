@@ -22,6 +22,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,15 @@ public final class BoundingBox {
         this.maxX = data.getPositionProcessor().getX() + 0.3D;
         this.maxY = data.getPositionProcessor().getY() + 1.8D;
         this.maxZ = data.getPositionProcessor().getZ() + 0.3D;
+    }
+
+    public BoundingBox(final Vector data) {
+        this.minX = data.getX() - 0.4D;
+        this.minY = data.getY();
+        this.minZ = data.getZ() - 0.4D;
+        this.maxX = data.getX() + 0.4D;
+        this.maxY = data.getY() + 1.9D;
+        this.maxZ = data.getZ() + 0.4D;
     }
 
     public BoundingBox move(final double x, final double y, final double z) {

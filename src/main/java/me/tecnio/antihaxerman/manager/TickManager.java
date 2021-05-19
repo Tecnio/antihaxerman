@@ -57,7 +57,7 @@ public final class TickManager implements Runnable {
                 if (target != lastTarget) data.getTargetLocations().clear();
 
                 final Location location = target.getLocation();
-                data.getTargetLocations().add(new Pair<>(location, ticks));
+                data.getTargetLocations().add(new Pair<>(location, data.getPositionProcessor().getTicks()));
             }
         }
     }
