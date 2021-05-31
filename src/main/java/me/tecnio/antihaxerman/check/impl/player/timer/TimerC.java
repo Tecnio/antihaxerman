@@ -37,7 +37,7 @@ public final class TimerC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying() && !isExempt(ExemptType.TPS)) {
+        if (packet.isFlying() && !isExempt(ExemptType.TPS, ExemptType.JOINED)) {
             final long now = now();
             final long delta = now - lastFlying;
 

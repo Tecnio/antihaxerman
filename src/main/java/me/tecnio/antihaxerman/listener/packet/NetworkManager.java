@@ -22,7 +22,9 @@ import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.impl.PostPlayerInjectEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
+import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packettype.PacketType.Play.*;
+import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import io.github.retrooper.packetevents.utils.immutableset.ImmutableSetCustom;
 import io.github.retrooper.packetevents.utils.player.ClientVersion;
 import me.tecnio.antihaxerman.AntiHaxerman;
@@ -60,6 +62,19 @@ public final class NetworkManager extends PacketListenerDynamic {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {
+            if (PacketType.Play.Client.Util.isInstanceOfFlying(event.getPacketId())) {
+                final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(event.getNMSPacket());
+
+                if (Math.abs(wrapper.getX()) > 1.0E+20
+                        || Math.abs(wrapper.getY()) > 1.0E+20
+                        || Math.abs(wrapper.getZ()) > 1.0E+20
+                        || Math.abs(wrapper.getPitch()) > 1.0E+20
+                        || Math.abs(wrapper.getYaw()) > 1.0E+20) {
+                    Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> event.getPlayer().kickPlayer("You are gay."));
+                    return;
+                }
+            }
+
             executorService.execute(() -> AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(
                     data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()))
             );
