@@ -65,11 +65,11 @@ public final class NetworkManager extends PacketListenerDynamic {
             if (PacketType.Play.Client.Util.isInstanceOfFlying(event.getPacketId())) {
                 final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(event.getNMSPacket());
 
-                if (Math.abs(wrapper.getX()) > 1.0E+20
-                        || Math.abs(wrapper.getY()) > 1.0E+20
-                        || Math.abs(wrapper.getZ()) > 1.0E+20
-                        || Math.abs(wrapper.getPitch()) > 1.0E+20
-                        || Math.abs(wrapper.getYaw()) > 1.0E+20) {
+                if (Math.abs(wrapper.getX()) > 3.0E+7
+                        || Math.abs(wrapper.getY()) > 3.0E+7
+                        || Math.abs(wrapper.getZ()) > 3.0E+7
+                        || Math.abs(wrapper.getPitch()) > 3.0E+7
+                        || Math.abs(wrapper.getYaw()) > 3.0E+7) {
                     Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> event.getPlayer().kickPlayer("You are gay."));
                     return;
                 }
