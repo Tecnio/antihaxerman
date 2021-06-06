@@ -56,7 +56,7 @@ public enum AntiHaxerman {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final CommandManager commandManager = new CommandManager(this.getPlugin());
 
-    private final String version = "3.1.1";
+    private final String version = "3.2";
     private final UpdateChecker updateChecker = new UpdateChecker();
 
     @Setter private boolean updateAvailable;
