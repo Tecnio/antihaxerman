@@ -20,8 +20,10 @@ package me.tecnio.antihaxerman.exempt.type;
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.util.PlayerUtil;
 import me.tecnio.antihaxerman.util.ServerUtil;
 import org.bukkit.GameMode;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 
 import java.util.function.Function;
@@ -44,7 +46,7 @@ public enum ExemptType {
 
     VELOCITY(data -> data.getVelocityProcessor().isTakingVelocity()),
 
-    VELOCITY_ON_TICK(data -> data.getVelocityProcessor().getTakingVelocityTicks() == 1),
+    VELOCITY_ON_TICK(data -> data.getVelocityProcessor().getTicksSinceVelocity() == 1),
 
     SLIME(data -> data.getPositionProcessor().getSinceSlimeTicks() < 20),
 
@@ -97,6 +99,24 @@ public enum ExemptType {
     CLIMBABLE(data -> data.getPositionProcessor().getSinceClimbableTicks() < 10),
 
     ICE(data -> data.getPositionProcessor().getSinceIceTicks() < 10),
+
+    JUMP(data -> {
+        final boolean onGround = data.getPositionProcessor().isOnGround();
+        final boolean lastOnGround = data.getPositionProcessor().isLastOnGround();
+
+        final double deltaY = data.getPositionProcessor().getDeltaY();
+        final double lastY = data.getPositionProcessor().getLastY();
+
+        final boolean deltaModulo = deltaY % 0.015625 == 0.0;
+        final boolean lastGround = lastY % 0.015625 == 0.0;
+
+        final boolean step = deltaModulo && lastGround;
+
+        final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1F;
+        final double expectedJumpMotion = 0.42F + modifierJump;
+
+        return Math.abs(expectedJumpMotion - deltaY) < 1E-5 && !onGround && lastOnGround && !step;
+    }),
 
     // SPF stands for spoofable just wanted to tell.
     CHUNK_CLIENT_SPF(data -> data.getPositionProcessor().getDeltaY() + 0.09800000190734881 <= 0.001);

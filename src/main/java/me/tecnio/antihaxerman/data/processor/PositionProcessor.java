@@ -43,11 +43,12 @@ public final class PositionProcessor {
     private double x, y, z,
             lastX, lastY, lastZ,
             deltaX, deltaY, deltaZ, deltaXZ,
-            lastDeltaX, lastDeltaZ, lastDeltaY, lastDeltaXZ;
+            lastDeltaX, lastDeltaZ, lastDeltaY, lastDeltaXZ,
+            lastLastDeltaY;
 
     private boolean flying, inVehicle, inWater, inLava, inLiquid, fullySubmergedInLiquidStat, inAir, inWeb,
             blockNearHead, onClimbable, onSolidGround, nearVehicle, onSlime,
-            onIce, nearPiston, nearStair;
+            onIce, nearPiston, nearStair, pos, lastPos;
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
             liquidTicks, sinceLiquidTicks, climbableTicks, sinceClimbableTicks,
@@ -55,7 +56,7 @@ public final class PositionProcessor {
             groundTicks, sinceTeleportTicks, sinceSlimeTicks, solidGroundTicks,
             iceTicks, sinceIceTicks, sinceBlockNearHeadTicks;
 
-    private boolean onGround, lastOnGround, mathematicallyOnGround;
+    private boolean onGround, lastOnGround, mathematicallyOnGround, lastMathGround;
 
     private Location location;
     private Location lastLocation;
@@ -79,6 +80,9 @@ public final class PositionProcessor {
         this.lastOnGround = this.onGround;
         this.onGround = wrapper.isOnGround();
 
+        this.lastPos = pos;
+        pos = wrapper.isPosition();
+
         if (wrapper.isPosition()) {
             lastX = this.x;
             lastY = this.y;
@@ -91,9 +95,13 @@ public final class PositionProcessor {
             lastLocation = location != null ? location : null;
             location = new Location(data.getPlayer().getWorld(), x, y, z);
 
+            // lmao
+            this.lastLastDeltaY = lastDeltaY;
+
             lastDeltaX = deltaX;
             lastDeltaY = deltaY;
             lastDeltaZ = deltaZ;
+
             lastDeltaXZ = deltaXZ;
 
             deltaX = this.x - lastX;
@@ -101,6 +109,7 @@ public final class PositionProcessor {
             deltaZ = this.z - lastZ;
             deltaXZ = Math.hypot(deltaX, deltaZ);
 
+            lastMathGround = mathematicallyOnGround;
             mathematicallyOnGround = y % 0.015625 < 0.005;
 
             handleCollisions();

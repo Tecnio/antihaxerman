@@ -36,7 +36,7 @@ public final class MotionF extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
+        if (packet.isPosition()) {
             final boolean clientAir = data.getPositionProcessor().getClientAirTicks() > 1;
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
@@ -53,11 +53,11 @@ public final class MotionF extends Check {
             final boolean invalid = difference > 1.0E-4 && Math.abs(predicted) > 0.005 && clientAir && notUnderBlock;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (increaseBuffer() > 5) {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.01);
+                decreaseBufferBy(0.1);
             }
         }
     }

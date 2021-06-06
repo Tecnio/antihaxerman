@@ -51,14 +51,10 @@ public final class SpeedC extends Check {
             double groundLimit = PlayerUtil.getBaseGroundSpeed(data.getPlayer());
             double airLimit = PlayerUtil.getBaseSpeed(data.getPlayer());
 
-            // Straight from MCP so if you think its dumb fuck off.
-            if (Math.abs(deltaY - jumpMotion) < 1.0E-4 && airTicks == 1) {
-                final float f = data.getRotationProcessor().getYaw() * 0.017453292F;
-
-                final double x = lastDeltaX - (Math.sin(f) * 0.2F);
-                final double z = lastDeltaZ + (Math.cos(f) * 0.2F);
-
-                airLimit += Math.hypot(x, z);
+            if (Math.abs(deltaY - jumpMotion) < 1.0E-4
+                    && airTicks == 1) {
+                groundLimit = getAfterJumpSpeed();
+                airLimit = getAfterJumpSpeed();
             }
 
             if (data.getPositionProcessor().isNearStair()) {
@@ -112,5 +108,11 @@ public final class SpeedC extends Check {
                 }
             }
         }
+    }
+
+    // Not skidded I promise.
+    // Slightly inaccurate, maybe going to improve the math on this one more later.
+    private double getAfterJumpSpeed() {
+        return 0.62 + 0.033 * (double) (PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED));
     }
 }

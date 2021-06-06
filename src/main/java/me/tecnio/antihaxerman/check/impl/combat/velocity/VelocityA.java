@@ -32,7 +32,7 @@ public final class VelocityA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final int ticksSinceVelocity = data.getVelocityProcessor().getTakingVelocityTicks();
+            final int ticksSinceVelocity = data.getVelocityProcessor().getTicksSinceVelocity();
             if (ticksSinceVelocity != 1) return;
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
@@ -41,7 +41,8 @@ public final class VelocityA extends Check {
             final double difference = Math.abs(deltaY - expectedDeltaY);
             final double percentage = (deltaY * 100.0) / expectedDeltaY;
 
-            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.FLYING);
+            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE,
+                    ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.FLYING, ExemptType.JUMP);
             final boolean invalid = difference > 1E-10 && expectedDeltaY > 1E-2;
 
             if (invalid && !exempt) {

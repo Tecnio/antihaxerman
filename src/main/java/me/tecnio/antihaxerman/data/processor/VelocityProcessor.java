@@ -22,8 +22,8 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.Wrapp
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
-import me.tecnio.antihaxerman.util.type.Pair;
 import me.tecnio.antihaxerman.util.type.Velocity;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +40,8 @@ public final class VelocityProcessor {
     private int maxVelocityTicks, velocityTicks, ticksSinceVelocity, takingVelocityTicks;
     private short velocityID;
 
-    private final Map<Short, Pair<Double, Double>> pendingVelocities = new HashMap<>();
-    private final Velocity transactionVelocity = new Velocity(0, 0, 0);
+    private final Map<Short, Vector> pendingVelocities = new HashMap<>();
+    private final Velocity transactionVelocity = new Velocity(0, 0, 0, 0);
 
     private int flyingTicks;
 
@@ -50,8 +50,6 @@ public final class VelocityProcessor {
     }
 
     public void handle(final double velocityX, final double velocityY, final double velocityZ) {
-        this.ticksSinceVelocity = 0;
-
         lastVelocityX = this.velocityX;
         lastVelocityY = this.velocityY;
         lastVelocityZ = this.velocityZ;
@@ -66,22 +64,25 @@ public final class VelocityProcessor {
 
         PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(),
                 new WrappedPacketOutTransaction(0, velocityID, false));
-        pendingVelocities.put(velocityID, new Pair<>(velocityX, velocityZ));
+        pendingVelocities.put(velocityID, new Vector(velocityX, velocityY, velocityZ));
     }
 
     public void handleTransaction(final WrappedPacketInTransaction wrapper) {
-        pendingVelocities.computeIfPresent(wrapper.getActionNumber(), (id, pair) -> {
-            transactionVelocity.setVelocityX(pair.getX());
-            transactionVelocity.setVelocityZ(pair.getY());
+        pendingVelocities.computeIfPresent(wrapper.getActionNumber(), (id, vector) -> {
+            this.ticksSinceVelocity = 0;
+
+            transactionVelocity.setVelocityX(vector.getX());
+            transactionVelocity.setVelocityY(vector.getY());
+            transactionVelocity.setVelocityZ(vector.getZ());
 
             transactionVelocity.setIndex(transactionVelocity.getIndex() + 1);
 
             this.velocityTicks = flyingTicks;
-            this.maxVelocityTicks = (int) (((pair.getX() + pair.getY()) / 2 + 2) * 15);
+            this.maxVelocityTicks = (int) (((vector.getX() + vector.getZ()) / 2 + 2) * 15);
 
             pendingVelocities.remove(wrapper.getActionNumber());
 
-            return pair;
+            return vector;
         });
     }
 

@@ -25,5 +25,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public final class Velocity {
     private int index;
-    private double velocityX, velocityZ;
+    private double velocityX, velocityY, velocityZ;
 }
