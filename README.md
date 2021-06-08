@@ -1,12 +1,14 @@
 # AntiHaxerman
 
-Dont skid or gay
-
 Spigot: https://www.spigotmc.org/resources/83198/
 
-Devs/Contributors:
+Devs/Sexy Contributors:
 
 Tecnio: https://github.com/Tecnio
+
+Johannes: https://github.com/LIWKK
+
+DreaMzyGit: https://github.com/DreaMzyGit
 
 GladUrBad: https://github.com/GladUrBad
 
