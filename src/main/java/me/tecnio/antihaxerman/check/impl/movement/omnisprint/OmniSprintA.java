@@ -35,7 +35,7 @@ import java.util.Set;
 @CheckInfo(name = "OmniSprint", type = "A", description = "Detects sprinting in a wrong direction.")
 public final class OmniSprintA extends Check {
 
-    Set<Integer> NO_SPRINT_DIRECTIONS = new HashSet<>(Arrays.asList(90, 135, 180));
+    private static final Set<Integer> NO_SPRINT_DIRECTIONS = new HashSet<>(Arrays.asList(90, 135, 180));
 
     public OmniSprintA(final PlayerData data) {
         super(data);
@@ -67,13 +67,11 @@ public final class OmniSprintA extends Check {
 
             boolean cantSprint = false;
 
-            for(int angle : NO_SPRINT_DIRECTIONS) {
-
+            for (final int angle : NO_SPRINT_DIRECTIONS) {
                 if (Math.abs(moveAngle - angle) <= 10F) {
                     cantSprint = true;
                     break;
                 }
-
             }
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK, ExemptType.ICE, ExemptType.LIQUID);

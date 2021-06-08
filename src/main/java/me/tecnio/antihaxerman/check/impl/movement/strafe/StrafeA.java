@@ -33,8 +33,6 @@ public final class StrafeA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isPosition()) {
-            final boolean sprinting = data.getActionProcessor().isSprinting();
-
             final double deltaX = data.getPositionProcessor().getDeltaX();
             final double deltaZ = data.getPositionProcessor().getDeltaZ();
 
@@ -45,20 +43,22 @@ public final class StrafeA extends Check {
 
             final int airTicks = data.getPositionProcessor().getClientAirTicks();
 
-            double blockSlipperiness = 0.91F;
-            double attributeSpeed = sprinting ? 0.026 : 0.02;
+            final double blockSlipperiness = 0.91F;
+            final double attributeSpeed = 0.026;
 
-            final double predictedDeltaX = lastDeltaX * blockSlipperiness + attributeSpeed;
-            final double predictedDeltaZ = lastDeltaZ * blockSlipperiness + attributeSpeed;
+            final double predictedDeltaX = lastDeltaX * blockSlipperiness;
+            final double predictedDeltaZ = lastDeltaZ * blockSlipperiness;
 
-            final double diffX = deltaX - predictedDeltaX;
-            final double diffZ = deltaZ - predictedDeltaZ;
+            final double diffX = Math.abs(deltaX - predictedDeltaX);
+            final double diffZ = Math.abs(deltaZ - predictedDeltaZ);
 
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
-            final boolean invalid = (diffX > 0.01 || diffZ > 0.01) && deltaXZ > .175 && airTicks > 2;
+            final boolean exempt = isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING,
+                    ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY,
+                    ExemptType.UNDERBLOCK, ExemptType.CHUNK, ExemptType.NEAR_WALL);
+            final boolean invalid = (diffX > attributeSpeed || diffZ > attributeSpeed) && deltaXZ > .05 && airTicks > 2;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 3) {
+                if (increaseBuffer() > 2) {
                     fail(String.format("diffX: %.3f diffZ: %.3f airT: %s", diffX, diffZ, airTicks));
                 }
             } else {
