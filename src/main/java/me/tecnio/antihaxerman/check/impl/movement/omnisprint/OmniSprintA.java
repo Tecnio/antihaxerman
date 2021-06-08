@@ -24,6 +24,7 @@ import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.PlayerUtil;
+import org.bukkit.Location;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -46,8 +47,12 @@ public final class OmniSprintA extends Check {
             final boolean onGround = data.getPositionProcessor().isOnGround();
             final boolean sprinting = data.getActionProcessor().isSprinting();
 
-            final double moveAngle = MathUtil.getMoveAngle(data.getPositionProcessor().getLocation(),
-                    data.getPositionProcessor().getLastLocation());
+            final Location location = data.getPositionProcessor().getLocation();
+            final Location lastLocation = data.getPositionProcessor().getLastLocation();
+
+            final double moveAngle = MathUtil.getMoveAngle(location, lastLocation == null
+                    ? location
+                    : lastLocation);
 
             final double yaw = data.getRotationProcessor().getYaw();
             final Vector direction = new Vector(-Math.sin(yaw * Math.PI / 180.0F) * (float) 1 * 0.5F, 0, Math.cos(yaw * Math.PI / 180.0F) * (float) 1 * 0.5F);
