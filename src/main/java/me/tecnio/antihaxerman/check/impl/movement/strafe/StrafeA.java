@@ -46,7 +46,7 @@ public final class StrafeA extends Check {
             final int airTicks = data.getPositionProcessor().getClientAirTicks();
 
             double blockSlipperiness = 0.91F;
-            double attributeSpeed = sprinting ? 0.026 : 0.02;;
+            double attributeSpeed = sprinting ? 0.026 : 0.02;
 
             final double predictedDeltaX = lastDeltaX * blockSlipperiness + attributeSpeed;
             final double predictedDeltaZ = lastDeltaZ * blockSlipperiness + attributeSpeed;

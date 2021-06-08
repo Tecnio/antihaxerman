@@ -44,10 +44,9 @@ public final class TimerD extends Check {
 
                 final long delay = now - lastFlying;
 
-                balance += 50L;
-                balance -= delay;
+                balance += 50L - delay;
 
-                if (balance > 0L) {
+                if (balance > 50L) {
                     if (increaseBuffer() > 5) {
                         fail("balance: " + balance);
                     }

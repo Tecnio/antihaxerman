@@ -41,7 +41,7 @@ public final class FastClimbB extends Check {
             final List<Block> blocks = data.getPositionProcessor().getBlocks();
             if (blocks == null) return;
 
-            final boolean onClimbable = blocks.stream().allMatch(block -> block.getType() == Material.LADDER || block.getType() == Material.VINE);
+            final boolean onClimbable = blocks.stream().anyMatch(block -> block.getType() == Material.LADDER || block.getType() == Material.VINE);
 
             final float deltaY = (float) data.getPositionProcessor().getDeltaY();
             final float limit = 0.1176F;

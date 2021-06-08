@@ -47,7 +47,7 @@ public final class PlayerData {
 
     private final List<Check> checks = CheckManager.loadChecks(this);
 
-    private final ConcurrentEvictingList<Pair<Location, Integer>> targetLocations = new ConcurrentEvictingList<>(40);
+    private final ConcurrentEvictingList<Pair<Location, Integer>> targetLocations = new ConcurrentEvictingList<>(30);
 
     private final ExemptProcessor exemptProcessor = new ExemptProcessor(this);
     private final CombatProcessor combatProcessor = new CombatProcessor(this);

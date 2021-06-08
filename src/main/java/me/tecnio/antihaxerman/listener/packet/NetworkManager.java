@@ -17,7 +17,7 @@
 
 package me.tecnio.antihaxerman.listener.packet;
 
-import io.github.retrooper.packetevents.event.PacketListenerDynamic;
+import io.github.retrooper.packetevents.event.PacketListenerAbstract;
 import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.impl.PostPlayerInjectEvent;
@@ -37,7 +37,7 @@ import org.bukkit.Bukkit;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public final class NetworkManager extends PacketListenerDynamic {
+public final class NetworkManager extends PacketListenerAbstract {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -96,15 +96,15 @@ public final class NetworkManager extends PacketListenerDynamic {
     public void onPostPlayerInject(final PostPlayerInjectEvent event) {
         final ClientVersion version = event.getClientVersion();
 
-        if (version != null) {
-            final boolean unsupported = version.isHigherThan(ClientVersion.v_1_8) || version.isLowerThan(ClientVersion.v_1_7_10);
 
-            if (unsupported) {
-                final String message = String.format("Player '%s' joined with a client version that is not supported, this might cause false positives. Please take the appropriate action. (Version: %s)", event.getPlayer().getName(), version.name());
+        final boolean unsupported = version.isHigherThan(ClientVersion.v_1_8) || version.isLowerThan(ClientVersion.v_1_7_10);
 
-                Bukkit.getLogger().warning(message);
-                AlertManager.sendMessage(message);
-            }
+        if (unsupported) {
+            final String message = String.format("Player '%s' joined with a client version that is not supported, this might cause false positives. Please take the appropriate action. (Version: %s)", event.getPlayer().getName(), version.name());
+
+            Bukkit.getLogger().warning(message);
+            AlertManager.sendMessage(message);
         }
+
     }
 }

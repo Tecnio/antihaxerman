@@ -18,6 +18,7 @@
 package me.tecnio.antihaxerman.manager;
 
 import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.utils.server.ServerUtils;
 import lombok.Getter;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
@@ -79,7 +80,7 @@ public final class AlertManager {
                 "&cDescription: &f" + check.getCheckInfo().description() +
                 "\n&cInfo: &7" + info +
                 "\n&cPing: &7" + PacketEvents.get().getPlayerUtils().getPing(data.getPlayer()) +
-                "\n&cTPS: &7" + String.format("%.2f", Math.min(20, PacketEvents.get().getServerUtils().getTPS())) +
+                "\n&cTPS: &7" + String.format("%.2f", ServerUtil.getTPS()) +
                 "\n&cClick to teleport.")).create()));
 
         alerts.forEach(player -> player.getPlayer().spigot().sendMessage(alertMessage));

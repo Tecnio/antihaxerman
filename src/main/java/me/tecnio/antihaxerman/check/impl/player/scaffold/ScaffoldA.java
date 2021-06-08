@@ -25,7 +25,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Scaffold", type = "A", description = "")
+@CheckInfo(name = "Scaffold", type = "A", description = "Checks for invalid face direction of placed block.")
 public final class ScaffoldA extends Check {
     public ScaffoldA(final PlayerData data) {
         super(data);

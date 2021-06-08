@@ -57,8 +57,7 @@ public final class TimerA extends Check {
                 final double deviation = movingStats.getStdDev(threshold);
 
                 if (deviation < threshold && !Double.isNaN(deviation)) {
-                    allowance += 50;
-                    allowance -= delay;
+                    allowance += 50 - delay;
 
                     if (allowance > Math.ceil(threshold)) fail();
                 } else {

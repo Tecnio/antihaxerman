@@ -198,6 +198,29 @@ public class MathUtil {
         return (int)data.stream().distinct().count();
     }
 
+    public static float getMoveAngle(final Location to, final Location from) {
+        double diffX = to.getX() - from.getX(),
+                diffZ = to.getZ() - from.getZ();
+
+        float moveAngle = (float) (Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F);
+
+        return angleTo180(Math.abs(moveAngle - to.getYaw()));
+    }
+
+    public static float angleTo180(float val) {
+        val = val % 360F;
+
+        if(val >= 180F) {
+            val -= 360F;
+        }
+
+        if(val < -180F) {
+            val += 360F;
+        }
+
+        return val;
+    }
+
     public static Vector getDirection(final float yaw, final float pitch) {
         final Vector vector = new Vector();
         final float rotX = (float)Math.toRadians(yaw);

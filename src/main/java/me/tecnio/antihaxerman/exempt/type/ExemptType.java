@@ -70,6 +70,8 @@ public enum ExemptType {
 
     UNDERBLOCK(data -> data.getPositionProcessor().isBlockNearHead()),
 
+    NEAR_WALL(data -> data.getPositionProcessor().isNearWall()),
+
     PISTON(data -> data.getPositionProcessor().isNearPiston()),
 
     STAIR(data -> data.getPositionProcessor().isNearStair()),

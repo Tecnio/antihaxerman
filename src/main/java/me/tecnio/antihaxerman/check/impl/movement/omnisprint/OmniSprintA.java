@@ -22,12 +22,20 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.PlayerUtil;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 @CheckInfo(name = "OmniSprint", type = "A", description = "Detects sprinting in a wrong direction.")
 public final class OmniSprintA extends Check {
+
+    Set<Integer> NO_SPRINT_DIRECTIONS = new HashSet<>(Arrays.asList(90, 135, 180));
+
     public OmniSprintA(final PlayerData data) {
         super(data);
     }
@@ -37,6 +45,9 @@ public final class OmniSprintA extends Check {
         if (packet.isFlying()) {
             final boolean onGround = data.getPositionProcessor().isOnGround();
             final boolean sprinting = data.getActionProcessor().isSprinting();
+
+            final double moveAngle = MathUtil.getMoveAngle(data.getPositionProcessor().getLocation(),
+                    data.getPositionProcessor().getLastLocation());
 
             final double yaw = data.getRotationProcessor().getYaw();
             final Vector direction = new Vector(-Math.sin(yaw * Math.PI / 180.0F) * (float) 1 * 0.5F, 0, Math.cos(yaw * Math.PI / 180.0F) * (float) 1 * 0.5F);
@@ -49,11 +60,22 @@ public final class OmniSprintA extends Check {
             final Vector move = new Vector(deltaX, 0.0, deltaZ);
             final double delta = move.distanceSquared(direction);
 
+            boolean cantSprint = false;
+
+            for(int angle : NO_SPRINT_DIRECTIONS) {
+
+                if (Math.abs(moveAngle - angle) <= 1.5F) {
+                    cantSprint = true;
+                    break;
+                }
+
+            }
+
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK, ExemptType.ICE, ExemptType.LIQUID);
-            final boolean invalid = delta > getLimit() && deltaXZ > 0.1 && sprinting && onGround;
+            final boolean invalid = delta > getLimit() && deltaXZ > 0.1 && sprinting && onGround && cantSprint;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 4) {
+                if (increaseBuffer() > 2) {
                     fail();
                 }
             } else {

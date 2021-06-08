@@ -47,7 +47,7 @@ public final class PositionProcessor {
             lastLastDeltaY;
 
     private boolean flying, inVehicle, inWater, inLava, inLiquid, fullySubmergedInLiquidStat, inAir, inWeb,
-            blockNearHead, onClimbable, onSolidGround, nearVehicle, onSlime,
+            blockNearHead, nearWall, onClimbable, onSolidGround, nearVehicle, onSlime,
             onIce, nearPiston, nearStair, pos, lastPos;
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
@@ -65,6 +65,7 @@ public final class PositionProcessor {
     private boolean teleported;
 
     private final List<Block> blocks = new ArrayList<>();
+    private final List<Block> blocksNear = new ArrayList<>();
     private List<Block> blocksBelow = new ArrayList<>();
     private List<Block> blocksAbove = new ArrayList<>();
 
@@ -112,7 +113,8 @@ public final class PositionProcessor {
             lastMathGround = mathematicallyOnGround;
             mathematicallyOnGround = y % 0.015625 < 0.005;
 
-            handleCollisions();
+            handleCollisions(0);
+            handleCollisions(1);
 
             if (wrapper.isLook()) {
                 // Iterator used in order to prevent CME.
@@ -225,10 +227,20 @@ public final class PositionProcessor {
         }
     }
 
-    public void handleCollisions() {
+    public void handleCollisions(int type) {
         blocks.clear();
-        final BoundingBox boundingBox = new BoundingBox(data)
-                .expandSpecific(0, 0, 0.55, 0.6, 0, 0);
+        blocksNear.clear();
+
+        BoundingBox boundingBox = new BoundingBox(data);
+
+        switch (type) {
+            case 0:
+                boundingBox.expandSpecific(0, 0, 0.55, 0.6, 0, 0);
+                break;
+            case 1:
+                boundingBox.expandSpecific(0.1, 0.1, 0.55, 0.6, 0.1, 0.1);
+                break;
+        }
 
         final double minX = boundingBox.getMinX();
         final double minY = boundingBox.getMinY();
@@ -244,29 +256,46 @@ public final class PositionProcessor {
                     final Block block = this.getBlock(location);
 
                     if (block != null) {
-                        blocks.add(block);
+                        switch (type) {
+                            case 0:
+                                blocks.add(block);
+                                break;
+                            case 1:
+                                blocksNear.add(block);
+                                break;
+                        }
                     }
                 }
             }
         }
 
-        handleClimbableCollision();
-        handleNearbyEntities();
+        switch (type) {
+            case 0:
+                handleClimbableCollision();
+                handleNearbyEntities();
 
-        inLiquid = blocks.stream().anyMatch(Block::isLiquid);
-        fullySubmergedInLiquidStat = blocks.stream().allMatch(block -> block.getType() == Material.STATIONARY_WATER || block.getType() == Material.STATIONARY_LAVA);
-        inWater = blocks.stream().anyMatch(block -> block.getType().toString().contains("WATER"));
-        inLava = blocks.stream().anyMatch(block -> block.getType().toString().contains("LAVA"));
-        inWeb = blocks.stream().anyMatch(block -> block.getType().toString().contains("WEB"));
-        inAir = blocks.stream().allMatch(block -> block.getType() == Material.AIR);
-        onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
-        onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
-        nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
-        blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).anyMatch(block -> block.getType() != Material.AIR);
-        blocksAbove = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).collect(Collectors.toList());
-        blocksBelow = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() < 0.0).collect(Collectors.toList());
-        onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
-        nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
+                inLiquid = blocks.stream().anyMatch(Block::isLiquid);
+                fullySubmergedInLiquidStat = blocks.stream().allMatch(block -> block.getType() == Material.STATIONARY_WATER || block.getType() == Material.STATIONARY_LAVA);
+                inWater = blocks.stream().anyMatch(block -> block.getType().toString().contains("WATER"));
+                inLava = blocks.stream().anyMatch(block -> block.getType().toString().contains("LAVA"));
+                inWeb = blocks.stream().anyMatch(block -> block.getType().toString().contains("WEB"));
+                inAir = blocks.stream().allMatch(block -> block.getType() == Material.AIR);
+                onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
+                onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
+                nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
+                blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).anyMatch(block -> block.getType() != Material.AIR);
+                nearWall = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).anyMatch(block -> block.getType() != Material.AIR);
+                blocksAbove = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).collect(Collectors.toList());
+                blocksBelow = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() < 0.0).collect(Collectors.toList());
+                onSlime = blocks.stream().anyMatch(block -> block.getType().toString().equalsIgnoreCase("SLIME_BLOCK"));
+                nearPiston = blocks.stream().anyMatch(block -> block.getType().toString().contains("PISTON"));
+
+                break;
+            case 1:
+                nearWall = blocksNear.stream().anyMatch(block -> block.getType().isSolid());
+                break;
+        }
+
     }
 
     public void handleClimbableCollision() {

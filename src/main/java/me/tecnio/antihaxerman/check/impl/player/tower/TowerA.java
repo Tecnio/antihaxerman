@@ -27,7 +27,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 @CheckInfo(name = "Tower", type = "A", description = "Checks if player is towering up too fast.")
 public final class TowerA extends Check {
 
-    private Location lastLocation;
+    private Location lastLocation = new Location(null, -69, -69, -69);
     private int ticksSincePlace;
 
     public TowerA(final PlayerData data) {

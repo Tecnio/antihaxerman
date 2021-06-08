@@ -98,7 +98,7 @@ public enum AntiHaxerman {
 
         // Start bStats
         final int pluginId = 11350; // <-- Replace with the id of your plugin!
-        final Metrics metrics = new Metrics(plugin, pluginId);
+        new Metrics(plugin, pluginId);
     }
 
     public void stop(final AntiHaxermanPlugin plugin) {
