@@ -42,7 +42,7 @@ public final class VelocityA extends Check {
             final double percentage = (deltaY * 100.0) / expectedDeltaY;
 
             final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE,
-                    ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.FLYING, ExemptType.JUMP);
+                    ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.FLYING, ExemptType.JUMP, ExemptType.NEAR_WALL);
             final boolean invalid = difference > 1E-10 && expectedDeltaY > 1E-2;
 
             if (invalid && !exempt) {

@@ -39,7 +39,7 @@ public final class VelocityB extends Check {
         if (packet.isFlying()) {
             final boolean sprinting = data.getActionProcessor().isSprinting();
 
-            final int ticksSinceVelocity = data.getVelocityProcessor().getTakingVelocityTicks();
+            final int ticksSinceVelocity = data.getVelocityProcessor().getTicksSinceVelocity();
 
             if (ticksSinceVelocity == 1) {
                 kbX = data.getVelocityProcessor().getVelocityX();
@@ -65,7 +65,7 @@ public final class VelocityB extends Check {
 
             if (kbX != 0 || kbZ != 0) {
                 if (invalid && !exempt) {
-                    if (increaseBuffer() > 4) {
+                    if (increaseBuffer() > 3) {
                         fail(String.format("(Horizontal) Velocity: ~%.2f%%, Tick: %d", percentage, ticksSinceVelocity));
                     }
 
