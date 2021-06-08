@@ -56,7 +56,7 @@ public final class ReachA extends Check {
             if (data.getTargetLocations().size() < 20) return;
 
             final int now = data.getPositionProcessor().getTicks();
-            final int latencyInTicks = MathUtil.msToTicks(data.getConnectionProcessor().getTransactionPing());
+            final int latencyInTicks = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
 
             final double x = data.getPositionProcessor().getX();
             final double z = data.getPositionProcessor().getZ();

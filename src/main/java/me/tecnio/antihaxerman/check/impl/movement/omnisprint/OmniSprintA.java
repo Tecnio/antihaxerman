@@ -64,7 +64,7 @@ public final class OmniSprintA extends Check {
 
             for(int angle : NO_SPRINT_DIRECTIONS) {
 
-                if (Math.abs(moveAngle - angle) <= 1.5F) {
+                if (Math.abs(moveAngle - angle) <= 10F) {
                     cantSprint = true;
                     break;
                 }
