@@ -1,3 +1,10 @@
 .idea/
 target/
 AntiHaxerman.iml
+
+# VSCode moment
+.classpath
+.factorypath
+.project
+.settings/
+.vscode/
