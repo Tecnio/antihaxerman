@@ -111,7 +111,7 @@ public final class PositionProcessor {
             deltaXZ = Math.hypot(deltaX, deltaZ);
 
             lastMathGround = mathematicallyOnGround;
-            mathematicallyOnGround = y % 0.015625 < 0.005;
+            mathematicallyOnGround = y % 0.015625 < 0.05;
 
             handleCollisions(0);
             handleCollisions(1);

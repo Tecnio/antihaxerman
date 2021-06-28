@@ -25,11 +25,7 @@ import me.tecnio.antihaxerman.packet.Packet;
 
 @CheckInfo(name = "Motion", type = "F", description = "Detects slight air modifications.")
 public final class MotionF extends Check {
-
-    // This is basically Flight A you may ask why I added this which is a fair question.
-    // I added this because this is bandaid fixed version of that check and can flag slight modifications.
-    // With the cost of being more bypassable.
-
+    
     public MotionF(final PlayerData data) {
         super(data);
     }
@@ -37,28 +33,6 @@ public final class MotionF extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isPosition()) {
-            final boolean clientAir = data.getPositionProcessor().getClientAirTicks() > 1;
-
-            final double deltaY = data.getPositionProcessor().getDeltaY();
-            final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
-
-            final boolean notUnderBlock = data.getPositionProcessor().getSinceBlockNearHeadTicks() > 5;
-
-            final double predicted = (lastDeltaY - 0.08) * 0.98F;
-            final double difference = Math.abs(deltaY - predicted);
-
-            final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT_DELAY_SMALL,
-                    ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED, ExemptType.VELOCITY,
-                    ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.CHUNK_CLIENT_SPF);
-            final boolean invalid = difference > 1.0E-4 && Math.abs(predicted) > 0.005 && clientAir && notUnderBlock;
-
-            if (invalid && !exempt) {
-                if (increaseBuffer() > 5) {
-                    fail();
-                }
-            } else {
-                decreaseBufferBy(0.1);
-            }
         }
     }
 }
