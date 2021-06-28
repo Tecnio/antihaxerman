@@ -120,5 +120,4 @@ public class PlayerUtil {
 
         return player.getActivePotionEffects().stream().filter(potionEffect -> potionEffect.getType().getId() == effectId).map(PotionEffect::getAmplifier).findAny().orElse(0) + 1;
     }
-
 }

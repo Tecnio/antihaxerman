@@ -31,7 +31,7 @@ public final class PunishmentManager {
     public static void punish(final Check check, final PlayerData data) {
         APIManager.callPunishEvent(check);
 
-        if (check.getPunishCommand() != null) {
+        if (check.getPunishCommand() != null && !check.getPunishCommand().isEmpty()) {
             Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () ->
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), check.getPunishCommand()
                             .replaceAll("%player%", data.getPlayer().getName())

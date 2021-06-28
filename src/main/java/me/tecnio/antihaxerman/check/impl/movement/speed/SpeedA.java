@@ -49,11 +49,9 @@ public final class SpeedA extends Check {
             double attributeSpeed = 1.d;
 
             final boolean lastOnGround = data.getPositionProcessor().isLastOnGround();
-            final boolean sprinting = data.getActionProcessor().isSprinting();
 
-            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON,
-                    ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE,
-                    ExemptType.LIQUID, ExemptType.SLIME, ExemptType.CHUNK);
+            final boolean exempt = this.isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.VELOCITY_ON_TICK,
+                    ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.CHUNK);
 
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SPEED) * (float) 0.2 * attributeSpeed;
             attributeSpeed += PlayerUtil.getPotionLevel(player, PotionEffectType.SLOW) * (float) -.15 * attributeSpeed;
@@ -64,18 +62,13 @@ public final class SpeedA extends Check {
                 attributeSpeed *= 1.3;
                 attributeSpeed *= 0.16277136 / Math.pow(blockSlipperiness, 3);
 
-                if (deltaY > 0.4199) {
+                if (deltaY > 0.0) {
                     attributeSpeed += 0.2;
                 }
             } else {
                 attributeSpeed = 0.026f;
                 blockSlipperiness = 0.91f;
             }
-
-            final boolean takingVelocity = data.getVelocityProcessor().isTakingVelocity();
-            final double velocityXZ = data.getVelocityProcessor().getVelocityXZ();
-
-            if (takingVelocity) attributeSpeed += velocityXZ + 0.15;
 
             final double horizontalDistance = data.getPositionProcessor().getDeltaXZ();
             final double movementSpeed = (horizontalDistance - lastHorizontalDistance) / attributeSpeed;

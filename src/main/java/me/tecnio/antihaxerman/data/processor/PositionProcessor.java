@@ -227,11 +227,11 @@ public final class PositionProcessor {
         }
     }
 
-    public void handleCollisions(int type) {
+    public void handleCollisions(final int type) {
         blocks.clear();
         blocksNear.clear();
 
-        BoundingBox boundingBox = new BoundingBox(data);
+        final BoundingBox boundingBox = new BoundingBox(data);
 
         switch (type) {
             case 0:
@@ -283,7 +283,7 @@ public final class PositionProcessor {
                 onIce = blocks.stream().anyMatch(block -> block.getType().toString().contains("ICE"));
                 onSolidGround = blocks.stream().anyMatch(block -> block.getType().isSolid());
                 nearStair = blocks.stream().anyMatch(block -> block.getType().toString().contains("STAIR"));
-                blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).anyMatch(block -> block.getType() != Material.AIR);
+                blockNearHead = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 0.9).anyMatch(block -> block.getType() != Material.AIR);
                 nearWall = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).anyMatch(block -> block.getType() != Material.AIR);
                 blocksAbove = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() >= 1.0).collect(Collectors.toList());
                 blocksBelow = blocks.stream().filter(block -> block.getLocation().getY() - data.getPositionProcessor().getY() < 0.0).collect(Collectors.toList());

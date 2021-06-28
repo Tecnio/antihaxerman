@@ -36,18 +36,15 @@ public final class NoSlowB extends Check {
         if (packet.isFlying()) {
             final int groundTicks = data.getPositionProcessor().getGroundTicks();
 
-            final int sprintingTicks = data.getActionProcessor().getSprintingTicks();
-            final int sneakingTicks = data.getActionProcessor().getSneakingTicks();
+            final boolean sprinting = data.getActionProcessor().isSprinting();
+            final boolean sneaking = data.getActionProcessor().isSneaking();
 
             final boolean exempt = isExempt(ExemptType.CHUNK) || groundTicks < 10;
-            final boolean invalid = sprintingTicks > 10 && sneakingTicks > 10;
+            final boolean invalid = sneaking && sprinting;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 10) {
-                    Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().teleport(data.getPlayer()));
-                }
-            } else {
-                resetBuffer();
+                Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(),
+                        () -> data.getPlayer().teleport(data.getPositionProcessor().getLastLocation()));
             }
         }
     }

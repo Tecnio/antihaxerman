@@ -51,7 +51,7 @@ public final class FlightA extends Check {
             double fixedPredicted = Math.abs(predicted) < 0.005 ? 0.0 : predicted;
 
             if (isExempt(ExemptType.VELOCITY_ON_TICK)) fixedPredicted = velocityY;
-            if (lastMathGround && clientAirTicks == 1) fixedPredicted = jumpMotion;
+            if (lastMathGround && clientAirTicks == 1 && deltaY > 0.0) fixedPredicted = jumpMotion;
 
             final double difference = Math.abs(deltaY - fixedPredicted);
 

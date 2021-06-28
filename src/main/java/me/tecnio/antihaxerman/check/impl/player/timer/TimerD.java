@@ -46,7 +46,7 @@ public final class TimerD extends Check {
 
                 balance += 50L - delay;
 
-                if (balance > 50L) {
+                if (balance > 5L) {
                     if (increaseBuffer() > 5) {
                         fail("balance: " + balance);
                     }

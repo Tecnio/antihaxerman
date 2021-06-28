@@ -27,13 +27,10 @@ import org.bukkit.potion.PotionEffectType;
 
 @CheckInfo(name = "Motion", type = "A", description = "Checks for invalid jump motion.")
 public final class MotionA extends Check {
+
     public MotionA(final PlayerData data) {
         super(data);
     }
-
-    // Thanks to Elevated for that modifier jump. I stole that from his checks.
-    // Thanks to GladUrBad to sending this fix step fix on Discord much love!
-    // Why 0.42F because client says so.
 
     @Override
     public void handle(final Packet packet) {
@@ -41,18 +38,19 @@ public final class MotionA extends Check {
             final boolean onGround = data.getPositionProcessor().isOnGround();
 
             final double deltaY = data.getPositionProcessor().getDeltaY();
+
+            final double y = data.getPositionProcessor().getY();
             final double lastY = data.getPositionProcessor().getLastY();
 
-            final boolean deltaModulo = deltaY % 0.015625 == 0.0;
-            final boolean lastGround = lastY % 0.015625 == 0.0;
-
-            final boolean step = deltaModulo && lastGround;
+            final boolean step = y % 0.015625 == 0.0 && lastY % 0.015625 == 0.0;
 
             final double modifierJump = PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.JUMP) * 0.1F;
             final double expectedJumpMotion = 0.42F + modifierJump;
 
-            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME, ExemptType.UNDERBLOCK, ExemptType.CHUNK) || data.getPositionProcessor().getSinceBlockNearHeadTicks() < 5;
-            final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastGround && !step;
+            final boolean exempt = isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON,
+                    ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLYING, ExemptType.SLIME,
+                    ExemptType.UNDERBLOCK, ExemptType.CHUNK) || data.getPositionProcessor().getSinceBlockNearHeadTicks() < 5;
+            final boolean invalid = deltaY != expectedJumpMotion && deltaY > 0.0 && !onGround && lastY % 0.015625 == 0.0 && !step;
 
             if (invalid && !exempt) fail(deltaY + " vel: " + isExempt(ExemptType.VELOCITY));
             if (step && deltaY > 0.6F && !exempt) fail();
