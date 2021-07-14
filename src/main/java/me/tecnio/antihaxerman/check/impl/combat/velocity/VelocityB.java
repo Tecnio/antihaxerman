@@ -23,6 +23,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.BlockUtil;
+import me.tecnio.antihaxerman.util.MathUtil;
 import org.bukkit.Location;
 
 @CheckInfo(name = "Velocity", type = "B", description = "Checks for horizontal velocity modifications.")
@@ -54,7 +55,7 @@ public final class VelocityB extends Check {
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
 
-            final double velocityXZ = Math.hypot(kbX, kbZ);
+            final double velocityXZ = MathUtil.hypot(kbX, kbZ);
 
             final double diffH = Math.max((deltaXZ / velocityXZ), (lastDeltaXZ / velocityXZ));
             final double percentage = diffH * 100.0;
@@ -66,16 +67,13 @@ public final class VelocityB extends Check {
             if (kbX != 0 || kbZ != 0) {
                 if (invalid && !exempt) {
                     if (increaseBuffer() > 3) {
-                        fail(String.format("(Horizontal) Velocity: ~%.2f%%, Tick: %d", percentage, ticksSinceVelocity));
+                        fail();
                     }
 
                     resetState();
                 } else {
                     decreaseBuffer();
                 }
-
-                debug(String.format("diffH: %.2f lDiffH: %.2f tick: %d buffer: %.2f",
-                        (deltaXZ / velocityXZ), (lastDeltaXZ / velocityXZ), ticksSinceVelocity, getBuffer()));
             }
 
             final double x = data.getPositionProcessor().getX();

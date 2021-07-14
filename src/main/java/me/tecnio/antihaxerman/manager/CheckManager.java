@@ -18,7 +18,10 @@
 package me.tecnio.antihaxerman.manager;
 
 import me.tecnio.antihaxerman.check.Check;
-import me.tecnio.antihaxerman.check.impl.combat.aim.*;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimA;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimB;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimC;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.check.impl.combat.angle.AngleA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
@@ -52,7 +55,6 @@ import me.tecnio.antihaxerman.check.impl.movement.omnisprint.OmniSprintA;
 import me.tecnio.antihaxerman.check.impl.movement.speed.*;
 import me.tecnio.antihaxerman.check.impl.movement.strafe.StrafeA;
 import me.tecnio.antihaxerman.check.impl.player.badpackets.*;
-import me.tecnio.antihaxerman.check.impl.player.fastplace.FastPlaceA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofB;
 import me.tecnio.antihaxerman.check.impl.player.groundspoof.GroundSpoofC;
@@ -65,12 +67,10 @@ import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryD;
 import me.tecnio.antihaxerman.check.impl.player.pingspoof.PingSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.post.*;
 import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldA;
-import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldB;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerB;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerC;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerD;
-import me.tecnio.antihaxerman.check.impl.player.tower.TowerA;
 import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -152,10 +152,7 @@ public final class CheckManager {
             InventoryC.class,
             InventoryD.class,
             PingSpoofA.class,
-            FastPlaceA.class,
             ScaffoldA.class,
-            ScaffoldB.class,
-            TowerA.class,
             InteractA.class,
             InteractB.class,
             InteractC.class,

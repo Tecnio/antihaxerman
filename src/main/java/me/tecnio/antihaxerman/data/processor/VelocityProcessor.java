@@ -22,6 +22,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.Wrapp
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
 import lombok.Getter;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.type.Velocity;
 import org.bukkit.util.Vector;
 
@@ -58,7 +59,7 @@ public final class VelocityProcessor {
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.velocityZ = velocityZ;
-        this.velocityXZ = Math.hypot(velocityX, velocityZ);
+        this.velocityXZ = MathUtil.hypot(velocityX, velocityZ);
 
         this.velocityID = (short) ThreadLocalRandom.current().nextInt(Short.MAX_VALUE);
 

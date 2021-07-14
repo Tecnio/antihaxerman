@@ -44,17 +44,34 @@ public final class JesusB extends Check {
 
             if (blocks == null || blocksBelow == null || blocksAbove == null) return;
 
-            final boolean containsLiquid = blocksBelow.stream().anyMatch(Block::isLiquid);
-            final boolean doesntContainSolid = blocksBelow.stream().noneMatch(block -> block.getType().isSolid());
+            boolean containsLiquid = false;
+            boolean doesntContainSolid = true;
+
+            for (final Block block : blocksBelow) {
+                containsLiquid |= block.isLiquid();
+                if (block.getType().isSolid()) doesntContainSolid = false;
+            }
 
             final boolean liquidBelow = containsLiquid && doesntContainSolid;
 
-            final boolean noLiquidAbove = blocksAbove.stream().noneMatch(Block::isLiquid);
-            final boolean noBlocks = blocks.stream().anyMatch(block -> block.getType().isSolid() || (block.getType() != Material.AIR && !block.isLiquid()));
+            boolean noLiquidAbove = true;
+
+            for (final Block block : blocksAbove) {
+                if (block.isLiquid()) noLiquidAbove = false;
+            }
+
+            boolean noBlocks = false;
+
+            for (final Block block : blocks) {
+                final Material material = block.getType();
+
+                noBlocks |= material.isSolid() || (material != Material.AIR && !block.isLiquid());
+            }
 
             final boolean fullySubmerged = data.getPositionProcessor().isFullySubmergedInLiquidStat();
 
-            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.VELOCITY,
+                    ExemptType.FLYING, ExemptType.UNDERBLOCK, ExemptType.CHUNK);
             final boolean invalid = Math.abs(deltaY) < 0.0001 && liquidBelow && noLiquidAbove && !fullySubmerged && !noBlocks;
 
             if (invalid && !exempt) {

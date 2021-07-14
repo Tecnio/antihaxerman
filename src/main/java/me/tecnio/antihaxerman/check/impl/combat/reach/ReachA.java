@@ -96,7 +96,7 @@ public final class ReachA extends Check {
 
             if (invalid) {
                 if (increaseBuffer() > 3) {
-                    fail(String.format("dist: %.3f limit: %.3f", distance, maxDistance));
+                    fail(distance);
                 }
             } else {
                 decreaseBufferBy(0.05);

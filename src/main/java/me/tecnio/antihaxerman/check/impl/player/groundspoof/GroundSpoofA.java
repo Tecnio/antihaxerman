@@ -17,7 +17,6 @@
 
 package me.tecnio.antihaxerman.check.impl.player.groundspoof;
 
-import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
@@ -34,10 +33,8 @@ public final class GroundSpoofA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isPosition()) {
-            final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
-
-            final boolean clientGround = wrapper.isOnGround();
-            final boolean serverGround = wrapper.getY() % 0.015625 == 0.0;
+            final boolean clientGround = data.getPositionProcessor().isOnGround();
+            final boolean serverGround = data.getPositionProcessor().getY() % 0.015625 == 0.0;
 
             final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.LIQUID, ExemptType.CLIMBABLE,
                     ExemptType.VEHICLE, ExemptType.TELEPORT_DELAY, ExemptType.CHUNK, ExemptType.SLIME,

@@ -70,7 +70,7 @@ public final class LiquidSpeedC extends Check {
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {
-                    fail(String.format("diffX: %.3f diffZ: %.3f", differenceX, differenceZ));
+                    fail("diffX: " + differenceX + " diffZ: " + differenceZ);
                 }
             } else {
                 decreaseBufferBy(0.25);

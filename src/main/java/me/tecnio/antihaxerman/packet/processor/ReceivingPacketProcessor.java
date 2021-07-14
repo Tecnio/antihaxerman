@@ -24,6 +24,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPac
 import io.github.retrooper.packetevents.packetwrappers.play.in.keepalive.WrappedPacketInKeepAlive;
 import io.github.retrooper.packetevents.packetwrappers.play.in.transaction.WrappedPacketInTransaction;
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
+import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
@@ -94,6 +95,9 @@ public final class ReceivingPacketProcessor  {
 
             data.getPositionProcessor().handleClientCommand(wrapper);
         }
-        data.getChecks().forEach(check -> check.handle(packet));
+
+        for (final Check check : data.getChecks()) {
+            check.handle(packet);
+        }
     }
 }

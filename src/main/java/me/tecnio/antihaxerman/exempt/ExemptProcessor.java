@@ -17,11 +17,10 @@
 
 package me.tecnio.antihaxerman.exempt;
 
+import lombok.RequiredArgsConstructor;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -34,7 +33,13 @@ public final class ExemptProcessor {
     }
 
     public boolean isExempt(final ExemptType... exemptTypes) {
-        return Arrays.stream(exemptTypes).anyMatch(this::isExempt);
+        for (final ExemptType exemptType : exemptTypes) {
+            if (isExempt(exemptType)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean isExempt(final Function<PlayerData, Boolean> exception) {

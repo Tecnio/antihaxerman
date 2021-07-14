@@ -75,7 +75,7 @@ public class MathUtil {
 
         Collections.sort(numbers);
 
-        final double mean =  sum / count;
+        final double mean = sum / count;
         final double median = (count % 2 != 0) ? numbers.get(count / 2) : (numbers.get((count - 1) / 2) + numbers.get(count / 2)) / 2;
         final double variance = getVariance(data);
 
@@ -83,7 +83,13 @@ public class MathUtil {
     }
 
     public double getAverage(final Collection<? extends Number> data) {
-        return data.stream().mapToDouble(Number::doubleValue).average().orElse(0D);
+        double sum = 0.0;
+
+        for (final Number number : data) {
+            sum += number.doubleValue();
+        }
+
+        return sum / data.size();
     }
 
     public double getKurtosis(final Collection<? extends Number> data) {
@@ -191,18 +197,18 @@ public class MathUtil {
     }
 
     public int getDuplicates(final Collection<? extends Number> data) {
-        return (int)(data.size() - data.stream().distinct().count());
+        return (int) (data.size() - data.stream().distinct().count());
     }
 
     public int getDistinct(final Collection<? extends Number> data) {
-        return (int)data.stream().distinct().count();
+        return (int) data.stream().distinct().count();
     }
 
     public static float getMoveAngle(final Location to, final Location from) {
-        double diffX = to.getX() - from.getX(),
-                diffZ = to.getZ() - from.getZ();
+        final double diffX = to.getX() - from.getX();
+        final double diffZ = to.getZ() - from.getZ();
 
-        float moveAngle = (float) (Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F);
+        final float moveAngle = (float) (Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F);
 
         return angleTo180(Math.abs(moveAngle - to.getYaw()));
     }
@@ -210,11 +216,11 @@ public class MathUtil {
     public static float angleTo180(float val) {
         val = val % 360F;
 
-        if(val >= 180F) {
+        if (val >= 180F) {
             val -= 360F;
         }
 
-        if(val < -180F) {
+        if (val < -180F) {
             val += 360F;
         }
 
@@ -223,15 +229,15 @@ public class MathUtil {
 
     public static Vector getDirection(final float yaw, final float pitch) {
         final Vector vector = new Vector();
-        final float rotX = (float)Math.toRadians(yaw);
-        final float rotY = (float)Math.toRadians(pitch);
+        final float rotX = (float) Math.toRadians(yaw);
+        final float rotY = (float) Math.toRadians(pitch);
         vector.setY(-Math.sin(rotY));
         final double xz = Math.cos(rotY);
         vector.setX(-xz * Math.sin(rotX));
         vector.setZ(xz * Math.cos(rotX));
         return vector;
     }
-    
+
     public static float[] getRotations(final Location one, final Location two) {
         final double diffX = two.getX() - one.getX();
         final double diffZ = two.getZ() - one.getZ();
@@ -273,5 +279,19 @@ public class MathUtil {
 
     public int msToTicks(final double time) {
         return (int) Math.round(time / 50.0);
+    }
+
+    public double hypot(final double... number) {
+        double sum = 0.0;
+
+        for (final double v : number) {
+            sum += v * v;
+        }
+
+        return Math.sqrt(sum);
+    }
+
+    public double hypot(final double a, final double b) {
+        return Math.sqrt((a * a) + (b * b));
     }
 }

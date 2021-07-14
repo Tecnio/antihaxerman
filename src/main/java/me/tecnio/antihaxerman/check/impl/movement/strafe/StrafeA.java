@@ -54,18 +54,16 @@ public final class StrafeA extends Check {
 
             final boolean exempt = isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING,
                     ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY,
-                    ExemptType.UNDERBLOCK, ExemptType.CHUNK, ExemptType.NEAR_WALL);
+                    ExemptType.CHUNK, ExemptType.NEAR_WALL);
             final boolean invalid = (diffX > attributeSpeed || diffZ > attributeSpeed) && deltaXZ > .05 && airTicks > 2;
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {
-                    fail(String.format("diffX: %.3f diffZ: %.3f airT: %s", diffX, diffZ, airTicks));
+                    fail();
                 }
             } else {
                 decreaseBufferBy(0.1);
             }
-
-            debug(String.format("diffX: %.2f diffZ: %.2f buffer: %.2f airT: %s", diffX, diffZ, getBuffer(), airTicks));
         }
     }
 }

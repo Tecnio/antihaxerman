@@ -22,7 +22,6 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public final class FastClimbB extends Check {
             final List<Block> blocks = data.getPositionProcessor().getBlocks();
             if (blocks == null) return;
 
-            final boolean onClimbable = blocks.stream().anyMatch(block -> block.getType() == Material.LADDER || block.getType() == Material.VINE);
+            final boolean onClimbable = data.getPositionProcessor().isOnClimbable();
 
             final float deltaY = (float) data.getPositionProcessor().getDeltaY();
             final float limit = 0.1176F;

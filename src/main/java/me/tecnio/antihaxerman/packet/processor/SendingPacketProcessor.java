@@ -22,6 +22,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.out.explosion.Wrappe
 import io.github.retrooper.packetevents.packetwrappers.play.out.keepalive.WrappedPacketOutKeepAlive;
 import io.github.retrooper.packetevents.packetwrappers.play.out.position.WrappedPacketOutPosition;
 import io.github.retrooper.packetevents.packetwrappers.play.out.transaction.WrappedPacketOutTransaction;
+import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
@@ -54,6 +55,9 @@ public final class SendingPacketProcessor  {
 
             data.getPositionProcessor().handleTeleport(wrapper);
         }
-        data.getChecks().forEach(check -> check.handle(packet));
+
+        for (final Check check : data.getChecks()) {
+            check.handle(packet);
+        }
     }
 }

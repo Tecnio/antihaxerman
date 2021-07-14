@@ -47,7 +47,7 @@ public final class VelocityA extends Check {
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 3) {
-                    fail(String.format("(Vertical) Velocity: %.2f%%", percentage));
+                    fail();
                 }
             } else {
                 decreaseBufferBy(0.25);

@@ -58,10 +58,6 @@ public enum ExemptType {
 
     PLACING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastPlaceTick() < 10),
 
-    BUKKIT_PLACING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastBukkitPlaceTick() < 10),
-
-    BUKKIT_CANCELLED_PLACING(data -> AntiHaxerman.INSTANCE.getTickManager().getTicks() - data.getActionProcessor().getLastBukkitCancelPlaceTick() < 10),
-
     BOAT(data -> data.getPositionProcessor().isNearVehicle()),
 
     VEHICLE(data -> data.getPositionProcessor().getSinceVehicleTicks() < 20),

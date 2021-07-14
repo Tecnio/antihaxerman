@@ -29,7 +29,7 @@ public final class AimC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isRotation() && isExempt(ExemptType.COMBAT, ExemptType.BUKKIT_PLACING)) {
+        if (packet.isRotation() && isExempt(ExemptType.COMBAT, ExemptType.PLACING)) {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float lastDeltaPitch = data.getRotationProcessor().getLastDeltaPitch();
 

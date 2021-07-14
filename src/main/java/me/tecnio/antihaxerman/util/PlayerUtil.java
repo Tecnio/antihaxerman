@@ -95,7 +95,7 @@ public class PlayerUtil {
 
                     for (final Entity entity : world.getChunkAt(xVal, zVal).getEntities()) {
                         //We have to do this due to stupidness
-                        if (entity == null) continue;
+                        if (entity == null) break;
 
                         //Make sure the entity is within the radius specified
                         if (entity.getLocation().distanceSquared(location) > radius * radius) continue;
@@ -118,6 +118,12 @@ public class PlayerUtil {
 
         if (!player.hasPotionEffect(effect)) return 0;
 
-        return player.getActivePotionEffects().stream().filter(potionEffect -> potionEffect.getType().getId() == effectId).map(PotionEffect::getAmplifier).findAny().orElse(0) + 1;
+        for (final PotionEffect potionEffect : player.getActivePotionEffects()) {
+            if (potionEffect.getType().getId() == effectId) {
+                return potionEffect.getAmplifier() + 1;
+            }
+        }
+
+        return 0;
     }
 }

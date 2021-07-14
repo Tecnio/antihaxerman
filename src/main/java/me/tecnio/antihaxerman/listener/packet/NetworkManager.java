@@ -17,13 +17,14 @@
 
 package me.tecnio.antihaxerman.listener.packet;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.github.retrooper.packetevents.event.PacketListenerAbstract;
 import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.impl.PostPlayerInjectEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
 import io.github.retrooper.packetevents.packettype.PacketType;
-import io.github.retrooper.packetevents.packettype.PacketType.Play.*;
+import io.github.retrooper.packetevents.packettype.PacketType.Play.Server;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import io.github.retrooper.packetevents.utils.immutableset.ImmutableSetCustom;
 import io.github.retrooper.packetevents.utils.player.ClientVersion;
@@ -39,12 +40,13 @@ import java.util.concurrent.Executors;
 
 public final class NetworkManager extends PacketListenerAbstract {
 
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor(
+            new ThreadFactoryBuilder().setNameFormat("AntiHaxerman Thread").build());
 
     public NetworkManager() {
         super(PacketEventPriority.MONITOR);
 
-        // Filter all of the packets because retrooper best.
+        // Filter all of the packets because retrooper good.
         serverSidedPlayAllowance = new ImmutableSetCustom<>();
 
         // Whitelist packets that we want to listen.
@@ -65,19 +67,23 @@ public final class NetworkManager extends PacketListenerAbstract {
             if (PacketType.Play.Client.Util.isInstanceOfFlying(event.getPacketId())) {
                 final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(event.getNMSPacket());
 
-                if (Math.abs(wrapper.getX()) > 3.0E+7
-                        || Math.abs(wrapper.getY()) > 3.0E+7
-                        || Math.abs(wrapper.getZ()) > 3.0E+7
-                        || Math.abs(wrapper.getPitch()) > 3.0E+7
-                        || Math.abs(wrapper.getYaw()) > 3.0E+7) {
+                if (Math.abs(wrapper.getX()) > 1.0E+7
+                        || Math.abs(wrapper.getY()) > 1.0E+7
+                        || Math.abs(wrapper.getZ()) > 1.0E+7
+                        || Math.abs(wrapper.getPitch()) > 1.0E+7
+                        || Math.abs(wrapper.getYaw()) > 1.0E+7) {
                     Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> event.getPlayer().kickPlayer("You are gay."));
                     return;
                 }
             }
 
-            executorService.execute(() -> AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(
-                    data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()))
-            );
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(
+                            data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()));
+                }
+            });
         }
     }
 
@@ -86,16 +92,19 @@ public final class NetworkManager extends PacketListenerAbstract {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {
-            executorService.execute(() -> AntiHaxerman.INSTANCE.getSendingPacketProcessor().handle(
-                    data, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()))
-            );
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    AntiHaxerman.INSTANCE.getSendingPacketProcessor().handle(
+                            data, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()));
+                }
+            });
         }
     }
 
     @Override
     public void onPostPlayerInject(final PostPlayerInjectEvent event) {
         final ClientVersion version = event.getClientVersion();
-
 
         final boolean unsupported = version.isHigherThan(ClientVersion.v_1_8) || version.isLowerThan(ClientVersion.v_1_7_10);
 
@@ -105,6 +114,5 @@ public final class NetworkManager extends PacketListenerAbstract {
             Bukkit.getLogger().warning(message);
             AlertManager.sendMessage(message);
         }
-
     }
 }
