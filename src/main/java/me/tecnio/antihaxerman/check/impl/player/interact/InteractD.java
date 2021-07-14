@@ -21,6 +21,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.blockplace.Wrappe
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 import org.bukkit.util.Vector;
 
@@ -52,7 +53,8 @@ public final class InteractD extends Check {
                 final float angle = directionToDestination.angle(playerDirection);
                 final float distance = (float) eyeLocation.distance(blockLocation);
 
-                final boolean exempt = blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0;
+                final boolean exempt = blockLocation.getX() == -1.0 && blockLocation.getY() == -1.0 && blockLocation.getZ() == -1.0
+                        || isExempt(ExemptType.GHOST_BLOCK, ExemptType.LAGGING, ExemptType.PING, ExemptType.TELEPORT_DELAY_SMALL);
                 final boolean invalid = angle > 1.0F && distance > 1.5;
 
                 if (invalid && !exempt) {

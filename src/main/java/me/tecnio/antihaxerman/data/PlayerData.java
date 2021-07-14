@@ -57,6 +57,7 @@ public final class PlayerData {
     private final RotationProcessor rotationProcessor = new RotationProcessor(this);
     private final VelocityProcessor velocityProcessor = new VelocityProcessor(this);
     private final ConnectionProcessor connectionProcessor = new ConnectionProcessor(this);
+    private final GhostBlockProcessor ghostBlockProcessor = new GhostBlockProcessor(this);
 
     public PlayerData(final Player player) {
         this.player = player;

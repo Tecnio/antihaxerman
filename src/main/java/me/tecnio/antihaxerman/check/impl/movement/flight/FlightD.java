@@ -43,7 +43,7 @@ public final class FlightD extends Check {
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE,
                     ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING,
                     ExemptType.WEB, ExemptType.SLIME, ExemptType.CLIMBABLE);
-            final boolean invalid = acceleration > 0.0 && (serverAirTicks > 8 || clientAirTicks > 8);
+            final boolean invalid = acceleration > 0.0 && (serverAirTicks > 8 && !isExempt(ExemptType.GHOST_BLOCK) || clientAirTicks > 8);
 
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {

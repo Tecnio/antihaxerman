@@ -20,6 +20,7 @@ package me.tecnio.antihaxerman.config;
 import lombok.experimental.UtilityClass;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
+import me.tecnio.antihaxerman.data.processor.GhostBlockProcessor;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.ColorUtil;
 import org.bukkit.Bukkit;
@@ -39,6 +40,9 @@ public final class Config {
     public boolean BYPASS_OP, LOGGING_ENABLED, LOG_TO_CONSOLE, API_ENABLED,
             UPDATE_CHECKER_ENABLED, CLIENT_ENABLED, CLIENT_CASE_SENSITIVE;
 
+    public boolean GHOST_BLOCK_ENABLED, GHOST_BLOCK_LAG_BACK;
+    public GhostBlockProcessor.Mode GHOST_BLOCK_MODE;
+    public int GHOST_BLOCK_MAX_PING;
 
     public List<String> BLOCKED_CLIENTS = new ArrayList<>();
 
@@ -50,6 +54,13 @@ public final class Config {
 
     public void updateConfig() {
         try {
+            GHOST_BLOCK_ENABLED = getBoolean("ghost-block-handler.enabled");
+            GHOST_BLOCK_LAG_BACK = getBoolean("ghost-block-handler.lag-back");
+
+            GHOST_BLOCK_MODE = GhostBlockProcessor.Mode.valueOf(getString("ghost-block-handler.mode"));
+
+            GHOST_BLOCK_MAX_PING = getInteger("ghost-block-handler.max-ping");
+
             TESTMODE = getBoolean("testmode");
 
             PREFIX = ColorUtil.translate(getString("response.anticheat.prefix"));

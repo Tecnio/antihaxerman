@@ -19,6 +19,7 @@ package me.tecnio.antihaxerman.exempt.type;
 
 import lombok.Getter;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.PlayerUtil;
 import me.tecnio.antihaxerman.util.ServerUtil;
@@ -90,6 +91,8 @@ public enum ExemptType {
         return delta > 100 || delta < 2;
     }),
 
+    PING(data -> PlayerUtil.getPing(data.getPlayer()) > 500),
+
     CREATIVE(data -> data.getPlayer().getGameMode() == GameMode.CREATIVE),
 
     CINEMATIC(data -> data.getRotationProcessor().isCinematic()),
@@ -115,6 +118,8 @@ public enum ExemptType {
 
         return Math.abs(expectedJumpMotion - deltaY) < 1E-5 && !onGround && lastOnGround && !step;
     }),
+
+    GHOST_BLOCK(data -> data.getGhostBlockProcessor().isOnGhostBlock() && Config.GHOST_BLOCK_ENABLED),
 
     // SPF stands for spoofable just wanted to tell.
     CHUNK_CLIENT_SPF(data -> data.getPositionProcessor().getDeltaY() + 0.09800000190734881 <= 0.001);

@@ -87,38 +87,38 @@ public final class PositionProcessor {
         this.lastPos = pos;
         pos = position;
 
+        lastX = this.x;
+        lastY = this.y;
+        lastZ = this.z;
+
+        this.x = position ? wrapper.getX() : this.x;
+        this.y = position ? wrapper.getY() : this.y;
+        this.z = position ? wrapper.getZ() : this.z;
+
+        lastLocation = location != null ? location : null;
+        location = new Location(data.getPlayer().getWorld(), x, y, z);
+
+        // lmao
+        this.lastLastDeltaY = lastDeltaY;
+
+        lastDeltaX = deltaX;
+        lastDeltaY = deltaY;
+        lastDeltaZ = deltaZ;
+
+        lastDeltaXZ = deltaXZ;
+
+        deltaX = this.x - lastX;
+        deltaY = this.y - lastY;
+        deltaZ = this.z - lastZ;
+        deltaXZ = MathUtil.hypot(deltaX, deltaZ);
+
+        lastMathGround = mathematicallyOnGround;
+        mathematicallyOnGround = y % 0.015625 < 0.005;
+
+        handleCollisions(0);
+        handleCollisions(1);
+
         if (position) {
-            lastX = this.x;
-            lastY = this.y;
-            lastZ = this.z;
-
-            this.x = wrapper.getX();
-            this.y = wrapper.getY();
-            this.z = wrapper.getZ();
-
-            lastLocation = location != null ? location : null;
-            location = new Location(data.getPlayer().getWorld(), x, y, z);
-
-            // lmao
-            this.lastLastDeltaY = lastDeltaY;
-
-            lastDeltaX = deltaX;
-            lastDeltaY = deltaY;
-            lastDeltaZ = deltaZ;
-
-            lastDeltaXZ = deltaXZ;
-
-            deltaX = this.x - lastX;
-            deltaY = this.y - lastY;
-            deltaZ = this.z - lastZ;
-            deltaXZ = MathUtil.hypot(deltaX, deltaZ);
-
-            lastMathGround = mathematicallyOnGround;
-            mathematicallyOnGround = y % 0.015625 < 0.05;
-
-            handleCollisions(0);
-            handleCollisions(1);
-
             if (look) {
                 // Iterator used in order to prevent CME.
                 final Iterator<Vector> iterator = teleportList.iterator();

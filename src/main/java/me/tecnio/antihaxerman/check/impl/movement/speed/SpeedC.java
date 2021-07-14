@@ -87,7 +87,7 @@ public final class SpeedC extends Check {
                 groundLimit += 0.1;
             }
 
-            if (isExempt(ExemptType.VEHICLE, ExemptType.PISTON,
+            if (isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.GHOST_BLOCK,
                     ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK)) return;
 
             if (airTicks > 0) {

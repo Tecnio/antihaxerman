@@ -36,7 +36,8 @@ public final class GroundSpoofD extends Check {
             final boolean inAir = data.getPositionProcessor().getAirTicks() > 3;
             final boolean mathGround = data.getPositionProcessor().isMathematicallyOnGround();
 
-            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.WEB, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CHUNK);
+            final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.WEB,
+                    ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CHUNK, ExemptType.GHOST_BLOCK);
             final boolean invalid = onGround && inAir && !mathGround;
 
             if (invalid && !exempt) fail();

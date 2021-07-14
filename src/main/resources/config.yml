@@ -71,6 +71,28 @@ violations:
   # When enabled if a player fails a check it is gonna be logged to the console.
   alert-console: true
 
+## Ghost Block Processor
+# Ghost block processor detects ghost blocks with certain methods and ensures that checks in AntiHaxerman do not false.
+# This processor may cause small bypasses in general and for players with high ping might get lagged back by it.
+ghost-block-handler:
+  # This is used to enable or disable the ghost block processor.
+  # Warning disabling this will create false flags with ghost blocks.
+  enabled: true
+
+  # This is used to lag back people who were on a ghost block.
+  # If this is disabled it will make the anticheat bypassable but stable on ghost blocks and allow it to perform better.
+  lag-back: true
+
+  # This the mode for our ghost block processor.
+  # STRICT: Strict mode will instantly lag the player back if they are on a ghost block but this will false flag laggy players.
+  # LENIENT: Lenient mode will lag the player back based on their ping in order to handle legit players perfectly but this allows bypasses in return.
+
+  # NORMAL: This will be lenient mode with the max ping setting. You can limit the max time the anticheat will wait to lag back.
+  # So if the number is higher this will allow bigger bypasses but if the number is lower will false flag legit players.
+  mode: 'NORMAL'
+
+  max-ping: 400
+
 ########################################################################################################################
 # Check configuration                                                                                                  #
 # enabled: Turns the check on/off.                                                                                     #

@@ -96,6 +96,8 @@ public final class ReceivingPacketProcessor  {
             data.getPositionProcessor().handleClientCommand(wrapper);
         }
 
+        if (packet.isFlying()) data.getGhostBlockProcessor().handleFlying();
+
         for (final Check check : data.getChecks()) {
             check.handle(packet);
         }

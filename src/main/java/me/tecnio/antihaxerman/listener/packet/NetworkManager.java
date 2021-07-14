@@ -77,13 +77,8 @@ public final class NetworkManager extends PacketListenerAbstract {
                 }
             }
 
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(
-                            data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()));
-                }
-            });
+            executorService.execute(() -> AntiHaxerman.INSTANCE.getReceivingPacketProcessor().handle(
+                    data, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId(), event.getTimestamp())));
         }
     }
 
@@ -92,13 +87,8 @@ public final class NetworkManager extends PacketListenerAbstract {
         final PlayerData data = PlayerDataManager.getInstance().getPlayerData(event.getPlayer());
 
         if (data != null) {
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    AntiHaxerman.INSTANCE.getSendingPacketProcessor().handle(
-                            data, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId(), event.getTimestamp()));
-                }
-            });
+            executorService.execute(() -> AntiHaxerman.INSTANCE.getSendingPacketProcessor().handle(
+                    data, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId(), event.getTimestamp())));
         }
     }
 

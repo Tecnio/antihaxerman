@@ -52,9 +52,9 @@ public final class StrafeA extends Check {
             final double diffX = Math.abs(deltaX - predictedDeltaX);
             final double diffZ = Math.abs(deltaZ - predictedDeltaZ);
 
-            final boolean exempt = isExempt(ExemptType.TPS, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.FLYING,
+            final boolean exempt = isExempt(ExemptType.TELEPORT_DELAY_SMALL, ExemptType.PISTON, ExemptType.FLYING,
                     ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY,
-                    ExemptType.CHUNK, ExemptType.NEAR_WALL);
+                    ExemptType.CHUNK, ExemptType.NEAR_WALL, ExemptType.GHOST_BLOCK);
             final boolean invalid = (diffX > attributeSpeed || diffZ > attributeSpeed) && deltaXZ > .05 && airTicks > 2;
 
             if (invalid && !exempt) {

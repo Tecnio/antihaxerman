@@ -37,7 +37,7 @@ public final class TimerC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying() && !isExempt(ExemptType.TPS, ExemptType.JOINED)) {
+        if (packet.isFlying() && !isExempt(ExemptType.TPS, ExemptType.JOINED, ExemptType.LAGGING)) {
             final long now = now();
             final long delta = now - lastFlying;
 
@@ -50,7 +50,7 @@ public final class TimerC extends Check {
                 final double speed = 50 / average;
 
                 if (speed >= 1.025) {
-                    if (increaseBuffer() > 30) {
+                    if (increaseBuffer() > 40) {
                         fail();
                     }
                 } else {
