@@ -86,9 +86,12 @@ ghost-block-handler:
   # This the mode for our ghost block processor.
   # STRICT: Strict mode will instantly lag the player back if they are on a ghost block but this will false flag laggy players.
   # LENIENT: Lenient mode will lag the player back based on their ping in order to handle legit players perfectly but this allows bypasses in return.
+  # EXTRA_LENIENT: This is just lenient but even harder. Only use this if you are struggling with laggy players getting lagged back.
 
   # NORMAL: This will be lenient mode with the max ping setting. You can limit the max time the anticheat will wait to lag back.
   # So if the number is higher this will allow bigger bypasses but if the number is lower will false flag legit players.
+
+  # LIGHT: This is just normal but a bit more lenient allowings players to place blocks everywhere with no falses whatsoever.
   mode: 'NORMAL'
 
   max-ping: 400

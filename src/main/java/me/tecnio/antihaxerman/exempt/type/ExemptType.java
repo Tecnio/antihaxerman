@@ -121,6 +121,8 @@ public enum ExemptType {
 
     GHOST_BLOCK(data -> data.getGhostBlockProcessor().isOnGhostBlock() && Config.GHOST_BLOCK_ENABLED),
 
+    SINCE_SPEED(data -> data.getPositionProcessor().getSinceSpeedTicks() < 10 && data.getPositionProcessor().getSinceSpeedTicks() != 0),
+
     // SPF stands for spoofable just wanted to tell.
     CHUNK_CLIENT_SPF(data -> data.getPositionProcessor().getDeltaY() + 0.09800000190734881 <= 0.001);
 

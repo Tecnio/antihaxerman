@@ -30,6 +30,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Vehicle;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -52,7 +53,7 @@ public final class PositionProcessor {
 
     private int airTicks, clientAirTicks, sinceVehicleTicks, sinceFlyingTicks,
             liquidTicks, sinceLiquidTicks, climbableTicks, sinceClimbableTicks,
-            webTicks, sinceWebTicks, ticks,
+            webTicks, sinceWebTicks, ticks, sinceSpeedTicks,
             groundTicks, sinceTeleportTicks, sinceSlimeTicks, solidGroundTicks,
             iceTicks, sinceIceTicks, sinceBlockNearHeadTicks;
 
@@ -66,8 +67,8 @@ public final class PositionProcessor {
 
     private final List<Block> blocks = new ArrayList<>();
     private final List<Block> blocksNear = new ArrayList<>();
-    private List<Block> blocksBelow = new ArrayList<>();
-    private List<Block> blocksAbove = new ArrayList<>();
+    private final List<Block> blocksBelow = new ArrayList<>();
+    private final List<Block> blocksAbove = new ArrayList<>();
 
     private List<Entity> nearbyEntities = new ArrayList<>();
 
@@ -148,6 +149,12 @@ public final class PositionProcessor {
 
         if (onGround) ++groundTicks;
         else groundTicks = 0;
+
+        if (data.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) {
+            sinceSpeedTicks = 0;
+        } else {
+            ++sinceSpeedTicks;
+        }
 
         if (inAir) {
             ++airTicks;
@@ -293,7 +300,7 @@ public final class PositionProcessor {
                     inWater |= material == Material.WATER ||  material == Material.STATIONARY_WATER;
                     inLava |= material == Material.LAVA || material == Material.STATIONARY_LAVA;
                     inWeb |= material == Material.WEB;
-                    onIce |= material == Material.ICE;
+                    onIce |= material == Material.ICE || material == Material.PACKED_ICE;
                     onSolidGround |= material.isSolid();
                     nearStair |= material.toString().contains("STAIR");
                     blockNearHead |= block.getLocation().getBlockY() - data.getPositionProcessor().getY() >= 0.9 && material != Material.AIR;

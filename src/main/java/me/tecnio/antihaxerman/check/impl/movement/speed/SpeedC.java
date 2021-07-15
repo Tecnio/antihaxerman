@@ -34,11 +34,6 @@ public final class SpeedC extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean sprinting = data.getActionProcessor().isSprinting();
-
-            final double lastDeltaX = data.getPositionProcessor().getLastDeltaX();
-            final double lastDeltaZ = data.getPositionProcessor().getLastDeltaZ();
-
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
@@ -62,14 +57,15 @@ public final class SpeedC extends Check {
                 groundLimit += 0.91F;
             }
 
-            if (isExempt(ExemptType.ICE, ExemptType.SLIME)) {
+            if (data.getPositionProcessor().getSinceIceTicks() < 20
+                    || data.getPositionProcessor().getSinceSlimeTicks() < 20) {
                 airLimit += 0.34F;
                 groundLimit += 0.34F;
             }
 
-            if (data.getPositionProcessor().getSinceBlockNearHeadTicks() < 3) {
-                airLimit += 0.91F;
-                groundLimit += 0.91F;
+            if (data.getPositionProcessor().getSinceBlockNearHeadTicks() < 6) {
+                airLimit += 0.91F / Math.max(1, data.getPositionProcessor().getSinceBlockNearHeadTicks());
+                groundLimit += 0.91F / Math.max(1, data.getPositionProcessor().getSinceBlockNearHeadTicks());;
             }
 
             if (groundTicks < 7) {
@@ -88,7 +84,7 @@ public final class SpeedC extends Check {
             }
 
             if (isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.GHOST_BLOCK,
-                    ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK)) return;
+                    ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK, ExemptType.SINCE_SPEED)) return;
 
             if (airTicks > 0) {
                 if (deltaXZ > airLimit) {

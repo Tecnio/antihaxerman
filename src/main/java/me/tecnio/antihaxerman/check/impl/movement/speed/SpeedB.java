@@ -32,13 +32,12 @@ public final class SpeedB extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final boolean sprinting = data.getActionProcessor().isSprinting();
-            final int airTicks = data.getPositionProcessor().getAirTicks();
+            final int airTicks = data.getPositionProcessor().getClientAirTicks();
 
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
 
-            final double predicted = (lastDeltaXZ * 0.91F) + (sprinting ? 0.026F : 0.02F);
+            final double predicted = (lastDeltaXZ * 0.91F) + 0.026F;
             final double difference = deltaXZ - predicted;
 
             final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT,

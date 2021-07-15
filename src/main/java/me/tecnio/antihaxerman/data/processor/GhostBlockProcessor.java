@@ -48,16 +48,28 @@ public final class GhostBlockProcessor {
     public void handleFlying() {
         if (!Config.GHOST_BLOCK_ENABLED) return;
 
-        onGhostBlock = data.getPositionProcessor().isOnGround()
+        final boolean onGhostBlock = data.getPositionProcessor().isOnGround()
                 && data.getPositionProcessor().getY() % 0.015625 < 0.03
                 && data.getPositionProcessor().isInAir()
                 && data.getPositionProcessor().getAirTicks() > 2;
 
-        if (onGhostBlock) ++ghostTicks;
+        final double deltaY = data.getPositionProcessor().getDeltaY();
+        final double lastDeltaY = data.getPositionProcessor().getLastDeltaY();
+
+        double predictedY = (lastDeltaY - 0.08) * 0.98F;
+        if (Math.abs(predictedY) < 0.005) predictedY = 0.0;
+
+        final boolean underGhostBlock = data.getPositionProcessor().getSinceBlockNearHeadTicks() > 3
+                && Math.abs(deltaY - ((-0.08) * 0.98F)) < 1E-5
+                && Math.abs(deltaY - predictedY) > 1E-5;
+
+        this.onGhostBlock = onGhostBlock || underGhostBlock;
+
+        if (this.onGhostBlock) ++ghostTicks;
         else ghostTicks = 0;
 
         if (Config.GHOST_BLOCK_LAG_BACK) {
-            int ticks = 0;
+            int ticks = 1;
 
             final int ping = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
 
@@ -70,6 +82,12 @@ public final class GhostBlockProcessor {
                     break;
                 case NORMAL:
                     ticks = Math.min(ping, Math.round(Config.GHOST_BLOCK_MAX_PING / 50F));
+                    break;
+                case LIGHT:
+                    ticks = Math.min(ping + 1, Math.round(Config.GHOST_BLOCK_MAX_PING / 50F));
+                    break;
+                case EXTRA_LENIENT:
+                    ticks = ping + 1;
                     break;
             }
 
@@ -91,6 +109,6 @@ public final class GhostBlockProcessor {
     }
 
     public enum Mode {
-        NORMAL, STRICT, LENIENT
+        NORMAL, STRICT, LENIENT, LIGHT, EXTRA_LENIENT
     }
 }
