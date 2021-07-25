@@ -57,7 +57,7 @@ public final class InteractB extends Check {
                 final double z = data.getPositionProcessor().getZ();
 
                 if ((y - block.getX()) > 0.45) {
-                    final Location location = new Location(data.getPlayer().getWorld(), x + data.getPlayer().getEyeHeight(), y, z);
+                    final Location location = new Location(data.getPlayer().getWorld(), x, y + data.getPlayer().getEyeHeight(), z);
 
                     final boolean invalid = !interactedCorrectly(blockLocation, location, direction);
 
