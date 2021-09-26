@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.omnisprint;
 
@@ -28,7 +13,6 @@ import org.bukkit.util.Vector;
 
 @CheckInfo(name = "OmniSprint", type = "A", description = "Detects sprinting in a wrong direction.")
 public final class OmniSprintA extends Check {
-
     public OmniSprintA(final PlayerData data) {
         super(data);
     }
@@ -50,11 +34,11 @@ public final class OmniSprintA extends Check {
             final Vector move = new Vector(deltaX, 0.0, deltaZ);
             final double delta = move.distanceSquared(direction);
 
-            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK, ExemptType.ICE, ExemptType.LIQUID);
+            final boolean exempt = isExempt(ExemptType.LIQUID, ExemptType.WEB, ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK, ExemptType.ICE);
             final boolean invalid = delta > getLimit() && deltaXZ > 0.1 && sprinting && onGround;
 
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (increaseBuffer() > 4) {
                     fail();
                 }
             } else {
@@ -64,7 +48,6 @@ public final class OmniSprintA extends Check {
     }
 
     private double getLimit() {
-        return data.getPlayer().getWalkSpeed() > 0.2f ? .23 * 1 +
-                ((data.getPlayer().getWalkSpeed() / 0.2f) * 0.36) : 0.23 + (PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.062f);
+        return data.getPlayer().getWalkSpeed() > 0.2f ? .23 * 1 + ((data.getPlayer().getWalkSpeed() / 0.2f) * 0.36) : 0.23 + (PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED) * 0.062f);
     }
 }

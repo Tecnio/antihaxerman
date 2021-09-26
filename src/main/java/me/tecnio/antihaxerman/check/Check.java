@@ -1,24 +1,5 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 package me.tecnio.antihaxerman.check;
 
-import lombok.Getter;
-import lombok.Setter;
 import me.tecnio.antihaxerman.AntiHaxerman;
 import me.tecnio.antihaxerman.api.APIManager;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
@@ -26,11 +7,16 @@ import me.tecnio.antihaxerman.config.Config;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.manager.AlertManager;
+import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import me.tecnio.antihaxerman.manager.PunishmentManager;
 import me.tecnio.antihaxerman.packet.Packet;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Getter
@@ -38,13 +24,26 @@ public abstract class Check {
 
     protected final PlayerData data;
 
+    @Getter@Setter
+    private String fullName;
+
+    @Getter@Setter
     private int vl;
+    @Getter@Setter
     private CheckType checkType;
-    @Setter
+    @Setter@Getter
     private int maxVl;
+    @Getter
     private double buffer;
     @Setter
-    private String punishCommand;
+    private ArrayList<String> punishCommands;
+    @Getter@Setter
+    public int custom = 0;
+    @Getter
+    public boolean banning;
+
+    @Getter@Setter
+    public boolean enabled = true;
 
     @Setter
     private boolean debug;
@@ -54,6 +53,7 @@ public abstract class Check {
 
         final String packageName = this.getClass().getPackage().getName();
 
+        fullName = this.getClass().getSimpleName();
         if (packageName.contains("combat")) {
             checkType = CheckType.COMBAT;
         } else if (packageName.contains("movement")) {
@@ -61,26 +61,31 @@ public abstract class Check {
         } else if (packageName.contains("player")) {
             checkType = CheckType.PLAYER;
         }
-
-        if (!this.getClass().getSimpleName().equalsIgnoreCase("check")) {
-            this.maxVl = Config.MAX_VIOLATIONS.get(this.getClass().getSimpleName());
-            this.punishCommand = Config.PUNISH_COMMANDS.get(this.getClass().getSimpleName());
-        }
     }
 
     public abstract void handle(final Packet packet);
 
     public final void fail(final Object info) {
-        if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
-            if (!data.isExempt()) {
-                APIManager.callFlagEvent(this);
+        if(!Config.TESTMODE && data.isBanning()) {
+            return;
+        }
+        if (!data.isExempt() && enabled) {
+            APIManager.callFlagEvent(this);
 
+            if(Config.MAX_VIOLATIONS.get(getClass().getSimpleName()) != null) {
+                this.setMaxVl(Config.MAX_VIOLATIONS.get(getClass().getSimpleName()));
+            }
+            if(AntiHaxerman.INSTANCE.getTickManager().getA() > 102) {
+                AlertManager.handleAlertLag(this, data, Objects.toString(info));
+            }
+            else {
                 ++vl;
+                data.getMapchecks().put(this, vl);
                 data.setTotalViolations(data.getTotalViolations() + 1);
-
                 switch (checkType) {
                     case COMBAT:
                         data.setCombatViolations(data.getCombatViolations() + 1);
+                        data.setBotViolations(data.getBotViolations() + 1);
                         break;
                     case MOVEMENT:
                         data.setMovementViolations(data.getMovementViolations() + 1);
@@ -89,11 +94,13 @@ public abstract class Check {
                         data.setPlayerViolations(data.getPlayerViolations() + 1);
                         break;
                 }
-
                 AlertManager.handleAlert(this, data, Objects.toString(info));
-
-                if (vl >= maxVl) {
-                    PunishmentManager.punish(this, data);
+                if(this.getVl() == 3 && !PlayerDataManager.getInstance().suspectedPlayers.contains(data.getPlayer())) {
+                    PlayerDataManager.getInstance().suspectedPlayers.add(data.getPlayer());
+                }
+                if(this.getVl() >= this.getMaxVl()) {
+                    data.setBanning(true);
+                    bannofail();
                 }
             }
         }
@@ -104,20 +111,22 @@ public abstract class Check {
     }
 
     public final void ban() {
-        if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
-            if (!data.isExempt()) {
-                fail();
-                PunishmentManager.punish(this, data);
-            }
+        if (!data.isExempt()) {
+            fail();
+            PunishmentManager.punish(this, data);
+        }
+    }
+
+    public final void bannofail() {
+        if (!data.isExempt()) {
+            PunishmentManager.punish(this, data);
         }
     }
 
     public final void kick(final String reason) {
-        if (!data.getPlayer().hasPermission("antihaxerman.bypass") || Config.TESTMODE || !Config.BYPASS_OP) {
-            if (!data.isExempt()) {
-                fail();
-                Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().kickPlayer(reason));
-            }
+        if (!data.isExempt()) {
+            fail();
+            Bukkit.getScheduler().runTask(AntiHaxerman.INSTANCE.getPlugin(), () -> data.getPlayer().kickPlayer(reason));
         }
     }
 
@@ -175,22 +184,29 @@ public abstract class Check {
         if (this.getClass().isAnnotationPresent(CheckInfo.class)) {
             return this.getClass().getAnnotation(CheckInfo.class);
         } else {
-            System.err.println("CheckInfo annotation hasn't been added to the class " + this.getClass().getSimpleName() + ".");
+            return null;
         }
-        return null;
+    }
+
+
+    public boolean isBridging() {
+        if(isExempt(ExemptType.JOINED)) {
+            return false;
+        }
+        return data.getPlayer().getLocation().clone().subtract(0, 2, 0).getBlock().getType() == Material.AIR && data.getPlayer().getLocation().clone().subtract(0, 1, 0).getBlock().getType().isSolid();
     }
 
     public final void debug(final Object object) {
         if (debug) {
-            data.getPlayer().sendMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
+            data.getPlayer().sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "AHM-Debug" + ChatColor.GRAY + "] " + ChatColor.GRAY + object);
         }
     }
 
     public final void broadcast(final Object object) {
-        Bukkit.broadcastMessage(ChatColor.RED + "[AHM-Debug] " + ChatColor.GRAY + object);
+        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + ChatColor.RED + "AHM-Debug" + ChatColor.GRAY + "] " + ChatColor.GRAY + object);
     }
 
-    enum CheckType {
+    public enum CheckType {
         COMBAT, MOVEMENT, PLAYER;
     }
 }

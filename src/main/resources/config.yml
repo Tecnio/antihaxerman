@@ -1,22 +1,28 @@
 ##############################
-# AntiHaxerman Configuration #
+#    ___     ___    _____    ___     ___
+#    o O O  | _ )   |_ _|  |_   _|  /   \   / __|
+#   o       | _ \    | |     | |    | - |  | (__
+#  TS__[O]  |___/   |___|   _|_|_   |_|_|   \___|
+# {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
+#./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
 ##############################
 
 ########################################################################################################################
 # Anticheat testing mode.                                                                                              #
 # If enabled, no punishments will occur and alerts will enable automatically on join.                                  #
 ########################################################################################################################
-testmode: false
+testmode: true
 ########################################################################################################################
 # Anticheat response configuration.                                                                                    #
 # If you want to change how the anticheat looks/responds, you can do it here.                                          #
 ########################################################################################################################
 response:
   anticheat:
-    prefix: '&cAHM &8> '
+    prefix: '&c&7[&eAHM&7] &8'
   command:
-    prefix: '&cAHM &8> '
-
+    prefix: '&c&7[&eAHM&7] &8'
+  gui:
+    prefix: '&c&7[&eAHM&7] &8'
 ########################################################################################################################
 # Logging configuration.                                                                                               #
 # Logs are still beta and there is a chance it might lag the server so its disabled by default.                        #
@@ -25,20 +31,7 @@ logging:
   # When enabled starts logging violations to files created per player.
   enabled: false
   # This is the format that logs are stored. Fully customizable and all available placeholders are in the default below.
-  log-format: '[%date%] %player% failed %check% (Type %type%)%dev% VL: %vl% [TPS: %tps%] [tPing: %tping% kaPing: %kaping%] [Info: %info%]'
-
-########################################################################################################################
-# Bypass settings.                                                                                                     #
-# Bypass operators allows people with OP bypass checks.                                                                #
-########################################################################################################################
-bypass:
-  # When enabled this will bypass players that have OP and the players with the permission "antihaxerman.bypass".
-  bypass-operators: false
-
-# Checks for updates to notify you about an important update.
-update-checker:
-  # Enable or disable the update checker here.
-  enabled: true
+  log-format: '[%date%] %player% failed %check% (Type %type%)%dev% VL: %vl% [TPS: %tps%] [tPing: %tping% kaPing: %kaping%] [Info: %info%] [DATE: %date]'
 
 # Client handling. You can block the clients you want here.
 # For example Lunar Client.
@@ -50,14 +43,12 @@ client:
   case-sensitive: false
 
   # The kick message for the client check.
-  kick-message: 'The client you are using currently is blocked (From the config file). Please join with vanilla or a non blocked client in order to join.'
+  kick-message: 'The client you are using is currently blocked. Please join with vanilla or a non blocked client in order to join.'
 
   # If the client name CONTAINS anything on that list, they will automatically be kicked.
-  # Lunar is blocked by default as its broken and flags every anticheat.
-  # Its blocked for your players sake for them to not get false banned.
   blocked:
-    - 'lunar'
-    - 'lc'
+    - 'wurst [this wont work :trolled:]'
+    - 'sigma [this wont work either :trolled:]'
 
 api:
   # API is disabled by default for performance reasons. Recommended to keep disabled unless the API is used.
@@ -65,14 +56,14 @@ api:
 
 violations:
   # The format of violations can be set here. Fully customizable and all available placeholders are in the default below.
-  alert-format: '&cAHM &8> &c%player%&8 failed &c%check% &8(&cType %type%&8)%dev% VL: &c%vl%'
+  alert-format: '&b&l[AHM] &f&7\ &b%player% &cflagged &f%check% (Type %type%) &7[&c%vl% / %maxvl%&7]'
   # Currently not implemented.
   clear-violations-delay: 15
   # When enabled if a player fails a check it is gonna be logged to the console.
   alert-console: true
 
 ## Ghost Block Processor
-# Ghost block processor detects ghost blocks with certain methods and ensures that checks in AntiHaxerman do not false.
+# Ghost block processor detects ghost blocks with certain methods and ensures that checks in AHM do not false.
 # This processor may cause small bypasses in general and for players with high ping might get lagged back by it.
 ghost-block-handler:
   # This is used to enable or disable the ghost block processor.
@@ -92,412 +83,41 @@ ghost-block-handler:
   # So if the number is higher this will allow bigger bypasses but if the number is lower will false flag legit players.
 
   # LIGHT: This is just normal but a bit more lenient allowings players to place blocks everywhere with no falses whatsoever.
-  mode: 'NORMAL'
+  mode: 'LIGHT'
 
   max-ping: 400
 
 ########################################################################################################################
+# Bans configuration.                                                                                                  #
+# You can enable global punish command to overwrite all check commands below, disabled by default                      #
+# You can also enable punish timer if you want (default is instant)                                                    #
+########################################################################################################################
+#Enable global punish
+global-punish: true
+# commands for global punish
+global-punish-commands:
+  - "say creating reply for %player%!"
+  - ""
+#Enable ban timer
+punish-timer: true
+# ban timer delay (in seconds)
+punish-timer-time: 5
+# ban timer commands
+punish-timer-commands:
+  - "ban %player% you have been banned for cheating! check %check% Type %type% VL: %vl% MaxVL: %maxvl%"
+  - ""
+
+########################################################################################################################
+# VPN Settings                                                                                                         #
+# If enabled, players that will join with Proxy/VPN will be automatically kicked.                                      #
+########################################################################################################################
+vpn:
+  enabled: true
+  message: "&8&lAHM &7| &rAntiVPN Detection.%nl%%nl%&7Your IP has been detected as a VPN/Proxy [%country%]. %nl%&7Please disconnect from your VPN/Proxy to continiue playing.%nl%%nl%&8&oIf you believe this is a mistake, contact staff at our discord."
+########################################################################################################################
 # Check configuration                                                                                                  #
 # enabled: Turns the check on/off.                                                                                     #
-# max-violations: Amount of times a player can flag before running the specified punish-command.                       #
-# punish-command: Command ran by the server when a player exceeds the specified max-violations.                        #
-########################################################################################################################
-checks:
-  combat:
-    aim:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    aura:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    autoclicker:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      f:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    reach:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    angle:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    autoblock:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    velocity:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-  movement:
-    speed:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    fastclimb:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    flight:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    strafe:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    motion:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      f:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    noslow:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    largemove:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    jesus:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    liquidspeed:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    omnisprint:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-  player:
-    groundspoof:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    timer:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    post:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      f:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      g:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    inventory:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    pingspoof:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    fastplace:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    scaffold:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    tower:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    interact:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-    badpackets:
-      a:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      b:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      c:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      d:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      e:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      f:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      g:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      h:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      i:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      j:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      k:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      l:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      m:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
-      n:
-        enabled: true
-        max-violations: 50
-        punish-command: ''
+# max-violations: Amount of times a player can flag before running the specified punish-commands.                       #
+# punish-commands: Commands ran by the server when a player exceeds the specified max-violations.                        #
+#######################################################################################################################
+# MOVED TO checks.yml !!

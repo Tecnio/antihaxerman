@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.player.inventory;
 
@@ -21,17 +6,45 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import io.github.retrooper.packetevents.packetwrappers.play.in.windowclick.WrappedPacketInWindowClick;
 
-@CheckInfo(name = "Inventory", type = "C", description = "Checks if player is clicking windows while not in GUI.")
+@CheckInfo(name = "Inventory", type = "C", description = "Checks if player is clicking windows too fast.")
 public final class InventoryC extends Check {
     public InventoryC(final PlayerData data) {
         super(data);
     }
 
+    private long lastClick;
+    private int lastClickSlot;
+
     @Override
     public void handle(final Packet packet) {
         if (packet.isWindowClick()) {
+            WrappedPacketInWindowClick wrapped = new WrappedPacketInWindowClick(packet.getRawPacket());
+            if (wrapped.getWindowButton() == 0) {
 
+                int slot = wrapped.getWindowSlot();
+                if(lastClickSlot != 0 && slot == lastClickSlot) {
+                    return;
+                }
+                lastClickSlot = slot;
+                if (slot < 9 || slot > 35) {
+                    return;
+                }
+
+                long now = System.currentTimeMillis();
+
+                long delay = now - lastClick;
+
+                if (delay > 11L && delay < 90L && increaseBuffer() > 15) {
+                    fail("Delay: " + delay);
+                }
+                else {
+                    decreaseBufferBy(0.10);
+                }
+
+                this.lastClick = System.currentTimeMillis();
+            }
         }
     }
 }

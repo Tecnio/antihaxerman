@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.liquidspeed;
 
@@ -22,6 +7,8 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.utils.player.ClientVersion;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -68,9 +55,13 @@ public final class LiquidSpeedC extends Check {
                     ExemptType.SLIME, ExemptType.BOAT, ExemptType.CHUNK);
             final boolean invalid = (differenceX > 0.05 || differenceZ > 0.05) && isFullySubmerged;
 
+            if(PacketEvents.get().getPlayerUtils().getClientVersion(data.getPlayer()).isNewerThanOrEquals(ClientVersion.v_1_13)) {
+                return;
+            }
+
             if (invalid && !exempt) {
                 if (increaseBuffer() > 2) {
-                    fail("diffX: " + differenceX + " diffZ: " + differenceZ);
+                    fail(String.format("diffX: %.3f diffZ: %.3f", differenceX, differenceZ));
                 }
             } else {
                 decreaseBufferBy(0.25);

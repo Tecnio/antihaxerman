@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.liquidspeed;
 
@@ -22,6 +7,8 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.utils.player.ClientVersion;
 
 @CheckInfo(name = "LiquidSpeed", type = "A", description = "Predicts vertical motion in water.")
 public final class LiquidSpeedA extends Check {
@@ -43,6 +30,10 @@ public final class LiquidSpeedA extends Check {
 
             final double predicted = lastDeltaY * multiplier - 0.02F;
             final double difference = Math.abs(deltaY - predicted);
+
+            if(PacketEvents.get().getPlayerUtils().getClientVersion(data.getPlayer()).isNewerThanOrEquals(ClientVersion.v_1_13)) {
+                return;
+            }
 
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.VEHICLE, ExemptType.FLYING, ExemptType.PISTON,
                     ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.WEB, ExemptType.SLIME, ExemptType.BOAT, ExemptType.CHUNK);

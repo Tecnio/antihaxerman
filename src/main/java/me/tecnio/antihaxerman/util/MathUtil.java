@@ -1,36 +1,24 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.util;
 
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.AtomicDouble;
 import lombok.experimental.UtilityClass;
+import net.minecraft.server.v1_8_R3.Tuple;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @UtilityClass
 public class MathUtil {
 
     public final double EXPANDER = Math.pow(2, 24);
+
+    public long elapsed(long time) {
+        return Math.abs(System.currentTimeMillis() - time);
+    }
 
     public double getVariance(final Collection<? extends Number> data) {
         int count = 0;
@@ -54,6 +42,24 @@ public class MathUtil {
         return variance;
     }
 
+    public double preciseRound(double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
+    }
+
+    public double getRandomDouble(double number1, double number2) {
+        return number1 + (number2 - number1) * new Random().nextDouble();
+    }
+
+    public double round(double number, int decimals) {
+        number *= Math.pow(10, decimals);
+        number = Math.round(number);
+        return number / Math.pow(10, decimals);
+    }
+    public double offset(final Vector a, final Vector b) {
+        return a.subtract(b).length();
+    }
+
     public double getStandardDeviation(final Collection<? extends Number> data) {
         final double variance = getVariance(data);
 
@@ -75,7 +81,7 @@ public class MathUtil {
 
         Collections.sort(numbers);
 
-        final double mean = sum / count;
+        final double mean =  sum / count;
         final double median = (count % 2 != 0) ? numbers.get(count / 2) : (numbers.get((count - 1) / 2) + numbers.get(count / 2)) / 2;
         final double variance = getVariance(data);
 
@@ -83,13 +89,7 @@ public class MathUtil {
     }
 
     public double getAverage(final Collection<? extends Number> data) {
-        double sum = 0.0;
-
-        for (final Number number : data) {
-            sum += number.doubleValue();
-        }
-
-        return sum / data.size();
+        return data.stream().mapToDouble(Number::doubleValue).average().orElse(0D);
     }
 
     public double getKurtosis(final Collection<? extends Number> data) {
@@ -168,8 +168,45 @@ public class MathUtil {
         }
     }
 
-    public boolean isExponentiallySmall(final Number number) {
-        return number.doubleValue() < 1 && (Double.toString(number.doubleValue()).contains("E") || number.doubleValue() == 0.0);
+    public double hypot(double... values) {
+        AtomicDouble squaredSum = new AtomicDouble(0D);
+
+        Arrays.stream(values).forEach(value -> squaredSum.getAndAdd(Math.pow(value, 2D)));
+
+        return Math.sqrt(squaredSum.get());
+    }
+
+    public <T extends Number> T getModeNiggar(final Collection<T> collect) {
+        final Map<T, Integer> repeated = new HashMap<>();
+
+
+        collect.forEach(val -> {
+            final int number = repeated.getOrDefault(val, 0);
+
+            repeated.put(val, number + 1);
+        });
+
+
+        return repeated.keySet().stream()
+                .map(key -> new Tuple<>(key, repeated.get(key))) 
+                .max(Comparator.comparing(Tuple::b, Comparator.naturalOrder()))
+                .orElseThrow(NullPointerException::new).a();
+    }
+
+    public float wrapAngleTo180_float(float value) {
+        value %= 360F;
+
+        if (value >= 180.0F)
+            value -= 360.0F;
+
+        if (value < -180.0F)
+            value += 360.0F;
+
+        return value;
+    }
+
+        public boolean isExponentiallySmall(final Number number) {
+        return number.doubleValue() < 1 && Double.toString(number.doubleValue()).contains("E");
     }
 
     public boolean isExponentiallyLarge(final Number number) {
@@ -197,47 +234,24 @@ public class MathUtil {
     }
 
     public int getDuplicates(final Collection<? extends Number> data) {
-        return (int) (data.size() - data.stream().distinct().count());
+        return (int)(data.size() - data.stream().distinct().count());
     }
 
     public int getDistinct(final Collection<? extends Number> data) {
-        return (int) data.stream().distinct().count();
-    }
-
-    public static float getMoveAngle(final Location to, final Location from) {
-        final double diffX = to.getX() - from.getX();
-        final double diffZ = to.getZ() - from.getZ();
-
-        final float moveAngle = (float) (Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F);
-
-        return angleTo180(Math.abs(moveAngle - to.getYaw()));
-    }
-
-    public static float angleTo180(float val) {
-        val = val % 360F;
-
-        if (val >= 180F) {
-            val -= 360F;
-        }
-
-        if (val < -180F) {
-            val += 360F;
-        }
-
-        return val;
+        return (int)data.stream().distinct().count();
     }
 
     public static Vector getDirection(final float yaw, final float pitch) {
         final Vector vector = new Vector();
-        final float rotX = (float) Math.toRadians(yaw);
-        final float rotY = (float) Math.toRadians(pitch);
+        final float rotX = (float)Math.toRadians(yaw);
+        final float rotY = (float)Math.toRadians(pitch);
         vector.setY(-Math.sin(rotY));
         final double xz = Math.cos(rotY);
         vector.setX(-xz * Math.sin(rotX));
         vector.setZ(xz * Math.cos(rotX));
         return vector;
     }
-
+    
     public static float[] getRotations(final Location one, final Location two) {
         final double diffX = two.getX() - one.getX();
         final double diffZ = two.getZ() - one.getZ();
@@ -279,19 +293,5 @@ public class MathUtil {
 
     public int msToTicks(final double time) {
         return (int) Math.round(time / 50.0);
-    }
-
-    public double hypot(final double... number) {
-        double sum = 0.0;
-
-        for (final double v : number) {
-            sum += v * v;
-        }
-
-        return Math.sqrt(sum);
-    }
-
-    public double hypot(final double a, final double b) {
-        return Math.sqrt((a * a) + (b * b));
     }
 }

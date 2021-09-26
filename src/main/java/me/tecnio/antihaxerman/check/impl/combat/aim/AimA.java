@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.combat.aim;
 
@@ -29,7 +14,7 @@ public final class AimA extends Check {
         super(data);
     }
 
-    // Again skidded from Elevated LOL
+
 
     @Override
     public void handle(final Packet packet) {
@@ -62,7 +47,7 @@ public final class AimA extends Check {
                 final boolean invalidX = moduloX > 90.d && floorModuloX > 0.1;
                 final boolean invalidY = moduloY > 90.d && floorModuloY > 0.1;
 
-                if (data.getRotationProcessor().isCinematic()) return;
+                if (data.getRotationProcessor().isCinematic()) decreaseBufferBy(0.1);
 
                 if (invalidX && invalidY) {
                     if (increaseBuffer() > 6) {

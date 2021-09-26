@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.combat.autoblock;
 
@@ -21,6 +6,7 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.Material;
 
 @CheckInfo(name = "AutoBlock", type = "B", description = "Checks if player is blocking in a unlikely manner.")
 public class AutoBlockB extends Check {
@@ -38,7 +24,9 @@ public class AutoBlockB extends Check {
             attacked = true;
         } else if (packet.isBlockPlace()) {
             final double cps = data.getClickProcessor().getCps();
-
+            if(data.getPlayer().getInventory().getItemInHand().getType() == Material.FISHING_ROD || data.getPlayer().getItemInHand().getType().toString().contains("SWORD")) {
+                return;
+            }
             if (attacked) {
                 if (ticks < 2 && cps > 6.0) {
                     if (increaseBuffer() > 4) {

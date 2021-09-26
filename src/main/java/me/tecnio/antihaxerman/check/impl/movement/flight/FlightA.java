@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.flight;
 
@@ -33,7 +18,6 @@ public final class FlightA extends Check {
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
             final double velocityY = data.getVelocityProcessor().getVelocityY();
-            final boolean lastPos = data.getPositionProcessor().isLastPos();
 
             final int clientAirTicks = data.getPositionProcessor().getClientAirTicks();
 
@@ -47,14 +31,15 @@ public final class FlightA extends Check {
 
             final double difference = Math.abs(deltaY - fixedPredicted);
 
-            final boolean exempt = isExempt(ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
+            final boolean exempt = isExempt(ExemptType.BUKKIT_PLACING, ExemptType.VELOCITY, ExemptType.PISTON, ExemptType.VEHICLE, ExemptType.TELEPORT,
                     ExemptType.LIQUID, ExemptType.BOAT, ExemptType.FLYING, ExemptType.WEB, ExemptType.JOINED,
-                    ExemptType.SLIME_ON_TICK, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.UNDERBLOCK,
+                    ExemptType.SLIME, ExemptType.CLIMBABLE, ExemptType.CHUNK, ExemptType.VOID, ExemptType.UNDERBLOCK,
                     ExemptType.VELOCITY_ON_TICK);
             final boolean invalid = difference > 1E-8 && (clientAirTicks > 1 && data.getPositionProcessor().getSinceTeleportTicks() > 2
                     || data.getPositionProcessor().getAirTicks() > 2 && !isExempt(ExemptType.GHOST_BLOCK));
 
-            if (invalid && !exempt) {
+            debug(difference + " CAT: " + clientAirTicks + " SAT: " + data.getPositionProcessor().getAirTicks());
+            if (invalid && !exempt && !String.format("%.4f", fixedPredicted).equals("-0.1744") && !String.format("%.4f", deltaY).equals("-0.0980")) {
                 if (increaseBuffer() > 3) {
                     fail(String.format("pred: %.4f delta: %.4f vel: %s", fixedPredicted, deltaY, isExempt(ExemptType.VELOCITY_ON_TICK)));
                 }

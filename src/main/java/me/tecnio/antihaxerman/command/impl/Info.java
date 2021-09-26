@@ -1,24 +1,9 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.command.impl;
 
-import me.tecnio.antihaxerman.command.CommandInfo;
 import me.tecnio.antihaxerman.command.AntiHaxermanCommand;
+import me.tecnio.antihaxerman.command.CommandInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.manager.PlayerDataManager;
 import me.tecnio.antihaxerman.util.ColorUtil;
@@ -40,14 +25,13 @@ public final class Info extends AntiHaxermanCommand {
 
                 if (playerData != null) {
                     sendLineBreak(sender);
+                    sendPrefix(sender);
                     sendMessage(sender, ColorUtil.translate("&cInformation for &c" + playerData.getPlayer().getName() + "&a."));
                     sendRetardedNewLine(sender);
                     sendMessage(sender, ColorUtil.translate("&2&oGeneral information:"));
                     sendMessage(sender, ColorUtil.translate("&cLatency → &2" + PacketEvents.get().getPlayerUtils().getPing(playerData.getPlayer())) + "ms");
-                    sendMessage(sender, ColorUtil.translate("&cChecks amount → &2" + playerData.getChecks().size()));
-                    sendMessage(sender, ColorUtil.translate("&cSensitivity → &2" + playerData.getRotationProcessor().getSensitivity() + "%"));
-                    final String clientBrand = playerData.getClientBrand() == null ? "&cCould not resolve client brand for this player." : playerData.getClientBrand();
-                    sendMessage(sender, ColorUtil.translate("&cClient brand: → &2" + clientBrand));
+                    sendMessage(sender, ColorUtil.translate("&cClient Version → &2" + PacketEvents.get().getPlayerUtils().getClientVersion(playerData.getPlayer())));
+                    sendMessage(sender, ColorUtil.translate("&cIs Bedrock Edition: → &2" + PacketEvents.get().getPlayerUtils().isGeyserPlayer(playerData.getPlayer())));
                     sendRetardedNewLine(sender);
                     sendMessage(sender, ColorUtil.translate("&2&oViolations information:"));
                     sendMessage(sender, ColorUtil.translate("&cTotal check violations → &2" + playerData.getTotalViolations()));

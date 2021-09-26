@@ -1,24 +1,8 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
 
 package me.tecnio.antihaxerman.command;
 
 import me.tecnio.antihaxerman.util.ColorUtil;
-import me.tecnio.antihaxerman.config.Config;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -35,7 +19,7 @@ public abstract class AntiHaxermanCommand implements Comparable<AntiHaxermanComm
     }
 
     public void sendPrefix(final CommandSender sender) {
-        sender.sendMessage(Config.COMMAND_PREFIX + " ");
+        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "AHM" + ChatColor.GRAY + "]" + " ");
     }
 
     public void sendMessage(final CommandSender sender, final String message) {

@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.command.impl;
 
@@ -33,15 +18,15 @@ public final class Alerts extends AntiHaxermanCommand {
     @Override
     protected boolean handle(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (sender instanceof Player) {
-            if (sender.hasPermission("antihaxerman.alerts") || sender.isOp()) {
+            if (sender.hasPermission("ahm.alerts")) {
                 final Player player = (Player) sender;
                 final PlayerData data = PlayerDataManager.getInstance().getPlayerData(player);
 
                 if (data != null) {
                     if (AlertManager.toggleAlerts(data) == AlertManager.ToggleAlertType.ADD) {
-                        sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &2on&a."));
+                        sendMessage(sender, ColorUtil.translate("&cToggled your Antihaxerman alerts &aon&a."));
                     } else {
-                        sendMessage(sender, ColorUtil.translate("&cToggled your cheat alerts &coff&a."));
+                        sendMessage(sender, ColorUtil.translate("&cToggled your Antihaxerman alerts &coff&a."));
                     }
                     return true;
                 }

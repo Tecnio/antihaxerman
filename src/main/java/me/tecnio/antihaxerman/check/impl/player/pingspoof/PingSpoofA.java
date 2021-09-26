@@ -1,36 +1,26 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 package me.tecnio.antihaxerman.check.impl.player.pingspoof;
 
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
+import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "PingSpoof", type = "A", description = "Checks the delta of the keep alive delay and transaction delay.")
+@CheckInfo(name = "PingSpoof", type = "A", description = "Checks for keepalive packet and transaction packet difference.", experimental = true)
 public final class PingSpoofA extends Check {
     public PingSpoofA(final PlayerData data) {
         super(data);
     }
 
     @Override
-    public void handle(final Packet packet) {
-        if (packet.isFlying()) {
+    public void handle(Packet packet) {
+        if(packet.isFlying()) {
+            final long transactionPing = data.getConnectionProcessor().getTransactionPing();
+            final long keepAlivePing = data.getConnectionProcessor().getKeepAlivePing();
+
+            final boolean exempt = isExempt(ExemptType.CHUNK, ExemptType.RESPAWN, ExemptType.AFK, ExemptType.LAGGING, ExemptType.TELEPORT_DELAY, ExemptType.JOINED, ExemptType.TPS, ExemptType.CHUNK);
+
+            if (!exempt && transactionPing > keepAlivePing && Math.abs(transactionPing - keepAlivePing) > 100) fail();
         }
     }
 }

@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.combat.aura;
 
@@ -21,9 +6,18 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
-@CheckInfo(name = "Aura", type = "C", description = "")
+import java.util.List;
+
+@CheckInfo(name = "Aura", type = "C", description = "checks for switch aura.")
 public final class AuraC extends Check {
+
+    private int ticks;
+    private Entity lastTarget;
+
 
     public AuraC(final PlayerData data) {
         super(data);
@@ -31,8 +25,28 @@ public final class AuraC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isUseEntity()) {
-
+        if(packet.isUseEntity()) {
+            WrappedPacketInUseEntity packetwrapped = new WrappedPacketInUseEntity(packet.getRawPacket());
+            Entity target = packetwrapped.getEntity();
+            Entity lastTarget = this.lastTarget != null ? this.lastTarget : target;
+            this.lastTarget = target;
+            List<Entity> nearby = data.getCombatProcessor().getTarget().getNearbyEntities(3, 3, 3);
+            if(nearby.size() >= 3) {
+                return;
+            }
+            if (target != lastTarget) {
+                if (ticks < 2) {
+                    if(target.getType() == EntityType.PRIMED_TNT) {
+                        return;
+                    }
+                    if (increaseBuffer() > 2) {
+                        fail("switch aura, t: " + ticks);
+                    }
+                } else decreaseBuffer();
+            }
+            ticks = 0;
+        } else if (packet.isFlying()) {
+            ticks++;
         }
     }
 }

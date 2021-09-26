@@ -1,9 +1,8 @@
 name: AntiHaxerman
-version: 3.0
+version: 4.0
 main: me.tecnio.antihaxerman.AntiHaxermanPlugin
 authors: [Tecnio]
 description: AntiHaxerman AntiCheat
-load: POSTWORLD
 
 commands:
   antihaxerman:
@@ -11,7 +10,11 @@ commands:
     usage: /antihaxerman
     aliases: [ahm]
     permission: antihaxerman.commands
-  alerts:
-    description: Toggles alerts for AntiHaxerman Anticheat.
-    usage: /alerts
-    permission: antihaxerman.alerts
+  verus:
+    description: Funny
+    usage: /verus
+softdepend:
+  - ProtocolLib
+  - ProtocolSupport
+  - ViaVersion
+  - Geyser-Spigot

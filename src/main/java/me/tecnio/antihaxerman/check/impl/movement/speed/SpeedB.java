@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.speed;
 
@@ -32,17 +17,16 @@ public final class SpeedB extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
-            final int airTicks = data.getPositionProcessor().getClientAirTicks();
+            final boolean sprinting = data.getActionProcessor().isSprinting();
+            final int airTicks = data.getPositionProcessor().getAirTicks();
 
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
 
-            final double predicted = (lastDeltaXZ * 0.91F) + 0.026F;
+            final double predicted = (lastDeltaXZ * 0.91F) + (sprinting ? 0.026 : 0.02);
             final double difference = deltaXZ - predicted;
 
-            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT,
-                    ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON,
-                    ExemptType.CLIMBABLE, ExemptType.VELOCITY_ON_TICK);
+            final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT, ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.LIQUID, ExemptType.PISTON, ExemptType.CLIMBABLE);
             final boolean invalid = difference > 1E-5 && predicted > 0.075 && airTicks > 2;
 
             if (invalid && !exempt) {
@@ -50,7 +34,7 @@ public final class SpeedB extends Check {
                     fail();
                 }
             } else {
-                decreaseBufferBy(0.5);
+                decreaseBuffer();
             }
         }
     }

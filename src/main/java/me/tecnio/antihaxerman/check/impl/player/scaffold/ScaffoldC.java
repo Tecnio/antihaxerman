@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.player.scaffold;
 
@@ -21,6 +6,8 @@ import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.utils.player.ClientVersion;
 
 @CheckInfo(name = "Scaffold", type = "C", description = "Checks for bridging too quickly.")
 public final class ScaffoldC extends Check {
@@ -28,9 +15,29 @@ public final class ScaffoldC extends Check {
         super(data);
     }
 
+    private long lastFlying;
+
     @Override
     public void handle(final Packet packet) {
-        if (packet.isBlockPlace()) {
+        if (packet.isBlockPlace() && isBridging()) {
+            if(PacketEvents.get().getPlayerUtils().getClientVersion(data.getPlayer()).isNewerThanOrEquals(ClientVersion.v_1_17)) {
+                return;
+            }
+            long timeDiff = time() - lastFlying;
+
+            if (timeDiff < 5) {
+                if (increaseBuffer() > 10) {
+                    fail("TD: " + timeDiff);
+                }
+            } else setBuffer(0);
         }
+        else if(packet.isFlying()) {
+            lastFlying = time();
+        }
+    }
+
+
+    public long time() {
+        return System.nanoTime() / 1000000;
     }
 }

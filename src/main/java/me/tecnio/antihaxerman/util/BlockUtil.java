@@ -1,24 +1,9 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.util;
 
-import lombok.experimental.UtilityClass;
 import me.tecnio.antihaxerman.AntiHaxerman;
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,6 +25,14 @@ public final class BlockUtil {
         }
     }
 
+    public boolean isLiquid(Block block) {
+        return block.getType().toString().contains("WATER") || block.getType().toString().contains("LAVA");
+    }
+
+    public boolean isSlab(Block block) {
+        return block.getType().toString().contains("STEP") || block.getType().toString().contains("SLAB");
+    }
+
     public double getBlockFriction(final Block block) {
         return block.getType() == Material.PACKED_ICE || block.getType() == Material.ICE ? 0.9800000190734863 : block.getType().toString().contains("SLIME") ? 0.800000011920929 : 0.6000000238418579;
     }
@@ -52,7 +45,7 @@ public final class BlockUtil {
         }
     }
 
-    //Taken from Fiona. If you have anything better, please let me know, thanks.
+
     public Block shitAssBlockGetterThatCrashServer(final Location location) {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();

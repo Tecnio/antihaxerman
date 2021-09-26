@@ -1,28 +1,13 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.data.processor;
 
+import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.data.PlayerData;
 import io.github.retrooper.packetevents.packetwrappers.play.in.blockdig.WrappedPacketInBlockDig;
 import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import io.github.retrooper.packetevents.packetwrappers.play.in.entityaction.WrappedPacketInEntityAction;
 import lombok.Getter;
-import me.tecnio.antihaxerman.AntiHaxerman;
-import me.tecnio.antihaxerman.data.PlayerData;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 @Getter
@@ -31,18 +16,21 @@ public final class ActionProcessor {
     private final PlayerData data;
 
     private boolean sprinting, sneaking, sendingAction, placing, digging, blocking,
-            inventory, respawning, sendingDig, eating;
+            inventory, respawning, sendingDig, eating, bukkitPlacing, dropping;
 
-    private int lastDiggingTick, lastPlaceTick, lastBreakTick;
+    private int lastDiggingTick, lastPlaceTick, lastBreakTick, lastBukkitPlaceTick, lastDropTick;
 
     private int sinceSprintTicks;
 
-    private int sprintingTicks, sneakingTicks;
+    private int sprintingTicks, sneakingTicks, blockingTicks;
 
     public ActionProcessor(final PlayerData data) {
         this.data = data;
     }
 
+    public void handleDrop() {
+        dropping = true;
+    }
     public void handleEntityAction(final WrappedPacketInEntityAction wrapper) {
         sendingAction = true;
         switch (wrapper.getAction()) {
@@ -61,6 +49,9 @@ public final class ActionProcessor {
         }
     }
 
+    public void handleBukkitPlace() {
+        bukkitPlacing = true;
+    }
     public void handleBlockDig(final WrappedPacketInBlockDig wrapper) {
         sendingDig = true;
         switch (wrapper.getDigType()) {
@@ -93,6 +84,10 @@ public final class ActionProcessor {
     public void handleBlockPlace() {
         placing = true;
 
+        if(blocking) {
+            blocking = false;
+            return;
+        }
         if (data.getPlayer().getItemInHand().toString().contains("SWORD")) blocking = true;
         if (data.getPlayer().getItemInHand().getType().isEdible()) eating = true;
     }
@@ -125,20 +120,25 @@ public final class ActionProcessor {
         if (digging) lastDiggingTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (placing) lastPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (digging) lastBreakTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
-
+        if (bukkitPlacing) lastBukkitPlaceTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
+        if (dropping) lastDropTick = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         if (sprinting) sinceSprintTicks = 0;
         else ++sinceSprintTicks;
 
         sendingAction = false;
         placing = false;
         respawning = false;
-
-        //eating = false;
+        bukkitPlacing = false;
+        dropping = false;
+        eating = false;
 
         if (sprinting) ++sprintingTicks;
         else sprintingTicks = 0;
 
         if (sneaking) ++sneakingTicks;
         else sneakingTicks = 0;
+
+        if (blocking) ++blockingTicks;
+        else blockingTicks = 0;
     }
 }
