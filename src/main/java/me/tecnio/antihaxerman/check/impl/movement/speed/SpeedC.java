@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.speed;
 
@@ -34,6 +19,14 @@ public final class SpeedC extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            if(data.getPlayer().getWalkSpeed() <= 0.2 || data.getConnectionProcessor().getTransactionPing() == 0) {
+                return;
+            }
+            final boolean sprinting = data.getActionProcessor().isSprinting();
+
+            final double lastDeltaX = data.getPositionProcessor().getLastDeltaX();
+            final double lastDeltaZ = data.getPositionProcessor().getLastDeltaZ();
+
             final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
             final double deltaY = data.getPositionProcessor().getDeltaY();
 
@@ -46,30 +39,32 @@ public final class SpeedC extends Check {
             double groundLimit = PlayerUtil.getBaseGroundSpeed(data.getPlayer());
             double airLimit = PlayerUtil.getBaseSpeed(data.getPlayer());
 
-            if (Math.abs(deltaY - jumpMotion) < 1.0E-4
-                    && airTicks == 1) {
-                groundLimit = getAfterJumpSpeed();
-                airLimit = getAfterJumpSpeed();
+
+            if (Math.abs(deltaY - jumpMotion) < 1.0E-4 && airTicks == 1 && sprinting) {
+                final float f = data.getRotationProcessor().getYaw() * 0.017453292F;
+
+                final double x = lastDeltaX - (Math.sin(f) * 0.2F);
+                final double z = lastDeltaZ + (Math.cos(f) * 0.2F);
+
+                airLimit += Math.hypot(x, z);
             }
 
-            if (data.getPositionProcessor().isNearStair()) {
-                airLimit += 0.91F;
-                groundLimit += 0.91F;
-            }
-
-            if (data.getPositionProcessor().getSinceIceTicks() < 20
-                    || data.getPositionProcessor().getSinceSlimeTicks() < 20) {
+            if (isExempt(ExemptType.ICE, ExemptType.SLIME)) {
                 airLimit += 0.34F;
                 groundLimit += 0.34F;
             }
 
-            if (data.getPositionProcessor().getSinceBlockNearHeadTicks() < 6) {
-                airLimit += 0.91F / Math.max(1, data.getPositionProcessor().getSinceBlockNearHeadTicks());
-                groundLimit += 0.91F / Math.max(1, data.getPositionProcessor().getSinceBlockNearHeadTicks());;
+            if (isExempt(ExemptType.UNDERBLOCK)) {
+                airLimit += 0.91F;
+                groundLimit += 0.91F;
             }
 
             if (groundTicks < 7) {
                 groundLimit += (0.25F / groundTicks);
+            }
+
+            if(data.getPlayer().getWalkSpeed() > 0.30 && data.getPlayer().isOnGround()) {
+                return;
             }
 
             if (data.getVelocityProcessor().isTakingVelocity()) {
@@ -77,38 +72,27 @@ public final class SpeedC extends Check {
                 airLimit += data.getVelocityProcessor().getVelocityXZ() + 0.05;
             }
 
-            // Problematic way of fixing it but good enough.
-            if (data.getPositionProcessor().getSinceTeleportTicks() < 15) {
-                airLimit += 0.1;
-                groundLimit += 0.1;
-            }
+            final boolean exempt = isExempt(ExemptType.NEARSLABS, ExemptType.NEARICE, ExemptType.LAGGINGHARD, ExemptType.LAGGING, ExemptType.DEAD, ExemptType.ICE, ExemptType.BOAT, ExemptType.NEARSTAIRS, ExemptType.RESPAWN, ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK);
 
-            if (isExempt(ExemptType.VEHICLE, ExemptType.PISTON, ExemptType.GHOST_BLOCK,
-                    ExemptType.FLYING, ExemptType.TELEPORT, ExemptType.CHUNK, ExemptType.SINCE_SPEED)) return;
-
-            if (airTicks > 0) {
-                if (deltaXZ > airLimit) {
-                    if (increaseBuffer() > 3) {
-                        fail();
+            if (!exempt) {
+                if (airTicks > 0) {
+                    if (deltaXZ > airLimit) {
+                        if (increaseBuffer() > 3) {
+                            fail();
+                        }
+                    } else {
+                        decreaseBufferBy(0.15);
                     }
                 } else {
-                    decreaseBufferBy(0.15);
-                }
-            } else {
-                if (deltaXZ > groundLimit) {
-                    if (increaseBuffer() > 3) {
-                        fail();
+                    if (deltaXZ > groundLimit) {
+                        if (increaseBuffer() > 3) {
+                            fail();
+                        }
+                    } else {
+                        decreaseBufferBy(0.15);
                     }
-                } else {
-                    decreaseBufferBy(0.15);
                 }
             }
         }
-    }
-
-    // Not skidded I promise.
-    // Slightly inaccurate, maybe going to improve the math on this one more later.
-    private double getAfterJumpSpeed() {
-        return 0.62 + 0.033 * (double) (PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED));
     }
 }

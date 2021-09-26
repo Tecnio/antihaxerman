@@ -1,0 +1,853 @@
+checks:
+  combat:
+    aim:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      h:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      i:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      j:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      k:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      l:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      m:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      n:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      o:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    autoblock:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    aura:
+      aa:
+        enabled: true
+        max-violations: 5
+        punish-commands:
+          - ''
+          - ''
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    autoclicker:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 50
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 50
+        punish-commands:
+          - ''
+          - ''
+    hitbox:
+      a:
+        enabled: true
+        max-violations: 5
+        punish-commands:
+          - ''
+          - ''
+    reach:
+      a:
+        enabled: true
+        max-violations: 1
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 2
+        punish-commands:
+          - ''
+          - ''
+          - ''
+    angle:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    velocity:
+      a:
+        enabled: true
+        max-violations: 1
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 1
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 1
+        punish-commands:
+          - ''
+          - ''
+  movement:
+    bowfly:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    speed:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 2
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    fastclimb:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    flight:
+      a:
+        enabled: true
+        max-violations: 3
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    strafe:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    motion:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      h:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    noslow:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 20
+        punish-commands:
+          - ''
+          - ''
+    largemove:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    jesus:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    liquidspeed:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    omnisprint:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+  player:
+    groundspoof:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    timer:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 20
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    post:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    inventory:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    pingspoof:
+      a:
+        enabled: true
+        max-violations: 50
+        punish-commands:
+          - ''
+          - ''
+    fastplace:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    anticactus:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    breaker:
+      a:
+        enabled: true
+        max-violations: 2
+        punish-commands:
+          - ''
+          - ''
+    fastbow:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    speedmine:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    tower:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    scaffold:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      h:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      i:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      j:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      k:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      l:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      m:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+    badpackets:
+      a:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      b:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      c:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      d:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      e:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      f:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      g:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      h:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      i:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      j:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      k:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      l:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      m:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      n:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      o:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''
+      p:
+        enabled: true
+        max-violations: 8
+        punish-commands:
+          - ''
+          - ''

@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.noslow;
 
@@ -22,8 +7,10 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.utils.player.ClientVersion;
 
-@CheckInfo(name = "NoSlow", type = "C", description = "Checks for no slowdown while eating food.")
+@CheckInfo(name = "NoSlow", type = "C", description = "Checks if player is not slowing down while eating food.")
 public final class NoSlowC extends Check {
 
     public NoSlowC(final PlayerData data) {
@@ -33,14 +20,20 @@ public final class NoSlowC extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isFlying()) {
+            if(PacketEvents.get().getPlayerUtils().getClientVersion(data.getPlayer()).isNewerThan(ClientVersion.v_1_8)) {
+                return;
+            }
             final boolean sprinting = data.getActionProcessor().isSprinting();
             final boolean eating = data.getActionProcessor().isEating();
-
+            final boolean holdingEdible = data.getPlayer().getItemInHand().getType().isEdible();
             final boolean exempt = isExempt(ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.VEHICLE, ExemptType.CHUNK) || data.getPositionProcessor().isInAir();
-            final boolean invalid = eating && sprinting;
+            final boolean invalid = eating && sprinting && holdingEdible;
 
             if (invalid && !exempt) {
+                if (getBuffer() > 5) data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
+
                 if (increaseBuffer() > 8) {
+                    fail();
                     data.getPlayer().setItemInHand(data.getPlayer().getItemInHand());
                 }
             } else {

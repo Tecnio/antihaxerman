@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.largemove;
 
@@ -22,6 +7,7 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.potion.PotionEffect;
 
 @CheckInfo(name = "LargeMove", type = "B", description = "Checks if the players vertical movement is faster than possible.")
 public final class LargeMoveB extends Check {
@@ -34,9 +20,13 @@ public final class LargeMoveB extends Check {
         if (packet.isFlying()) {
             final double deltaY = Math.abs(data.getPositionProcessor().getDeltaY());
 
-            final boolean exempt = isExempt(ExemptType.JOINED, ExemptType.TELEPORT);
+            final boolean exempt = isExempt(ExemptType.BOAT, ExemptType.JOINED, ExemptType.TELEPORT);
             final boolean invalid = deltaY > 10.0;
-
+            for(PotionEffect pot : data.getPlayer().getActivePotionEffects()) {
+                if(pot.getAmplifier() > 200){
+                    return;
+                }
+            }
             if (invalid && !exempt) {
                 fail();
             }

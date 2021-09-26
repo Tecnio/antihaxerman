@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.movement.speed;
 
@@ -22,9 +7,11 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.PlayerUtil;
+import org.bukkit.potion.PotionEffectType;
 
-@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid acceleration.")
+@CheckInfo(name = "Speed", type = "D", description = "Checks for invalid DeltaXZ.", experimental = true)
 public final class SpeedD extends Check {
     public SpeedD(final PlayerData data) {
         super(data);
@@ -32,20 +19,28 @@ public final class SpeedD extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying()) {
-            final double deltaXZ = data.getPositionProcessor().getDeltaXZ();
-            final double lastDeltaXZ = data.getPositionProcessor().getLastDeltaXZ();
+        if(packet.isFlying()) {
+            double baseSpeed;
 
-            final double limit = (PlayerUtil.getBaseSpeed(data.getPlayer()) + 0.1) + (isExempt(ExemptType.VELOCITY) ? data.getVelocityProcessor().getVelocityXZ() + 0.15 : 0.0);
-
-            final double acceleration = deltaXZ - lastDeltaXZ;
-
-            final boolean exempt = isExempt(ExemptType.FLYING, ExemptType.VEHICLE, ExemptType.BOAT,
-                    ExemptType.UNDERBLOCK, ExemptType.TELEPORT, ExemptType.PISTON, ExemptType.CLIMBABLE,
-                    ExemptType.VEHICLE, ExemptType.SLIME, ExemptType.JOINED);
-            final boolean invalid = acceleration > limit;
-
-            if (invalid && !exempt) fail();
+            if (data.getPositionProcessor().getClientAirTicks() > 0) {
+                baseSpeed = 0.37 * Math.pow(0.99, Math.min(16, data.getPositionProcessor().getClientAirTicks()));
+            } else {
+                baseSpeed = 0.34 - (0.0055 * Math.min(9, data.getPositionProcessor().getGroundTicks()));
+            }
+            baseSpeed += PlayerUtil.getPotionLevel(data.getPlayer(), PotionEffectType.SPEED) * (data.getPositionProcessor().isOnGround() ? 0.06f : 0.045f);
+//                   baseSpeed *= data.hal > 0 ? 2.5 : 1;
+//                   baseSpeed *= data.blockTicks > 0 ? 3.4 : 1;
+            baseSpeed *= isExempt(ExemptType.NEARICE) && data.getPositionProcessor().getGroundTicks() < 6 ? 2.5f : 1.0;
+            baseSpeed += data.getPositionProcessor().getSlimeTicks() > 0 ? 0.1 : 0;
+            baseSpeed += isExempt(ExemptType.BUKKIT_PLACING) ? 0.1 : 0;
+            baseSpeed += (data.getPlayer().getWalkSpeed() - 0.2) * 2.0f;
+            if (data.getPositionProcessor().getDeltaXZ() > baseSpeed && !data.getVelocityProcessor().isTakingVelocity() && !isExempt(ExemptType.NEARSTAIRS, ExemptType.CREATIVE, ExemptType.FLYING)) {
+                if (increaseBuffer() > 10) {
+                    fail("DeltaXZ:" + MathUtil.round(data.getPositionProcessor().getDeltaXZ(), 4) + " BaseSpeed:" + MathUtil.round(baseSpeed, 4));
+                }
+            } else {
+                decreaseBuffer();
+            }
         }
     }
 }

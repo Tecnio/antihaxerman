@@ -1,37 +1,22 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 package me.tecnio.antihaxerman.data;
 
-import lombok.Getter;
-import lombok.Setter;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.config.Config;
-import me.tecnio.antihaxerman.data.processor.*;
 import me.tecnio.antihaxerman.exempt.ExemptProcessor;
 import me.tecnio.antihaxerman.manager.AlertManager;
 import me.tecnio.antihaxerman.manager.CheckManager;
 import me.tecnio.antihaxerman.util.LogUtil;
 import me.tecnio.antihaxerman.util.type.ConcurrentEvictingList;
+import me.tecnio.antihaxerman.util.type.EntityHelper;
 import me.tecnio.antihaxerman.util.type.Pair;
+import lombok.Getter;
+import lombok.Setter;
+import me.tecnio.antihaxerman.data.processor.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -39,15 +24,18 @@ public final class PlayerData {
 
     private final Player player;
     private String clientBrand;
-    private int totalViolations, combatViolations, movementViolations, playerViolations;
-    private long flying, lastFlying;
+    private int totalViolations, combatViolations, movementViolations, playerViolations, botViolations;
+    private long flying, lastFlying, currentTicks, lastKP;
     private final long joinTime = System.currentTimeMillis();
-    private boolean exempt;
+    private long enderpearlTime, respawnTime;
+    private boolean exempt, banning;
+    private EntityHelper entityHelper;
+    public int existedTicks;
     private LogUtil.TextFile logFile;
 
     private final List<Check> checks = CheckManager.loadChecks(this);
-
-    private final ConcurrentEvictingList<Pair<Location, Integer>> targetLocations = new ConcurrentEvictingList<>(30);
+    private final Map<Check, Integer> mapchecks = CheckManager.loadChecksMap(this, checks);
+    private final ConcurrentEvictingList<Pair<Location, Integer>> targetLocations = new ConcurrentEvictingList<>(40);
 
     private final ExemptProcessor exemptProcessor = new ExemptProcessor(this);
     private final CombatProcessor combatProcessor = new CombatProcessor(this);
@@ -58,13 +46,15 @@ public final class PlayerData {
     private final VelocityProcessor velocityProcessor = new VelocityProcessor(this);
     private final ConnectionProcessor connectionProcessor = new ConnectionProcessor(this);
     private final GhostBlockProcessor ghostBlockProcessor = new GhostBlockProcessor(this);
-
+    private final BotProcessor botProcessor = new BotProcessor();
     public PlayerData(final Player player) {
         this.player = player;
-        if (Config.LOGGING_ENABLED) logFile = new LogUtil.TextFile("" + player.getUniqueId(), "\\\\logs");
+        if (Config.LOGGING_ENABLED) logFile = new LogUtil.TextFile("" + player.getUniqueId(), "\\logs");
 
-        if (player.hasPermission("antihaxerman.alerts")) {
+        if (player.hasPermission("ahm.alerts")) {
             AlertManager.toggleAlerts(this);
         }
+
+        entityHelper = new EntityHelper();
     }
 }

@@ -1,26 +1,11 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.data.processor;
 
 import me.tecnio.antihaxerman.AntiHaxerman;
+import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.util.MathUtil;
 import lombok.Getter;
-import me.tecnio.antihaxerman.data.PlayerData;
 
 import java.util.ArrayDeque;
 
@@ -35,6 +20,8 @@ public final class RotationProcessor {
     private int mouseDeltaX, mouseDeltaY, lastMouseDeltaX, lastMouseDeltaY;
 
     private double finalSensitivity, cinematicTicks;
+
+    private float cinematicTime;
 
     private final ArrayDeque<Integer> sensitivitySamples = new ArrayDeque<>();
 
@@ -102,7 +89,9 @@ public final class RotationProcessor {
         }
 
         cinematic = cinematicTicks > 7.5 || (AntiHaxerman.INSTANCE.getTickManager().getTicks() - lastCinematic < 120);
-
+        if(cinematic) {
+            cinematicTime = System.currentTimeMillis();
+        }
         if (cinematic && cinematicTicks > 7.5) {
             lastCinematic = AntiHaxerman.INSTANCE.getTickManager().getTicks();
         }

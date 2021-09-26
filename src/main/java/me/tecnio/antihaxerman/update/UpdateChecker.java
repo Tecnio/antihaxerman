@@ -1,24 +1,9 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.update;
 
 import lombok.Getter;
-import me.tecnio.antihaxerman.AntiHaxerman;
+import org.bukkit.Bukkit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,23 +15,22 @@ import java.net.URL;
 public final class UpdateChecker {
 
     private URL apiUrl;
+    private String currentVersion = "B13";
     private String latestVersion;
 
     public UpdateChecker() {
         try {
-            apiUrl = new URL("https://api.spigotmc.org/legacy/update.php?resource=83198");
+            apiUrl = new URL("https://pastebin.com/raw/QPjtQiJP");
         } catch (final Exception ignored) {
         }
-    }
 
-    public void checkUpdates() {
-        AntiHaxerman.INSTANCE.getExecutorService().execute(() -> {
-            try {
-                AntiHaxerman.INSTANCE.setUpdateAvailable(isUpdateAvailable());
-            } catch (final Exception e) {
-                e.printStackTrace();
+        try {
+            if(isUpdateAvailable()) {
+                Bukkit.getConsoleSender().sendMessage("AHM UPDATE IS AVAILABLE! NEWEST VERSION: " + latestVersion);
             }
-        });
+        } catch(IOException e) {
+            return;
+        }
     }
 
     public boolean isUpdateAvailable() throws IOException {
@@ -57,6 +41,6 @@ public final class UpdateChecker {
 
         latestVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
 
-        return !AntiHaxerman.INSTANCE.getVersion().equalsIgnoreCase(latestVersion);
+        return !latestVersion.equalsIgnoreCase(currentVersion);
     }
 }

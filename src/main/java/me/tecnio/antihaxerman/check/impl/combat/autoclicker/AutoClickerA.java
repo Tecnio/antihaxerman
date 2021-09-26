@@ -1,19 +1,4 @@
-/*
- *  Copyright (C) 2020 - 2021 Tecnio
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+
 
 package me.tecnio.antihaxerman.check.impl.combat.autoclicker;
 
@@ -34,8 +19,8 @@ public final class AutoClickerA extends Check {
         if (packet.isArmAnimation()) {
             final double cps = data.getClickProcessor().getCps();
 
-            final boolean exempt = isExempt(ExemptType.AUTOCLICKER);
-            final boolean invalid = cps > 25 && !Double.isInfinite(cps) && !Double.isNaN(cps);
+            final boolean exempt = isExempt(ExemptType.DROP, ExemptType.AUTOCLICKER);
+            final boolean invalid = cps > 60 && !Double.isInfinite(cps) && !Double.isNaN(cps);
 
             if (invalid && !exempt) {
                 fail("CPS=" + cps);

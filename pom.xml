@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.tecnio</groupId>
-    <artifactId>AntiHaxerman</artifactId>
-    <version>3.0</version>
+    <artifactId>AHM</artifactId>
+    <version>1.0</version>
 
-    <name>AntiHaxerman</name>
-    <description>AntiHaxerman AntiCheat</description>
+    <name>AHM</name>
+    <description>Antihaxerman</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,7 +38,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <finalName>AntiHaxerman</finalName>
+                            <finalName>Antihaxerman</finalName>
                             <relocations>
                                 <relocation>
                                     <pattern>io.github.retrooper.packetevents</pattern>
@@ -69,6 +69,10 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
             <id>funkemunky-releases</id>
             <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
@@ -76,26 +80,28 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.github.spigot</groupId>
-            <artifactId>1.8.8</artifactId>
-            <version>1.8.8</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>1.8-pre-17</version>
+            <version>v1.8-pre-18</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.GardeningTool</groupId>
-            <artifactId>Quar</artifactId>
-            <version>1.0-PRE-2</version>
+            <groupId>groupid</groupId>
+            <artifactId>artifact</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Isnow\Desktop\Development\JDKS\craftbukkit-1.8.8-R0.1-SNAPSHOT-latest.jar</systemPath>
         </dependency>
     </dependencies>
 
