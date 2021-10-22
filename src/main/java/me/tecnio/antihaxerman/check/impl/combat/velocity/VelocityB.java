@@ -30,6 +30,7 @@ import org.bukkit.Location;
 public final class VelocityB extends Check {
 
     private double kbX, kbZ;
+    private float friction = 0.91F;
 
     public VelocityB(final PlayerData data) {
         super(data);
@@ -76,16 +77,8 @@ public final class VelocityB extends Check {
                 }
             }
 
-            final double x = data.getPositionProcessor().getX();
-            final double y = data.getPositionProcessor().getY();
-            final double z = data.getPositionProcessor().getZ();
-
-            final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y) - 1, z);
-
-            final double friction = BlockUtil.getBlockFriction(blockLocation) * 0.91F;
-
-            kbX *= friction;
-            kbZ *= friction;
+            kbX *= this.friction;
+            kbZ *= this.friction;
 
             if (Math.abs(kbX) < 0.005 || Math.abs(kbZ) < 0.005) {
                 resetState();
@@ -94,6 +87,15 @@ public final class VelocityB extends Check {
             if (ticksSinceVelocity >= 2) {
                 resetState();
             }
+            
+            
+            final double x = data.getPositionProcessor().getX();
+            final double y = data.getPositionProcessor().getY();
+            final double z = data.getPositionProcessor().getZ();
+
+            final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y) - 1, z);
+
+            this.friction = BlockUtil.getBlockFriction(blockLocation) * 0.91F;
         }
     }
 
