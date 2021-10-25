@@ -17,21 +17,43 @@
 
 package me.tecnio.antihaxerman.check.impl.player.inventory;
 
+import io.github.retrooper.packetevents.packetwrappers.play.in.clientcommand.WrappedPacketInClientCommand;
 import me.tecnio.antihaxerman.check.Check;
 import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name = "Inventory", type = "C", description = "Checks if player is clicking windows while not in GUI.")
+@CheckInfo(name = "Inventory", type = "C", description = "Checks if player is swinging or attacking while opening inventory.")
 public final class InventoryC extends Check {
+
+    private boolean attacking, swinging;
+
     public InventoryC(final PlayerData data) {
         super(data);
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isWindowClick()) {
+        if (packet.isClientCommand()) {
+            final WrappedPacketInClientCommand wrapper = new WrappedPacketInClientCommand(packet.getRawPacket());
 
+            if (wrapper.getClientCommand() != WrappedPacketInClientCommand.ClientCommand.OPEN_INVENTORY_ACHIEVEMENT) return;
+
+            if (attacking || swinging) {
+                if (increaseBuffer() > 4) {
+                    fail();
+                }
+            } else {
+                resetBuffer();
+            }
+
+        } else if (packet.isFlying()) {
+            attacking = false;
+            swinging = false;
+        } else if (packet.isArmAnimation()) {
+            swinging = true;
+        } else if (packet.isUseEntity()) {
+            attacking = true;
         }
     }
 }

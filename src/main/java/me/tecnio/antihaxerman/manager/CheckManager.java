@@ -25,8 +25,6 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
 import me.tecnio.antihaxerman.check.impl.combat.angle.AngleA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
-import me.tecnio.antihaxerman.check.impl.combat.aura.AuraC;
-import me.tecnio.antihaxerman.check.impl.combat.aura.AuraD;
 import me.tecnio.antihaxerman.check.impl.combat.autoblock.AutoBlockA;
 import me.tecnio.antihaxerman.check.impl.combat.autoblock.AutoBlockB;
 import me.tecnio.antihaxerman.check.impl.combat.autoclicker.*;
@@ -63,8 +61,6 @@ import me.tecnio.antihaxerman.check.impl.player.interact.*;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryA;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryB;
 import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryC;
-import me.tecnio.antihaxerman.check.impl.player.inventory.InventoryD;
-import me.tecnio.antihaxerman.check.impl.player.pingspoof.PingSpoofA;
 import me.tecnio.antihaxerman.check.impl.player.post.*;
 import me.tecnio.antihaxerman.check.impl.player.scaffold.ScaffoldA;
 import me.tecnio.antihaxerman.check.impl.player.timer.TimerA;
@@ -88,8 +84,6 @@ public final class CheckManager {
             AimD.class,
             AuraA.class,
             AuraB.class,
-            AuraC.class,
-            AuraD.class,
             AutoClickerF.class,
             AutoClickerA.class,
             AutoClickerB.class,
@@ -117,7 +111,6 @@ public final class CheckManager {
             MotionC.class,
             MotionD.class,
             MotionE.class,
-            MotionF.class,
             NoSlowA.class,
             NoSlowB.class,
             NoSlowC.class,
@@ -150,8 +143,7 @@ public final class CheckManager {
             InventoryA.class,
             InventoryB.class,
             InventoryC.class,
-            InventoryD.class,
-            PingSpoofA.class,
+            InventoryC.class,
             ScaffoldA.class,
             InteractA.class,
             InteractB.class,
@@ -162,16 +154,12 @@ public final class CheckManager {
             BadPacketsB.class,
             BadPacketsC.class,
             BadPacketsD.class,
-            BadPacketsE.class,
-            BadPacketsF.class,
             BadPacketsG.class,
             BadPacketsH.class,
             BadPacketsI.class,
             BadPacketsJ.class,
             BadPacketsK.class,
-            BadPacketsL.class,
             BadPacketsM.class,
-            BadPacketsN.class,
     };
 
     private static final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
