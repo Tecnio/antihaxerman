@@ -2,9 +2,6 @@
 
 Spigot: https://www.spigotmc.org/resources/83198/
 
-Discord: https://discord.gg/7m5AFZTKQ8
-
-
 # Sponsors
 ![yklogo](https://www.yourkit.com/images/yklogo.png)
 

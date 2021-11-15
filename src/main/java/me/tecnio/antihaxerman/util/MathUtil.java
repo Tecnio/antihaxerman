@@ -169,11 +169,11 @@ public class MathUtil {
     }
 
     public boolean isExponentiallySmall(final Number number) {
-        return number.doubleValue() < 1 && (Double.toString(number.doubleValue()).contains("E") || number.doubleValue() == 0.0);
+        return Math.abs(number.doubleValue()) < 9E-5;
     }
 
     public boolean isExponentiallyLarge(final Number number) {
-        return number.doubleValue() > 10000 && Double.toString(number.doubleValue()).contains("E");
+        return Math.abs(number.doubleValue()) > 1E5;
     }
 
     public long getGcd(final long current, final long previous) {
