@@ -95,7 +95,7 @@ public final class VelocityB extends Check {
 
             final Location blockLocation = new Location(data.getPlayer().getWorld(), x, Math.floor(y) - 1, z);
 
-            this.friction = BlockUtil.getBlockFriction(blockLocation) * 0.91F;
+            this.friction = (float) (BlockUtil.getBlockFriction(blockLocation) * 0.91F);
         }
     }
 
