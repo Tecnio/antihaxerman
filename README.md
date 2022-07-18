@@ -1,6 +1,6 @@
 # AntiHaxerman
 
-Spigot: https://www.spigotmc.org/resources/83198/
+Dead anticheat. Bad code. Don't use this.
 
 # Sponsors
 ![yklogo](https://www.yourkit.com/images/yklogo.png)
