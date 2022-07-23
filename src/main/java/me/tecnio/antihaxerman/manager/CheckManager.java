@@ -22,6 +22,8 @@ import me.tecnio.antihaxerman.check.impl.combat.aim.AimA;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimB;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimC;
 import me.tecnio.antihaxerman.check.impl.combat.aim.AimD;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimE;
+import me.tecnio.antihaxerman.check.impl.combat.aim.AimF;
 import me.tecnio.antihaxerman.check.impl.combat.angle.AngleA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraA;
 import me.tecnio.antihaxerman.check.impl.combat.aura.AuraB;
@@ -82,6 +84,8 @@ public final class CheckManager {
             AimB.class,
             AimC.class,
             AimD.class,
+            AimE.class,
+            AimF.class,
             AuraA.class,
             AuraB.class,
             AutoClickerF.class,
@@ -101,6 +105,7 @@ public final class CheckManager {
             SpeedC.class,
             SpeedD.class,
             SpeedE.class,
+            SpeedF.class,
             FlightA.class,
             FlightB.class,
             FlightC.class,
@@ -111,6 +116,7 @@ public final class CheckManager {
             MotionC.class,
             MotionD.class,
             MotionE.class,
+            MotionF.class,
             NoSlowA.class,
             NoSlowB.class,
             NoSlowC.class,
