@@ -52,7 +52,8 @@ public final class AngleA extends Check {
             if (data.getTargetLocations().size() < 30) return;
 
             final int now = data.getPositionProcessor().getTicks();
-            final int latencyInTicks = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
+            final int latencyInTicks = Math.round(this.data.getConnectionProcessor().getTransactionPing() / 50L) + 1;
+            //Transaction ping is more accurate than keepalive ping because they're synchronous.
 
             final double x = data.getPositionProcessor().getX();
             final double z = data.getPositionProcessor().getZ();
@@ -77,9 +78,11 @@ public final class AngleA extends Check {
             if (invalid && !exempt) {
                 if (increaseBuffer() > 4) {
                     fail(angle);
+                    setBuffer(3.5);
+                    //Best to have a extremely lenient hitboxes check without interpolation/actual transaction pairing.
                 }
             } else {
-                decreaseBuffer();
+                decreaseBufferBy(1.5);
             }
         } else if (packet.isUseEntity()) {
             final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
