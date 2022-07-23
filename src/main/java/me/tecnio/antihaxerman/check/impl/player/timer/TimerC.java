@@ -25,10 +25,12 @@ import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 import me.tecnio.antihaxerman.util.type.EvictingList;
 
-@CheckInfo(name = "Timer", type = "C", description = "Checks for game speed changes.")
+@CheckInfo(name = "Timer", type = "C", description = "Checks for game speed changes via sampling & averaging.")
 public final class TimerC extends Check {
-
+    private final EvictingList<Long> largesamples = new EvictingList<>(620);
+    //31 seconds worth of flyings.
     private final EvictingList<Long> samples = new EvictingList<>(50);
+    //2.5 seconds worth of flyings.
     private long lastFlying;
 
     public TimerC(final PlayerData data) {
@@ -37,30 +39,33 @@ public final class TimerC extends Check {
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isFlying() && !isExempt(ExemptType.TPS, ExemptType.JOINED, ExemptType.LAGGING)) {
+        if (packet.isFlying() && !isExempt(ExemptType.TPS, ExemptType.JOINED) {
+            //Don't exempt for exempt type 'lagging' on a timer check.
             final long now = now();
             final long delta = now - lastFlying;
 
-            if (delta > 0) {
-                samples.add(delta);
-            }
+            samples.add(delta);
+            largesamples.add(delta);
+            
 
             if (samples.isFull()) {
-                final double average = MathUtil.getAverage(samples);
-                final double speed = 50 / average;
+                final double longspeed = 50 / MathUtil.getAverage(largesamples);
+                final double speed = 50 /  MathUtil.getAverage(samples);
 
-                if (speed >= 1.025) {
-                    if (increaseBuffer() > 40) {
+                if (speed >= 1.025 && longspeed > 1.025 && delta < 50) {
+                    if (increaseBuffer() > 4) {
                         fail();
+                        setBuffer(3.5);
                     }
                 } else {
-                    decreaseBuffer();
+                    decreaseBufferBy(2.5);
                 }
             }
 
             lastFlying = now;
         } else if (packet.isTeleport()) {
             samples.add(135L);
+            largesamples.add(135L);
         }
     }
 }
