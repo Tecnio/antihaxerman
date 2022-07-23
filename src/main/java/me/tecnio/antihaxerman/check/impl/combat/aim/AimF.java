@@ -7,8 +7,8 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 
-@CheckInfo(name="Aim", type="E", description="Checks for consistent rotation deltas.")
-public final class AimE
+@CheckInfo(name="Aim", type="F", description="Checks for static/weird rotation deltas.")
+public final class AimF
 extends Check {
     private int streak = 0;
     private int streak2 = 0;
@@ -16,7 +16,7 @@ extends Check {
     private double lastabsyawaccel = 0.0;
     private double lastabspitchaccel = 0.0;
 
-    public AimE(PlayerData data) {
+    public AimF(PlayerData data) {
         super(data);
     }
 
