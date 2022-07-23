@@ -51,10 +51,11 @@ public final class OmniSprintA extends Check {
             final double delta = move.distanceSquared(direction);
 
             final boolean exempt = isExempt(ExemptType.VELOCITY, ExemptType.CHUNK, ExemptType.UNDERBLOCK, ExemptType.ICE, ExemptType.LIQUID);
-            final boolean invalid = delta > getLimit() && deltaXZ > 0.1 && sprinting && onGround;
-
+            final boolean invalid = delta > getLimit() && deltaXZ > 0.1 && sprinting && onGround && Math.abs(this.data.getRotationProcessor().getDeltaYaw()) < 30.0f;
+            //no
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
+                if (increaseBuffer() > 4 || getBuffer() > 2 && Math.abs(this.data.getRotationProcessor().getDeltaYaw()) < 2.5) {
+                    //I don't think this check will work very well.
                     fail();
                 }
             } else {
