@@ -56,7 +56,7 @@ public final class ReachA extends Check {
             if (data.getTargetLocations().size() < 20) return;
 
             final int now = data.getPositionProcessor().getTicks();
-            final int latencyInTicks = MathUtil.msToTicks(PlayerUtil.getPing(data.getPlayer()));
+            final int latencyInTicks = Math.round(this.data.getConnectionProcessor().getTransactionPing() / 50L) + 1;
 
             final double x = data.getPositionProcessor().getX();
             final double z = data.getPositionProcessor().getZ();
@@ -97,9 +97,11 @@ public final class ReachA extends Check {
             if (invalid) {
                 if (increaseBuffer() > 3) {
                     fail(distance);
+                    setBuffer(2.7);
+                    //best to have a lenient reach check without transaction pairing/interpolation.
                 }
             } else {
-                decreaseBufferBy(0.05);
+                decreaseBufferBy(0.1);
             }
         } else if (packet.isUseEntity()) {
             final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
