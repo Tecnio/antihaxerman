@@ -30,6 +30,7 @@ extends Check {
             if (!exempt && deltaXZ > 0.03 && groundLimit > 0.03 && invalid && this.data.getPositionProcessor().getSinceTeleportTicks() > 4) {
                 if (increaseBuffer() > 4.0) {
                     this.fail("GroundTicks: " + this.data.getPositionProcessor().getGroundTicks() + " DeltaXZ: " + deltaXZ + " Limit: " + groundLimit);
+                    setBuffer(3.5);
                 }
             } else {
                 decreaseBufferBy(0.25);
