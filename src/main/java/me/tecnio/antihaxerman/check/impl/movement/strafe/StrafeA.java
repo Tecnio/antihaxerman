@@ -22,8 +22,10 @@ import me.tecnio.antihaxerman.check.api.CheckInfo;
 import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.exempt.type.ExemptType;
 import me.tecnio.antihaxerman.packet.Packet;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-@CheckInfo(name = "Strafe", type = "A", description = "Checks for invalid strafing.", experimental = true)
+@CheckInfo(name = "Strafe", type = "A", description = "Checks for invalid strafe in the air.", experimental = true)
 public final class StrafeA extends Check {
 
     public StrafeA(final PlayerData data) {
@@ -51,19 +53,37 @@ public final class StrafeA extends Check {
 
             final double diffX = Math.abs(deltaX - predictedDeltaX);
             final double diffZ = Math.abs(deltaZ - predictedDeltaZ);
+            
+            Entity target = this.data.getCombatProcessor().getTarget();
+            
+            if (this.hitTicks() <= 1 && target instanceof Player && (sincesprinting <= 2 || sprinting) || sincesprinting <= 2) {
+                diffX = Math.min(Math.abs(deltaX - predictedDeltaX * 0.6), diffX);
+                diffZ = Math.min(Math.abs(deltaZ - predictedDeltaX * 0.6), diffZ);
+            }
+            //In the air your horizontal motion is multiplied by 0.6 if you attack a human.
 
             final boolean exempt = isExempt(ExemptType.TELEPORT_DELAY_SMALL, ExemptType.PISTON, ExemptType.FLYING,
-                    ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY,
-                    ExemptType.CHUNK, ExemptType.NEAR_WALL, ExemptType.GHOST_BLOCK);
+                    ExemptType.UNDERBLOCK, ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.LIQUID, ExemptType.VELOCITY_ON_TICK,
+                    ExemptType.CHUNK, ExemptType.NEAR_WALL, ExemptType.GHOST_BLOCK, ExemptType.WEB);
+            
+            //Really only needs to exempt for velocity on one tick, also exempted webs.
+            
             final boolean invalid = (diffX > attributeSpeed || diffZ > attributeSpeed) && deltaXZ > .05 && airTicks > 2;
-
             if (invalid && !exempt) {
-                if (increaseBuffer() > 2) {
-                    fail();
+                if (increaseBuffer() > 3) {
+                    fail("OffsetX: " + diffX + " OffsetZ: " + diffZ);
+                    setBuffer(2.5);
+                    //So buffer doesn't become insanely large and impossible to climb away from.
                 }
-            } else {
-                decreaseBufferBy(0.1);
+            } else if (airTicks) {
+                decreaseBufferBy(0.05);
             }
+        } else if (packet.isTeleport()) {
+            resetBuffer();
+            //Falses being spam teleported in air due to exemptions being weird.
+        } else if (packet.isVelocity()) {
+            decreaseBufferBy(0.05);
+            //Small chance to false during combo duels otherwise.
         }
     }
 }
