@@ -23,7 +23,7 @@ import me.tecnio.antihaxerman.data.PlayerData;
 import me.tecnio.antihaxerman.packet.Packet;
 import me.tecnio.antihaxerman.util.MathUtil;
 
-@CheckInfo(name = "Aim", type = "D", description = "Checks for unlikely pitch deltas.")
+@CheckInfo(name = "Aim", type = "D", description = "Checks for unlikely rotation relations.")
 public final class AimD extends Check {
 
     public AimD(final PlayerData data) {
@@ -38,14 +38,21 @@ public final class AimD extends Check {
             final float deltaPitch = data.getRotationProcessor().getDeltaPitch();
             final float deltaYaw = data.getRotationProcessor().getDeltaYaw();
 
-            final boolean invalid = MathUtil.isExponentiallySmall(deltaPitch) && deltaYaw >= 50.0F;
-
-            if (invalid && !cinematic) {
-                if (increaseBuffer() > 3) {
-                    fail();
+            final boolean invalid = deltaPitch == 0 && deltaYaw >= 3.0F ||  deltaYaw == 0 && deltaPitch >= 3.0F;
+            //Unlikely to rotate only on one axis for multiple ticks.
+            
+            if (this.data.getRotationProcessor().getSensitivity() > 140 && (this.data.getRotationProcessor().getMouseDeltaY() < 2 || this.data.getRotationProcessor().getMouseDeltaX() < 2)) {
+                return;
+                //High sensitivity might cause this however.
+            }
+            if (invalid && !cinematic && Math.abs(data.getRotationProcessor().getPitch()) != 90) {
+                //When abs(pitch) = 90 weird rotation relations come about.
+                if (increaseBuffer() > 4) {
+                    fail("DeltaYaw: " + deltaYaw + " deltaPitch: " + deltaPitch);
+                    setBuffer(3.5);
                 }
             } else {
-                decreaseBufferBy(0.1);
+                decreaseBufferBy(2.5);
             }
         }
     }
