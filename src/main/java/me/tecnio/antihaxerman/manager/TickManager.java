@@ -30,6 +30,7 @@ public final class TickManager implements Runnable {
 
     @Getter
     private int ticks;
+    private int nextPacketID = -1;
     private static BukkitTask task;
 
     public void start() {
@@ -48,7 +49,16 @@ public final class TickManager implements Runnable {
     @Override
     public void run() {
         ++ticks;
-
+        if(ticks % 20 == 0) {
+            //once a second.
+            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), (SendableWrapper)new WrappedPacketOutKeepAlive(nextPacketID));
+            PacketEvents.get().getPlayerUtils().sendPacket(data.getPlayer(), (SendableWrapper)new WrappedPacketOutTransaction(0, (short)nextPacketID), false));
+            if (Math.abs(this.TransactedTicks) > 30000) {
+                nextPacketID = -1;
+                //Minecraft normally doesn't use negative transaction IDs, best for our purposes.
+            }
+            nextPacketID--;
+        }
         for (final PlayerData data : PlayerDataManager.getInstance().getAllData()) {
             final Entity target = data.getCombatProcessor().getTarget();
             final Entity lastTarget = data.getCombatProcessor().getLastTarget();
