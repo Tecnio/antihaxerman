@@ -39,6 +39,18 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <finalName>AntiHaxerman</finalName>
+                            <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.atteo.classindex</pattern>
+                                    <shadedPattern>me.tecnio.ahm.classindex</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>co.aikar</pattern>
+                                    <shadedPattern>me.tecnio.ahm.aikar</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -81,8 +93,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.bear-anticheat</groupId>
-            <artifactId>artemis-packet-api</artifactId>
+            <groupId>com.github.bear-anticheat.artemis-packet-api</groupId>
+            <artifactId>api</artifactId>
+            <version>8eff5a755a</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.bear-anticheat.artemis-packet-api</groupId>
+            <artifactId>spigot</artifactId>
             <version>8eff5a755a</version>
         </dependency>
         <dependency>
@@ -94,11 +111,6 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.samjakob</groupId>
-            <artifactId>SpiGUI</artifactId>
-            <version>192e3fb</version>
         </dependency>
     </dependencies>
 </project>
