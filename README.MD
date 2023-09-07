@@ -50,6 +50,4 @@ If you find any issues or want to contribute to this open-source project, please
 ## Developers
 - https://github.com/Tecnio
 - https://github.com/TheRealShitDev (aSwitch)
-- https://github.com/gbomexify (Mexify)
 - https://github.com/incognitolol (RNOIncognito)
-- https://github.com/Cyanade1 
