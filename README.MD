@@ -10,9 +10,9 @@ This is a project mostly designed for people to be able to learn and take code f
 ## Warning
 
 This project is intentionally nerfed in order to teach people not to mess up on whilst providing them the ground works of
-a nice anti-cheat that they can use on their server.
+a nice and robust anti-cheat base that they can work off of.
 
-This by itself will work stably for the most part but do not expect it to be flawless or anything.
+This by itself will work stably for the most part, but do not expect it to detect everything and by no means is it flawless.
 
 ## Getting Started
 
@@ -48,6 +48,7 @@ Make sure to be running a 1.8.8 server.
 If you find any issues or want to contribute to this open-source project, please feel free to do so. Any bug fixes or additions are more than welcome. Your help and ideas are greatly appreciated!
 
 ## Developers
-- https://github.com/Tecnio
+- https://github.com/Tecnio (Tecnio)
 - https://github.com/TheRealShitDev (aSwitch)
+- https://github.com/gbomexify (Mexify)
 - https://github.com/incognitolol (RNOIncognito)
