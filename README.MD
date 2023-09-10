@@ -52,3 +52,4 @@ If you find any issues or want to contribute to this open-source project, please
 - https://github.com/TheRealShitDev (aSwitch)
 - https://github.com/gbomexify (Mexify)
 - https://github.com/incognitolol (RNOIncognito)
+- https://github.com/Cyanade (Cyanade)
