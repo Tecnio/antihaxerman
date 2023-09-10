@@ -27,7 +27,7 @@ public enum AHM {
 
     INSTANCE;
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
 
     private final Logger logger = Logger.getLogger("ahm");
 

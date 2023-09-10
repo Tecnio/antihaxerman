@@ -13,18 +13,18 @@ public class ProtocolH extends Check implements PacketCheck {
 
     private long lastId = -1;
 
-    public ProtocolH(PlayerData data) {
+    public ProtocolH(final PlayerData data) {
         super(data);
     }
 
     @Override
-    public void handle(GPacket packet) {
+    public void handle(final GPacket packet) {
         if (packet instanceof PacketPlayClientKeepAlive) {
             final GPacketPlayClientKeepAlive wrapper = (GPacketPlayClientKeepAlive) packet;
 
-            long id = wrapper.getId();
+            final long id = wrapper.getId();
 
-            if (id == lastId) {
+            if (id == this.lastId) {
                 fail("id=" + id + ", last=" + lastId);
             }
 
