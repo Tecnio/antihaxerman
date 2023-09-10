@@ -21,7 +21,6 @@ import org.bukkit.entity.Player;
 
 @CheckManifest(name = "Hitbox", type = "A", description = "Detects any reach or hitbox modifications.")
 public final class HitboxA extends Check implements PacketCheck {
-
     private static final boolean[] BOOLEANS = {true, false};
 
     private TrackerEntity target;
