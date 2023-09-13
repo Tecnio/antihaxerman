@@ -28,20 +28,21 @@ public final class FlightA extends Check implements PositionCheck {
 
         final double lastLastDeltaY = data.getPositionTracker().getLastLastDeltaY();
         final double deltaY = data.getPositionTracker().getDeltaY();
-        double lastDeltaY = data.getPositionTracker().getLastDeltaY();
 
-        double distance = Double.MIN_VALUE;
+        double distance = Double.MAX_VALUE;
         double predicted = 0.0D;
 
         for (final boolean chunk : new boolean[]{false, true}) {
-            if (!data.getPositionTracker().isLastPosition() && !chunk) {
+            double lastDeltaY = data.getPositionTracker().getLastDeltaY();
+
+            if (!data.getPositionTracker().isLastPosition()) {
                 lastDeltaY = (lastLastDeltaY - 0.08D) * 0.9800000190734863D;
 
                 if (lastVelocity) lastDeltaY = data.getVelocityTracker().getLastVelocity().getY();
                 if (Math.abs(lastDeltaY) < 0.005D) lastDeltaY = 0.0D;
             }
 
-            final double bfMotion = chunk ? -0.1D : (lastDeltaY - 0.08D);
+            final double bfMotion = lastDeltaY - 0.08D;
             double temp = bfMotion * 0.9800000190734863D;
 
             if (velocity) temp = data.getVelocityTracker().getVelocity().getY();
@@ -49,7 +50,7 @@ public final class FlightA extends Check implements PositionCheck {
 
             final double current = Math.abs(temp - deltaY);
 
-            if (distance < current) {
+            if (current < distance) {
                 predicted = temp;
                 distance = current;
             }
