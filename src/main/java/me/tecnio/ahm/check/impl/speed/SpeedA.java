@@ -83,12 +83,7 @@ public final class SpeedA extends Check implements PositionCheck {
         this.motionZ = deltaZ * friction;
 
         // Low motion
-        if (Math.abs(this.motionX) < 0.005D) {
-            this.motionX = 0.0D;
-        }
-
-        if (Math.abs(this.motionZ) < 0.005D) {
-            this.motionZ = 0.0D;
-        }
+        if (Math.abs(this.motionX) < 0.005D) this.motionX = 0.0D;
+        if (Math.abs(this.motionZ) < 0.005D) this.motionZ = 0.0D;
     }
 }

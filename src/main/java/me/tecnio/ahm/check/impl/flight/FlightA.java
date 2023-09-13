@@ -30,7 +30,7 @@ public final class FlightA extends Check implements PositionCheck {
         final double deltaY = data.getPositionTracker().getDeltaY();
         double lastDeltaY = data.getPositionTracker().getLastDeltaY();
 
-        double distance = Double.MAX_VALUE;
+        double distance = Double.MIN_VALUE;
         double predicted = 0.0D;
 
         for (final boolean chunk : new boolean[]{false, true}) {

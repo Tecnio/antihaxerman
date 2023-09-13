@@ -58,6 +58,7 @@ public enum AHM {
     }
 
     public void registerMetrics() {
+        System.setProperty("bstats.relocatecheck", "false");
         new Metrics(this.plugin, 11350);
     }
 
