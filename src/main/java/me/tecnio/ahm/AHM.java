@@ -16,6 +16,7 @@ import me.tecnio.ahm.listener.bukkit.RegistrationListener;
 import me.tecnio.ahm.listener.network.NetworkListener;
 import me.tecnio.ahm.util.registry.ServiceRegistry;
 import me.tecnio.ahm.util.registry.ServiceRegistryImpl;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +45,7 @@ public enum AHM {
     public void start(final JavaPlugin plugin) {
         this.plugin = plugin;
 
+        registerMetrics();
         registerManagers();
         registerConfiguration();
         registerListeners();
@@ -53,6 +55,10 @@ public enum AHM {
 
     public void end() {
         terminateManagers();
+    }
+
+    public void registerMetrics() {
+        new Metrics(this.plugin, 11350);
     }
 
     public void registerManagers() {
