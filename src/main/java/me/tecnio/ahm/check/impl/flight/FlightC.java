@@ -24,7 +24,7 @@ public class FlightC extends Check implements PositionCheck {
 
         // Calculate modified jump motion with potion effects
         final double modifierJump = data.getAttributeTracker().getPotionLevel(PotionEffectType.JUMP) * 0.1F;
-        final double deltaY = update.getDeltaY() + modifierJump;
+        final double deltaY = update.getDeltaY() - modifierJump;
 
         // Check exemption conditions
         final boolean exempt = this.isExempt(ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.PISTON,
