@@ -56,7 +56,7 @@ public final class FlightA extends Check implements PositionCheck {
         }
 
         // Check for invalid conditions: significant difference between observed and predicted Y, not on ground, and previous tick not on ground.
-        final boolean invalid = predicted > 1.0E-06 && !ground && !lastGround;
+        final boolean invalid = distance > 1.0E-06 && !ground && !lastGround;
         final boolean exempt = this.isExempt(ExemptType.CLIMBABLE, ExemptType.PISTON, ExemptType.SLIME,
                 ExemptType.VEHICLE, ExemptType.FLIGHT, ExemptType.TELEPORT, ExemptType.UNDER_BLOCK, ExemptType.WEB, ExemptType.LIQUID,
                 ExemptType.TELEPORTED_RECENTLY);
