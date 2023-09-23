@@ -33,14 +33,13 @@ public class FlightD extends Check implements PositionCheck {
 
         final boolean exempt = this.isExempt(ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.PISTON,
                 ExemptType.CLIMBABLE, ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.TELEPORTED_RECENTLY,
-                ExemptType.UNDER_BLOCK,
-                ExemptType.FLIGHT, ExemptType.SLIME, ExemptType.CHUNK, ExemptType.LIQUID);
+                ExemptType.UNDER_BLOCK, ExemptType.WEB, ExemptType.FLIGHT, ExemptType.SLIME, ExemptType.CHUNK, ExemptType.LIQUID);
 
         final boolean startedFalling = deltaY <= 0.2 && !ground;
 
         if (!ground && !lastOnGround && !exempt && deltaY >= lastDeltaY && startedFalling) {
             if (this.buffer.increase() > 2) {
-                fail("Invalid fall motion");
+                this.fail("invalid fall motion");
             }
         } else {
             this.buffer.decreaseBy(0.125f);
