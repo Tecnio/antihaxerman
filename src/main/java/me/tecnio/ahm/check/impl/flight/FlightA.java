@@ -42,22 +42,34 @@ public final class FlightA extends Check implements PositionCheck {
                 if (Math.abs(lastDeltaY) < 0.005D) lastDeltaY = 0.0D;
             }
 
-            final double bfMotion = lastDeltaY - 0.08D;
-            double temp = bfMotion * 0.9800000190734863D;
+            double motionY = lastDeltaY - 0.08D;
 
-            if (velocity) temp = data.getVelocityTracker().getVelocity().getY();
-            if (Math.abs(temp) < 0.005D) temp = 0.0D;
+            if (chunk) {
+                if (data.getPositionTracker().getLastY() > 0.0D) {
+                    motionY = -0.1D;
+                } else {
+                    motionY = 0.0D;
+                }
+            }
 
-            final double current = Math.abs(temp - deltaY);
+            motionY *= 0.9800000190734863D;;
+
+            if (velocity) motionY = data.getVelocityTracker().getVelocity().getY();
+            if (Math.abs(motionY) < 0.005D) motionY = 0.0D;
+
+            final double current = Math.abs(motionY - deltaY);
 
             if (current < distance) {
-                predicted = temp;
+                predicted = motionY;
                 distance = current;
             }
         }
 
+        // 0.03 can happen for multiple ticks but I rather doubt it's gonna be anything over 0.03 tbh.
+        final double threshold = this.isExempt(ExemptType.RETARD) ? 0.03D : 1e-06D;
+
         // Check for invalid conditions: significant difference between observed and predicted Y, not on ground, and previous tick not on ground.
-        final boolean invalid = distance > 1.0E-06 && !ground && !lastGround;
+        final boolean invalid = distance > threshold && !ground && !lastGround;
         final boolean exempt = this.isExempt(ExemptType.CLIMBABLE, ExemptType.PISTON, ExemptType.SLIME,
                 ExemptType.VEHICLE, ExemptType.FLIGHT, ExemptType.TELEPORT, ExemptType.UNDER_BLOCK, ExemptType.WEB, ExemptType.LIQUID,
                 ExemptType.TELEPORTED_RECENTLY);
@@ -66,6 +78,7 @@ public final class FlightA extends Check implements PositionCheck {
             // Trigger a violation if the conditions are met and the buffer threshold is exceeded.
             if (this.buffer.increase() > 2) {
                 this.fail("yD: %s", Math.abs(deltaY - predicted));
+                this.debug(data.getPositionTracker().isOnGround());
             }
         } else {
             // Decrease the buffer if the conditions are not met.
