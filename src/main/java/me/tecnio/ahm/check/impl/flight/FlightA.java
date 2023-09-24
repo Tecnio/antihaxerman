@@ -78,7 +78,6 @@ public final class FlightA extends Check implements PositionCheck {
             // Trigger a violation if the conditions are met and the buffer threshold is exceeded.
             if (this.buffer.increase() > 2) {
                 this.fail("yD: %s", Math.abs(deltaY - predicted));
-                this.debug(data.getPositionTracker().isOnGround());
             }
         } else {
             // Decrease the buffer if the conditions are not met.
