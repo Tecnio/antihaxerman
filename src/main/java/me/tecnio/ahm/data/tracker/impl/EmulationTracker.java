@@ -84,9 +84,8 @@ public final class EmulationTracker extends Tracker {
                                                 motion.getZ().multiply(0.91F);
                                             }
 
-                                            if (velocity && data.getVelocityTracker().getTicksSinceVelocity() == 1) {
-                                                motion.getX().set(data.getVelocityTracker().getVelocity().getX());
-                                                motion.getZ().set(data.getVelocityTracker().getVelocity().getZ());
+                                            if (velocity) {
+                                             data.getVelocityTracker().getActions().forEach(action -> action.accept(motion));
                                             }
 
                                             if (hitSlowdown) {
