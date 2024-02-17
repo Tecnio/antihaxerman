@@ -33,107 +33,113 @@ public final class EmulationTracker extends Tracker {
         // Set the lowest offset
         this.distance = Double.MAX_VALUE;
 
-        iteration: {
+        iteration:
+        {
             // Loop through the combos
             for (int f = -1; f < 2; f++) {
                 for (int s = -1; s < 2; s++) {
                     for (int sp = 0; sp < 2; sp++) {
                         for (int jp = 0; jp < 2; jp++) {
-                            for (int ui = 0; ui < 2; ui++) {
-                                for (int hs = 0; hs < 2; hs++) {
-                                    for (int fm = 0; fm < 2; fm++) {
-                                        final boolean sprint = sp == 0;
-                                        final boolean jump = jp == 0;
-                                        final boolean using = ui == 0;
-                                        final boolean hitSlowdown = hs == 0;
-                                        final boolean fastMath = fm == 1;
-                                        final boolean ground = data.getPositionTracker().isLastOnGround();
-                                        final boolean sneaking = data.getActionTracker().isSneaking();
+                            for (int vl = 0; vl < 2; vl++) {
+                                for (int ui = 0; ui < 2; ui++) {
+                                    for (int hs = 0; hs < 2; hs++) {
+                                        for (int fm = 0; fm < 2; fm++) {
+                                            final boolean sprint = sp == 0;
+                                            final boolean jump = jp == 0;
+                                            final boolean using = ui == 0;
+                                            final boolean hitSlowdown = hs == 0;
+                                            final boolean fastMath = fm == 1;
+                                            final boolean ground = data.getPositionTracker().isLastOnGround();
+                                            final boolean sneaking = data.getActionTracker().isSneaking();
+                                            final boolean velocity = vl == 0;
 
-                                        if (f <= 0.0F && sprint && ground) continue;
+                                            if (f <= 0.0F && sprint && ground) continue;
 
-                                        float forward = f;
-                                        float strafe = s;
+                                            float forward = f;
+                                            float strafe = s;
 
-                                        if (using) {
-                                            forward *= 0.2D;
-                                            strafe *= 0.2D;
-                                        }
+                                            if (using) {
+                                                forward *= 0.2D;
+                                                strafe *= 0.2D;
+                                            }
 
-                                        if (sneaking) {
-                                            forward *= (float) 0.3D;
-                                            strafe *= (float) 0.3D;
-                                        }
+                                            if (sneaking) {
+                                                forward *= (float) 0.3D;
+                                                strafe *= (float) 0.3D;
+                                            }
 
-                                        forward *= 0.98F;
-                                        strafe *= 0.98F;
+                                            forward *= 0.98F;
+                                            strafe *= 0.98F;
 
-                                        final Motion motion = new Motion(
-                                                data.getPositionTracker().getLastDeltaX(),
-                                                0.0D,
-                                                data.getPositionTracker().getLastDeltaZ()
-                                        );
+                                            final Motion motion = new Motion(
+                                                    data.getPositionTracker().getLastDeltaX(),
+                                                    0.0D,
+                                                    data.getPositionTracker().getLastDeltaZ());
 
-                                        if (data.getPositionTracker().isLastLastOnGround()) {
-                                            motion.getX().multiply(0.6F * 0.91F);
-                                            motion.getZ().multiply(0.6F * 0.91F);
-                                        } else {
-                                            motion.getX().multiply(0.91F);
-                                            motion.getZ().multiply(0.91F);
-                                        }
+                                            if (data.getPositionTracker().isLastLastOnGround()) {
+                                                motion.getX().multiply(0.6F * 0.91F);
+                                                motion.getZ().multiply(0.6F * 0.91F);
+                                            } else {
+                                                motion.getX().multiply(0.91F);
+                                                motion.getZ().multiply(0.91F);
+                                            }
 
-                                        data.getVelocityTracker().getActions().forEach(action -> action.accept(motion));
+                                            if (velocity && data.getVelocityTracker().getTicksSinceVelocity() == 1) {
+                                                motion.getX().set(data.getVelocityTracker().getVelocity().getX());
+                                                motion.getZ().set(data.getVelocityTracker().getVelocity().getZ());
+                                            }
+                                            
+                                            if (hitSlowdown) {
+                                                motion.getX().multiply(0.6D);
+                                                motion.getZ().multiply(0.6D);
 
-                                        if (hitSlowdown) {
-                                            motion.getX().multiply(0.6D);
-                                            motion.getZ().multiply(0.6D);
-                                        }
+                                                if (Math.abs(motion.getX().get()) < 0.005D) motion.getX().set(0.0D);
+                                                if (Math.abs(motion.getZ().get()) < 0.005D) motion.getZ().set(0.0D);
 
-                                        if (Math.abs(motion.getX().get()) < 0.005D) motion.getX().set(0.0D);
-                                        if (Math.abs(motion.getZ().get()) < 0.005D) motion.getZ().set(0.0D);
+                                                if (jump && sprint) {
+                                                    final float radians = data.getRotationTracker().getYaw() * 0.017453292F;
 
-                                        if (jump && sprint) {
-                                            final float radians = data.getRotationTracker().getYaw() * 0.017453292F;
+                                                    motion.getX().subtract(sin(fastMath, radians) * 0.2F);
+                                                    motion.getZ().add(cos(fastMath, radians) * 0.2F);
+                                                }
 
-                                            motion.getX().subtract(sin(fastMath, radians) * 0.2F);
-                                            motion.getZ().add(cos(fastMath, radians) * 0.2F);
-                                        }
+                                                float friction = 0.91F;
+                                                if (data.getPositionTracker().isLastOnGround()) friction *= 0.6F;
 
-                                        float friction = 0.91F;
-                                        if (data.getPositionTracker().isLastOnGround()) friction *= 0.6F;
+                                                final float moveSpeed = PlayerUtil.getAttributeSpeed(data, sprint);
+                                                final float moveFlyingFriction;
 
-                                        final float moveSpeed = PlayerUtil.getAttributeSpeed(data, sprint);
-                                        final float moveFlyingFriction;
+                                                if (ground) {
+                                                    final float moveSpeedMultiplier = 0.16277136F / (friction * friction * friction);
 
-                                        if (ground) {
-                                            final float moveSpeedMultiplier = 0.16277136F / (friction * friction * friction);
+                                                    moveFlyingFriction = moveSpeed * moveSpeedMultiplier;
+                                                } else {
+                                                    moveFlyingFriction = (float) (sprint
+                                                            ? ((double) 0.02F + (double) 0.02F * 0.3D)
+                                                            : 0.02F);
+                                                }
 
-                                            moveFlyingFriction = moveSpeed * moveSpeedMultiplier;
-                                        } else {
-                                            moveFlyingFriction = (float) (sprint
-                                                    ? ((double) 0.02F + (double) 0.02F * 0.3D)
-                                                    : 0.02F);
-                                        }
+                                                final float[] moveFlying = this.moveFlying(forward, strafe, moveFlyingFriction, fastMath);
 
-                                        final float[] moveFlying = this.moveFlying(forward, strafe, moveFlyingFriction, fastMath);
+                                                motion.getX().add(moveFlying[0]);
+                                                motion.getZ().add(moveFlying[1]);
 
-                                        motion.getX().add(moveFlying[0]);
-                                        motion.getZ().add(moveFlying[1]);
+                                                final double distance = realMotion.distanceSquared(motion);
 
-                                        final double distance = realMotion.distanceSquared(motion);
+                                                // Set the lowest distance outcome
+                                                if (distance < this.distance) {
+                                                    this.distance = distance;
+                                                    this.motion = motion.clone();
 
-                                        // Set the lowest distance outcome
-                                        if (distance < this.distance) {
-                                            this.distance = distance;
-                                            this.motion = motion.clone();
+                                                    this.sprint = sprint;
+                                                    this.jump = jump;
+                                                    this.using = using;
+                                                    this.hitSlowdown = hitSlowdown;
+                                                    this.fastMath = fastMath;
 
-                                            this.sprint = sprint;
-                                            this.jump = jump;
-                                            this.using = using;
-                                            this.hitSlowdown = hitSlowdown;
-                                            this.fastMath = fastMath;
-
-                                            if (distance < 1e-14) break iteration;
+                                                    if (distance < 1e-14) break iteration;
+                                                }
+                                            }
                                         }
                                     }
                                 }
