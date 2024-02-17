@@ -88,7 +88,7 @@ public final class EmulationTracker extends Tracker {
                                                 motion.getX().set(data.getVelocityTracker().getVelocity().getX());
                                                 motion.getZ().set(data.getVelocityTracker().getVelocity().getZ());
                                             }
-                                            
+
                                             if (hitSlowdown) {
                                                 motion.getX().multiply(0.6D);
                                                 motion.getZ().multiply(0.6D);
