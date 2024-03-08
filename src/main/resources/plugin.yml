@@ -1,5 +1,5 @@
 name: AntiHaxerman
-version: 4.0.0
+version: 4.0.1
 main: me.tecnio.ahm.AHMPlugin
 authors: [Tecnio, Incognito, aSwitch]
 description: An open-sourced anti-cheat solution.

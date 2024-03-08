@@ -8,8 +8,8 @@ import cc.ghast.packet.wrapper.packet.play.client.GPacketPlayClientBlockPlace;
 import me.tecnio.ahm.data.PlayerData;
 import me.tecnio.ahm.data.tracker.Tracker;
 import me.tecnio.ahm.exempt.ExemptType;
+import me.tecnio.ahm.util.type.EvictingMap;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class GhostBlockTracker extends Tracker {
 
-    private final Map<BlockPosition, Long> blockMap = new HashMap<>();
+    private final Map<BlockPosition, Long> blockMap = new EvictingMap<>(10);
     private double buffer;
 
     public GhostBlockTracker(final PlayerData data) {

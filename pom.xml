@@ -6,7 +6,7 @@
 
     <groupId>me.tecnio</groupId>
     <artifactId>AntiHaxerman</artifactId>
-    <version>4.0</version>
+    <version>4.0.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
