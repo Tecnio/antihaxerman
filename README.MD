@@ -5,7 +5,7 @@
 
 Keep in mind I coded this all whilst drunk as hell so you never know what you might find. - Tecnio
 
-This is a project mostly designed for people to be able to learn and take code from (with proper credits hopefully) to use on their projects also while being fully usable on a production scale server.
+This is a project mostly designed for people to be able to learn and take code from to use on their projects.
 
 ## Warning
 
