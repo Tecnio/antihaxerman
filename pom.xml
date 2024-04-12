@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.tecnio</groupId>
-    <artifactId>AntiHaxerman</artifactId>
-    <version>4.0.1</version>
+    <artifactId>antihaxerman</artifactId>
+    <version>4.0.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -43,17 +43,27 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.atteo.classindex</pattern>
-                                    <shadedPattern>me.tecnio.ahm.classindex</shadedPattern>
+                                    <shadedPattern>me.tecnio.ahm.libs.classindex</shadedPattern>
                                 </relocation>
-
                                 <relocation>
                                     <pattern>co.aikar</pattern>
-                                    <shadedPattern>me.tecnio.ahm.aikar</shadedPattern>
+                                    <shadedPattern>me.tecnio.ahm.libs.aikar</shadedPattern>
                                 </relocation>
-
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>me.tecnio.ahm</shadedPattern>
+                                    <shadedPattern>me.tecnio.ahm.libs.bstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>ac.artemis.packet</pattern>
+                                    <shadedPattern>me.tecnio.ahm.libs.artemis</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>cc.ghast.packet</pattern>
+                                    <shadedPattern>me.tecnio.ahm.libs.ghast</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.github.steveice10.opennbt</pattern>
+                                    <shadedPattern>me.tecnio.ahm.libs.opennbt</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -94,28 +104,32 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.artemisac.artemis-packet-api</groupId>
             <artifactId>api</artifactId>
             <version>2.0.0-beta-3</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.artemisac.artemis-packet-api</groupId>
             <artifactId>spigot</artifactId>
             <version>2.0.0-beta-3</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.atteo.classindex</groupId>
             <artifactId>classindex</artifactId>
             <version>3.13</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>

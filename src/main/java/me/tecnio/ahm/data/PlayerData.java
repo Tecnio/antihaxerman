@@ -93,7 +93,7 @@ public final class PlayerData {
     }
 
     public void terminate() {
-        // in case I need it idk
+        AHM.get(AlertManager.class).getPlayers().remove(this);
     }
 
     public void updateTicks() {

@@ -171,13 +171,15 @@ public final class PositionTracker extends Tracker {
         else if (packet instanceof PacketPlayServerPosition) {
             final GPacketPlayServerPosition wrapper = ((GPacketPlayServerPosition) packet);
 
-            data.getConnectionTracker().confirm(() -> this.teleportQueue.add(new Teleport(wrapper.getX(), wrapper.getY(), wrapper.getZ(), wrapper.getFlags())));
+            data.getConnectionTracker().confirm(() -> this.teleportQueue.add(
+                    new Teleport(wrapper.getX(), wrapper.getY(), wrapper.getZ(), wrapper.getFlags())));
         }
     }
 
     @Override
     public void handlePost(final GPacket packet) {
-        if (packet instanceof PacketPlayClientFlying && ((PacketPlayClientFlying) packet).isPos()) {
+        if (packet instanceof PacketPlayClientFlying
+                && ((PacketPlayClientFlying) packet).isPos()) {
             this.delayedFlyingTicks = 0;
         }
     }

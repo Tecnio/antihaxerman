@@ -45,6 +45,16 @@ public enum AHM {
     public void start(final JavaPlugin plugin) {
         this.plugin = plugin;
 
+        if (!Bukkit.getVersion().contains("1.8.8")) {
+            logger.severe("AntiHaxerman is only compatible with 1.8.8 servers.");
+            logger.severe("AntiHaxerman is only compatible with 1.8.8 servers.");
+            logger.severe("AntiHaxerman is only compatible with 1.8.8 servers.");
+
+            Bukkit.getPluginManager().disablePlugin(this.plugin);
+
+            return;
+        }
+
         registerMetrics();
         registerManagers();
         registerConfiguration();
@@ -57,12 +67,13 @@ public enum AHM {
         terminateManagers();
     }
 
-    public void registerMetrics() {
+
+    private void registerMetrics() {
         System.setProperty("bstats.relocatecheck", "false");
         new Metrics(this.plugin, 11350);
     }
 
-    public void registerManagers() {
+    private void registerManagers() {
         install(CheckManager.class, new CheckManager());
         install(ConfigManager.class, new ConfigManager());
         install(PlayerDataManager.class, new PlayerDataManager());
@@ -70,21 +81,21 @@ public enum AHM {
         install(PaperCommandManager.class, new PaperCommandManager(this.plugin));
     }
 
-    public void registerConfiguration() {
+    private void registerConfiguration() {
         get(ConfigManager.class).generate();
         get(ConfigManager.class).load();
     }
 
-    public void registerListeners() {
+    private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new RegistrationListener(), this.plugin);
     }
 
-    public void registerPacketAPI() {
+    private void registerPacketAPI() {
         PacketManager.INSTANCE.init(this.plugin);
         PacketAPI.addListener(new NetworkListener());
     }
 
-    public void registerCommands() {
+    private void registerCommands() {
         get(PaperCommandManager.class).enableUnstableAPI("help");
 
         Arrays.asList(
@@ -97,7 +108,7 @@ public enum AHM {
         });
     }
 
-    public void terminateManagers() {
+    private void terminateManagers() {
         this.dataManager = null;
         this.checkManager = null;
         this.alertManager = null;

@@ -1,5 +1,6 @@
 package me.tecnio.ahm.alert;
 
+import lombok.Getter;
 import me.tecnio.ahm.AHM;
 import me.tecnio.ahm.alert.alert.AlertHandler;
 import me.tecnio.ahm.alert.alert.AlertHandlerFactory;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 public class AlertManager {
 
+    @Getter
     private final Set<PlayerData> players = new HashSet<>();
 
     private final String format = ChatUtil.translate(
