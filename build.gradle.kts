@@ -1,10 +1,9 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.freefair.lombok") version "8.6"
 }
 
-group = "me.technio"
+group = "me.tecnio"
 version = "4.0.2"
 
 java {
@@ -19,6 +18,7 @@ tasks.withType<JavaCompile> {
 
 repositories {
     mavenCentral()
+
     maven("https://jitpack.io")
     maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://nexus.funkemunky.cc/content/repositories/releases/")
@@ -26,6 +26,10 @@ repositories {
 
 dependencies {
     compileOnly("org.github.spigot:1.8.8:1.8.8")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
     implementation("com.github.artemisac.artemis-packet-api:api:2.0.0-beta-3")
     implementation("com.github.artemisac.artemis-packet-api:spigot:2.0.0-beta-3")
     implementation("org.atteo.classindex:classindex:3.13")
