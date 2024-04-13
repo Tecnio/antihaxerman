@@ -17,20 +17,20 @@ This by itself will work stably for the most part, but do not expect it to detec
 ## Getting Started
 
 ### Prerequisites
-- Maven
 - JDK 8+
 
 ### Installation
 1. Clone the repository\
 `git clone https://github.com/Tecnio/AntiHaxerman.git`
 
-2. Cd into the folder\
+2. CD into the folder\
 `cd AntiHaxerman`
 
-3. Compile with Maven\
-`mvn package`
+3. Compile with Gradle
+- Windows: `./gradlew.bat build`
+- Other: `./gradlew build`
 
-The JAR file should be available under the "target" folder as "AntiHaxerman.jar".
+The JAR file should be available under the "build/libs" folder.
 
 ## Usage 
 The compiled JAR file can be dragged into the plugins folder, and you are good to go!
