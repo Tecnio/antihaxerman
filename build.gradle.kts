@@ -38,7 +38,7 @@ dependencies {
 }
 
 tasks.shadowJar {
-    archiveClassifier = ""
+    archiveFileName = "AntiHaxerman.jar"
 
     relocate("org.atteo.classindex", "me.tecnio.ahm.libs.classindex")
     relocate("co.aikar", "me.tecnio.ahm.libs.aikar")
