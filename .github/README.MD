@@ -1,6 +1,9 @@
 # AntiHaxerman
 > An open-sourced anti-cheat solution for servers and for people to learn from.
 
+## Join MAC (Minecraft Anti-Cheat Community)
+https://discord.gg/SAuj458nzM
+
 ## About
 
 Keep in mind I coded this all whilst drunk as hell so you never know what you might find. - Tecnio
