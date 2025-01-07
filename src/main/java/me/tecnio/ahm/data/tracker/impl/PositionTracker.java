@@ -14,13 +14,14 @@ import me.tecnio.ahm.util.mcp.AxisAlignedBB;
 import me.tecnio.ahm.util.mcp.MathHelper;
 import me.tecnio.ahm.util.player.Teleport;
 import me.tecnio.ahm.util.player.TickTimer;
-import me.tecnio.ahm.util.type.EvictingList;
 import me.tecnio.ahm.util.world.BlockUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -65,7 +66,7 @@ public final class PositionTracker extends Tracker {
 
     private boolean boat;
 
-    private final EvictingList<Teleport> teleportQueue = new EvictingList<>(800);
+    private final Deque<Teleport> teleportQueue = new ArrayDeque<>();
     private boolean teleported;
 
     private final TickTimer ticksSinceTeleport = new TickTimer(this.data);
@@ -133,7 +134,7 @@ public final class PositionTracker extends Tracker {
 
                 if (!(wrapper.isPos() && wrapper.isLook() && !wrapper.isOnGround())) break teleport;
 
-                if (this.teleportQueue.size() != 0) {
+                if (!this.teleportQueue.isEmpty()) {
                     final Teleport teleport = this.teleportQueue.peek();
 
                     final Set<GPacketPlayServerPosition.PlayerTeleportFlags> flags = teleport.getFlags();
@@ -156,7 +157,7 @@ public final class PositionTracker extends Tracker {
 
                         data.setTicks(data.getTicks() - 1);
 
-                        this.teleportQueue.poll();
+                        this.teleportQueue.removeFirst();
                     }
                 }
             }

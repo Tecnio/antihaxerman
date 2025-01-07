@@ -8,9 +8,6 @@ import me.tecnio.ahm.exempt.ExemptType;
 import me.tecnio.ahm.update.PositionUpdate;
 import org.bukkit.potion.PotionEffectType;
 
-/**
- * Check to detect invalid step motion that may indicate flight cheats.
- */
 @CheckManifest(name = "Flight", type = "C", description = "Checks for invalid step motion.")
 public class FlightC extends Check implements PositionCheck {
 
@@ -22,18 +19,20 @@ public class FlightC extends Check implements PositionCheck {
     public void handle(final PositionUpdate update) {
         final boolean ground = update.isOnGround();
 
-        // Calculate modified jump motion with potion effects
         final double modifierJump = data.getAttributeTracker().getPotionLevel(PotionEffectType.JUMP) * 0.1F;
         final double deltaY = update.getDeltaY() - modifierJump;
 
-        // Check exemption conditions
-        final boolean exempt = this.isExempt(ExemptType.VEHICLE, ExemptType.VELOCITY, ExemptType.PISTON,
-                ExemptType.TELEPORT, ExemptType.BOAT, ExemptType.FLIGHT, ExemptType.SLIME, ExemptType.CHUNK);
+        final boolean exempt = this.isExempt(
+                ExemptType.VEHICLE,
+                ExemptType.VELOCITY,
+                ExemptType.PISTON,
+                ExemptType.TELEPORT,
+                ExemptType.BOAT,
+                ExemptType.FLIGHT,
+                ExemptType.SLIME,
+                ExemptType.CHUNK
+        );
 
-        /*
-         * Check if their instant motion is more than possible while still on ground.
-         * We use 0.6f to avoid false positives from fences/walls with carpets on top.
-         */
         if (deltaY > 0.6f && ground && !exempt) {
             this.fail("dY: %s", deltaY);
         }

@@ -2,8 +2,8 @@ package me.tecnio.ahm.command.impl;
 
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
-import me.tecnio.ahm.AHM;
-import me.tecnio.ahm.command.AHMCommand;
+import me.tecnio.ahm.AntiHaxerman;
+import me.tecnio.ahm.command.AntiHaxermanCommand;
 import me.tecnio.ahm.data.PlayerData;
 import me.tecnio.ahm.data.PlayerDataManager;
 import org.bukkit.command.CommandSender;
@@ -14,17 +14,19 @@ import java.util.Arrays;
 import java.util.List;
 
 @CommandAlias("ahm")
-public class InfoCommand extends AHMCommand {
+public class InfoCommand extends AntiHaxermanCommand {
 
     @Subcommand("info")
     @Description("View information about a player")
     @CommandPermission("ahm.info")
     public void onCommand(final CommandSender sender, @Name("target") final OnlinePlayer onlinePlayer) {
         final Player player = onlinePlayer.getPlayer();
-        final PlayerData data = AHM.get(PlayerDataManager.class).getPlayerData(player.getUniqueId());
+        final PlayerData data = AntiHaxerman.get(PlayerDataManager.class).get(player.getUniqueId());
 
-        final String lastTransaction = new SimpleDateFormat("hh:mm:ss:ms aaa").format(data.getConnectionTracker().getLastTransaction());
-        final String lastEntity = data.getActionTracker().getTarget() == null ? "None" : data.getActionTracker().getTarget().getName();
+        final String lastTransaction = new SimpleDateFormat("hh:mm:ss:ms aaa")
+                .format(data.getConnectionTracker().getLastTransaction());
+        final String lastEntity = data.getActionTracker().getTarget() == null
+                ? "None" : data.getActionTracker().getTarget().getName();
 
         final List<String> message = Arrays.asList(
                 "&cInformation for &f" + player.getName() + "&c:",

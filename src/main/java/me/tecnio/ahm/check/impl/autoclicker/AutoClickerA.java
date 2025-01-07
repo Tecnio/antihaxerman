@@ -19,19 +19,20 @@ public final class AutoClickerA extends Check implements PacketCheck {
 
     @Override
     public void handle(final GPacket packet) {
-        if (packet instanceof GPacketPlayClientArmAnimation) {
-            if (this.canClick()) {
-                ++this.cps;
-            }
-        }
-
-        else if (packet instanceof PacketPlayClientFlying) {
+        if (packet instanceof PacketPlayClientFlying) {
             if (++this.movements >= 20) {
-                if (this.cps > 20 && this.canClick()) {
+                if (this.cps > 20 && !data.getActionTracker().isPlacing()) {
                     this.fail("C: %s", this.cps);
                 }
 
-                this.cps = this.movements = 0;
+                this.cps = 0;
+                this.movements = 0;
+            }
+        }
+
+        else if (packet instanceof GPacketPlayClientArmAnimation) {
+            if (!data.getActionTracker().isPlacing()) {
+                ++this.cps;
             }
         }
     }

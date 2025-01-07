@@ -11,6 +11,7 @@ import me.tecnio.ahm.data.PlayerData;
 
 @CheckManifest(name = "Interact", type = "C", description = "Checks for baritone rotations")
 public class InteractC extends Check implements PacketCheck {
+
     public InteractC(PlayerData data) {
         super(data);
     }

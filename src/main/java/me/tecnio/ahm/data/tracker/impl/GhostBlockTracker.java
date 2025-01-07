@@ -41,7 +41,7 @@ public class GhostBlockTracker extends Tracker {
                 for (final BlockPosition position : this.blockMap.keySet()) {
                     final boolean x = Math.floor(data.getPositionTracker().getX()) == position.getX();
                     // TODO: 9/7/23 fix artemis packet api insaneness
-                    final boolean y = /*Math.floor(data.getPositionTracker().getY() - 0.03D) == position.getY()*/ true;
+                    final boolean y = true;
                     final boolean z = Math.floor(data.getPositionTracker().getZ()) == position.getZ();
 
                     legit |= x && y && z;

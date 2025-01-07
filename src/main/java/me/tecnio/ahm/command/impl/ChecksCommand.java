@@ -2,13 +2,16 @@ package me.tecnio.ahm.command.impl;
 
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
-import me.tecnio.ahm.AHM;
+import me.tecnio.ahm.AntiHaxerman;
 import me.tecnio.ahm.check.Check;
-import me.tecnio.ahm.command.AHMCommand;
+import me.tecnio.ahm.command.AntiHaxermanCommand;
 import me.tecnio.ahm.data.PlayerData;
 import me.tecnio.ahm.data.PlayerDataManager;
 import me.tecnio.ahm.util.string.ChatUtil;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,14 +19,14 @@ import java.util.Arrays;
 import java.util.List;
 
 @CommandAlias("ahm")
-public class ChecksCommand extends AHMCommand {
+public class ChecksCommand extends AntiHaxermanCommand {
 
     @Subcommand("checks")
     @Description("View enabled checks for player")
     @CommandPermission("ahm.checks")
     public void onCommand(final CommandSender sender, @Name("target") final OnlinePlayer onlinePlayer) {
         final Player player = onlinePlayer.getPlayer();
-        final PlayerData data = AHM.get(PlayerDataManager.class).getPlayerData(player.getUniqueId());
+        final PlayerData data = AntiHaxerman.get(PlayerDataManager.class).get(player.getUniqueId());
 
         sendLineBreak(sender);
         sendMessage(sender, "&cChecks for &f" + player.getName() + "&c:");

@@ -16,7 +16,8 @@ public final class GroundSpoofA extends Check implements PositionCheck {
 
     @Override
     public void handle(final PositionUpdate update) {
-        if (this.isExempt(ExemptType.CHUNK, ExemptType.CLIMBABLE, ExemptType.SLIME, ExemptType.BOAT, ExemptType.RETARD)) return;
+        if (this.isExempt(ExemptType.CHUNK, ExemptType.CLIMBABLE,
+                ExemptType.SLIME, ExemptType.BOAT, ExemptType.SLOW)) return;
 
         final boolean ground = data.getPositionTracker().isOnGround();
         final boolean mathGround = data.getPositionTracker().getY() % 0.015625D == 0.0D;

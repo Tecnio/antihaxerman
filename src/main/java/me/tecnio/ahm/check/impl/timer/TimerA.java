@@ -28,7 +28,6 @@ public final class TimerA extends Check implements PacketCheck {
 
                 final long delay = packet.getTimestamp() - this.lastFlying;
 
-                // Update allowance using balance system
                 this.allowance += 50L;
                 this.allowance -= delay;
 

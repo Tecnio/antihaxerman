@@ -1,21 +1,13 @@
-# AntiHaxerman
-> An open-sourced anti-cheat solution for servers and for people to learn from.
+# antihaxerman
+> An open-sourced anti-cheat solution for people to learn from.
 
-## Join MAC (Minecraft Anti-Cheat Community)
-https://discord.gg/SAuj458nzM
-
+## Join the [Minecraft AntiCheat Community](https://discord.gg/SAuj458nzM)
 ## About
 
 Keep in mind I coded this all whilst drunk as hell so you never know what you might find. - Tecnio
 
-This is a project mostly designed for people to be able to learn and take code from to use on their projects.
-
-## Warning
-
-This project is intentionally nerfed in order to teach people not to mess up on whilst providing them the ground works of
-a nice and robust anti-cheat base that they can work off of.
-
-This by itself will work stably for the most part, but do not expect it to detect everything and by no means is it flawless.
+This is a project mostly designed for people to be able to learn and take code from to use on their projects and is
+nerfed by design. It is not representative of what are the best practices.
 
 ## Getting Started
 
@@ -24,10 +16,10 @@ This by itself will work stably for the most part, but do not expect it to detec
 
 ### Installation
 1. Clone the repository\
-`git clone https://github.com/Tecnio/AntiHaxerman.git`
+`git clone https://github.com/Tecnio/antihaxerman.git`
 
 2. CD into the folder\
-`cd AntiHaxerman`
+`cd antihaxerman`
 
 3. Compile with Gradle
 - Windows: `./gradlew.bat build`
@@ -45,14 +37,3 @@ Supported server/Spigot forks are listed below, the rest are not guaranteed to w
 - TacoSpigot
 
 Make sure to be running a 1.8.8 server.
-
-## Contributing
-
-If you find any issues or want to contribute to this open-source project, please feel free to do so. Any bug fixes or additions are more than welcome. Your help and ideas are greatly appreciated!
-
-## Developers
-- https://github.com/Tecnio (Tecnio)
-- https://github.com/TheRealShitDev (aSwitch)
-- https://github.com/gbomexify (Mexify)
-- https://github.com/incognitolol (RNOIncognito)
-- https://github.com/Cyanade (Cyanade)

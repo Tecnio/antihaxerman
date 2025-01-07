@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Getter
-public enum AHM {
+public enum AntiHaxerman {
 
     INSTANCE;
 
@@ -67,7 +67,6 @@ public enum AHM {
         terminateManagers();
     }
 
-
     private void registerMetrics() {
         System.setProperty("bstats.relocatecheck", "false");
         new Metrics(this.plugin, 11350);
@@ -82,8 +81,10 @@ public enum AHM {
     }
 
     private void registerConfiguration() {
-        get(ConfigManager.class).generate();
-        get(ConfigManager.class).load();
+        final ConfigManager config = get(ConfigManager.class);
+
+        config.generate();
+        config.load();
     }
 
     private void registerListeners() {
@@ -115,7 +116,7 @@ public enum AHM {
         this.configManager = null;
     }
 
-    public static AHM get() {
+    public static AntiHaxerman get() {
         return INSTANCE;
     }
 

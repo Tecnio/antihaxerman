@@ -32,52 +32,39 @@ public final class HitboxA extends Check implements PacketCheck {
     @Override
     public void handle(final GPacket packet) {
         if (packet instanceof PacketPlayClientFlying && this.target != null) {
-            // As we are brute forcing some possibilities, we just need to see if any of them intersected;
             boolean intersection = false;
 
-            // These are the tracked positions of the target that was attacked;
             final double targetX = this.target.getPosX();
             final double targetY = this.target.getPosY();
             final double targetZ = this.target.getPosZ();
 
-            // As we are going to ray-cast we need to create an appropriately sized bounding box for the target.
             AxisAlignedBB boundingBox = new AxisAlignedBB(
                     targetX - 0.4F, targetY - 0.1F, targetZ - 0.4F,
                     targetX + 0.4F, targetY + 1.9F, targetZ + 0.4F
             );
 
-            // Because of something called 0.03 we sometimes get uncertainty in the position of the attacker.
-            // To handle this we can just add a 0.03 block leniency on the targets bounding box.
-            // Not a perfect solution but a valid one for sure.
-            if (this.isExempt(ExemptType.RETARD)) boundingBox = boundingBox.expand(0.03, 0.03, 0.03);
+            if (this.isExempt(ExemptType.SLOW)) boundingBox = boundingBox.expand(0.03, 0.03, 0.03);
 
-            // On 1.8.9, the rotations of the player is a tick behind but very popular mods like OptiFine fix this problem,
-            // and therefore we have to handle them as well.
             for (final boolean rotation : BOOLEANS) {
-                // This is for the sneaking status of the player, because the latest sneaking position doesn't work
-                // and I can't be asked to find the proper sneaking state of the player, we are brute forcing it.
                 for (final boolean sneak : BOOLEANS) {
-                    // These are the yaw and pitch of the player. For the explanation of this read the rotation iterations comment.
-                    final float yaw = rotation ? data.getRotationTracker().getYaw() : data.getRotationTracker().getLastYaw();
-                    final float pitch = rotation ? data.getRotationTracker().getPitch() : data.getRotationTracker().getLastPitch();
+                    final float yaw = rotation
+                            ? data.getRotationTracker().getYaw()
+                            : data.getRotationTracker().getLastYaw();
+                    final float pitch = data.getRotationTracker().getPitch();
 
-                    // This is where we do the actual ray-casting.
                     final MovingObjectPosition result = this.rayCast(yaw, pitch, sneak, boundingBox);
 
-                    // Here, if we have an intersection we set the intersection variable to true, if else it stays false.
                     intersection |= result != null && result.hitVec != null;
                 }
             }
 
             final Player target = (Player) data.getActionTracker().getTarget();
 
-            // These are some scenarios the check wouldn't work and instead of properly handling it, we are returning
-            // because who actually gives a fuck about these scenarios.
             final boolean exempt = data.getPlayer().getGameMode() == GameMode.CREATIVE
-                    || target.isInsideVehicle() || target.isSleeping();
+                    || target.isInsideVehicle()
+                    || target.isSleeping();
 
             if (!intersection && !exempt) {
-                // This check does need some buffer as it's not flawless but the concept is there, ready to be expanded on.
                 if (this.buffer.increase() > 2) {
                     this.fail();
                 }
@@ -92,7 +79,8 @@ public final class HitboxA extends Check implements PacketCheck {
             final GPacketPlayClientUseEntity wrapper = ((GPacketPlayClientUseEntity) packet);
 
             if (wrapper.getType() == PlayerEnums.UseType.ATTACK) {
-                this.target = data.getEntityTracker().getTrackerMap().getOrDefault(wrapper.getEntityId(), null);
+                this.target = data.getEntityTracker().getTrackerMap()
+                        .get(wrapper.getEntityId());
             }
         }
     }
@@ -111,7 +99,6 @@ public final class HitboxA extends Check implements PacketCheck {
         return bb.calculateIntercept(vec3, vec32);
     }
 
-    // better not be using fastmath my guy
     private Vec3 getVectorForRotation(final float pitch, final float yaw) {
         final float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
         final float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);

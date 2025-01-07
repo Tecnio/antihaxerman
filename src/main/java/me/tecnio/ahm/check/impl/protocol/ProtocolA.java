@@ -16,9 +16,11 @@ public final class ProtocolA extends Check implements RotationCheck {
 
     @Override
     public void handle(final RotationUpdate update) {
+        if (this.isExempt(ExemptType.TELEPORT)) return;
+
         final float pitch = Math.abs(update.getPitch());
 
-        if (pitch > 90.0F && !this.isExempt(ExemptType.TELEPORT)) {
+        if (pitch > 90.0F) {
             this.fail("p: " + pitch);
         }
     }

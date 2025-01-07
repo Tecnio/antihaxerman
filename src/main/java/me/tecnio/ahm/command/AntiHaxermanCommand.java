@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 @Getter
-public class AHMCommand extends BaseCommand {
+public class AntiHaxermanCommand extends BaseCommand {
 
     public void sendLineBreak(final CommandSender sender) {
         sender.sendMessage(ChatUtil.translate("&7&m-------------------------------------------------"));
@@ -29,7 +29,8 @@ public class AHMCommand extends BaseCommand {
     }
 
     @Override
-    public List<String> tabComplete(final CommandIssuer issuer, final String commandLabel, final String[] args, final boolean isAsync) throws IllegalArgumentException {
+    public List<String> tabComplete(final CommandIssuer issuer, final String commandLabel,
+                                    final String[] args, final boolean isAsync) throws IllegalArgumentException {
         return super.tabComplete(issuer, commandLabel, args, isAsync);
     }
 }

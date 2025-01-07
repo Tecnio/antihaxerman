@@ -4,7 +4,7 @@ import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.PacketAPI;
 import lombok.Getter;
 import lombok.Setter;
-import me.tecnio.ahm.AHM;
+import me.tecnio.ahm.AntiHaxerman;
 import me.tecnio.ahm.alert.AlertManager;
 import me.tecnio.ahm.check.Check;
 import me.tecnio.ahm.check.api.CheckManager;
@@ -80,7 +80,7 @@ public final class PlayerData {
         };
         this.exemptTracker = new ExemptTracker(this);
 
-        this.checks = AHM.get(CheckManager.class).loadChecks(this);
+        this.checks = AntiHaxerman.get(CheckManager.class).loadChecks(this);
 
         this.packetChecks = this.checks.stream().filter(check -> check instanceof PacketCheck)
                 .map(check -> ((PacketCheck) check)).collect(Collectors.toList());
@@ -89,11 +89,11 @@ public final class PlayerData {
         this.rotationChecks = this.checks.stream().filter(check -> check instanceof RotationCheck)
                 .map(check -> ((RotationCheck) check)).collect(Collectors.toList());
 
-        if (this.player.hasPermission("ahm.alerts")) AHM.get(AlertManager.class).toggleAlerts(this);
+        if (this.player.hasPermission("ahm.alerts")) AntiHaxerman.get(AlertManager.class).toggleAlerts(this);
     }
 
     public void terminate() {
-        AHM.get(AlertManager.class).getPlayers().remove(this);
+        AntiHaxerman.get(AlertManager.class).getPlayers().remove(this);
     }
 
     public void updateTicks() {
@@ -105,7 +105,7 @@ public final class PlayerData {
     }
 
     public void haram(final String reason) {
-        Bukkit.getScheduler().runTask(AHM.get().getPlugin(), () -> this.player.kickPlayer(reason));
+        Bukkit.getScheduler().runTask(AntiHaxerman.get().getPlugin(), () -> this.player.kickPlayer(reason));
     }
 
     public void send(final GPacket packet) {

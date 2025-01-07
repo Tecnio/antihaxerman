@@ -2,7 +2,7 @@ package me.tecnio.ahm.check;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.tecnio.ahm.AHM;
+import me.tecnio.ahm.AntiHaxerman;
 import me.tecnio.ahm.alert.AlertManager;
 import me.tecnio.ahm.check.api.Buffer;
 import me.tecnio.ahm.check.api.annotations.CheckManifest;
@@ -11,14 +11,12 @@ import me.tecnio.ahm.config.ConfigManager;
 import me.tecnio.ahm.data.PlayerData;
 import me.tecnio.ahm.exempt.ExemptType;
 import me.tecnio.ahm.util.string.ChatUtil;
-import org.atteo.classindex.IndexSubclasses;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 @Getter
-@IndexSubclasses
 public abstract class Check {
 
     protected final PlayerData data;
@@ -57,11 +55,11 @@ public abstract class Check {
             this.buffer = new Buffer(this.info.maxBuffer());
         } else {
             this.info = null;
-            throw new IllegalStateException("The CheckManifest annotation has not been added on " + this.getClass().getName());
+            throw new IllegalStateException("CheckManifest has not been added to " + this.getClass().getName());
         }
 
         final String name = this.name + "." + this.type;
-        final ConfigManager config = AHM.get(ConfigManager.class);
+        final ConfigManager config = AntiHaxerman.get(ConfigManager.class);
 
         this.enabled = config.getEnabledMap().get(name);
         this.punishing = config.getPunishMap().get(name);
@@ -74,12 +72,12 @@ public abstract class Check {
     }
 
     protected final void fail(final String debug) {
-        ++this.violations;
+        final AlertManager alertManager = AntiHaxerman.get(AlertManager.class);
 
-        AHM.get(AlertManager.class).handleAlert(this, debug);
+        alertManager.handleAlert(this, debug);
 
-        if (this.violations >= this.maxVl) {
-            AHM.get(AlertManager.class).handlePunishment(this);
+        if (++this.violations >= this.maxVl) {
+           alertManager.handlePunishment(this);
         }
     }
 
@@ -92,10 +90,7 @@ public abstract class Check {
     }
 
     protected final void debug(final Object object, final Object... objects) {
-        data.getPlayer().sendMessage(ChatUtil.translate(String.format("&6AntiHaxerman Debug &8> " + ChatColor.WHITE + object.toString(), objects)));
-    }
-
-    protected boolean canClick() {
-        return !data.getActionTracker().isPlacing();
+        data.getPlayer().sendMessage(ChatUtil.translate(
+                String.format("&6AntiHaxerman Debug &8> " + ChatColor.WHITE + object.toString(), objects)));
     }
 }

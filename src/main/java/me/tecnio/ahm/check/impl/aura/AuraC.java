@@ -25,7 +25,9 @@ public class AuraC extends Check implements PacketCheck {
         if (packet instanceof PacketPlayClientUseEntity) {
             final GPacketPlayClientUseEntity wrapper = ((GPacketPlayClientUseEntity) packet);
 
-            if (wrapper.getType() == PlayerEnums.UseType.ATTACK && !this.swung) this.fail();
+            if (wrapper.getType() == PlayerEnums.UseType.ATTACK && !this.swung) {
+                this.fail();
+            }
         }
 
         else if (packet instanceof PacketPlayClientArmAnimation) {

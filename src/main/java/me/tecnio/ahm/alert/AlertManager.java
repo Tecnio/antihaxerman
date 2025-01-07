@@ -1,7 +1,7 @@
 package me.tecnio.ahm.alert;
 
 import lombok.Getter;
-import me.tecnio.ahm.AHM;
+import me.tecnio.ahm.AntiHaxerman;
 import me.tecnio.ahm.alert.alert.AlertHandler;
 import me.tecnio.ahm.alert.alert.AlertHandlerFactory;
 import me.tecnio.ahm.alert.punish.PunishmentHandler;
@@ -24,7 +24,7 @@ public class AlertManager {
 
     private final AlertHandler alertHandler = new AlertHandlerFactory().build();
     private final PunishmentHandler punishmentHandler = new PunishmentHandlerFactory()
-            .setTesting(AHM.TEST_MODE)
+            .setTesting(AntiHaxerman.TEST_MODE)
             .build();
 
     public boolean toggleAlerts(final PlayerData data) {
@@ -39,9 +39,5 @@ public class AlertManager {
 
     public void handlePunishment(final Check check) {
         this.punishmentHandler.punish(check);
-    }
-
-    public enum ToggleAlertType {
-        ADD, REMOVE
     }
 }

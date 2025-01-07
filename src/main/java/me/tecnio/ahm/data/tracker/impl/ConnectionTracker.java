@@ -10,24 +10,25 @@ import cc.ghast.packet.wrapper.packet.play.server.GPacketPlayServerTransaction;
 import lombok.Getter;
 import me.tecnio.ahm.data.PlayerData;
 import me.tecnio.ahm.data.tracker.Tracker;
-import me.tecnio.ahm.util.type.EvictingMap;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Getter
 public final class ConnectionTracker extends Tracker {
 
-    private final EvictingMap<Long, Long> keepAliveMap = new EvictingMap<>(800);
-    private final EvictingMap<Short, Long> transactionMap = new EvictingMap<>(800);
+    private final Map<Long, Long> keepAliveMap = new HashMap<>();
+    private final Map<Short, Long> transactionMap = new HashMap<>();
 
-    private final EvictingMap<Short, Runnable> confirmationMap = new EvictingMap<>(800);
+    private final Map<Short, Runnable> confirmationMap = new HashMap<>();
 
     private int transactionPing, keepAlivePing;
     private short transactionId = Short.MIN_VALUE;
-    private int keepAliveId = Short.MIN_VALUE;
 
     private long lastFlying, flyingDelay;
-    private long lastKeepAlive = System.currentTimeMillis(), lastTransaction = System.currentTimeMillis();
+    private long lastKeepAlive = System.currentTimeMillis(),
+            lastTransaction = System.currentTimeMillis();
 
     private int ticksSinceLag;
 
@@ -45,17 +46,19 @@ public final class ConnectionTracker extends Tracker {
             final GPacketPlayServerTransaction wrapper = ((GPacketPlayServerTransaction) packet);
 
             this.transactionMap.put(wrapper.getActionNumber(), packet.getTimestamp());
-        } else if (packet instanceof PacketPlayClientKeepAlive) {
+        }
+
+        else if (packet instanceof PacketPlayClientKeepAlive) {
             final PacketPlayClientKeepAlive wrapper = ((PacketPlayClientKeepAlive) packet);
 
             this.keepAliveMap.computeIfPresent(wrapper.getId(), (id, time) -> {
                 this.keepAlivePing = (int) (packet.getTimestamp() - time);
                 this.lastKeepAlive = packet.getTimestamp();
 
-                this.keepAliveMap.remove(wrapper.getId());
-
                 return time;
             });
+
+            this.keepAliveMap.remove(wrapper.getId());
         } else if (packet instanceof PacketPlayClientTransaction) {
             final PacketPlayClientTransaction wrapper = ((PacketPlayClientTransaction) packet);
 
@@ -63,20 +66,24 @@ public final class ConnectionTracker extends Tracker {
                 this.transactionPing = (int) (packet.getTimestamp() - time);
                 this.lastTransaction = packet.getTimestamp();
 
-                this.transactionMap.remove(wrapper.getActionNumber());
-
                 return time;
             });
 
+            this.transactionMap.remove(wrapper.getActionNumber());
+
             Optional.ofNullable(this.confirmationMap.remove(wrapper.getActionNumber()))
                     .ifPresent(Runnable::run);
-        } else if (packet instanceof PacketPlayClientFlying) {
+        }
+
+        else if (packet instanceof PacketPlayClientFlying) {
             final long now = packet.getTimestamp();
 
             this.flyingDelay = now - this.lastFlying;
             this.lastFlying = now;
 
-            if (this.flyingDelay < 30 || this.flyingDelay > 70) this.ticksSinceLag = 0;
+            if (this.flyingDelay < 30 || this.flyingDelay > 70) {
+                this.ticksSinceLag = 0;
+            }
         }
     }
 

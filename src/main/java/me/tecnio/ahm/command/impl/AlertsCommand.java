@@ -4,9 +4,9 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import me.tecnio.ahm.AHM;
+import me.tecnio.ahm.AntiHaxerman;
 import me.tecnio.ahm.alert.AlertManager;
-import me.tecnio.ahm.command.AHMCommand;
+import me.tecnio.ahm.command.AntiHaxermanCommand;
 import me.tecnio.ahm.data.PlayerData;
 import me.tecnio.ahm.data.PlayerDataManager;
 import me.tecnio.ahm.util.string.ChatUtil;
@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandAlias("ahm")
-public class AlertsCommand extends AHMCommand {
+public class AlertsCommand extends AntiHaxermanCommand {
 
     @Subcommand("alerts")
     @Description("Toggles your anti-cheat alerts")
@@ -26,9 +26,9 @@ public class AlertsCommand extends AHMCommand {
         }
 
         final Player player = ((Player) sender).getPlayer();
-        final PlayerData data = AHM.get(PlayerDataManager.class).getPlayerData(player.getUniqueId());
+        final PlayerData data = AntiHaxerman.get(PlayerDataManager.class).get(player.getUniqueId());
 
-        if (AHM.get(AlertManager.class).toggleAlerts(data)) {
+        if (AntiHaxerman.get(AlertManager.class).toggleAlerts(data)) {
             player.sendMessage(ChatUtil.translate("&aYou are now viewing alerts!"));
         } else {
             player.sendMessage(ChatUtil.translate("&cYou are no longer viewing alerts!"));

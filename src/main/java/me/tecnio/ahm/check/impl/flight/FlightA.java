@@ -19,7 +19,6 @@ public final class FlightA extends Check implements PositionCheck {
 
     @Override
     public void handle(final PositionUpdate update) {
-        // Retrieve relevant data for analysis
         final boolean velocity = data.getVelocityTracker().getTicksSinceVelocity() == 1;
         final boolean lastVelocity = data.getVelocityTracker().isLastTickVelocity();
 
@@ -65,22 +64,27 @@ public final class FlightA extends Check implements PositionCheck {
             }
         }
 
-        // 0.03 can happen for multiple ticks but I rather doubt it's gonna be anything over 0.03 tbh.
-        final double threshold = this.isExempt(ExemptType.RETARD) ? 0.03D : 1e-06D;
+        final double threshold = this.isExempt(ExemptType.SLOW) ? 0.03D : 1e-06D;
 
-        // Check for invalid conditions: significant difference between observed and predicted Y, not on ground, and previous tick not on ground.
         final boolean invalid = distance > threshold && !ground && !lastGround;
-        final boolean exempt = this.isExempt(ExemptType.CLIMBABLE, ExemptType.PISTON, ExemptType.SLIME,
-                ExemptType.VEHICLE, ExemptType.FLIGHT, ExemptType.TELEPORT, ExemptType.UNDER_BLOCK, ExemptType.WEB, ExemptType.LIQUID,
-                ExemptType.TELEPORTED_RECENTLY);
+        final boolean exempt = this.isExempt(
+                ExemptType.CLIMBABLE,
+                ExemptType.PISTON,
+                ExemptType.SLIME,
+                ExemptType.VEHICLE,
+                ExemptType.FLIGHT,
+                ExemptType.TELEPORT,
+                ExemptType.UNDER_BLOCK,
+                ExemptType.WEB,
+                ExemptType.LIQUID,
+                ExemptType.TELEPORTED_RECENTLY
+        );
 
         if (invalid && !exempt) {
-            // Trigger a violation if the conditions are met and the buffer threshold is exceeded.
             if (this.buffer.increase() > 2) {
                 this.fail("oY: %s", Math.abs(deltaY - predicted));
             }
         } else {
-            // Decrease the buffer if the conditions are not met.
             this.buffer.decreaseBy(0.01D);
         }
     }

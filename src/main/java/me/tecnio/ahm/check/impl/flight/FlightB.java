@@ -20,29 +20,33 @@ public final class FlightB extends Check implements PositionCheck {
 
     @Override
     public void handle(final PositionUpdate update) {
-        // The ground states of the current and last tick in order to detect if the player has jumped or gained velocity.
         final boolean onGround = update.isOnGround();
         final boolean lastOnGround = update.isLastOnGround();
 
-        // The current motion upwards in order to be compared to the expected later on.
         final double deltaY = update.getDeltaY();
 
-        // Calculate expected jump motion based on block placement ticks and potion effects
         final double modifierJump = data.getAttributeTracker().getPotionLevel(PotionEffectType.JUMP) * 0.1F;
         final double expectedJumpMotion = 0.42F + modifierJump;
 
-        // This is the 0.03 compensated threshold that should prevent falses related to 0.03.
-        final double threshold = (this.isExempt(ExemptType.RETARD) ? 0.03D : 0.0) + 1.0E-6;
-
-        // Check exemption conditions
-        final boolean exempt = this.isExempt(ExemptType.VEHICLE, ExemptType.CLIMBABLE, ExemptType.VELOCITY, ExemptType.PISTON,
-                ExemptType.LIQUID, ExemptType.TELEPORT, ExemptType.WEB, ExemptType.BOAT, ExemptType.FLIGHT, ExemptType.SLIME,
-                ExemptType.WALL, ExemptType.UNDER_BLOCK, ExemptType.CHUNK);
-
-        // Check for invalid jump motion
+        final double threshold = (this.isExempt(ExemptType.SLOW) ? 0.03D : 0.0) + 1.0E-6;
+        
         final boolean invalid = Math.abs(deltaY - expectedJumpMotion) > threshold && deltaY >= 0;
-
-        // Checking for first "air tick" could be spoofed but they better jump this high if they spoof so idc
+        final boolean exempt = this.isExempt(
+                ExemptType.VEHICLE,
+                ExemptType.CLIMBABLE,
+                ExemptType.VELOCITY,
+                ExemptType.PISTON,
+                ExemptType.LIQUID,
+                ExemptType.TELEPORT,
+                ExemptType.WEB,
+                ExemptType.BOAT,
+                ExemptType.FLIGHT,
+                ExemptType.SLIME,
+                ExemptType.WALL,
+                ExemptType.UNDER_BLOCK,
+                ExemptType.CHUNK
+        );
+        
         if (!onGround && lastOnGround && invalid && !exempt) {
             this.fail("dY: %s", deltaY);
         }

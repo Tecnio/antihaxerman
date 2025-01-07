@@ -16,6 +16,8 @@ public class PunishmentHandlerFactory implements Factory<PunishmentHandler> {
 
     @Override
     public PunishmentHandler build() {
-        return this.testing ? new TestingPunishmentHandler() : new ProductionPunishmentHandler();
+        return this.testing
+                ? new TestingPunishmentHandler()
+                : new ProductionPunishmentHandler();
     }
 }

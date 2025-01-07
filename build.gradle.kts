@@ -1,10 +1,11 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.5"
+    id("io.freefair.lombok") version "8.11"
 }
 
 group = "me.tecnio"
-version = "4.0.2"
+version = "4.0.3"
 
 java {
     toolchain {
@@ -26,19 +27,16 @@ repositories {
 
 dependencies {
     compileOnly("org.github.spigot:1.8.8:1.8.8")
-    compileOnly("org.projectlombok:lombok:1.18.32")
-
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
 
     implementation("com.github.artemisac.artemis-packet-api:api:2.0.0-beta-3")
     implementation("com.github.artemisac.artemis-packet-api:spigot:2.0.0-beta-3")
-    implementation("org.atteo.classindex:classindex:3.13")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
-    implementation("org.bstats:bstats-bukkit:3.0.2")
+    implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 
 tasks.shadowJar {
     archiveFileName = "AntiHaxerman.jar"
+
     minimize()
 
     relocate("org.atteo.classindex", "me.tecnio.ahm.libs.classindex")

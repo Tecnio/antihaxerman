@@ -3,7 +3,7 @@ package me.tecnio.ahm.config;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import me.tecnio.ahm.AHM;
+import me.tecnio.ahm.AntiHaxerman;
 import me.tecnio.ahm.check.api.CheckManager;
 import me.tecnio.ahm.check.api.annotations.CheckManifest;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,16 +24,12 @@ public final class ConfigManager {
 
     @SneakyThrows
     public void generate() {
-        final JavaPlugin plugin = AHM.get().getPlugin();
+        final JavaPlugin plugin = AntiHaxerman.get().getPlugin();
         final FileConfiguration config = plugin.getConfig();
-        final List<Class<?>> checks = AHM.get(CheckManager.class).getChecks();
+        final List<Class<?>> checks = AntiHaxerman.get(CheckManager.class).getChecks();
 
         plugin.saveDefaultConfig();
 
-        /*
-         * Simple config generation, no need to make it more complicated and it is quite
-         * easy to navigate, this also allows us to have the default values saved on temp
-         */
         for (final Class<?> check : checks) {
             final CheckManifest info = check.getAnnotation(CheckManifest.class);
 
@@ -61,20 +57,16 @@ public final class ConfigManager {
             write(commands, Collections.singletonList("ban %player% Cheating"));
         }
 
-        /*
-         * Make sure to make the config changes before this point, otherwise
-         * they will only be saved on temp and it wont function properly
-         */
         plugin.saveConfig();
         plugin.reloadConfig();
     }
 
     @SneakyThrows
     public void load() {
-        final JavaPlugin plugin = AHM.get().getPlugin();
+        final JavaPlugin plugin = AntiHaxerman.get().getPlugin();
         final FileConfiguration config = plugin.getConfig();
 
-        final List<Class<?>> checks = AHM.get(CheckManager.class).getChecks();
+        final List<Class<?>> checks = AntiHaxerman.get(CheckManager.class).getChecks();
 
         plugin.saveDefaultConfig();
 
@@ -102,7 +94,7 @@ public final class ConfigManager {
     }
 
     private void write(final String header, final Object value) {
-        final JavaPlugin plugin = AHM.get().getPlugin();
+        final JavaPlugin plugin = AntiHaxerman.get().getPlugin();
 
         if (plugin.getConfig().contains(header)) return;
 

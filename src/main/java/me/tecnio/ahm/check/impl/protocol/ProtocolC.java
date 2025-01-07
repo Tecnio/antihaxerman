@@ -23,10 +23,10 @@ public final class ProtocolC extends Check implements PacketCheck {
         if (packet instanceof GPacketPlayClientUseEntity) {
             final GPacketPlayClientUseEntity wrapper = ((GPacketPlayClientUseEntity) packet);
 
-            if (wrapper.getType() == PlayerEnums.UseType.ATTACK) {
-                if (++this.streak > 2) {
-                    this.fail();
-                }
+            if (wrapper.getType() != PlayerEnums.UseType.ATTACK) return;
+
+            if (++this.streak > 2) {
+                this.fail();
             }
         } else if (packet instanceof GPacketPlayClientArmAnimation) {
             this.streak = 0;
